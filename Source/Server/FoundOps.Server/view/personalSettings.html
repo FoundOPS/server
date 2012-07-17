@@ -1,0 +1,35 @@
+<div data-init="personalSettings.initialize" data-show="personalSettings.show"
+     data-role="view" data-title="Personal User Settings" id="personal">
+    <div class="settingsMenu"></div>
+    <h1>Your Personal User Settings</h1>
+    <div class="wrap">
+        <h2>The Basics</h2>
+        <form id="personalForm" data-model="personalSettings.viewModel">
+            <table>
+                <tr>
+                    <td>First Name:&nbsp;</td>
+                    <td><input type="text" name="FirstName" data-bind="value: settings.FirstName" required/></td>
+                </tr>
+                <tr>
+                    <td>Last Name:&nbsp;</td>
+                    <td><input type="text" name="LastName" data-bind="value: settings.LastName" required/></td>
+                </tr>
+                <tr>
+                    <td>Email Address:&nbsp;</td>
+                    <td><input type="email" name="EmailAddress" data-bind="value: settings.EmailAddress" required/></td>
+                </tr>
+            </table>
+        </form>
+        <h2>Your Photo</h2>
+        <img data-bind="attr: {src: settings.ImageUrl}" id="cropbox" onload="personalSettings.resize()"/>
+        <form id="imageUploadForm" enctype="multipart/form-data" method="POST">
+            <input id="imageUpload" type="file"/><br/>
+            <input type="hidden" id="imageFileName" name="imageFileName"/>
+            <input id="imageData" type="hidden" name="imageData"/>
+        </form>
+        <h2>Password</h2>
+        <button onclick="window.changePassword()">Change Your Password</button>
+        <h2>&nbsp;</h2>
+        <button class="save" data-bind="click: saveChanges">Save Changes</button>
+    </div>
+</div>

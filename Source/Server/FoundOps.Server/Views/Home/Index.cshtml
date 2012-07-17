@@ -20,13 +20,13 @@
           content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
     <!-- Home screen icon  Mathias Bynens mathiasbynens.be/notes/touch-icons -->
     <!-- For iPhone 4 with high-resolution Retina display: -->
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="./Icon-96x96.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="img/Icon-96x96.png">
     <!-- For first-generation iPad: -->
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="./Icon-72x72.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="img/Icon-72x72.png">
     <!-- For non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->
-    <link rel="apple-touch-icon-precomposed" href="./Icon-36x36.png">
+    <link rel="apple-touch-icon-precomposed" href="img/Icon-36x36.png">
     <!-- For nokia devices: -->
-    <link rel="shortcut icon" href="./Icon-36x36.png">
+    <link rel="shortcut icon" href="img/Icon-36x36.png">
     <!-- iOS web app, delete if not needed. https://github.com/h5bp/mobile-boilerplate/issues/94 -->
     <!-- <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black"> -->
@@ -40,13 +40,9 @@
     <!-- more tags for your 'head' to consider h5bp.com/d/head-Tips -->
 
     <link rel="shortcut icon" href="./Icon-36x36"/>
-    <!--If debug-->
     <link rel="stylesheet" type="text/css" href="styles/jquery.jscrollpane.css" media="all"/>
     <link rel="stylesheet" type="text/css" href="styles/navigator.css">
-
-    <script type="text/javascript">
-        window.navigatorConfig = @Html.Raw(((Dictionary<string, object>)@Model)["NavigatorConfig"]);
-    </script>
+    <link rel="stylesheet" type="text/css" href="styles/settings.css" />
 </head>
 
 <body ontouchstart="">
@@ -54,8 +50,7 @@
     <div id="content">
         <div id="remoteContent">
         </div>
-        <!--need to fix the position & set height/width of the outer div for Firefox to show silverlight-->
-        <div id="silverlightControlHost" style="position: fixed; height: 100%; width: 100%;z-index: 0;">
+        <div id="silverlightControlHost">
             <object id="silverlightPlugin" data="data:application/x-silverlight-2," type="application/x-silverlight-2"
                     style="height: 1px; width: 1px">
                 <param name="onSourceDownloadProgressChanged" value="onSourceDownloadProgressChanged"/>
@@ -101,6 +96,10 @@
         </div>
     </div>
 </div>
+<!--Setup an empty silverlight view, so there is something to navigate to-->
+<div data-role="view" id="silverlight"></div>
+
+</body>
 
 <script type="text/javascript">
     var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
@@ -108,23 +107,6 @@
 </script>
 
 <script data-main="js/main.js" src="lib/require-jquery.js"></script>
-
-<!-- JavaScript at the bottom for fast page loading -->
-<!--script>window.jQuery || document.write('<script src="lib/jquery.min.js"><\/script>')</script-->
-
-<!-- Debugger - remove for production -->
-<!-- <script src="https://getfirebug.com/firebug-lite.js"></script> -->
-
-<!-- Asynchronous Google Analytics snippet. Change UA-XXXXX-X to be your site's ID.
-mathiasbynens.be/notes/async-analytics-snippet -->
-<!--script>
-    var _gaq=[["_setAccount","UA-XXXXX-X"],["_trackPageview"]];
-    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
-        g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
-        s.parentNode.insertBefore(g,s)}(document,"script"));
-</script-->
-</body>
-
 <script id="navTemplate" type="text/x-kendo-template">
     <div id='navContainer'>
         <div id='navSearch' class='navElement'><input name='search' type='text' placeholder='Search...'/>

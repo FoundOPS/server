@@ -15,8 +15,11 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Employee = FoundOPS.API.Models.Employee;
 
 namespace FoundOPS.API.Api
@@ -34,6 +37,91 @@ namespace FoundOPS.API.Api
             _coreEntitiesContainer = new CoreEntitiesContainer();
             _coreEntitiesContainer.ContextOptions.LazyLoadingEnabled = false;
         }
+
+        #region Session
+
+        [AcceptVerbs("GET", "POST")]
+        public JObject GetSession()
+        {
+            var user = _coreEntitiesContainer.CurrentUserAccount().Include(ua => ua.PartyImage)
+                             .Include(ua => ua.RoleMembership).Include("RoleMembership.Blocks").Include("RoleMembership.OwnerBusinessAccount")
+                             .First();
+
+            //Load all of the party images for the owner's of roles
+            var businessOwnerIds = user.RoleMembership.Select(r => r.OwnerBusinessAccount).OfType<BusinessAccount>().Select(ba => ba.Id).Distinct();
+            var partyImages = _coreEntitiesContainer.Files.OfType<PartyImage>().Where(pi => businessOwnerIds.Contains(pi.PartyId)).Distinct();
+            if (user.PartyImage != null)
+                partyImages = partyImages.Union(new[] { user.PartyImage });
+
+            //Go through each party image and get the url with the shared access key
+            var partyImageUrls = new Dictionary<Guid, string>();
+            foreach (var partyImage in partyImages)
+            {
+                var imageUrl = partyImage.RawUrl + AzureServerHelpers.GetBlobUrlHelper(partyImage.OwnerParty.Id, partyImage.Id);
+                partyImageUrls.Add(partyImage.OwnerParty.Id, imageUrl);
+            }
+
+            var roles = user.RoleMembership.Distinct().OrderBy(r => r.OwnerBusinessAccount.DisplayName);
+            var sections = roles.SelectMany(r => r.Blocks).Where(s => !s.HideFromNavigation).Distinct().OrderBy(b => b.Name);
+
+            dynamic config = new JObject();
+            config.name = user.FirstName + " " + user.LastName;
+            config.settingsUrl = "#view/personalSettings.html";
+            config.avatarUrl = user.PartyImage != null
+                                   ? partyImageUrls[user.PartyImage.Id]
+                                   : "img/emptyPerson.png";
+
+            var jRoles = new List<JObject>();
+            //Go through each of the user's roles
+            foreach (var role in roles)
+            {
+                dynamic jRole = new JObject();
+                jRole.id = role.Id;
+                jRole.name = role.OwnerBusinessAccount.Name;
+                jRole.type = role.RoleType.ToString();
+
+                //Set the business's logo
+                if (role.OwnerBusinessAccount.PartyImage != null)
+                {
+                    jRole.businessLogoUrl = partyImageUrls[role.OwnerBusinessAccount.PartyImage.Id];
+                }
+
+                var availableSections = role.Blocks.Where(s => !s.HideFromNavigation).OrderBy(r => r.Name).Select(b => b.Name).ToArray();
+
+                //Add the available sections's names for the roles
+                jRole.sections = new JArray(availableSections);
+
+                jRoles.Add(jRole);
+            }
+            config.roles = new JArray(jRoles);
+
+            var jSections = new List<JObject>();
+            foreach (var section in sections)
+            {
+                dynamic jSection = new JObject();
+                jSection.name = section.Name;
+                jSection.color = section.Color;
+
+                if (!string.IsNullOrEmpty(section.Url))
+                {
+                    jSection.url = section.Url;
+                }
+
+                jSection.iconUrl = section.IconUrl;
+                jSection.hoverIconUrl = section.HoverIconUrl;
+
+                if (section.IsSilverlight.HasValue && section.IsSilverlight.Value)
+                {
+                    jSection.isSilverlight = true;
+                }
+                jSections.Add(jSection);
+            }
+            config.sections = new JArray(jSections);
+
+            return config;
+        }
+
+        #endregion
 
         #region Personal Settings
 
@@ -223,7 +311,7 @@ namespace FoundOPS.API.Api
             {
                 var employee = _coreEntitiesContainer.Employees.FirstOrDefault(e => e.FirstName == settings.Employee.FirstName && e.LastName == settings.Employee.LastName && e.EmployerId == businessAccount.Id);
 
-                user.LinkedEmployees.Add(employee);                
+                user.LinkedEmployees.Add(employee);
             }
             else
             {
@@ -358,7 +446,7 @@ namespace FoundOPS.API.Api
 
             foreach (var employee in user.LinkedEmployees)
             {
-                user.LinkedEmployees.Remove(employee);                
+                user.LinkedEmployees.Remove(employee);
             }
 
             _coreEntitiesContainer.DeleteUserAccountBasedOnId(settings.Id);

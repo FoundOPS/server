@@ -154,6 +154,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.ServiceModel.Web.Extensions, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Windows.Controls.Input, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Windows.Controls.Toolkit">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\System.Windows.Controls.Toolkit.dll</HintPath>
     </Reference>

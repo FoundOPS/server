@@ -1,0 +1,24 @@
+<div data-init="businessSettings.initialize" data-role="view" data-title="Business Settings" id="business">
+    <div class="settingsMenu"></div>
+    <h1>Your Business Settings</h1>
+    <div class="wrap">
+        <h2>The Basics</h2>
+        <form id="businessForm">
+            <table>
+                <tr>
+                    <td>Name:&nbsp;</td>
+                    <td><input type="text" name="Name" data-bind="value: settings.Name" required/></td>
+                </tr>
+            </table>
+        </form>
+        <h2>Your Photo</h2>
+        <img data-bind="attr: {src: settings.ImageUrl}" id="cropbox" onload="personalSettings.resize()"/>
+        <form id="imageUploadForm" enctype="multipart/form-data" method="POST">
+            <input id="imageUpload" type="file" /><br />
+            <input type="hidden" id="imageFileName" name="imageFileName"/>
+            <input id="imageData" type="hidden" name="imageData"/>
+        </form>
+        <h2>&nbsp;</h2>
+        <button class="save" data-bind="click: saveChanges">Save Changes</button>
+    </div>
+</div>

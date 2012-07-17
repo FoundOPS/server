@@ -314,6 +314,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Silverlight.js" />
+    <Content Include="styles\settings.css" />
     <Content Include="Views\Shared\LogOnUserControl.ascx" />
   </ItemGroup>
   <ItemGroup>
@@ -369,11 +370,12 @@
     <Content Include="ClientBin\Telerik.Windows.Data.zip" />
     <Content Include="ClientBin\System.Xml.Linq.zip" />
     <Content Include="ClientBin\System.ServiceModel.Web.Extensions.zip" />
-    <Content Include="ClientBin\Microsoft.CSharp.zip" />
     <Content Include="ClientBin\Telerik.Windows.Controls.DataVisualization.zip" />
     <Content Include="ClientBin\Telerik.Windows.Documents.zip" />
     <Content Include="ClientBin\Telerik.Windows.Documents.FormatProviders.Pdf.zip" />
     <Content Include="ClientBin\Telerik.Windows.Zip.zip" />
+    <Content Include="ClientBin\System.Windows.Controls.Input.zip" />
+    <Content Include="ClientBin\Microsoft.CSharp.zip" />
     <None Include="Content\PTS55F.eot" />
     <None Include="Content\PTS55F.ttf" />
     <None Include="disableTimeout.cmd">
@@ -401,12 +403,17 @@
     <Content Include="Views\Tools\ClearHistoricalTrackPoints.cshtml" />
     <Content Include="Views\Home\MapView.cshtml" />
     <Content Include="Views\Tools\CreateHistoricalTrackPoints.cshtml" />
+    <Content Include="view\businessSettings.html" />
+    <Content Include="view\changePassword.html" />
     <Content Include="view\clearhist.html" />
+    <Content Include="view\importer.html" />
+    <Content Include="view\personalSettings.html" />
     <Content Include="view\routeDestinationDetails.html" />
     <Content Include="view\routeDetails.html" />
     <Content Include="view\routeList.html" />
     <Content Include="view\testContent.html" />
     <Content Include="view\updates.html" />
+    <Content Include="view\usersSettings.html" />
     <Content Include="Web.base.config" />
     <Content Include="Web.base.Debug.config">
       <DependentUpon>Web.base.config</DependentUpon>
