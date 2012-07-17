@@ -305,8 +305,8 @@ BEGIN
 	UPDATE	@UnroutedOrUncompletedServices
 	SET		ClientName =	(
 							SELECT DISTINCT t1.Name
-							FROM	Parties_BusinessAccount t1
-							WHERE	EXISTS
+							FROM	dbo.Clients t1
+							WHERE	t1.Id IN 
 							(
 								SELECT  t2.ClientId
 								FROM	RecurringServices t2
@@ -318,8 +318,8 @@ BEGIN
 	UPDATE	@UnroutedOrUncompletedServices
 	SET		ClientName =	(
 							SELECT DISTINCT  t1.Name
-							FROM	Parties_BusinessAccount t1
-							WHERE	EXISTS
+							FROM	dbo.Clients t1
+							WHERE	t1.Id IN 
 							(
 								SELECT  t2.ClientId
 								FROM	Services t2
