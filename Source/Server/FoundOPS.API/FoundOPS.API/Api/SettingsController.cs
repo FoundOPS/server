@@ -445,7 +445,9 @@ namespace FoundOPS.API.Api
             if (businessAccount == null)
                 ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
 
-            return businessAccount.Employees.Select(Employee.ConvertModel).AsQueryable();
+            var employees = _coreEntitiesContainer.Employees.Where(e => e.EmployerId == businessAccount.Id);
+
+            return employees.Select(Employee.ConvertModel).AsQueryable();
         }
 
         #endregion
