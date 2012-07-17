@@ -108,6 +108,7 @@
     <Compile Include="Models\Azure\InvoiceTableDataModel.cs" />
     <Compile Include="Models\Azure\InvoiceDataServiceContext.cs" />
     <Compile Include="Models\CoreEntities\DesignData\ServicesDesignData.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Parties\BusinessAccountExtensions.shared.cs" />
     <Compile Include="Models\ServerConstants.cs" />
     <Compile Include="Models\CoreEntities\BlocksData.cs" />
     <Compile Include="Models\CoreEntities\CoreEntities.metadata.cs" />

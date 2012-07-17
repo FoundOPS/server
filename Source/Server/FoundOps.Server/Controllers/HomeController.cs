@@ -102,7 +102,7 @@ namespace FoundOps.Server.Controllers
 
                     //Set the business account name
                     jsonWriter.WritePropertyName("name");
-                    jsonWriter.WriteValue(role.OwnerBusinessAccount.DisplayName);
+                    jsonWriter.WriteValue(role.OwnerBusinessAccount.Name);
 
                     //Set the business's logo
                     if (role.OwnerBusinessAccount.PartyImage != null)
