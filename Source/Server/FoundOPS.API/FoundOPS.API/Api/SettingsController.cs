@@ -65,10 +65,13 @@ namespace FoundOPS.API.Api
             dynamic config = new JObject();
             config.name = user.FirstName + " " + user.LastName;
             config.settingsUrl = "#view/personalSettings.html";
-            config.logOutUrl = "Account/LogOff";
-            config.avatarUrl = user.PartyImage != null
-                                   ? partyImageUrls[user.PartyImage.Id]
-                                   : "img/emptyPerson.png";
+            config.logOutUrl = "Account/LogOut";
+            //config.avatarUrl = user.PartyImage != null
+            //                       ? partyImageUrls[user.PartyImage.Id]
+            //                       : "img/emptyPerson.png";
+
+            //temporary until settings is working well
+            config.avatarUrl = "img/emptyPerson.png";
 
             var jRoles = new List<JObject>();
             //Go through each of the user's roles
