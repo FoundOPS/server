@@ -4,6 +4,106 @@
         <name>Telerik.Windows.Zip</name>
     </assembly>
     <members>
+        <member name="T:Telerik.Windows.Zip.CompressionType">
+            <summary>
+            Represents the compression types.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Zip.CompressionType.Default">
+            <summary>
+            This is the default compression type.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Zip.CompressionType.LZMA">
+            <summary>
+            This compression type uses the LZMA algorithm.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Zip.LZMA.LzmaDecoder">
+            <summary>
+            Represents a class that provides LZMA decompression.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Zip.LZMA.LzmaEncoder">
+            <summary>
+            Represents a class that provides LZMA compression.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Zip.LZMA.LZ.CoderPropID.DefaultProp">
+            <summary>
+            Specifies default property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Zip.LZMA.LZ.CoderPropID.DictionarySize">
+            <summary>
+            Specifies size of dictionary.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Zip.LZMA.LZ.CoderPropID.UsedMemorySize">
+            <summary>
+            Specifies size of memory for PPM*.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Zip.LZMA.LZ.CoderPropID.Order">
+            <summary>
+            Specifies order for PPM methods.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Zip.LZMA.LZ.CoderPropID.BlockSize">
+            <summary>
+            Specifies Block Size.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Zip.LZMA.LZ.CoderPropID.PosStateBits">
+            <summary>
+            Specifies number of postion state bits for LZMA
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Zip.LZMA.LZ.CoderPropID.LitContextBits">
+            <summary>
+            Specifies number of literal context bits for LZMA 
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Zip.LZMA.LZ.CoderPropID.LitPosBits">
+            <summary>
+            Specifies number of literal position bits for LZMA
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Zip.LZMA.LZ.CoderPropID.NumFastBytes">
+            <summary>
+            Specifies number of fast bytes for LZ*.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Zip.LZMA.LZ.CoderPropID.MatchFinder">
+            <summary>
+            Specifies match finder. LZMA: "BT2", "BT4" or "BT4B".
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Zip.LZMA.LZ.CoderPropID.MatchFinderCycles">
+            <summary>
+            Specifies the number of match finder cyckes.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Zip.LZMA.LZ.CoderPropID.NumPasses">
+            <summary>
+            Specifies number of passes.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Zip.LZMA.LZ.CoderPropID.Algorithm">
+            <summary>
+            Specifies number of algorithm.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Zip.LZMA.LZ.CoderPropID.NumThreads">
+            <summary>
+            Specifies the number of threads.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Zip.LZMA.LZ.CoderPropID.EndMarker">
+            <summary>
+            Specifies mode with end marker.
+            </summary>
+        </member>
         <member name="T:Telerik.Windows.Zip.ZipCompression">
             <summary>
             Represents the compression methods.
@@ -368,7 +468,7 @@
             Checks whether the file with the passed file name is actually a zip file.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Zip.ZipPackage.Add(System.String)">
+        <member name="M:Telerik.Windows.Zip.ZipPackage.Add(System.String,Telerik.Windows.Zip.CompressionType)">
             <summary>
             Adds a file with the passed file name in the ZipPackage.
             </summary>
@@ -378,37 +478,37 @@
             Adds the files from the passed array of file names in the ZipPackage.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Zip.ZipPackage.Add(System.Collections.Generic.IEnumerable{System.String})">
+        <member name="M:Telerik.Windows.Zip.ZipPackage.Add(System.Collections.Generic.IEnumerable{System.String},Telerik.Windows.Zip.CompressionType)">
             <summary>
             Adds the files from the passed IEnumerable of file names in the ZipPackage.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Zip.ZipPackage.AddStream(System.String,System.IO.Stream)">
+        <member name="M:Telerik.Windows.Zip.ZipPackage.AddStream(System.String,System.IO.Stream,Telerik.Windows.Zip.CompressionType)">
             <summary>
             Adds a stream in the ZipPackage and associates it with the passed file name in zip.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Zip.ZipPackage.AddStream(System.IO.Stream,System.String)">
+        <member name="M:Telerik.Windows.Zip.ZipPackage.AddStream(System.IO.Stream,System.String,Telerik.Windows.Zip.CompressionType)">
             <summary>
             Adds a stream in the ZipPackage and associates it with the passed file name in zip.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Zip.ZipPackage.Add(System.String,System.String)">
+        <member name="M:Telerik.Windows.Zip.ZipPackage.Add(System.String,System.String,Telerik.Windows.Zip.CompressionType)">
             <summary>
             Adds a file with the passed file name in the ZipPackage and associates it with the passed file name in zip.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Zip.ZipPackage.Add(System.String,System.String,System.DateTime)">
+        <member name="M:Telerik.Windows.Zip.ZipPackage.Add(System.String,System.String,System.DateTime,Telerik.Windows.Zip.CompressionType)">
             <summary>
             Adds a file with the passed file name in the ZipPackage, associates it with the passed file name in zip and sets a date time for the entry.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Zip.ZipPackage.AddStream(Telerik.Windows.Zip.ZipCompression,System.String,System.IO.Stream,System.DateTime)">
+        <member name="M:Telerik.Windows.Zip.ZipPackage.AddStream(Telerik.Windows.Zip.ZipCompression,System.String,System.IO.Stream,System.DateTime,Telerik.Windows.Zip.CompressionType)">
             <summary>
             Adds a stream in the ZipPackage, compresses it with the passed compress method, associates it with the passed file name in zip and sets a date time for the entry. 
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Zip.ZipPackage.AddStream(System.IO.Stream,System.String,Telerik.Windows.Zip.ZipCompression,System.DateTime)">
+        <member name="M:Telerik.Windows.Zip.ZipPackage.AddStream(System.IO.Stream,System.String,Telerik.Windows.Zip.ZipCompression,System.DateTime,Telerik.Windows.Zip.CompressionType)">
             <summary>
             Adds a stream in the ZipPackage, compresses it with the passed compress method, associates it with the passed file name in zip and sets a date time for the entry. 
             </summary>

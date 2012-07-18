@@ -5,7 +5,6 @@
              xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" xmlns:Telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input"
              xmlns:EmployeeHistory="clr-namespace:FoundOps.SLClient.UI.Controls.Employees.EmployeeHistory" xmlns:Dispatcher="clr-namespace:FoundOps.SLClient.UI.Controls.Dispatcher"
              xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
-             xmlns:CoreEntities="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data"
              xmlns:UserAccounts="clr-namespace:FoundOps.SLClient.UI.Controls.Parties.UserAccounts" xmlns:telerik1="http://schemas.telerik.com/2008/xaml/presentation"
              xmlns:Converters1="clr-namespace:FoundOps.Common.Silverlight.UI.Converters;assembly=FoundOps.Common.Silverlight.UI" xmlns:CoreEntities1="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data"
              mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="EmployeesVM" 

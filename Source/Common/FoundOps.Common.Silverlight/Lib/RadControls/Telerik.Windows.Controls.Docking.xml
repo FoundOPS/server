@@ -382,30 +382,6 @@
             call <see cref="M:System.Windows.Controls.Control.ApplyTemplate"/>.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.Docking.AutoHideArea.PinGroup(Telerik.Windows.Controls.RadPaneGroup)">
-            <summary>
-            Pins the group.
-            </summary>
-            <param name="group">The group.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Docking.AutoHideArea.UnpinGroup(Telerik.Windows.Controls.RadPaneGroup)">
-            <summary>
-            Unpins the group.
-            </summary>
-            <param name="group">The group.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Docking.AutoHideArea.PinPane(Telerik.Windows.Controls.RadPane)">
-            <summary>
-            Pins the pane.
-            </summary>
-            <param name="pane">The pane.</param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Docking.AutoHideArea.UnpinPane(Telerik.Windows.Controls.RadPane)">
-            <summary>
-            Unpins the pane.
-            </summary>
-            <param name="pane">The pane.</param>
-        </member>
         <member name="M:Telerik.Windows.Controls.Docking.AutoHideArea.OnSelectionChanged(Telerik.Windows.Controls.RadSelectionChangedEventArgs)">
             <summary>
             

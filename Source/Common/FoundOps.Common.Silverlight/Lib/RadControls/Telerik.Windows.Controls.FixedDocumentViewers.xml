@@ -10,6 +10,134 @@
             </summary>
             <param name="result">The search result.</param>
         </member>
+        <member name="T:Telerik.Windows.Documents.Utilities.StackCollection`1">
+            <summary>
+            Represents Stack collection.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Utilities.StackCollection`1.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="!:StackCollection"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Utilities.StackCollection`1.GetElementByName(System.String)">
+            <summary>
+            Gets the name of the element by.
+            </summary>
+            <param name="elementName">Name of the element.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Utilities.StackCollection`1.System#Collections#Generic#ICollection{T}#Add(`0)">
+            <summary>
+            Adds the specified element.
+            </summary>
+            <param name="element">The element.</param>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Utilities.StackCollection`1.AddBefore(System.String,`0)">
+            <summary>
+            Adds the before.
+            </summary>
+            <param name="presentedElementName">Name of the presented element.</param>
+            <param name="layer">The layer.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Utilities.StackCollection`1.AddAfter(System.String,`0)">
+            <summary>
+            Adds the after.
+            </summary>
+            <param name="presentedElementName">Name of the presented element.</param>
+            <param name="element">The element.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Utilities.StackCollection`1.AddFirst(`0)">
+            <summary>
+            Adds the first.
+            </summary>
+            <param name="element">The element.</param>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Utilities.StackCollection`1.AddLast(`0)">
+            <summary>
+            Adds the last.
+            </summary>
+            <param name="element">The element.</param>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Utilities.StackCollection`1.Contains(`0)">
+            <summary>
+            Determines whether [contains] [the specified element].
+            </summary>
+            <param name="element">The element.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Utilities.StackCollection`1.Contains(System.String)">
+            <summary>
+            Determines whether [contains] [the specified element name].
+            </summary>
+            <param name="elementName">Name of the element.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Utilities.StackCollection`1.Remove(`0)">
+            <summary>
+            Removes the specified element.
+            </summary>
+            <param name="element">The element.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Utilities.StackCollection`1.Remove(System.String)">
+            <summary>
+            Removes the specified element name.
+            </summary>
+            <param name="elementName">Name of the element.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Utilities.StackCollection`1.CopyTo(`0[],System.Int32)">
+            <summary>
+            Copies to.
+            </summary>
+            <param name="array">The array.</param>
+            <param name="arrayIndex">Index of the array.</param>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Utilities.StackCollection`1.Clear">
+            <summary>
+            Removes all items from the <see cref="T:System.Collections.Generic.ICollection`1" />.
+            </summary>
+            <exception cref="T:System.NotSupportedException">The <see cref="T:System.Collections.Generic.ICollection`1" />
+            is read-only. </exception>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Utilities.StackCollection`1.GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through the collection.
+            </summary>
+            <returns>
+            A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can
+            be used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Utilities.StackCollection`1.System#Collections#IEnumerable#GetEnumerator">
+            <summary>
+            Returns an enumerator that iterates through a collection.
+            </summary>
+            <returns>
+            An <see cref="T:System.Collections.IEnumerator" /> object that can be
+            used to iterate through the collection.
+            </returns>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Utilities.StackCollection`1.Count">
+            <summary>
+            Gets the number of elements contained in the collection.
+            </summary>
+            <returns>The number of elements contained in the collection.
+            </returns>
+            <value></value>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Utilities.StackCollection`1.IsReadOnly">
+            <summary>
+            Gets a value indicating whether the <see cref="T:System.Collections.Generic.ICollection`1" />
+            is read-only.
+            </summary>
+            <returns>true if the <see cref="T:System.Collections.Generic.ICollection`1" />
+            is read-only; otherwise, false.</returns>
+            <value></value>
+        </member>
         <member name="T:Telerik.Windows.Documents.Commands.FixedDocumentViewerCommands">
             <summary>
             Represents commands for a given <see cref="P:Telerik.Windows.Documents.Commands.FixedDocumentViewerCommands.FixedDocumentViewer"/> instance.
@@ -184,6 +312,51 @@
             Represents value converter that can be used for data binding <see cref="T:Telerik.Windows.Controls.RadPdfViewer"/>. 
             Supports conversion from string representing URI, Uri and stream.
             </summary>
+        </member>
+        <member name="T:Telerik.Windows.Documents.Fixed.UI.Layers.UILayerInitializeContext">
+            <summary>
+            Represents UI layer initialize context
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Fixed.UI.Layers.UILayerInitializeContext.Presenter">
+            <summary>
+            Gets the presenter.
+            </summary>
+            <value>The presenter.</value>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Fixed.UI.Layers.UILayerInitializeContext.Page">
+            <summary>
+            Gets the page.
+            </summary>
+            <value>The page.</value>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Fixed.UI.Layers.UILayerInitializeContext.Document">
+            <summary>
+            Gets the document.
+            </summary>
+            <value>The document.</value>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Fixed.UI.Layers.UILayerInitializeContext.Owner">
+            <summary>
+            Gets the owner.
+            </summary>
+            <value>The owner.</value>
+        </member>
+        <member name="T:Telerik.Windows.Documents.Fixed.UI.Layers.DefaultUILayers">
+            <summary>
+            Contains all default UILayers names.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Documents.Fixed.UI.Layers.UILayerUpdateContext">
+            <summary>
+            Represents UI layer update context.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Documents.Fixed.UI.Layers.UILayerUpdateContext.Viewport">
+            <summary>
+            Gets the viewport.
+            </summary>
+            <value>The viewport.</value>
         </member>
         <member name="T:Telerik.Windows.Documents.UI.FixedDocumentPagesPresenter">
             <summary>

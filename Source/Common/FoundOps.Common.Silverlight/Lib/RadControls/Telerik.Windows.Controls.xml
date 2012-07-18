@@ -2810,6 +2810,36 @@
             <param name="culture"></param>
             <returns></returns>
         </member>
+        <member name="T:Telerik.Windows.DragDrop.Behaviors.IDropVisualProvider">
+            <summary>
+            Represents API for the drop visual providers for the DnD operations in RadListBox control.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.DragDrop.Behaviors.IDropVisualProvider.CreateDropVisual">
+            <summary>
+            When overriden in a derived class allows customization of the drop visual.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.DragDrop.Behaviors.IDropVisualProvider.GetLocation(Telerik.Windows.Controls.RadListBoxItem,System.Windows.Controls.Panel)">
+            <summary>
+            When overriden in derived class returns the location which is used for rendertransforming the drop visual.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.DragDrop.Behaviors.IDropVisualProvider.GetDropCueHighlightMargin(Telerik.Windows.Controls.RadListBoxItem,System.Windows.Controls.Panel,System.Windows.FrameworkElement)">
+            <summary>
+            When overriden in derived class returns the margin for the container when the dragged element moves above it.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.DragDrop.Behaviors.IDropVisualProvider.VisualizeDropPlaceholderStarted(Telerik.Windows.Controls.RadListBoxItem,System.Windows.Controls.Panel,System.Object,System.Windows.FrameworkElement)">
+            <summary>
+             When overriden in derived class indicates that vizualizing the drop cue operation is started.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.DragDrop.Behaviors.IDropVisualProvider.VisualizeDropPlaceholderEnded(Telerik.Windows.Controls.RadListBoxItem,System.Windows.Controls.Panel,System.Object,System.Windows.FrameworkElement)">
+            <summary>
+             When overriden in derived class indicates that vizualizing the drop cue operation is finished.
+            </summary>
+        </member>
         <member name="T:Telerik.Windows.DragDrop.DragDropPayloadManager">
             <summary>
             Provides basic methods for extracting data for the DragPayload class
@@ -3123,6 +3153,56 @@
         <member name="P:Telerik.Windows.Controls.Primitives.IItemSearchResult.Item">
             <summary>
             Gets the item.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.DragDrop.LinearDropVisual">
+            <summary>
+            Represents a control which is used for the default visual in the DnD operations in RadListBox control.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.DragDrop.LinearDropVisual.OrientationProperty">
+            <summary>
+            Identifies the Orientation property.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.DragDrop.LinearDropVisual.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.DragDrop.LinearDropVisual"/> class.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.DragDrop.LinearDropVisual.Orientation">
+            <summary>
+            Gets or sets the Orientation. This is a dependency property.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.DragDrop.LinearDropVisualProvider">
+            <summary>
+            Represents the provider for the LinearDropVisual control. This is the default drop visual provider for the DnD operations in RadListBox.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.DragDrop.LinearDropVisualProvider.CreateDropVisual">
+            <summary>
+            When overriden in a derived class allows customization of the drop visual.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.DragDrop.LinearDropVisualProvider.GetLocation(Telerik.Windows.Controls.RadListBoxItem,System.Windows.Controls.Panel)">
+            <summary>
+            When overriden in derived class returns the location which is used for rendertransforming the drop visual.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.DragDrop.LinearDropVisualProvider.GetDropCueHighlightMargin(Telerik.Windows.Controls.RadListBoxItem,System.Windows.Controls.Panel,System.Windows.FrameworkElement)">
+            <summary>
+            When overriden in derived class returns the margin for the container when the dragged element moves above it.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.DragDrop.LinearDropVisualProvider.VisualizeDropPlaceholderStarted(Telerik.Windows.Controls.RadListBoxItem,System.Windows.Controls.Panel,System.Object,System.Windows.FrameworkElement)">
+            <summary>
+             When overriden in derived class indicates that vizualizing the drop cue operation is started.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.DragDrop.LinearDropVisualProvider.VisualizeDropPlaceholderEnded(Telerik.Windows.Controls.RadListBoxItem,System.Windows.Controls.Panel,System.Object,System.Windows.FrameworkElement)">
+            <summary>
+             When overriden in derived class indicates that vizualizing the drop cue operation is finished.
             </summary>
         </member>
         <member name="T:Telerik.Windows.Controls.RadListBox">
@@ -3541,6 +3621,11 @@
             Called when selection mode changed. Update CanAutocompleteSelectItems property.
             </summary>
         </member>
+        <member name="M:Telerik.Windows.Controls.Primitives.ListControl.ScrollIntoView(System.Object)">
+            <summary>
+            Scrolls the into view.
+            </summary>
+        </member>
         <member name="M:Telerik.Windows.Controls.Primitives.ListControl.ScrollIntoView(System.Int32)">
             <summary>
             Scrolls the into view.
@@ -3624,6 +3709,11 @@
             The index of the highlighted.
             </value>
         </member>
+        <member name="F:Telerik.Windows.Controls.RadListBox.DropVisualProviderProperty">
+            <summary>
+            Identifies the IsReadOnly property.
+            </summary>
+        </member>
         <member name="F:Telerik.Windows.Controls.RadListBox.IsReadOnlyProperty">
             <summary>
             Identifies the IsReadOnly property.
@@ -3647,6 +3737,11 @@
         <member name="M:Telerik.Windows.Controls.RadListBox.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.RadListBox"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadListBox.OnApplyTemplate">
+            <summary>
+            When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/>.
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.RadListBox.IsItemSelectable(System.Object)">
@@ -3708,6 +3803,16 @@
             <param name="newItems">The new items.</param>
             <param name="oldItems">The old items.</param>
         </member>
+        <member name="M:Telerik.Windows.Controls.RadListBox.OnCreateAutomationPeer">
+            <summary>
+            Returns class-specific System.Windows.Automation.Peers.AutomationPeer implementations for the Windows Presentation Foundation (WPF) infrastructure.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadListBox.DropVisualProvider">
+            <summary>
+            Gets or sets the DropVisualProvider. This is a dependency property.
+            </summary>
+        </member>
         <member name="P:Telerik.Windows.Controls.RadListBox.DragDropBehavior">
             <summary>
             Gets or sets the DragDropBehavior. This is a dependency property.
@@ -3753,6 +3858,11 @@
             Identifies the DragVisualProvider dependency property.
             </summary>
         </member>
+        <member name="F:Telerik.Windows.DragDrop.Behaviors.DragDrop`3.HelperProperty">
+            <summary>
+            Identifies the Helper dependency property.
+            </summary>
+        </member>
         <member name="M:Telerik.Windows.DragDrop.Behaviors.DragDrop`3.GetDataConverter(System.Windows.DependencyObject)">
             <summary>
             Gets the value of the DataConverter attached property.
@@ -3783,7 +3893,108 @@
             Sets the value of the Behavior attached property.
             </summary>
         </member>
-        <member name="T:Telerik.Windows.Controls.RadListBox.RadListBoxDragDropHelper">
+        <member name="M:Telerik.Windows.Controls.RadListBox.RadListBoxDragDrop.SetDropVisualProvider(System.Windows.DependencyObject,Telerik.Windows.DragDrop.Behaviors.IDropVisualProvider)">
+            <summary>
+            Passes the drop visual provider from the RadListBox control to the RadListBoxDragDropHelper.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadListBox.RadListBoxDragDrop.SetDragVisualPlaceholder(System.Windows.DependencyObject,System.Windows.Controls.ContentPresenter)">
+            <summary>
+            Passes the drag visual provider from the RadListBox control to the RadListBoxDragDropHelper.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Automation.Peers.RadListBoxAutomationPeer">
+            <summary>
+            Represents automation peer for RadListBoxAutomationPeer.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Automation.Peers.RadListBoxAutomationPeer.#ctor(Telerik.Windows.Controls.RadListBox)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Automation.Peers.SelectorAutomationPeer"/> class.
+            </summary>
+            <param name="owner">The owner.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Automation.Peers.RadListBoxAutomationPeer.GetAutomationControlTypeCore">
+            <summary>
+            When overridden in a derived class, is called by System.Windows.Automation.Peers.AutomationPeer.GetAutomationControlType().
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Automation.Peers.RadListBoxAutomationPeer.GetPattern(System.Windows.Automation.Peers.PatternInterface)">
+            <summary>
+            Gets the pattern.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Automation.Peers.RadListBoxAutomationPeer.GetClassNameCore">
+            <summary>
+            Gets the name of the System.Windows.UIElement that is associated with this System.Windows.Automation.Peers.UIElementAutomationPeer. This method is called by System.Windows.Automation.Peers.AutomationPeer.GetClassName().
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Automation.Peers.RadListBoxAutomationPeer.GetOrientationCore">
+            <summary>
+            Gets a value that indicates whether the System.Windows.UIElement that is associated with this System.Windows.Automation.Peers.UIElementAutomationPeer is laid out in a specific direction. This method is called by System.Windows.Automation.Peers.AutomationPeer.GetOrientation().
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Automation.Peers.RadListBoxAutomationPeer.CreateItemAutomationPeer(System.Object)">
+            <summary>
+            Creates a new instance of the System.Windows.Automation.Peers.ItemAutomationPeer for a data item in the System.Windows.Controls.ItemsControl.Items collection of this System.Windows.Controls.ItemsControl.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Automation.Peers.RadListBoxAutomationPeer.GetSelection">
+            <summary>
+            Retrieves a UI Automation provider for each child element that is selected.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Automation.Peers.RadListBoxAutomationPeer.Scroll(System.Windows.Automation.ScrollAmount,System.Windows.Automation.ScrollAmount)">
+            <summary>
+             Scrolls the visible region of the content area horizontally and vertically.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Automation.Peers.RadListBoxAutomationPeer.SetScrollPercent(System.Double,System.Double)">
+            <summary>
+            Sets the horizontal and vertical scroll position as a percentage of the total content area within the control.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Automation.Peers.RadListBoxAutomationPeer.IsSelectionRequired">
+            <summary>
+            Gets a value that specifies whether the UI Automation provider requires at least one child element to be selected.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Automation.Peers.RadListBoxAutomationPeer.CanSelectMultiple">
+            <summary>
+             Gets a value that specifies whether the UI Automation provider allows more than one child element to be selected concurrently.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Automation.Peers.RadListBoxAutomationPeer.VerticalScrollPercent">
+            <summary>
+            Gets the current vertical scroll position.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Automation.Peers.RadListBoxAutomationPeer.HorizontalScrollPercent">
+            <summary>
+            Gets the current horizontal scroll position.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Automation.Peers.RadListBoxAutomationPeer.HorizontalViewSize">
+            <summary>
+            Gets the current horizontal view size.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Automation.Peers.RadListBoxAutomationPeer.VerticalViewSize">
+            <summary>
+            Gets the vertical view size.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Automation.Peers.RadListBoxAutomationPeer.HorizontallyScrollable">
+            <summary>
+            Gets a value that indicates whether the control can scroll horizontally.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Automation.Peers.RadListBoxAutomationPeer.VerticallyScrollable">
+            <summary>
+            Gets a value that indicates whether the control can scroll vertically.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.RadListBoxDragDropHelper">
             <summary>
             Represents drag and drop helper for the RadListBox control.
             </summary>
@@ -3905,41 +4116,66 @@
             Gets or sets the DragVisualProvider that will be used in the drag-drop operations.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.RadListBox.RadListBoxDragDropHelper.FindDragSource(System.Windows.FrameworkElement)">
+        <member name="M:Telerik.Windows.Controls.RadListBoxDragDropHelper.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.DropVisualHelper"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadListBoxDragDropHelper.DragOver(System.Windows.FrameworkElement,System.Windows.FrameworkElement,System.Object,System.Type)">
+            <summary>
+            When overriden in a derived class allows calling custom code on the DragOver event.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadListBoxDragDropHelper.FindDragSource(System.Windows.FrameworkElement)">
             <summary>
             Finds the ListBox that contains the provided element.
             </summary>
             <param name="element">The element that raised the DragInitialize event.</param>
         </member>
-        <member name="M:Telerik.Windows.Controls.RadListBox.RadListBoxDragDropHelper.FindDraggedItem(System.Windows.FrameworkElement)">
+        <member name="M:Telerik.Windows.Controls.RadListBoxDragDropHelper.FindDraggedItem(System.Windows.FrameworkElement)">
             <summary>
             Finds the ListBoxItem that contains the provided element.
             </summary>
             <param name="element">The element that raised the DragInitialize event.</param>
         </member>
-        <member name="M:Telerik.Windows.Controls.RadListBox.RadListBoxDragDropHelper.FindDropItemsControl(System.Windows.FrameworkElement,System.Object)">
+        <member name="M:Telerik.Windows.Controls.RadListBoxDragDropHelper.FindDropItemsControl(System.Windows.FrameworkElement,System.Object)">
             <summary>
             Finds the ListBox that should accept the dragged items.
             </summary>
             <param name="element">The element that raised the Drop event.</param>
             <param name="data">The DataObject for the current drag operation.</param>
         </member>
-        <member name="M:Telerik.Windows.Controls.RadListBox.RadListBoxDragDropHelper.FindDropTarget(System.Windows.FrameworkElement)">
+        <member name="M:Telerik.Windows.Controls.RadListBoxDragDropHelper.FindDropTarget(System.Windows.FrameworkElement)">
             <summary>
             Finds a ListBoxItem from the target control that contains the provided element.
             </summary>
             <param name="element">The element that raised the Drop event.</param>
         </member>
-        <member name="M:Telerik.Windows.Controls.RadListBox.RadListBoxDragDropHelper.GetDraggedItems(System.Windows.FrameworkElement)">
+        <member name="M:Telerik.Windows.Controls.RadListBoxDragDropHelper.GetDraggedItems(System.Windows.FrameworkElement)">
             <summary>
             Returns the SelectedItems list of the ListBox that contains the dragged item and adds the dragged item to the list if it is not already present there.
             </summary>
             <param name="draggedItem">The source control of the drag operation.</param>
             <returns>The items that should be dragged.</returns>
         </member>
-        <member name="M:Telerik.Windows.Controls.RadListBox.RadListBoxDragDropHelper.Drop(System.Windows.FrameworkElement,System.Windows.FrameworkElement,System.Object,System.Type)">
+        <member name="M:Telerik.Windows.Controls.RadListBoxDragDropHelper.Drop(System.Windows.FrameworkElement,System.Windows.FrameworkElement,System.Object,System.Type)">
             <summary>
             Drops the specified drop target.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadListBoxDragDropHelper.DragDropCompleted(System.Windows.FrameworkElement,System.Object,System.Type,System.Boolean)">
+            <summary>
+            When overriden in a derived class allows calling custom code on the DragDropCompleted event.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadListBoxDragDropHelper.SetDropVisualProvider(Telerik.Windows.DragDrop.Behaviors.IDropVisualProvider)">
+            <summary>
+            Initialize the DropVisualProvider used in the DnD operations.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadListBoxDragDropHelper.SetDragVisualPlaceholder(System.Windows.Controls.ContentPresenter)">
+            <summary>
+            Initialize the DragVisualPlaceholder used in the DnD operations.
             </summary>
         </member>
         <member name="T:Telerik.Windows.Controls.RadListBoxItem">
@@ -4104,6 +4340,62 @@
         <member name="P:Telerik.Windows.Controls.RadListBoxItem.IsMouseOver">
             <summary>
             Gets or sets whether the mouse is over. This is a dependency property.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Automation.Peers.RadListBoxItemAutomationPeer">
+            <summary>
+            Exposes a data item in an RadListBox.Items collection to UI Automation.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Automation.Peers.RadListBoxItemAutomationPeer.#ctor(System.Object,Telerik.Windows.Controls.Automation.Peers.RadListBoxAutomationPeer)">
+            <summary>
+            Provides initialization for base class values when called by the constructor of a derived class
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Automation.Peers.RadListBoxItemAutomationPeer.GetAutomationControlTypeCore">
+            <summary>
+            Gets the control type for the element that is associated with the UI Automation peer.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Automation.Peers.RadListBoxItemAutomationPeer.GetPattern(System.Windows.Automation.Peers.PatternInterface)">
+            <summary>
+            Gets the System.Windows.Automation.Peers.AutomationPeer that is the parent of this System.Windows.Automation.Peers.AutomationPeer.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Automation.Peers.RadListBoxItemAutomationPeer.GetClassNameCore">
+            <summary>
+            Gets a name that is used with System.Windows.Automation.Peers.AutomationControlType, to differentiate the control that is represented by this System.Windows.Automation.Peers.AutomationPeer.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Automation.Peers.RadListBoxItemAutomationPeer.AddToSelection">
+            <summary>
+            Adds the current element to the collection of selected items.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Automation.Peers.RadListBoxItemAutomationPeer.RemoveFromSelection">
+            <summary>
+            Removes the current element from the collection of selected items.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Automation.Peers.RadListBoxItemAutomationPeer.Select">
+            <summary>
+            Deselects any selected items and then selects the current element.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Automation.Peers.RadListBoxItemAutomationPeer.ScrollIntoView">
+            <summary>
+            Scrolls the content area of a container object in order to display the control within the visible region (viewport) of the container.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Automation.Peers.RadListBoxItemAutomationPeer.IsSelected">
+            <summary>
+             Gets a value that indicates whether an item is selected.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Automation.Peers.RadListBoxItemAutomationPeer.SelectionContainer">
+            <summary>
+            Gets the UI Automation provider that implements System.Windows.Automation.Provider.ISelectionProvider and acts as the container for the calling object.
             </summary>
         </member>
         <member name="T:Telerik.Windows.Controls.Primitives.IListItem">
@@ -24514,7 +24806,7 @@
               Looks up a localized string similar to Color.
             </summary>
         </member>
-        <member name="P:Telerik.Windows.Controls.Strings.SettingsPane_ConnectionType">
+        <member name="P:Telerik.Windows.Controls.Strings.SettingsPane_ConnectionTypeTab">
             <summary>
               Looks up a localized string similar to Type.
             </summary>

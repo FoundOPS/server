@@ -239,6 +239,7 @@
     <Reference Include="Telerik.Windows.Controls.Navigation">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.Navigation.dll</HintPath>
       <Private>True</Private>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="Telerik.Windows.Controls.RibbonBar">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\RadControls\Telerik.Windows.Controls.RibbonBar.dll</HintPath>

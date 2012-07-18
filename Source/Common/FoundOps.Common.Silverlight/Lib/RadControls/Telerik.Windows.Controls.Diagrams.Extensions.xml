@@ -2814,7 +2814,26 @@
             Returns the created link.
             </returns>
         </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.ObservableGraphSourceBase`2.CreateLink(System.Object,System.Object)">
+            <summary>
+            Creates a link based on the associated source and target nodes.
+            </summary>
+            <param name="source">The source node.</param>
+            <param name="target">The target node.</param>
+            <returns>
+            Returns the created link.
+            </returns>
+        </member>
         <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.ObservableGraphSourceBase`2.Telerik#Windows#Diagrams#Core#IObservableGraphSource#CreateNode(Telerik.Windows.Diagrams.Core.IShape)">
+            <summary>
+            Creates a node based on an associated shape.
+            </summary>
+            <param name="shape">The associated shape.</param>
+            <returns>
+            Returns the created node.
+            </returns>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Extensions.ViewModels.ObservableGraphSourceBase`2.CreateNode(Telerik.Windows.Diagrams.Core.IShape)">
             <summary>
             Creates a node based on an associated shape.
             </summary>

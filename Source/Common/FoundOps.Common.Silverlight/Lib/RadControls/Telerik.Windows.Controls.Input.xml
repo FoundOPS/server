@@ -2540,6 +2540,36 @@
             Gets or sets whether the a clip masks with the size of the control would be applied.
             </summary>
         </member>
+        <member name="T:Telerik.Windows.Controls.ColorEditor.ActiveSectionTypes">
+            <summary>
+            ActiveSectionTypes is Flags enum indicating the Visibility of HsvPalette, HlsPalette and ColorModesPanel.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.ColorEditor.ActiveSectionTypes.SaturationValuePad">
+            <summary>
+            Indicates that SaturationValuePad is Active.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.ColorEditor.ActiveSectionTypes.HuePad">
+            <summary>
+            Indicates that the HuePad (HueVerticalSlider) is Active.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.ColorEditor.ActiveSectionTypes.HueSaturationPad">
+            <summary>
+            Indicates that the HueSaturationPad is Active.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.ColorEditor.ActiveSectionTypes.LuminancePad">
+            <summary>
+            Indicates that the LuminancePad (LuminanceVerticalSlider) is Active.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.ColorEditor.ActiveSectionTypes.ColorModesPanel">
+            <summary>
+            ColorModesPanel is Active.
+            </summary>
+        </member>
         <member name="T:Telerik.Windows.Controls.ColorEditor.ColorChangeEventArgs">
             <summary>
             Provides data for the <see cref="E:Telerik.Windows.Controls.RadColorEditor.SelectedColorChanged"/>, <see cref="E:Telerik.Windows.Controls.RadColorEditor.SelectedColorChanging"/> and <see cref="E:Telerik.Windows.Controls.RadColorEditor.PreviousColorChanged"/> events.
@@ -2583,6 +2613,28 @@
             <summary>
             Red, green, blue and alpha channels are displayed.
             </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.ColorEditor.Converters.ColorToHSColorBrushConverter">
+            <summary>
+            Converts the Current Color to SolidColorBrush with 1/2 Luminance.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.ColorEditor.Converters.ColorToHSColorBrushConverter.Convert(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts the CurrentColor to HSL color with 0.5 Luminance.
+            </summary>		
+        </member>
+        <member name="M:Telerik.Windows.Controls.ColorEditor.Converters.ColorToHSColorBrushConverter.ConvertBack(System.Object,System.Type,System.Object,System.Globalization.CultureInfo)">
+            <summary>
+            Converts a value.
+            </summary>
+            <param name="value">The value that is produced by the binding target.</param>
+            <param name="targetType">The type to convert to.</param>
+            <param name="parameter">The converter parameter to use.</param>
+            <param name="culture">The culture to use in the converter.</param>
+            <returns>
+            A converted value. If the method returns null, the valid null value is used.
+            </returns>
         </member>
         <member name="T:Telerik.Windows.Controls.ColorEditor.HistoryChangedEventArgs">
             <summary>
@@ -3291,6 +3343,11 @@
             
             </summary>
         </member>
+        <member name="F:Telerik.Windows.Controls.RadColorEditor.ActiveSectionsProperty">
+            <summary>
+            Identifies the ActiveSections dependency property.
+            </summary>
+        </member>
         <member name="F:Telerik.Windows.Controls.RadColorEditor.ColorModeProperty">
             <summary>
             Identifies the ColorMode dependency property.
@@ -3434,6 +3491,13 @@
             Adds a <see cref="T:System.Windows.Media.Color"/> to <see cref="T:Telerik.Windows.Controls.RadColorEditor"/>'s color history.
             </summary>
         </member>
+        <member name="M:Telerik.Windows.Controls.RadColorEditor.OnActiveSectionsPropertyChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
+            <summary>
+            Called when ActiveSections property changed.
+            </summary>
+            <param name="d">RadColorEditor that changed its ActiveSections.</param>
+            <param name="e">Event arguments.</param>
+        </member>
         <member name="M:Telerik.Windows.Controls.RadColorEditor.OnColorModePropertyChanged(System.Windows.DependencyObject,System.Windows.DependencyPropertyChangedEventArgs)">
             <summary>
             ColorModeProperty property changed handler.
@@ -3509,6 +3573,11 @@
             <value>
             The color converter.
             </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadColorEditor.ActiveSections">
+            <summary>
+            Gets or sets the active sections.
+            </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.RadColorEditor.ColorMode">
             <summary>
@@ -6016,6 +6085,41 @@
             </summary>
             <value>The automatic color.</value>
         </member>
+        <member name="T:Telerik.Windows.Controls.RadComboBoxExtensions">
+            <summary>
+            Represents extensions for RadComboBox UISelection command.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadComboBoxExtensions.UIInteractionCommandParameterProperty">
+            <summary>
+            Identifies the UIInteractionCommandParameter dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.RadComboBoxExtensions.UIInteractionCommandProperty">
+            <summary>
+            Identifies the UIInteractionCommand dependency property.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadComboBoxExtensions.GetUIInteractionCommandParameter(System.Windows.DependencyObject)">
+            <summary>
+            Gets the UIInteractionCommandParameter value.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadComboBoxExtensions.SetUIInteractionCommandParameter(System.Windows.DependencyObject,System.Object)">
+            <summary>
+            Sets the UIInteractionCommandParameter value.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadComboBoxExtensions.GetUIInteractionCommand(System.Windows.DependencyObject)">
+            <summary>
+            Sets the UIInteractionCommand value.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.RadComboBoxExtensions.SetUIInteractionCommand(System.Windows.DependencyObject,System.Windows.Input.ICommand)">
+            <summary>
+            Sets the UIInteractionCommand value.
+            </summary>
+        </member>
         <member name="T:Telerik.Windows.Controls.RadComboBoxItemAutomationPeer">
             <summary>
             The AutomationPeer associated with the RadComboBoxItem class.
@@ -6618,6 +6722,11 @@
         <member name="P:Telerik.Windows.Controls.RadComboBox.IsKeyboardFocusWithin">
             <summary>
             Gets a value indicating whether keyboard focus is anywhere within the element or its visual tree child elements.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.RadComboBox.IsUISelection">
+            <summary>
+            Gets or sets whether the selection is triggered by user or code.
             </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.RadComboBox.OverrideStyles">

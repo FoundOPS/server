@@ -1528,11 +1528,6 @@
             Identifies the SnapAppointments dependency property.
             </summary>
         </member>
-        <member name="F:Telerik.Windows.Controls.ScheduleViewBase.EnableScrollDuringDragProperty">
-            <summary>
-            Identifies the EnableScrollDuringDrag dependency property.
-            </summary>
-        </member>
         <member name="F:Telerik.Windows.Controls.ScheduleViewBase.HorizontalSmallChangeProperty">
             <summary>
             Identifies the HorizontalSmallChange dependency property.
@@ -1871,6 +1866,11 @@
         <member name="F:Telerik.Windows.Controls.ScheduleViewBase.SnapBehaviorProperty">
             <summary>
             Identifies the SnapBehavior property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.ScheduleViewBase.ReadOnlyBehaviorProperty">
+            <summary>
+            Identifies the ReadOnlyBehavior property.
             </summary>
         </member>
         <member name="F:Telerik.Windows.Controls.ScheduleViewBase.ShowCurrentTimeProperty">
@@ -2281,11 +2281,6 @@
             Gets or sets the value specifying whether the appointments will snap to the time ruler ticks.
             </summary>
         </member>
-        <member name="P:Telerik.Windows.Controls.ScheduleViewBase.EnableScrollDuringDrag">
-            <summary>
-            Gets or sets the value specifying whether the scrolling during drag is enabled.
-            </summary>
-        </member>
         <member name="P:Telerik.Windows.Controls.ScheduleViewBase.UseSnapshotDragCue">
             <summary>
             Gets or sets a value indicating whether a drag cue representing a snapshot of the dragged appointments.
@@ -2498,6 +2493,11 @@
         <member name="P:Telerik.Windows.Controls.ScheduleViewBase.SnapBehavior">
             <summary>
             Gets or sets the snap behavior that is used to snap appointment time during drag/resize operation.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.ScheduleViewBase.ReadOnlyBehavior">
+            <summary>
+            Gets or set the ReadOnlyBehavior that is used to make the ScheduleView read-only.
             </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.ScheduleViewBase.ShowCurrentTimeIndicator">
@@ -2753,12 +2753,6 @@
             <param name="value">The value.</param>
             <returns></returns>
             <exception cref="T:System.ArgumentException">Parameter.</exception>
-        </member>
-        <member name="M:Telerik.Windows.Controls.DragDropHelper.ScrollVertical(Telerik.Windows.Controls.RadScheduleView,Telerik.Windows.Controls.ScheduleView.Slot,System.Windows.Size)">
-            <summary>
-            The method is nullable, as when NULL no action should be taken.
-            TO-DO: Find a way not to send the whole ScheduleView as parameter of the methods for scrolling.
-            </summary>
         </member>
         <member name="T:Telerik.Windows.Controls.ScheduleView.IRangeData">
             <summary>
@@ -4063,17 +4057,12 @@
             Headers that represent the bottom level week groups in month view.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.ScheduleView.ReadOnlyBehavior.#ctor(Telerik.Windows.Controls.ScheduleView.IReadOnlySettings)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.ScheduleView.ReadOnlyBehavior"/> class.
-            </summary>
-        </member>
         <member name="M:Telerik.Windows.Controls.ScheduleView.ReadOnlyBehavior.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.ScheduleView.ReadOnlyBehavior"/> class.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Controls.ScheduleView.ReadOnlyBehavior.CanSaveAppointment(Telerik.Windows.Controls.ScheduleView.IOccurrence)">
+        <member name="M:Telerik.Windows.Controls.ScheduleView.ReadOnlyBehavior.CanSaveAppointment(Telerik.Windows.Controls.ScheduleView.IReadOnlySettings,Telerik.Windows.Controls.ScheduleView.IOccurrence)">
             <summary>
             Determines whether this occurrence or appointment can be saved via edit dialog.
             </summary>
@@ -4082,7 +4071,7 @@
             	<c>true</c> if this occurrence can be saved; otherwise, <c>false</c>.
             </returns>
         </member>
-        <member name="M:Telerik.Windows.Controls.ScheduleView.ReadOnlyBehavior.CanEditAppointment(Telerik.Windows.Controls.ScheduleView.IOccurrence)">
+        <member name="M:Telerik.Windows.Controls.ScheduleView.ReadOnlyBehavior.CanEditAppointment(Telerik.Windows.Controls.ScheduleView.IReadOnlySettings,Telerik.Windows.Controls.ScheduleView.IOccurrence)">
             <summary>
             Determines whether this occurrence or appointment can be edit via edit dialog.
             </summary>
@@ -4091,7 +4080,7 @@
             	<c>true</c> if this occurrence can be edit; otherwise, <c>false</c>.
             </returns>
         </member>
-        <member name="M:Telerik.Windows.Controls.ScheduleView.ReadOnlyBehavior.CanDragAppointment(Telerik.Windows.Controls.ScheduleView.IOccurrence)">
+        <member name="M:Telerik.Windows.Controls.ScheduleView.ReadOnlyBehavior.CanDragAppointment(Telerik.Windows.Controls.ScheduleView.IReadOnlySettings,Telerik.Windows.Controls.ScheduleView.IOccurrence)">
             <summary>
             Determines whether this occurrence or appointment can be dragged when it resides in read-only range.
             </summary>
@@ -4100,7 +4089,7 @@
             	<c>true</c> if this occurrence can be dragged otherwise, <c>false</c>.
             </returns>
         </member>
-        <member name="M:Telerik.Windows.Controls.ScheduleView.ReadOnlyBehavior.CanResizeAppointment(Telerik.Windows.Controls.ScheduleView.IOccurrence)">
+        <member name="M:Telerik.Windows.Controls.ScheduleView.ReadOnlyBehavior.CanResizeAppointment(Telerik.Windows.Controls.ScheduleView.IReadOnlySettings,Telerik.Windows.Controls.ScheduleView.IOccurrence)">
             <summary>
             Determines whether this occurrence or appointment can be resized when it resides in read-only range.
             </summary>
@@ -4109,7 +4098,7 @@
             	<c>true</c> if this occurrence can be resized otherwise, <c>false</c>.
             </returns>
         </member>
-        <member name="M:Telerik.Windows.Controls.ScheduleView.ReadOnlyBehavior.CanDeleteAppointment(Telerik.Windows.Controls.ScheduleView.IOccurrence)">
+        <member name="M:Telerik.Windows.Controls.ScheduleView.ReadOnlyBehavior.CanDeleteAppointment(Telerik.Windows.Controls.ScheduleView.IReadOnlySettings,Telerik.Windows.Controls.ScheduleView.IOccurrence)">
             <summary>
             Determines whether this occurrence or appointment can be deleted when it resides in read-only range.
             </summary>
@@ -4118,7 +4107,7 @@
             	<c>true</c> if this occurrence can be deleted otherwise, <c>false</c>.
             </returns>
         </member>
-        <member name="M:Telerik.Windows.Controls.ScheduleView.ReadOnlyBehavior.CanEditSlot(Telerik.Windows.Controls.ScheduleView.Slot)">
+        <member name="M:Telerik.Windows.Controls.ScheduleView.ReadOnlyBehavior.CanEditSlot(Telerik.Windows.Controls.ScheduleView.IReadOnlySettings,Telerik.Windows.Controls.ScheduleView.Slot)">
             <summary>
             Determines whether this the specified slot allows appointments to be added.
             </summary>
@@ -4126,11 +4115,6 @@
             <returns>
             	<c>true</c> if the specified slot allows appointments to be added; otherwise, <c>false</c>.
             </returns>
-        </member>
-        <member name="P:Telerik.Windows.Controls.ScheduleView.ReadOnlyBehavior.ReadOnlySettings">
-            <summary>
-            Gets or sets the settings that are used for configuration.
-            </summary>
         </member>
         <member name="T:Telerik.Windows.Controls.ScheduleView.ScheduleViewDragDropPayload">
             <summary>
@@ -4933,6 +4917,13 @@
             <param name="calObject">The cal object.</param>
             <param name="timeZones">The time zones.</param>
             <exception cref="T:Telerik.Windows.Controls.ScheduleView.ICalendar.CalendarParseException"><c>CalendarParseException</c>.</exception>
+        </member>
+        <member name="M:Telerik.Windows.Controls.ScheduleView.ICalendar.CalendarImporterBase.CreateNewAppointment(Telerik.Windows.Controls.ScheduleView.ICalendar.CalObject)">
+            <summary>
+            Creates new appointment. It can be overridden with the custom appointment.
+            </summary>
+            <param name="vevent"></param>
+            <returns></returns>
         </member>
         <member name="M:Telerik.Windows.Controls.ScheduleView.ICalendar.CalendarImporterBase.GetTimeZones(Telerik.Windows.Controls.ScheduleView.ICalendar.CalObject)">
             <summary>

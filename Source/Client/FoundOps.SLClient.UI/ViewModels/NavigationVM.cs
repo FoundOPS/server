@@ -73,7 +73,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         public NavigationVM()
         {
             //Start with the InfiniteAccordion all the VMs will be attached and any messages can be properly listened to
-            Rxx3.RunDelayed(TimeSpan.FromMilliseconds(150), () => NavigateToView("Infinite Accordion"));
+            Rxx3.RunDelayed(TimeSpan.FromMilliseconds(100), () => NavigateToView("Infinite Accordion"));
         }
 
         /// <summary>
@@ -81,8 +81,11 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         /// <param name="name"></param>
         [ScriptableMember]
-        public UserControl NavigateToView(string name)
+        public void NavigateToView(string name)
         {
+            if (string.IsNullOrEmpty(name))
+                return;
+            
             //if this is an infiniteAccordionSection
             //a) load the Infinite Accordion View (instead of the view with this name)
             //b) set the IInfiniteAccordionPage.SelectedObjectType to the section's type
@@ -99,8 +102,6 @@ namespace FoundOps.SLClient.UI.ViewModels
             _currentSectionObservable.OnNext(name);
 
             TrackChosenSection(name);
-
-            return view;
         }
 
         /// <summary>

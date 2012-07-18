@@ -1,3 +1,4 @@
+using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
 using FoundOps.SLClient.UI.Tools;
 using System;
@@ -46,6 +47,9 @@ namespace FoundOps.SLClient.Navigator
 
             //For navigation, expose the navigationVM
             HtmlPage.RegisterScriptableObject("navigationVM", VM.Navigation);
+
+            //trigger a loaded function (after all the VMs are attached)
+            Rxx3.RunDelayed(TimeSpan.FromMilliseconds(300), () => HtmlPage.Window.Eval("silverlight.onLoaded()"));
         }
 
         #region ContentFrame.Content's Sizing
