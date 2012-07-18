@@ -46,7 +46,7 @@ namespace FoundOps.Server.Controllers
                         if (!String.IsNullOrEmpty(returnUrl))
                             return Redirect(returnUrl);
 
-                        return RedirectToAction("Silverlight", "Home");
+                        return RedirectToAction("Index", "Home");
                     }
                     ModelState.AddModelError("", "The email address or password provided is incorrect.");
                 }
@@ -106,7 +106,7 @@ namespace FoundOps.Server.Controllers
 
         #endregion
 
-        #region Login/LogOff Actions
+        #region Login/LogOut Actions
 
         /// <summary>
         /// Allows a user to login after they have passed the 5 attempts threshold.
@@ -145,7 +145,7 @@ namespace FoundOps.Server.Controllers
             return LogOnLogic(model, returnUrl, "Login");
         }
 
-        public ActionResult LogOff()
+        public ActionResult LogOut()
         {
             FormsService.SignOut();
 

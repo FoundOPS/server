@@ -15,10 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Http;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Employee = FoundOPS.API.Models.Employee;
 
@@ -43,15 +40,16 @@ namespace FoundOPS.API.Api
         [AcceptVerbs("GET", "POST")]
         public JObject GetSession()
         {
-            var user = _coreEntitiesContainer.CurrentUserAccount().Include(ua => ua.PartyImage)
-                             .Include(ua => ua.RoleMembership).Include("RoleMembership.Blocks").Include("RoleMembership.OwnerBusinessAccount")
-                             .First();
+            var user = _coreEntitiesContainer.CurrentUserAccount().Include(ua => ua.RoleMembership)
+                .Include("RoleMembership.Blocks").Include("RoleMembership.OwnerBusinessAccount").First();
 
-            //Load all of the party images for the owner's of roles
-            var businessOwnerIds = user.RoleMembership.Select(r => r.OwnerBusinessAccount).OfType<BusinessAccount>().Select(ba => ba.Id).Distinct();
-            var partyImages = _coreEntitiesContainer.Files.OfType<PartyImage>().Where(pi => businessOwnerIds.Contains(pi.PartyId)).Distinct();
-            if (user.PartyImage != null)
-                partyImages = partyImages.Union(new[] { user.PartyImage });
+            //Load all of the party images for the owner's of roles, and the current user account
+            var partyIds = user.RoleMembership.Select(r => r.OwnerBusinessAccountId).Distinct()
+                .Union(new[] { new Guid?(user.Id) }).ToArray();
+
+            var partyImages = _coreEntitiesContainer.Files.OfType<PartyImage>()
+                .Where(pi => partyIds.Contains(pi.Id)).Distinct().ToList();
+
 
             //Go through each party image and get the url with the shared access key
             var partyImageUrls = new Dictionary<Guid, string>();
@@ -67,6 +65,7 @@ namespace FoundOPS.API.Api
             dynamic config = new JObject();
             config.name = user.FirstName + " " + user.LastName;
             config.settingsUrl = "#view/personalSettings.html";
+            config.logOutUrl = "Account/LogOff";
             config.avatarUrl = user.PartyImage != null
                                    ? partyImageUrls[user.PartyImage.Id]
                                    : "img/emptyPerson.png";
@@ -179,17 +178,10 @@ namespace FoundOPS.API.Api
             if (MembershipService == null) { MembershipService = new PartyMembershipService(); }
 
             var user = _coreEntitiesContainer.CurrentUserAccount().First();
-            var oldHash = EncryptionTools.Hash(oldPass);
-            var newHash = EncryptionTools.Hash(newPass);
 
-            if (newPass == confirmPass && oldHash == user.PasswordHash)
-            {
-                if (MembershipService.ChangePassword(user.EmailAddress, oldPass, newPass))
-                {
-                    return Request.CreateResponse(HttpStatusCode.Accepted);
-                }
-            }
-            return Request.CreateResponse(HttpStatusCode.BadRequest);
+            return Request.CreateResponse(MembershipService.ChangePassword(user.EmailAddress, oldPass, newPass)
+                                           ? HttpStatusCode.Accepted
+                                           : HttpStatusCode.BadRequest);
         }
 
         /// <summary>
@@ -199,7 +191,7 @@ namespace FoundOPS.API.Api
         /// x, y, w, h: for cropping
         /// </summary>
         /// <returns>The image url, expiring in 3 hours</returns>
-        public Task<string> UpdateUserImage()
+        public string UpdateUserImage()
         {
             var user = _coreEntitiesContainer.CurrentUserAccount().Include(u => u.PartyImage).First();
 
@@ -517,7 +509,7 @@ namespace FoundOPS.API.Api
         /// </summary>
         /// <returns>The image url, expiring in 3 hours</returns>
         [AcceptVerbs("POST")]
-        public Task<string> UpdateBusinessImage(Guid roleId)
+        public string UpdateBusinessImage(Guid roleId)
         {
             var businessAccount = _coreEntitiesContainer.Owner(roleId).Include(ba => ba.PartyImage).FirstOrDefault();
 
@@ -556,7 +548,7 @@ namespace FoundOPS.API.Api
             var newEmployee = new FoundOps.Core.Models.CoreEntities.Employee
                 {
                     FirstName = "None",
-                    LastName = ""                    
+                    LastName = ""
                 };
 
             employees.Add(newEmployee);
@@ -576,15 +568,23 @@ namespace FoundOPS.API.Api
         /// </summary>
         /// <param name="partyToUpdate">The party to update</param>
         /// <returns>The image url, expiring in 3 hours</returns>
-        private async Task<string> UpdatePartyImageHelper(Party partyToUpdate)
+        private string UpdatePartyImageHelper(Party partyToUpdate)
         {
-            var formData = await Request.ReadMultipartAsync(new[] { "imageFileName", "imageData" });
+            var formDataTask = Request.ReadMultipartAsync(new[] { "imageFileName", "imageData" });
+            formDataTask.Wait();
 
-            var imageFileName = await formData["imageFileName"].ReadAsStringAsync();
-            var imageDataString = await formData["imageData"].ReadAsStringAsync();
+            var formData = formDataTask.Result;
 
+            var imageFileNameTask = formData["imageFileName"].ReadAsStringAsync();
+            var imageDataStringTask = formData["imageData"].ReadAsStringAsync();
+
+            imageFileNameTask.Wait();
+            var imageFileName = imageFileNameTask.Result;
             if (string.IsNullOrEmpty(imageFileName))
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, "imageFileName was not set"));
+
+            imageDataStringTask.Wait();
+            var imageDataString = imageDataStringTask.Result;
 
             //Remove prefaced metadata ex: "data:image/png;base64"
             var metadataIndex = imageDataString.IndexOf("base64,");

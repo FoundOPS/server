@@ -35,7 +35,7 @@
             <label for="Role">Role</label>
         </div>
         <div data-container-for="Role" class="k-edit-field">
-            <select id="Role" name="Role" data-type="text" required data-bind="value:Role" onchange="usersSettings.setDefaultValue()">
+            <select id="Role" name="Role" data-type="text" required data-bind="value:Role" onchange="usersSettings.setDefaultValue('Role', 'Employee')">
                 <option>Administrator</option>
                 <option>Regular</option>
                 <option>Mobile</option>
@@ -46,7 +46,7 @@
         </div>
         <div data-container-for="Employee" class="k-edit-field">
             <input id="Employee" name="Employee" data-bind="value:Employee" data-value-field="DisplayName"
-                   data-text-field="DisplayName" data-source="usersSettings.dropDownDataSource" data-role="dropdownlist" />
+                   data-text-field="DisplayName" data-source="usersSettings.employees" data-role="dropdownlist" />
         </div>
         <br /><br />
         <a class="k-button k-button-icontext" id="btnAdd">
@@ -83,7 +83,7 @@
             <label for="RoleEdit">Role</label>
         </div>
         <div data-container-for="Role" class="k-edit-field">
-            <select id="RoleEdit" name="RoleEdit" data-type="text" data-bind="value:Role">
+            <select id="RoleEdit" name="RoleEdit" data-type="text" data-bind="value:Role" onchange="usersSettings.setDefaultValue('RoleEdit', 'linkedEmployee')">
                 <option>Administrator</option>
                 <option>Regular</option>
                 <option>Mobile</option>
@@ -94,7 +94,7 @@
         </div>
         <div data-container-for="Employee" class="k-edit-field">
             <input id="linkedEmployee" name="Employee" data-bind="value:Employee" data-value-field="DisplayName"
-                   data-text-field="DisplayName" data-source="usersSettings.dropDownDataSource" data-role="dropdownlist" />
+                   data-text-field="DisplayName" data-source="usersSettings.employees" data-role="dropdownlist" />
         </div>
         <br /><br />
     </div>

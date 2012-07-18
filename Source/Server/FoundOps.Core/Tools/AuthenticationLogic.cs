@@ -68,7 +68,7 @@ namespace FoundOps.Core.Tools
             var roles = (from user in CurrentUserAccount(coreEntitiesContainer) //there will only be one
                          from role in coreEntitiesContainer.Roles.Where(r => allowedRoleTypeInts.Contains(r.RoleTypeInt))
 #if !DEBUG //Skip security in debug mode
-                         where role.OwnerPartyId == user.Id || role.MemberParties.Any(a => a.Id == user.Id)
+                         where role.MemberParties.Any(a => a.Id == user.Id)
 #endif
                          select role).Include(r => r.OwnerBusinessAccount).Include(r => r.MemberParties);
 
