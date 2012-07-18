@@ -12,9 +12,9 @@
             </table>
         </form>
         <h2>Your Photo</h2>
-        <img data-bind="attr: {src: settings.ImageUrl}" id="cropbox" onload="personalSettings.resize()"/>
-        <form id="imageUploadForm" enctype="multipart/form-data" method="POST">
-            <input id="imageUpload" type="file" /><br />
+        <img data-bind="attr: {src: settings.ImageUrl}" id="businessCropbox" onload="window.businessSettings.fixImageBtnPosition()"/>
+        <form id="businessImageUploadForm" enctype="multipart/form-data" method="POST">
+            <input id="businessImageUpload" type="file" /><br />
             <input type="hidden" id="imageFileName" name="imageFileName"/>
             <input id="imageData" type="hidden" name="imageData"/>
         </form>

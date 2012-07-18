@@ -1,5 +1,4 @@
-<div data-init="personalSettings.initialize" data-show="personalSettings.show"
-     data-role="view" data-title="Personal User Settings" id="personal">
+<div data-init="personalSettings.initialize" data-show="personalSettings.show" data-role="view" data-title="Personal User Settings" id="personal">
     <div class="settingsMenu"></div>
     <h1>Your Personal User Settings</h1>
     <div class="wrap">
@@ -21,14 +20,14 @@
             </table>
         </form>
         <h2>Your Photo</h2>
-        <img data-bind="attr: {src: settings.ImageUrl}" id="cropbox" onload="personalSettings.resize()"/>
-        <form id="imageUploadForm" enctype="multipart/form-data" method="POST">
-            <input id="imageUpload" type="file"/><br/>
+        <img data-bind="attr: {src: settings.ImageUrl}" id="personalCropbox" onload="window.personalSettings.fixImageBtnPosition()"/>
+        <form id="personalImageUploadForm" enctype="multipart/form-data" method="POST">
+            <input id="personalImageUpload" type="file"/><br/>
             <input type="hidden" id="imageFileName" name="imageFileName"/>
-            <input id="imageData" type="hidden" name="imageData"/>
+            <input type="hidden" id="imageData" name="imageData"/>
         </form>
         <h2>Password</h2>
-        <button onclick="window.changePassword()">Change Your Password</button>
+        <button onclick="window.navigateToChangePassword()">Change Your Password</button>
         <h2>&nbsp;</h2>
         <button class="save" data-bind="click: saveChanges">Save Changes</button>
     </div>

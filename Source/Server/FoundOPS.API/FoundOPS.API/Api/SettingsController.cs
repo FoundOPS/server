@@ -15,10 +15,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Http;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Employee = FoundOPS.API.Models.Employee;
 
@@ -67,6 +64,7 @@ namespace FoundOPS.API.Api
             dynamic config = new JObject();
             config.name = user.FirstName + " " + user.LastName;
             config.settingsUrl = "#view/personalSettings.html";
+            config.logOutUrl = "Account/LogOff";
             config.avatarUrl = user.PartyImage != null
                                    ? partyImageUrls[user.PartyImage.Id]
                                    : "img/emptyPerson.png";
@@ -179,17 +177,10 @@ namespace FoundOPS.API.Api
             if (MembershipService == null) { MembershipService = new PartyMembershipService(); }
 
             var user = _coreEntitiesContainer.CurrentUserAccount().First();
-            var oldHash = EncryptionTools.Hash(oldPass);
-            var newHash = EncryptionTools.Hash(newPass);
 
-            if (newPass == confirmPass && oldHash == user.PasswordHash)
-            {
-                if (MembershipService.ChangePassword(user.EmailAddress, oldPass, newPass))
-                {
-                    return Request.CreateResponse(HttpStatusCode.Accepted);
-                }
-            }
-            return Request.CreateResponse(HttpStatusCode.BadRequest);
+            return Request.CreateResponse(MembershipService.ChangePassword(user.EmailAddress, oldPass, newPass)
+                                           ? HttpStatusCode.Accepted
+                                           : HttpStatusCode.BadRequest);
         }
 
         /// <summary>

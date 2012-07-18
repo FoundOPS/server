@@ -38,7 +38,7 @@ namespace FoundOps.Core.Models.Authentication
 
         public void ChangePassword(string username, string temporaryPassword)
         {
-            var user = AuthenticationLogic.GetUserAccount(_coreEntitiesContainer, username);
+            var user = _coreEntitiesContainer.GetUserAccount(username);
             user.PasswordHash = EncryptionTools.Hash(temporaryPassword);
             user.UserAccountLog.Add(new UserAccountLogEntry
             {
@@ -51,7 +51,7 @@ namespace FoundOps.Core.Models.Authentication
 
         public override bool ValidateUser(string username, string password)
         {
-            var userParty = AuthenticationLogic.GetUserAccount(_coreEntitiesContainer, username);
+            var userParty = _coreEntitiesContainer.GetUserAccount(username);
 
             if (userParty == null || userParty.PasswordHash == null)
                 return false;
