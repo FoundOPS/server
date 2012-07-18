@@ -63,7 +63,7 @@ namespace API.Tests.Controllers
                 EmailAddress = "jperl@foundops.com"
             };
 
-            var response = controller.UpdatePersonalSettings(user);
+            var response = controller.UpdatePersonalSettings(user, new Guid("EF8B0F5E-44BC-4A88-B3F0-59D8A29F5066"));
         }
 
         [TestMethod]
