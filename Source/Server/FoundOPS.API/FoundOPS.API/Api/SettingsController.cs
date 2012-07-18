@@ -173,6 +173,18 @@ namespace FoundOPS.API.Api
         }
 
         [AcceptVerbs("POST")]
+        public HttpResponseMessage CreatePassword(string newPass, string confirmPass)
+        {
+            if (MembershipService == null) { MembershipService = new PartyMembershipService(); }
+
+            var user = _coreEntitiesContainer.CurrentUserAccount().First();
+
+            return Request.CreateResponse(MembershipService.ChangePassword(user.EmailAddress, user.TemporaryPassword, newPass)
+                                           ? HttpStatusCode.Accepted
+                                           : HttpStatusCode.BadRequest);
+        }
+
+        [AcceptVerbs("POST")]
         public HttpResponseMessage UpdatePassword(string oldPass, string newPass, string confirmPass)
         {
             if (MembershipService == null) { MembershipService = new PartyMembershipService(); }
@@ -327,7 +339,7 @@ namespace FoundOPS.API.Api
 
             //Create the link that will login the new user and then redirect them to the
             //settings page where they can change their password
-            var redirect = ServerConstants.RootApplicationUrl + "/settings.html";
+            var redirect = ServerConstants.RootApplicationUrl + "/navigator.html#view/createPassword.html";
             var link = ServerConstants.RootApiUrl + "/api/Helper/Login?email=" + user.EmailAddress + "&pass=" + temporaryPassword + "&redirect=" + redirect;
 
             //Construct the email
