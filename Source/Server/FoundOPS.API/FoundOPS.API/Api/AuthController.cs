@@ -20,12 +20,11 @@ namespace FoundOPS.API.Api
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         public bool Login(string email, string pass)
         {
-            if (ModelState.IsValid)
-                if (_membershipService.ValidateUser(email, pass))
-                {
-                    _formsService.SignIn(email, false);
-                    return true;
-                }
+            if (_membershipService.ValidateUser(email, pass))
+            {
+                _formsService.SignIn(email, false);
+                return true;
+            }
 
             return false;
         }

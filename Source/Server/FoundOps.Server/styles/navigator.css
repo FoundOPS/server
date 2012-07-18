@@ -18,22 +18,23 @@ input:focus{outline:none;}
 #navContainer{height:100%;display:inline-block;padding-left:50px;font-size:100%;}#navContainer .last{margin-right:0;}
 .roundedIcon{border:2px solid #777779;border-radius:6px;}
 .navElement{box-shadow:inset 0px 0px 5px #777779;border:2px solid #777779;border-radius:6px;background:white;display:inline-block;vertical-align:middle;margin-right:60px;line-height:normal;}.navElement:focus{outline:white solid thin;}
-.navElement a{display:block;}
-.navElement .navIcon{padding:4px;}
+.navElement a{display:inline-block;}
+.navElement .navIcon{height:28px;}
 .navElement input{border:0;line-height:100%;height:26px;font-size:12px;color:#333335;margin:0 0 0 2px;padding-left:4px;background:transparent;}
 .navElement img{height:20px;vertical-align:middle;}
-#navClient{padding:0;background-color:#333335;}#navClient .navIcon{padding:0;border-right:2px solid #777779;height:28px;overflow:hidden;}
-#navSearch a{float:right;}
-#clientLogo{background:#fff;margin:0 4px;}
+#navClient{padding:0;background-color:#333335;}#navClient .navIcon{padding:0;border-right:2px solid #777779;border-radius:4px;overflow:hidden;}
+#navSearch img{padding:4px;}
+#clientLogo{background:#fff;height:28px;border-top-right-radius:4px;border-bottom-right-radius:4px;}
 #popupWrapper{-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box;position:fixed;height:100%;width:305px;padding-top:55px;}
-#popup{position:relative;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box;height:100%;width:100%;z-index:2;color:#333335;visibility:visible;}#popup a{color:#333335;}
-#popupHeader{position:absolute;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box;width:100%;overflow:hidden;z-index:3;border-bottom:1px solid #333335;line-height:43px;font-size:16px;text-align:center;background:#efefef;border-bottom:1px solid #cccccc;box-shadow:0px 0px 5px #888;border-top-right-radius:5px;border-top-left-radius:5px;border-top:2px solid #cccccc;border-right:2px solid #cccccc;border-left:2px solid #cccccc;}
-#popupArrow{float:left;position:absolute;z-index:50;margin-top:-12px;visibility:visible;left:50%;margin-left:-16px;height:14px;width:28px;background:url('../img/popupArrow.png') no-repeat;}
+#popup{position:relative;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box;height:100%;width:100%;z-index:2;color:#333335;}#popup a{color:#333335;}
+#popupHeader{position:absolute;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box;width:100%;overflow:hidden;z-index:3;border-bottom:1px solid #333335;line-height:43px;font-size:16px;text-align:center;background:#efefef;border-bottom:2px solid #cccccc;visibility:visible;border-top-right-radius:5px;border-top-left-radius:5px;border-top:2px solid #cccccc;border-right:2px solid #cccccc;border-left:2px solid #cccccc;}
+#popupArrow{position:absolute;float:left;z-index:5;margin-top:-12px;margin-left:-16px;visibility:visible;left:50%;height:14px;width:28px;background:url('../img/popupArrow.png') no-repeat;}
 #popupBack{float:left;height:43px;width:53px;background:url('../img/popupBack.png') center center no-repeat;}#popupBack:hover{opacity:0.5;}
 #popupClose{float:right;height:43px;width:43px;background:url('../img/popupClose.png') center center no-repeat;}#popupClose:hover{opacity:0.5;}
-#popupContentWrapper{position:relative;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box;height:100%;width:100%;padding-top:44px;visibility:hidden;}
-#popupContent{visibility:visible;position:relative;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box;width:100%;max-height:100%;text-align:left;font-size:18px;overflow:auto;background:#efefef;border-right:2px solid #cccccc;border-bottom:2px solid #cccccc;border-left:2px solid #cccccc;box-shadow:0px 0px 8px #888;border-bottom-right-radius:5px;border-bottom-left-radius:5px;color:#333335;}#popupContent .last{border-bottom:none;}
-#popupContentWrapper .jspContainer{height:100% !important;width:100%;}
+#popupContentWrapper{position:relative;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box;height:100%;width:100%;padding-top:44px;}
+#popupContent{visibility:visible;position:relative;-moz-box-sizing:border-box;-webkit-box-sizing:border-box;box-sizing:border-box;width:100%;max-height:100%;text-align:left;font-size:18px;overflow:auto;background:#efefef;border-right:2px solid #cccccc;border-bottom:2px solid #cccccc;border-left:2px solid #cccccc;border-bottom-right-radius:5px;border-bottom-left-radius:5px;color:#333335;}#popupContent .last{border-bottom:none;}
+#popupContentWrapper .jspContainer{overflow:visible;}
+#popupContentWrapper .jspPane{border-radius:6px;box-shadow:0px 0px 10px #888;}
 #popupContentWrapper .jspDrag{background:#777779;}
 #popupContentWrapper .jspCapTop{display:block;height:47px;}
 .popupContentRow{border-bottom:1px solid #cccccc;display:block;padding:12px 23px;}
@@ -66,4 +67,4 @@ input:focus{outline:none;}
 .lightCharcoal{color:#777779;outline:0 none;}
 .charcoal{color:#333335;outline:0 none;}
 .black{color:#000000;outline:0 none;}
-@media only screen and (max-width:800px){#popupWrapper{position:absolute;} #nav{position:absolute;height:45px;} #navContainer{line-height:40px;} #logo{display:none;} #navClient .navIcon{border:0;padding:0;} #clientLogo{display:none;height:100%;width:0;margin-left:0;padding:0;} #navSearch input{display:none;} #navSearch{display:none;} #showMenu{display:inline;} #sideBar{right:0;height:auto;width:159px;box-shadow:0px 0px 10px #888;} #sideBarWrapper{position:absolute;display:inline-block;top:45px;height:auto;background:transparent;width:159px;box-shadow:none;} #slideMenu{display:none;} #popup{position:relative;} #content{top:45px;background:#00f;}}@media only screen and (max-width:390px){#popup{width:250px;} #popupContentWrapper{width:250px;} #logo{display:none;} #showMenu{display:inline;} .navElement{margin-right:10%;} #nav .last{margin-right:0px;} #content{background:#0f0;}}#silverlightControlHost{left:0;top:45px;overflow:hidden;}
+@media only screen and (max-width:800px){#popupWrapper{position:absolute;} #nav{position:absolute;height:45px;} #navContainer{line-height:40px;} #logo{display:none;} #navClient .navIcon{border:0;padding:0;} #clientLogo{display:none;height:100%;width:0;margin-left:0;padding:0;} #navSearch input{display:none;} #navSearch{display:none;} #showMenu{display:inline;} #sideBar{right:0;height:auto;width:159px;box-shadow:0px 0px 10px #888;} #sideBarWrapper{position:absolute;display:inline-block;top:45px;height:auto;background:transparent;width:159px;box-shadow:none;} #slideMenu{display:none;} #popup{position:relative;} #content{top:45px;background:#00f;margin-right:0;}}@media only screen and (max-width:390px){#popup{width:250px;} #popupContentWrapper{width:250px;} #logo{display:none;} #showMenu{display:inline;} .navElement{margin-right:10%;} #nav .last{margin-right:0px;} #content{background:#0f0;}}#silverlightControlHost{left:0;top:45px;overflow:hidden;}

@@ -4,11 +4,6 @@
         <name>Telerik.Windows.Documents.Fixed</name>
     </assembly>
     <members>
-        <member name="T:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.ASCII85Decode">
-            <summary>
-            Implements the ASCII85Decode filter.
-            </summary>
-        </member>
         <member name="T:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.IPdfFilter">
             <summary>
             Represents PDF filter.
@@ -19,33 +14,23 @@
             Encodes the specified data.
             </summary>
             <param name="encodedObject">The encoded object.</param>
-            <param name="data">The data.</param>
+            <param name="inputData">The input data.</param>
             <returns>The encoded data.</returns>
         </member>
-        <member name="M:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.IPdfFilter.Decode(Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.PdfObject,System.IO.Stream,Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.DecodeParameters)">
+        <member name="M:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.IPdfFilter.Decode(Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.PdfObject,System.Byte[],Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.DecodeParameters)">
             <summary>
-            Decodes the specified stream.
+            Decodes the specified data.
             </summary>
             <param name="decodedObject">The decoded object.</param>
-            <param name="stream">The stream.</param>
-            <param name="parms">The decode parameters.</param>
-            <returns>The decoded data.</returns>
+            <param name="inputData">The input data.</param>
+            <param name="parms">The parms.</param>
+            <returns></returns>
         </member>
         <member name="P:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.IPdfFilter.Name">
             <summary>
             Gets the name of the PDF filter.
             </summary>
             <value>The name.</value>
-        </member>
-        <member name="M:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.ASCII85Decode.Encode(Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.PdfObject,System.Byte[])">
-            <summary>
-            Encodes the specified data.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.ASCII85Decode.Decode(Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.PdfObject,System.IO.Stream,Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.DecodeParameters)">
-            <summary>
-            Decodes the specified data.
-            </summary>
         </member>
         <member name="T:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.ASCIIHexDecode">
             <summary>
@@ -92,6 +77,15 @@
             <summary>
             Decodes the specified data.
             </summary>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.LzwDecode.Decode(Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.PdfObject,System.Byte[],Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.DecodeParameters)">
+            <summary>
+            Decodes the specified decoded object.
+            </summary>
+            <param name="decodedObject">The decoded object.</param>
+            <param name="inputData">The input data.</param>
+            <param name="parms">The parms.</param>
+            <returns></returns>
         </member>
         <member name="M:Telerik.Windows.Documents.Fixed.FormatProviders.Pdf.Filters.LzwDecode.InitializeDictionary">
             <summary>
@@ -7681,7 +7675,13 @@
             Initializes a new instance of the <see cref="T:Telerik.Windows.Documents.Fixed.Search.TextSearchOptions"/> class.
             </summary>
             <param name="caseSensitive">The case sensitive option.</param>
-            <param name="useRegularExpression">The use regular expression option.</param>
+        </member>
+        <member name="M:Telerik.Windows.Documents.Fixed.Search.TextSearchOptions.#ctor(System.Boolean,System.Boolean)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Documents.Fixed.Search.TextSearchOptions"/> class.
+            </summary>
+            <param name="caseSensitive">The case sensitive.</param>
+            <param name="useRegularExpression">The use regular expression.</param>
         </member>
         <member name="P:Telerik.Windows.Documents.Fixed.Search.TextSearchOptions.Default">
             <summary>

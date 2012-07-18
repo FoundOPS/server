@@ -1539,6 +1539,14 @@
             <summary>Gets or sets the number of items to display on a page.</summary>
             <returns>The number of items to display on a page.</returns>
         </member>
+        <member name="P:Telerik.Windows.Data.QueryableCollectionView.ShouldRefreshOrDeferOnPageSizeChange">
+            <summary>
+            Gets a value indicating whether this instance should RefreshOrDefer when PageSize changes.
+            </summary>
+            <value>
+            	<c>true</c> if this instance should RefreshOrDefer when PageSize changes; otherwise, <c>false</c>.
+            </value>
+        </member>
         <member name="P:Telerik.Windows.Data.QueryableCollectionView.Count">
             <summary>Gets the number of records in the view after filtering, sorting, and paging.</summary>
             <returns>The number of records in the view after filtering, sorting, and paging.</returns>

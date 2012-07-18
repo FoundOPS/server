@@ -10365,6 +10365,82 @@
             Minor tick.
             </summary>
         </member>
+        <member name="T:Telerik.Windows.Controls.HeatMap.HeatMapDesaturationColorizer">
+            <summary>
+            A <see cref="T:Telerik.Windows.Controls.RadHeatMap"/> colorizer that desaturates a color. 
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.HeatMap.HeatMapColorizer">
+            <summary>
+            Base class for all colorizers for <see cref="T:Telerik.Windows.Controls.RadHeatMap"/> according to which the cells of the HeatMap will be colored.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.HeatMap.HeatMapColorizer.IsAbsoluteProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.HeatMap.HeatMapColorizer.IsAbsolute"/> dependency property.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.HeatMap.HeatMapColorizer.RaiseChanged">
+            <summary>
+            Raises the Changed event.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.HeatMap.HeatMapColorizer.IsAbsolute">
+            <summary>
+            Gets or sets the IsAbsolute. When set to true, the colors will be selected in an absolute regime, otherwise in a relative regime. 
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.HeatMap.HeatMapDesaturationColorizer.StartColorProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.HeatMap.HeatMapDesaturationColorizer.StartColor"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.HeatMap.HeatMapDesaturationColorizer.FromProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.HeatMap.HeatMapDesaturationColorizer.From"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.HeatMap.HeatMapDesaturationColorizer.ToProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.HeatMap.HeatMapDesaturationColorizer.To"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.HeatMap.HeatMapDesaturationColorizer.RangeMinimumProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.HeatMap.HeatMapDesaturationColorizer.RangeMinimum"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.HeatMap.HeatMapDesaturationColorizer.RangeMaximumProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.HeatMap.HeatMapDesaturationColorizer.RangeMaximum"/> dependency property.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.HeatMap.HeatMapDesaturationColorizer.StartColor">
+            <summary>
+            Gets or sets the start color.
+            </summary>
+            <value>The start color.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.HeatMap.HeatMapDesaturationColorizer.From">
+            <summary>
+            Gets or sets from.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.HeatMap.HeatMapDesaturationColorizer.To">
+            <summary>
+            Gets or sets to.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.HeatMap.HeatMapDesaturationColorizer.RangeMinimum">
+            <summary>
+            Gets or sets the RangeMinimum.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.HeatMap.HeatMapDesaturationColorizer.RangeMaximum">
+            <summary>
+            Gets or sets the RangeMaximum.
+            </summary>
+        </member>
         <member name="T:Telerik.Windows.Controls.HeatMap.CategoricalHeatMapItem">
             <summary>
             A class that wraps a data item and exposes several properties for data binding. 
@@ -10410,6 +10486,16 @@
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.HeatMap.HeatMapColumnHeaderDecorator"/> class.
             </summary>
         </member>
+        <member name="M:Telerik.Windows.Controls.HeatMap.HeatMapColumnHeaderDecorator.MeasureOverride(System.Windows.Size)">
+            <summary>
+            Overrides the measure pass.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.HeatMap.HeatMapColumnHeaderDecorator.ArrangeOverride(System.Windows.Size)">
+            <summary>
+            Overrides the arrange pass.
+            </summary>
+        </member>
         <member name="T:Telerik.Windows.Controls.HeatMap.HeatMapRowHeaderDecorator">
             <summary>
             A class that is intended to decorate the row headers section of the <see cref="T:Telerik.Windows.Controls.RadHeatMap"/>.
@@ -10418,6 +10504,16 @@
         <member name="M:Telerik.Windows.Controls.HeatMap.HeatMapRowHeaderDecorator.#ctor">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.HeatMap.HeatMapRowHeaderDecorator"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.HeatMap.HeatMapRowHeaderDecorator.MeasureOverride(System.Windows.Size)">
+            <summary>
+            Overrides the measure pass.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.HeatMap.HeatMapRowHeaderDecorator.ArrangeOverride(System.Windows.Size)">
+            <summary>
+            Overrides the arrange pass.
             </summary>
         </member>
         <member name="T:Telerik.Windows.Controls.HeatMap.CategoricalDefinition">
@@ -10627,26 +10723,6 @@
             The border thickness of the hovered cell.
             </value>
         </member>
-        <member name="T:Telerik.Windows.Controls.HeatMap.HeatMapColorizer">
-            <summary>
-            Base class for all colorizers for <see cref="T:Telerik.Windows.Controls.RadHeatMap"/> according to which the cells of the HeatMap will be colored.
-            </summary>
-        </member>
-        <member name="F:Telerik.Windows.Controls.HeatMap.HeatMapColorizer.IsAbsoluteProperty">
-            <summary>
-            Identifies the <see cref="P:Telerik.Windows.Controls.HeatMap.HeatMapColorizer.IsAbsolute"/> dependency property.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.HeatMap.HeatMapColorizer.RaiseChanged">
-            <summary>
-            Raises the Changed event.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.HeatMap.HeatMapColorizer.IsAbsolute">
-            <summary>
-            Gets or sets the IsAbsolute. When set to true, the colors will be selected in an absolute regime, otherwise in a relative regime. 
-            </summary>
-        </member>
         <member name="T:Telerik.Windows.Controls.HeatMap.HeatMapRangeColor">
             <summary>
             Defines a class used by the <see cref="T:Telerik.Windows.Controls.HeatMap.HeatMapRangeColorizer"/> to select colors for the cells of the <see cref="T:Telerik.Windows.Controls.RadHeatMap"/>.
@@ -10686,9 +10762,9 @@
         </member>
         <member name="P:Telerik.Windows.Controls.HeatMap.HeatMapRangeColor.Color">
             <summary>
-            Gets or sets the brush.
+            Gets or sets the color.
             </summary>
-            <value>The brush.</value>
+            <value>The color.</value>
         </member>
         <member name="T:Telerik.Windows.Controls.HeatMap.HeatMapRangeColorCollection">
             <summary>
@@ -10964,6 +11040,36 @@
             Identifies the <see cref="P:Telerik.Windows.Controls.HeatMap.HeatMapToolTipSettings.ShowDuration"/> dependency property.
             </summary>
         </member>
+        <member name="F:Telerik.Windows.Controls.HeatMap.HeatMapToolTipSettings.InitialShowDelayProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.HeatMap.HeatMapToolTipSettings.InitialShowDelay"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.HeatMap.HeatMapToolTipSettings.PlacementProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.HeatMap.HeatMapToolTipSettings.Placement"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.HeatMap.HeatMapToolTipSettings.PlacementRectangleProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.HeatMap.HeatMapToolTipSettings.PlacementRectangle"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.HeatMap.HeatMapToolTipSettings.PlacementTargetProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.HeatMap.HeatMapToolTipSettings.PlacementTarget"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.HeatMap.HeatMapToolTipSettings.HorizontalOffsetProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.HeatMap.HeatMapToolTipSettings.HorizontalOffset"/> dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.HeatMap.HeatMapToolTipSettings.VerticalOffsetProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.HeatMap.HeatMapToolTipSettings.VerticalOffset"/> dependency property.
+            </summary>
+        </member>
         <member name="P:Telerik.Windows.Controls.HeatMap.HeatMapToolTipSettings.ToolTipTemplate">
             <summary>
             Gets or sets the tool tip template.
@@ -10979,6 +11085,47 @@
             <value>
             The duration.
             </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.HeatMap.HeatMapToolTipSettings.InitialShowDelay">
+            <summary>
+            Gets or sets the length of time before a tooltip opens.
+            </summary>
+            <value>The initial show delay.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.HeatMap.HeatMapToolTipSettings.Placement">
+            <summary>
+            Gets or sets the orientation of the tooltip when it opens,
+            and specifies how the tooltip behaves when it overlaps screen boundaries.
+            </summary>
+            <value>The placement.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.HeatMap.HeatMapToolTipSettings.PlacementRectangle">
+            <summary>
+            Gets or sets the rectangular area relative to which the tooltip is positioned.
+            </summary>
+            <value>The placement rectangle.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.HeatMap.HeatMapToolTipSettings.PlacementTarget">
+            <summary>
+            Gets or sets the object relative to which the tooltip is positioned.
+            </summary>
+            <value>The placement target.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.HeatMap.HeatMapToolTipSettings.HorizontalOffset">
+            <summary>
+            Gets or sets the offset from the left of the area that is
+            specified for the tooltip by the <seealso cref="P:Telerik.Windows.Controls.HeatMap.HeatMapToolTipSettings.PlacementRectangle"/>
+            and <seealso cref="P:Telerik.Windows.Controls.HeatMap.HeatMapToolTipSettings.PlacementTarget"/> properties.
+            </summary>
+            <value>The horizontal offset.</value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.HeatMap.HeatMapToolTipSettings.VerticalOffset">
+            <summary>
+            Gets or sets the distance from the top of the area that is specified
+            for the tooltip by the <seealso cref="P:Telerik.Windows.Controls.HeatMap.HeatMapToolTipSettings.PlacementRectangle"/>
+            and <seealso cref="P:Telerik.Windows.Controls.HeatMap.HeatMapToolTipSettings.PlacementTarget"/> properties.
+            </summary>
+            <value>The vertical offset.</value>
         </member>
         <member name="T:Telerik.Windows.Controls.HeatMap.PositionToGridColumnConverter">
             <summary>
@@ -15259,6 +15406,16 @@
         <member name="F:Telerik.Windows.Controls.Map.MouseWheelBehavior.ZoomToCenter">
             <summary>
             Mouse wheel zooms in the map.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Controls.Map.BingSession">
+            <summary>
+            Represents information about Bing session.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Map.BingSession.SessionId">
+            <summary>
+            Gets or sets session ID.
             </summary>
         </member>
         <member name="T:Telerik.Windows.Controls.Map.ICloneable">
@@ -20217,9 +20374,20 @@
             Gets map style.
             </summary>
         </member>
+        <member name="P:Telerik.Windows.Controls.Map.BingBaseMapSource.UseSession">
+            <summary>
+            Gets or sets value which indicates whether Bing 
+            session should be used.
+            </summary>
+        </member>
         <member name="P:Telerik.Windows.Controls.Map.BingBaseMapSource.Mode">
             <summary>
             Gets map mode.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Map.BingBaseMapSource.SessionId">
+            <summary>
+            Gets or sets Bing session ID.
             </summary>
         </member>
         <member name="T:Telerik.Windows.Controls.Map.BingMapAerialLabelSource">
@@ -20266,6 +20434,11 @@
         <member name="M:Telerik.Windows.Controls.Map.BingTileMapSource.InitializeImageryService">
             <summary>
             Initialize imagery service.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Map.BingTileMapSource.InitializeSession">
+            <summary>
+            Initialize Bing session.
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.Map.BingMapAerialLabelSource.#ctor(System.String)">
@@ -20325,6 +20498,11 @@
         <member name="M:Telerik.Windows.Controls.Map.BingMapBirdsEyeSource.InitializeImageryService">
             <summary>
             Initialize imagery service.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Map.BingMapBirdsEyeSource.InitializeSession">
+            <summary>
+            Initialize Bing session.
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.Map.BingMapBirdsEyeLabelSource.#ctor(System.String)">
@@ -22519,6 +22697,11 @@
             Identifies the <see cref="P:Telerik.Windows.Controls.Map.BingMapProvider.Mode"/> Mode dependency property.
             </summary>
         </member>
+        <member name="F:Telerik.Windows.Controls.Map.BingMapProvider.UseSessionProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.Map.BingMapProvider.UseSession"/> UseSession dependency property.
+            </summary>
+        </member>
         <member name="M:Telerik.Windows.Controls.Map.BingMapProvider.#ctor">
             <summary>
             Initializes a new instance of the BingMapProvider class.
@@ -22537,6 +22720,15 @@
             <param name="mode">Map mode.</param>
             <param name="labelVisible">Is labels visible.</param>
             <param name="applicationId">Bing Maps Key.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Map.BingMapProvider.#ctor(Telerik.Windows.Controls.Map.MapMode,System.Boolean,System.String,System.Boolean)">
+            <summary>
+            Initializes a new instance of the BingMapProvider class.
+            </summary>
+            <param name="mode">Map mode.</param>
+            <param name="labelVisible">Is labels visible.</param>
+            <param name="applicationId">Bing Maps Key.</param>
+            <param name="useSession">Value which indicates whether Bing session should be used.</param>
         </member>
         <member name="M:Telerik.Windows.Controls.Map.BingMapProvider.SetMapSourceToClone(Telerik.Windows.Controls.Map.MapProviderBase,System.String)">
             <summary>
@@ -22615,6 +22807,13 @@
         <member name="P:Telerik.Windows.Controls.Map.BingMapProvider.SpatialReference">
             <summary>
             Returns the SpatialReference for the map provider.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Map.BingMapProvider.UseSession">
+            <summary>
+            Gets or sets value which indicates whether Bing 
+            session should be used. Make sense during provider 
+            initialization only.
             </summary>
         </member>
         <member name="T:Telerik.Windows.Controls.Map.UriImageProvider">

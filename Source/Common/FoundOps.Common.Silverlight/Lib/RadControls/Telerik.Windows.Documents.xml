@@ -4,6 +4,11 @@
         <name>Telerik.Windows.Documents</name>
     </assembly>
     <members>
+        <member name="T:Telerik.Windows.Documents.FormatProviders.Pdf.PdfDocumentInfo">
+            <summary>
+            Entries in the document information dictionary.
+            </summary>
+        </member>
         <member name="T:Telerik.Windows.Documents.Model.NumPagesField">
             <summary>
             Represents document field that displays the total number of pages in the document.

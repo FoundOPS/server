@@ -184,7 +184,7 @@ namespace FoundOps.SLClient.Data.Services
 
             //Call Totango API (for every event except Manifest Option)
             if (trackedEvent != Event.ManifestOption)
-                HtmlPage.Window.Invoke("httpGetImage", new object[] { url });
+                HtmlPage.Window.Invoke("silverlight.httpGetImage()", new object[] { url });
 
             //Call Google Analytics API
             HtmlPage.Window.Invoke("trackEvent", new object[] { section, trackedEvent, detail });

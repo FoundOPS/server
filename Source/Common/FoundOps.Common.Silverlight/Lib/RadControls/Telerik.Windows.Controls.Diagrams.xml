@@ -623,12 +623,52 @@
             Represents drag routed event args.
             </summary>
         </member>
+        <member name="T:Telerik.Windows.Controls.Diagrams.ItemsManipulationRoutedEventArgs">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.ItemsManipulationRoutedEventArgs.#ctor(Telerik.Windows.RoutedEvent,System.Collections.Generic.IEnumerable{Telerik.Windows.Diagrams.Core.IDiagramItem})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.ItemsManipulationRoutedEventArgs"/> class.
+            </summary>
+            <param name="routedEvent">The routed event.</param>
+            <param name="items">The items.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.ItemsManipulationRoutedEventArgs.#ctor(Telerik.Windows.RoutedEvent,System.Collections.Generic.IEnumerable{Telerik.Windows.Diagrams.Core.IDiagramItem},System.Windows.Point)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.ItemsManipulationRoutedEventArgs"/> class.
+            </summary>
+            <param name="routedEvent">The routed event.</param>
+            <param name="items">The items.</param>
+            <param name="mousePosition">The mouse position.</param>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.ItemsManipulationRoutedEventArgs.MousePosition">
+            <summary>
+            Gets the mouse point.
+            </summary>
+            <value>The mouse point.</value>
+        </member>
         <member name="M:Telerik.Windows.Controls.Diagrams.DragRoutedEventArgs.#ctor(Telerik.Windows.RoutedEvent,System.Collections.Generic.IEnumerable{Telerik.Windows.Diagrams.Core.IDiagramItem})">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.DragRoutedEventArgs"/> class.
             </summary>
             <param name="routedEvent">The routed event.</param>
             <param name="items">The items.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.DragRoutedEventArgs.#ctor(Telerik.Windows.RoutedEvent,System.Collections.Generic.IEnumerable{Telerik.Windows.Diagrams.Core.IDiagramItem},System.Windows.Point,System.Windows.Point)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.DragRoutedEventArgs"/> class.
+            </summary>
+            <param name="routedEvent">The routed event.</param>
+            <param name="items">The items.</param>
+            <param name="oldPosition">The old position.</param>
+            <param name="newPosition">The new position.</param>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.DragRoutedEventArgs.StartMousePosition">
+            <summary>
+            Gets the StartMouse Position.
+            </summary>
         </member>
         <member name="T:Telerik.Windows.Controls.Diagrams.ManipulationRoutedEventArgs">
             <summary>
@@ -748,6 +788,20 @@
             <param name="routedEvent">The routed event.</param>
             <param name="items">The items.</param>
         </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.ResizeRoutedEventArgs.#ctor(Telerik.Windows.RoutedEvent,System.Collections.Generic.IEnumerable{Telerik.Windows.Diagrams.Core.IDiagramItem},System.Windows.Rect,System.Windows.Point)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.ResizeRoutedEventArgs"/> class.
+            </summary>
+            <param name="routedEvent">The routed event.</param>
+            <param name="items">The items.</param>
+            <param name="newBounds">The new bounds.</param>
+            <param name="mousePosition">The mouse position.</param>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.ResizeRoutedEventArgs.NewBounds">
+            <summary>
+            Gets the new bounds.
+            </summary>
+        </member>
         <member name="T:Telerik.Windows.Controls.Diagrams.RotateRoutedEventArgs">
             <summary>
             Represents rotated routed event args.
@@ -760,14 +814,23 @@
             <param name="routedEvent">The routed event.</param>
             <param name="items">The items.</param>
         </member>
-        <member name="M:Telerik.Windows.Controls.Diagrams.RotateRoutedEventArgs.#ctor(Telerik.Windows.RoutedEvent,System.Collections.Generic.IEnumerable{Telerik.Windows.Diagrams.Core.IDiagramItem},System.Double,System.Double)">
+        <member name="M:Telerik.Windows.Controls.Diagrams.RotateRoutedEventArgs.#ctor(Telerik.Windows.RoutedEvent,System.Collections.Generic.IEnumerable{Telerik.Windows.Diagrams.Core.IDiagramItem},System.Windows.Point)">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.RotateRoutedEventArgs"/> class.
             </summary>
             <param name="routedEvent">The routed event.</param>
             <param name="items">The items.</param>
-            <param name="oldPostion">The old postion.</param>
-            <param name="newPostion">The new postion.</param>
+            <param name="mousePosition">The mouse position.</param>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.RotateRoutedEventArgs.#ctor(Telerik.Windows.RoutedEvent,System.Collections.Generic.IEnumerable{Telerik.Windows.Diagrams.Core.IDiagramItem},System.Double,System.Double,System.Windows.Point)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.RotateRoutedEventArgs"/> class.
+            </summary>
+            <param name="routedEvent">The routed event.</param>
+            <param name="items">The items.</param>
+            <param name="oldangle">The oldangle.</param>
+            <param name="newAngle">The new angle.</param>
+            <param name="mousePosition">The mouse position.</param>
         </member>
         <member name="P:Telerik.Windows.Controls.Diagrams.RotateRoutedEventArgs.OldAngle">
             <summary>
@@ -2658,9 +2721,40 @@
             Represents AligningAdorner.
             </summary>
         </member>
-        <member name="F:Telerik.Windows.Controls.Diagrams.Primitives.AlignmentAdorner.DiagramProperty">
+        <member name="T:Telerik.Windows.Controls.Diagrams.Primitives.DiagramAdornerBase">
             <summary>
-            Identifies the Diagram property.
+            Represents a base class for diagram adorners.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Primitives.DiagramAdornerBase.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Primitives.DiagramAdornerBase"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Primitives.DiagramAdornerBase.OnApplyTemplate">
+            <summary>
+            When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/>.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Primitives.DiagramAdornerBase.ResetTheme">
+            <summary>
+            Resets the theme.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.Primitives.DiagramAdornerBase.GetRotationElementBounds">
+            <summary>
+            Gets the bounds of the rotation element.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Primitives.DiagramAdornerBase.Diagram">
+            <summary>
+            Gets or sets the hosting diagram.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.Primitives.DiagramAdornerBase.Position">
+            <summary>
+            Gets or sets the position of the control.
             </summary>
         </member>
         <member name="F:Telerik.Windows.Controls.Diagrams.Primitives.AlignmentAdorner.HorizontalLineStrokeProperty">
@@ -2790,19 +2884,9 @@
         </member>
         <member name="M:Telerik.Windows.Controls.Diagrams.Primitives.AlignmentAdorner.DrawAligningLines(System.Collections.Generic.IEnumerable{System.Windows.Rect})">
             <summary>
-            Draw thesnapping lines.
+            Draw snapping lines.
             </summary>
             <param name="logicalLines"></param>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Diagrams.Primitives.AlignmentAdorner.ResetTheme">
-            <summary>
-            Resets the theme.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.Diagrams.Primitives.AlignmentAdorner.Diagram">
-            <summary>
-            Gets or sets the parent diagram. The Diagram is used when reading the attached properties.
-            </summary>
         </member>
         <member name="T:Telerik.Windows.Controls.Diagrams.Primitives.ConnectionEditPointControl">
             <summary>
@@ -2930,42 +3014,6 @@
             Represents a connection manipulation adorner.
             </summary>
         </member>
-        <member name="T:Telerik.Windows.Controls.Diagrams.Primitives.DiagramAdornerBase">
-            <summary>
-            Represents a base class for diagram adorners.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Diagrams.Primitives.DiagramAdornerBase.#ctor">
-            <summary>
-            Initializes a new instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.Primitives.DiagramAdornerBase"/> class.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Diagrams.Primitives.DiagramAdornerBase.OnApplyTemplate">
-            <summary>
-            When overridden in a derived class, is invoked whenever application code or internal processes call <see cref="M:System.Windows.FrameworkElement.ApplyTemplate"/>.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Diagrams.Primitives.DiagramAdornerBase.ResetTheme">
-            <summary>
-            Resets the theme.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Controls.Diagrams.Primitives.DiagramAdornerBase.GetRotationElementBounds">
-            <summary>
-            Gets the bounds of the rotation element.
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="P:Telerik.Windows.Controls.Diagrams.Primitives.DiagramAdornerBase.DiagramHost">
-            <summary>
-            Gets or sets the hosting diagram.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.Diagrams.Primitives.DiagramAdornerBase.Position">
-            <summary>
-            Gets or sets the position of the control.
-            </summary>
-        </member>
         <member name="F:Telerik.Windows.Controls.Diagrams.Primitives.ConnectionManipulationAdorner.IsConnectionAdornerActiveProperty">
             <summary>
             Identifies the IsConnectionAdornerActive dependency property.
@@ -3081,14 +3129,13 @@
         </member>
         <member name="M:Telerik.Windows.Controls.Diagrams.DiagramSurface.SetIsVirtualizing(System.Windows.DependencyObject,System.Boolean)">
             <summary>
-            Sets a value indicating whether the virtualizion is enabled.
+            Sets a value indicating whether the virtualization is enabled.
             </summary>
             <param name="obj">The obj.</param>
             <param name="value">If set to <c>true</c> virtualization is enabled.</param>
         </member>
         <member name="T:Telerik.Windows.Controls.Diagrams.Primitives.GroupsAdorner">
             <summary>
-            
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.Diagrams.Primitives.GroupsAdorner.#ctor">
@@ -3282,7 +3329,7 @@
             Gets or sets a value indicating whether resizing is enabled.
             </summary>
             <value>
-            	<c>true</c> if tresizing is enabled; otherwise, <c>false</c>.
+            	<c>true</c> if resizing is enabled; otherwise, <c>false</c>.
             </value>
         </member>
         <member name="P:Telerik.Windows.Controls.Diagrams.Primitives.ManipulationAdorner.ZoomLevel">
@@ -3586,9 +3633,7 @@
             </summary>
         </member>
         <member name="M:Telerik.Windows.Controls.RadDiagram.OnApplyTemplate">
-            <summary>
-            When overridden in a derived class, is invoked whenever application code or internal processes (such as a rebuilding layout pass) call ApplyTemplate. In simplest terms, this means the method is called just before a UI element displays in an application. For more information, see Remarks.
-            </summary>
+            <inheritdoc/>
         </member>
         <member name="M:Telerik.Windows.Controls.RadDiagram.ResetTheme">
             <summary>
@@ -4227,7 +4272,7 @@
         </member>
         <member name="M:Telerik.Windows.Controls.RadDiagram.BeginBatchTransformation">
             <summary>
-            Begins a batch transformation and signals the undoredo stack that a
+            Begins a batch transformation and signals the undo-redo stack that a
             batch of transformation should be considered as one, i.e. a composite change.
             </summary>
             <seealso cref="M:Telerik.Windows.Controls.RadDiagram.CommitBatchTransformation(Telerik.Windows.Diagrams.Core.DiagramLayoutState,System.Boolean)"/>
@@ -6438,6 +6483,51 @@
             Identifies the Group dependency property.
             </summary>
         </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.RadDiagramItem.IsResizingEnabledProperty">
+            <summary>
+            Identifies the IsResizingEnabled dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.RadDiagramItem.IsRotationEnabledProperty">
+            <summary>
+            Identifies the IsRotationEnabled dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.RadDiagramItem.IsDraggingEnabledProperty">
+            <summary>
+            Identifies the IsDraggingEnabled dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.RadDiagramItem.IsConnectorsManipulationEnabledProperty">
+            <summary>
+            Identifies the IsConnectorsManipulationEnabled dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.RadDiagramItem.IsManipulationAdornerVisibleProperty">
+            <summary>
+            Identifies the IsManipulationAdornerVisible dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.RadDiagramItem.AllowDeleteProperty">
+            <summary>
+            Identifies the AllowDelete dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.RadDiagramItem.AllowCutProperty">
+            <summary>
+            Identifies the AllowCut dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.RadDiagramItem.AllowCopyProperty">
+            <summary>
+            Identifies the AllowCopy dependency property.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.Diagrams.RadDiagramItem.AllowPasteProperty">
+            <summary>
+            Identifies the AllowPaste dependency property.
+            </summary>
+        </member>
         <member name="F:Telerik.Windows.Controls.Diagrams.RadDiagramItem.PreviewBeginEditEvent">
             <summary>
             Identifies the PreviewBeginEdit routed event. 
@@ -6579,6 +6669,15 @@
             </summary>
             <returns> An instance of the <see cref="T:Telerik.Windows.Controls.Diagrams.AutomationPeers.RadDiagramAutomationPeer"/>.</returns>
         </member>
+        <member name="M:Telerik.Windows.Controls.Diagrams.RadDiagramItem.AddDragInitializeHandler">
+            <summary>
+            These two methods are used to fix an issue in Silverlight related to the IsMouseOver property when DragDrop operation is in progress.
+            When drag is started from a DragDrop enabled control inside the shape, leaving the shape (with mouse) while dragging
+            will not fire the MouseLeave event (hence the IsMouseOver will stay to true) because of the mouse capture.
+            Thus we listen for DragInitialize event and set our IsMouseOver property to false
+            when drag operation has been started by a component anywhere inside the item.
+            </summary>
+        </member>
         <member name="E:Telerik.Windows.Controls.Diagrams.RadDiagramItem.PropertyChanged">
             <summary>
             Occurs when a property value changes.
@@ -6607,6 +6706,11 @@
         <member name="E:Telerik.Windows.Controls.Diagrams.RadDiagramItem.EndEdit">
             <summary>
             Occurs when the editing ends.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.RadDiagramItem.Telerik#Windows#Diagrams#Core#ISupportVirtualization#VirtualizationState">
+            <summary>
+            Gets or sets virtualization state to the diagram entity.
             </summary>
         </member>
         <member name="P:Telerik.Windows.Controls.Diagrams.RadDiagramItem.IsSelected">
@@ -6713,6 +6817,78 @@
             </summary>
             <value>
             The stroke dash array.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.RadDiagramItem.IsRotationEnabled">
+            <summary>
+            Gets or sets a value indicating whether rotation is enabled.
+            </summary>
+            <value>
+            	<c>true</c> if this rotation is enabled; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.RadDiagramItem.IsResizingEnabled">
+            <summary>
+            Gets or sets a value indicating whether resizing is enabled.
+            </summary>
+            <value>
+            	<c>True</c> if resizing is enabled; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.RadDiagramItem.IsDraggingEnabled">
+            <summary>
+            Gets or sets a value indicating whether dragging is enabled.
+            </summary>
+            <value>
+              <c>True</c> if dragging is enabled; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.RadDiagramItem.IsConnectorsManipulationEnabled">
+            <summary>
+            Gets or sets a value indicating whether manipulation on the connectors is enabled.
+            </summary>
+            <value>
+              <c>True</c> if manipulation on connectors is enabled; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.RadDiagramItem.IsManipulationAdornerVisible">
+            <summary>
+            Gets or sets a value indicating whether the manipulation adorner is visible.
+            </summary>
+            <value>
+              <c>True</c> if the manipulation adorner is visible; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.RadDiagramItem.AllowDelete">
+            <summary>
+            Gets or sets a value indicating whether deleting is allowed.
+            </summary>
+            <value>
+              <c>True</c> if deleting is allowed; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.RadDiagramItem.AllowCut">
+            <summary>
+            Gets or sets a value indicating whether cutting is allowed.
+            </summary>
+            <value>
+              <c>True</c> if cutting is allowed; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.RadDiagramItem.AllowCopy">
+            <summary>
+            Gets or sets a value indicating whether copying is allowed.
+            </summary>
+            <value>
+              <c>True</c> if copying is allowed; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Controls.Diagrams.RadDiagramItem.AllowPaste">
+            <summary>
+            Gets or sets a value indicating whether pasting is allowed.
+            </summary>
+            <value>
+              <c>True</c> if pasting is allowed; otherwise, <c>false</c>.
             </value>
         </member>
         <member name="P:Telerik.Windows.Controls.Diagrams.RadDiagramItem.IsSelectedInGroup">

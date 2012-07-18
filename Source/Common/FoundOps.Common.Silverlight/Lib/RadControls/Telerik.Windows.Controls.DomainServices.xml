@@ -383,6 +383,14 @@
             <value><c>true</c> if Load will automatically be invoked when a change occurs 
             that impacts the query; otherwise, <c>false</c>.</value>
         </member>
+        <member name="P:Telerik.Windows.Data.QueryableDomainServiceCollectionViewBase.ShouldRefreshOrDeferOnPageSizeChange">
+            <summary>
+            Gets a value indicating whether this instance should RefreshOrDefer when PageSize changes.
+            </summary>
+            <value>
+            	<c>true</c> if this instance should RefreshOrDefer when PageSize changes; otherwise, <c>false</c>.
+            </value>
+        </member>
         <member name="P:Telerik.Windows.Data.QueryableDomainServiceCollectionViewBase.CanChangePage">
             <summary>
             Completes move to page operation. Raises PageChanged event and refreshes the data view.

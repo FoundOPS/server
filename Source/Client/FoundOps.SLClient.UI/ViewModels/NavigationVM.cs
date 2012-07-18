@@ -73,7 +73,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         public NavigationVM()
         {
             //Start with the InfiniteAccordion all the VMs will be attached and any messages can be properly listened to
-            Rxx3.RunDelayed(TimeSpan.FromMilliseconds(150), () => NavigateToView("Infinite Accordion"));
+            Rxx3.RunDelayed(TimeSpan.FromMilliseconds(100), () => NavigateToView("Infinite Accordion"));
         }
 
         /// <summary>

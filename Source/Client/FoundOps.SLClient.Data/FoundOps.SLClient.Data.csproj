@@ -313,6 +313,7 @@
     <Compile Include="Services\IContactInfoDataService.cs" />
     <Compile Include="Services\Analytics.cs" />
     <Compile Include="Services\Manager.cs" />
+    <Compile Include="Tools\ClientConstants.cs" />
     <Compile Include="Tools\DataFedVMExtensions.cs" />
     <Compile Include="Tools\ContextManagerMarkupExtensions.cs" />
     <Compile Include="Validation\LocationFieldValueRequired.cs" />

@@ -4,6 +4,21 @@
         <name>Telerik.Windows.Controls.GanttView</name>
     </assembly>
     <members>
+        <member name="P:Telerik.Windows.Controls.GanttView.EventProxy.Subject">
+            <Summary>Gets or sets Subject and notifies for changes</Summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.EventProxy.Start">
+            <Summary>Gets or sets Start and notifies for changes</Summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.EventProxy.End">
+            <Summary>Gets or sets End and notifies for changes</Summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.EventProxy.Progress">
+            <Summary>Gets or sets Progress and notifies for changes</Summary>
+        </member>
+        <member name="P:Telerik.Windows.Controls.GanttView.EventProxy.OriginalEvent">
+            <Summary>Gets or sets OriginalEvent and notifies for changes</Summary>
+        </member>
         <member name="T:Telerik.Windows.Controls.GanttView.DragResizeMilestoneSlotHighlightContainer">
             <summary>
             Class reprsenting the container drawing the dragged milestone item.
@@ -214,12 +229,6 @@
             TODO: Update summary.
             </summary>
         </member>
-        <member name="F:Telerik.Windows.Controls.GanttView.ColumnDefinitionBase.CellEditTemplateProperty">
-            <summary>
-            Identifies the Header dependency property. 
-            </summary>
-        </member>
-        <!-- Badly formed XML comment ignored for member "F:Telerik.Windows.Controls.GanttView.ColumnDefinitionBase.CellTemplateProperty" -->
         <member name="F:Telerik.Windows.Controls.GanttView.ColumnDefinitionBase.HeaderProperty">
             <summary>
             Identifies the Header dependency property. 
@@ -257,6 +266,16 @@
             frozen columns are displayed before the non-frozen columns. This is a dependency property.
             </summary>
         </member>
+        <member name="F:Telerik.Windows.Controls.GanttView.ColumnDefinition.CellEditTemplateProperty">
+            <summary>
+            Identifies the CellEditTemplate dependency property. 
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Controls.GanttView.ColumnDefinition.CellTemplateProperty">
+            <summary>
+            Identifies the CellTemplate dependency property. 
+            </summary>
+        </member>
         <member name="P:Telerik.Windows.Controls.GanttView.ColumnDefinition.MemberBinding">
             <summary>
             Gets or sets the MemberBinding. This is a dependency property.
@@ -276,21 +295,6 @@
             <summary>
             TODO: Update summary.
             </summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.GanttView.EventContainer.EventProxy.Subject">
-            <Summary>Gets or sets Subject and notifies for changes</Summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.GanttView.EventContainer.EventProxy.Start">
-            <Summary>Gets or sets Start and notifies for changes</Summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.GanttView.EventContainer.EventProxy.End">
-            <Summary>Gets or sets End and notifies for changes</Summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.GanttView.EventContainer.EventProxy.Progress">
-            <Summary>Gets or sets Progress and notifies for changes</Summary>
-        </member>
-        <member name="P:Telerik.Windows.Controls.GanttView.EventContainer.EventProxy.OriginalEvent">
-            <Summary>Gets or sets OriginalEvent and notifies for changes</Summary>
         </member>
         <member name="T:Telerik.Windows.Controls.GanttView.GanttTask">
             <summary>
@@ -691,6 +695,12 @@
             <summary>
             Gets or sets the TimeRulerLines. This is a dependency property.
             </summary>
+        </member>
+        <member name="M:Telerik.Windows.Controls.GanttView.CellInfo.GetColumnHeader">
+            <summary>
+            Extracts the header of the column which generated the cell.
+            </summary>
+            <returns>The header of the column which generated the cell.</returns>		
         </member>
         <member name="T:Telerik.Windows.Controls.GanttView.TaskCreatedEventArgs">
             <summary>

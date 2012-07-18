@@ -5392,6 +5392,11 @@
             Identifies the <see cref="P:Telerik.Windows.Controls.ChartView.RadChartBase.Zoom"/> dependency property.
             </summary>
         </member>
+        <member name="F:Telerik.Windows.Controls.ChartView.RadChartBase.MaxZoomProperty">
+            <summary>
+            Identifies the <see cref="P:Telerik.Windows.Controls.ChartView.RadChartBase.MaxZoom"/> dependency property.
+            </summary>
+        </member>
         <member name="F:Telerik.Windows.Controls.ChartView.RadChartBase.PanOffsetProperty">
             <summary>
             Identifies the <see cref="P:Telerik.Windows.Controls.ChartView.RadChartBase.PanOffset"/> dependency property.

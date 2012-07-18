@@ -4197,14 +4197,14 @@
             The link.
             </value>
         </member>
-        <member name="T:Telerik.Windows.Diagrams.Core.ChangeSourceCommand">
+        <member name="T:Telerik.Windows.Diagrams.Core.AsyncStateCommand">
             <summary>
-            The change source undoable command.
+            Represents an async state command.
             </summary>
         </member>
-        <member name="T:Telerik.Windows.Diagrams.Core.GraphCommandBase">
+        <member name="T:Telerik.Windows.Diagrams.Core.UndoableDelegateCommand">
             <summary>
-            Base implementation of the <see cref="T:Telerik.Windows.Diagrams.Core.ICommand"/> undoredo interface.
+            Base class for undoable actions based on delegates.
             </summary>
         </member>
         <member name="T:Telerik.Windows.Diagrams.Core.ICommand">
@@ -4240,6 +4240,105 @@
             <value>
             The name.
             </value>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.UndoableDelegateCommand.#ctor(System.String,System.Action{System.Object},System.Action{System.Object},System.Predicate{System.Object})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.UndoableDelegateCommand"/> class.
+            </summary>
+            <param name="name">The name or title of the command.</param>
+            <param name="execute">The redo or execute method.</param>
+            <param name="undo">The undo or rollback method.</param>
+            <param name="canExecute">The method returning whether the command can be executed.</param>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.UndoableDelegateCommand.Undo(System.Object)">
+            <summary>
+            Unwinds an undoable action.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.UndoableDelegateCommand.Redo">
+            <summary>
+            Executes an undoable action.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.UndoableDelegateCommand.Execute(System.Object)">
+            <summary>
+            Executes an undoable action.
+            </summary>
+            <param name="state"></param>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.UndoableDelegateCommand.CanExecute(System.Object)">
+            <summary>
+            Gets a value indicating whether this command can be executed.
+            </summary>
+            <param name="state"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.UndoableDelegateCommand.Name">
+            <summary>
+            Gets or sets the name.
+            </summary>
+            <value>
+            The name.
+            </value>
+        </member>
+        <member name="T:Telerik.Windows.Diagrams.Core.IAsyncStateCommand">
+            <summary>
+            Represents an async state command.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.IAsyncStateCommand.Complete(System.Boolean,System.Object)">
+            <summary>
+            Completes the execution.
+            </summary>
+            <param name="commit">True, if the command should be committed.</param>
+            <param name="state">The state.</param>
+        </member>
+        <member name="E:Telerik.Windows.Diagrams.Core.IAsyncStateCommand.Completed">
+            <summary>
+            Occurs when the command is completed.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.IAsyncStateCommand.IsCommited">
+            <summary>
+            Gets a value indicating whether this instance is commited.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.AsyncStateCommand.#ctor(System.String,System.Action{System.Object},System.Action{System.Object},System.Predicate{System.Object})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.AsyncStateCommand"/> class.
+            </summary>
+            <param name="name">The name or title of the command.</param>
+            <param name="execute">The redo or execute method.</param>
+            <param name="undo">The undo or rollback method.</param>
+            <param name="canExecute">The method returning whether the command can be executed.</param>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.AsyncStateCommand.Execute(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.AsyncStateCommand.Complete(System.Boolean,System.Object)">
+            <summary>
+            Completes the execution.
+            </summary>
+            <param name="commit">True, if the command should be committed.</param>
+            <param name="state">The state.</param>
+        </member>
+        <member name="E:Telerik.Windows.Diagrams.Core.AsyncStateCommand.Completed">
+            <inheritdoc />
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.AsyncStateCommand.IsCommited">
+            <summary>
+            Gets a value indicating whether this instance is commited.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Diagrams.Core.ChangeSourceCommand">
+            <summary>
+            The change source undoable command.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Diagrams.Core.GraphCommandBase">
+            <summary>
+            Base implementation of the <see cref="T:Telerik.Windows.Diagrams.Core.ICommand"/> undoredo interface.
+            </summary>
         </member>
         <member name="M:Telerik.Windows.Diagrams.Core.GraphCommandBase.#ctor(System.String)">
             <summary>
@@ -4345,6 +4444,89 @@
             Undoes this instance.
             </summary>
         </member>
+        <member name="T:Telerik.Windows.Diagrams.Core.CompositeAsyncStateCommand">
+            <summary>
+            Represents a composite async command.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Diagrams.Core.CompositeCommand">
+            <summary>
+            Represents a composite command.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.CompositeCommand.#ctor(System.String,System.Action{System.Object},System.Action{System.Object},System.Predicate{System.Object})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.CompositeCommand"/> class.
+            </summary>
+            <param name="name">The name or title of the composite action.</param>
+            <param name="execute">The execute action.</param>
+            <param name="undo">The undo action.</param>
+            <param name="canExecute">The CanExecute action.</param>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.CompositeCommand.Redo">
+            <summary>
+            Executes and undoable action.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.CompositeCommand.Execute(System.Object)">
+            <summary>
+            Executes the specified state.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.CompositeCommand.Undo(System.Object)">
+            <summary>
+            Unwinds an undoable action.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.CompositeCommand.CanExecute(System.Object)">
+            <summary>
+            Returns whether this command can be executed.
+            </summary>
+            <param name="state"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.CompositeCommand.AddCommand(Telerik.Windows.Diagrams.Core.ICommand)">
+            <summary>
+            Adds commands to the composite command.
+            </summary>
+            <param name="command">The command.</param>
+            <returns></returns>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.CompositeCommand.Commands">
+            <summary>
+            Gets the commands.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.CompositeAsyncStateCommand.#ctor(System.String,System.Action{System.Object},System.Action{System.Object},System.Predicate{System.Object})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.CompositeAsyncStateCommand"/> class.
+            </summary>
+            <param name="name">The name or title of the composite action.</param>
+            <param name="execute">The execute action.</param>
+            <param name="undo">The undo action.</param>
+            <param name="canExecute">The CanExecute action.</param>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.CompositeAsyncStateCommand.Execute(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.CompositeAsyncStateCommand.Undo(System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.CompositeAsyncStateCommand.Complete(System.Boolean,System.Object)">
+            <summary>
+            Completes the execution.
+            </summary>
+            <param name="commit">True, if the command should be committed.</param>
+            <param name="state">The state.</param>
+        </member>
+        <member name="E:Telerik.Windows.Diagrams.Core.CompositeAsyncStateCommand.Completed">
+            <inheritdoc />
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.CompositeAsyncStateCommand.IsCommited">
+            <summary>
+            Gets a value indicating whether this instance is commited.
+            </summary>
+        </member>
         <member name="T:Telerik.Windows.Diagrams.Core.GroupUndoableCommand">
             <summary>
             Undoable group action.
@@ -4414,6 +4596,29 @@
             Main MVC controller. The view type is based on an interface in function of platform independence.
             </summary>
         </member>
+        <member name="T:Telerik.Windows.Diagrams.Core.IContainerService">
+            <summary>
+            Represents a container service.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.IContainerService.CreateUndoableConnection(Telerik.Windows.Diagrams.Core.IShape,Telerik.Windows.Diagrams.Core.IShape,Telerik.Windows.Diagrams.Core.ICommand@)">
+            <summary>
+            Creates the connection.
+            </summary>
+            <param name="source">The source.</param>
+            <param name="target">The target.</param>
+            <param name="command">The command.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.IContainerService.CreateUndoableConnection(System.Windows.Point,System.Windows.Point,Telerik.Windows.Diagrams.Core.ICommand@)">
+            <summary>
+            Creates the connection.
+            </summary>
+            <param name="startPoint">The start point.</param>
+            <param name="endPoint">The end point.</param>
+            <param name="command">The command.</param>
+            <returns></returns>
+        </member>
         <member name="T:Telerik.Windows.Diagrams.Core.IServiceLocator">
             <summary>
             
@@ -4424,7 +4629,7 @@
             Gets the connection routing service.
             </summary>
         </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.IServiceLocator.AlignmentService">
+        <member name="P:Telerik.Windows.Diagrams.Core.IServiceLocator.SnappingService">
             <summary>
             Gets the selection service.
             </summary>
@@ -4474,7 +4679,7 @@
             Gets the group service.
             </summary>
         </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.IServiceLocator.ManipulationService">
+        <member name="P:Telerik.Windows.Diagrams.Core.IServiceLocator.AdornerService">
             <summary>
             Gets the manipulation service.
             </summary>
@@ -4487,6 +4692,11 @@
         <member name="P:Telerik.Windows.Diagrams.Core.IServiceLocator.SegmentationService">
             <summary>
             Gets the segmentation service.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.IServiceLocator.ContainerService">
+            <summary>
+            Gets the container service.
             </summary>
         </member>
         <member name="T:Telerik.Windows.Diagrams.Core.ISerializable">
@@ -4571,6 +4781,24 @@
             <param name="isUndoable">If set to <c>true</c> [is undoable].</param>
             <returns></returns>
         </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.GraphController.CreateUndoableConnection(Telerik.Windows.Diagrams.Core.IShape,Telerik.Windows.Diagrams.Core.IShape,Telerik.Windows.Diagrams.Core.ICommand@)">
+            <summary>
+            Creates the undoable connection.
+            </summary>
+            <param name="source">The source.</param>
+            <param name="target">The target.</param>
+            <param name="command">The command.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.GraphController.CreateUndoableConnection(System.Windows.Point,System.Windows.Point,Telerik.Windows.Diagrams.Core.ICommand@)">
+            <summary>
+            Creates the undoable connection.
+            </summary>
+            <param name="startPoint">The start point.</param>
+            <param name="endPoint">The end point.</param>
+            <param name="command">The command.</param>
+            <returns></returns>
+        </member>
         <member name="M:Telerik.Windows.Diagrams.Core.GraphController.#ctor(Telerik.Windows.Diagrams.Core.IGraphInternal,Telerik.Windows.Diagrams.Core.IContainerGeneratorInternal)">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.GraphController"/> class.
@@ -4588,7 +4816,7 @@
             <summary>
             Aligns the shapes to the most left/top/right/bottom edge defined by the selection bounds.
             </summary>
-            <param name="alignment">Determins whether alignment should be calculated towards left/top/right/bottom edge.</param>
+            <param name="alignment">Determines whether alignment should be calculated towards left/top/right/bottom edge.</param>
             <param name="shapes">The shapes.</param>
         </member>
         <member name="M:Telerik.Windows.Diagrams.Core.GraphController.SnapShapes(System.Collections.Generic.IEnumerable{Telerik.Windows.Diagrams.Core.IShape})">
@@ -5005,14 +5233,14 @@
             The MoveItems action.
             </summary>
         </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.CommandNames.ResizeShape">
+        <member name="F:Telerik.Windows.Diagrams.Core.CommandNames.ResizeItem">
             <summary>
-            The ResizeShape action.
+            The ResizeItem action.
             </summary>
         </member>
-        <member name="F:Telerik.Windows.Diagrams.Core.CommandNames.ResizeShapes">
+        <member name="F:Telerik.Windows.Diagrams.Core.CommandNames.ResizeItems">
             <summary>
-            The ResizeShapes action.
+            The ResizeItems action.
             </summary>
         </member>
         <member name="F:Telerik.Windows.Diagrams.Core.CommandNames.BringToFront">
@@ -5094,94 +5322,6 @@
             <summary>
             The Ungroup action.
             </summary>
-        </member>
-        <member name="T:Telerik.Windows.Diagrams.Core.CompositeCommand">
-            <summary>
-            Represents a composite command.
-            </summary>
-        </member>
-        <member name="T:Telerik.Windows.Diagrams.Core.UndoableDelegateCommand">
-            <summary>
-            Base class for undoable actions based on delegates.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.UndoableDelegateCommand.#ctor(System.String,System.Action{System.Object},System.Action{System.Object},System.Predicate{System.Object})">
-            <summary>
-            Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.UndoableDelegateCommand"/> class.
-            </summary>
-            <param name="name">The name or title of the command.</param>
-            <param name="execute">The redo or execute method.</param>
-            <param name="undo">The undo or rollback method.</param>
-            <param name="canExecute">The method returning whether the command can be executed.</param>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.UndoableDelegateCommand.Undo(System.Object)">
-            <summary>
-            Unwinds an undoable action.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.UndoableDelegateCommand.Redo">
-            <summary>
-            Executes an undoable action.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.UndoableDelegateCommand.Execute(System.Object)">
-            <summary>
-            Executes an undoable action.
-            </summary>
-            <param name="state"></param>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.UndoableDelegateCommand.CanExecute(System.Object)">
-            <summary>
-            Gets a value indicating whether this command can be executed.
-            </summary>
-            <param name="state"></param>
-            <returns></returns>
-        </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.UndoableDelegateCommand.Name">
-            <summary>
-            Gets or sets the name.
-            </summary>
-            <value>
-            The name.
-            </value>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.CompositeCommand.#ctor(System.String,System.Action{System.Object},System.Action{System.Object},System.Predicate{System.Object})">
-            <summary>
-            Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.CompositeCommand"/> class.
-            </summary>
-            <param name="name">The name or title of the composite action.</param>
-            <param name="execute">The execute action.</param>
-            <param name="undo">The undo action.</param>
-            <param name="canExecute">The CanExecute action.</param>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.CompositeCommand.Redo">
-            <summary>
-            Executes and undoable action.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.CompositeCommand.Execute(System.Object)">
-            <summary>
-            Executes the specified state.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.CompositeCommand.Undo(System.Object)">
-            <summary>
-            Unwinds an undoable action.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.CompositeCommand.CanExecute(System.Object)">
-            <summary>
-            Returns whether this command can be executed.
-            </summary>
-            <param name="state"></param>
-            <returns></returns>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.CompositeCommand.AddCommand(Telerik.Windows.Diagrams.Core.ICommand)">
-            <summary>
-            Adds commands to the composite command.
-            </summary>
-            <param name="command">The command.</param>
-            <returns></returns>
         </member>
         <member name="T:Telerik.Windows.Diagrams.Core.MoveItemCommand">
             <summary>
@@ -5373,6 +5513,21 @@
         <member name="F:Telerik.Windows.Diagrams.Core.ExecuteAction.Redo">
             <summary>
             Redo action.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Diagrams.Core.HorizontalSnappingLine">
+            <summary>
+            Object encapsulates information about horizontal line used in snapping to items.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.HorizontalSnappingLine.Start">
+            <summary>
+            The start point of the line.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.HorizontalSnappingLine.End">
+            <summary>
+            The end point of the line.
             </summary>
         </member>
         <member name="T:Telerik.Windows.Diagrams.Core.ManipulationPointType">
@@ -5840,6 +5995,66 @@
             Partial selection mode - the bounds of the item should ovelap with the rect selection.
             </summary>
         </member>
+        <member name="T:Telerik.Windows.Diagrams.Core.Declaratives.ShapeInfo">
+            <summary>
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.Declaratives.ShapeInfo.#ctor(System.Windows.Point,System.Windows.Size,System.Double)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.Declaratives.ShapeInfo"/> class.
+            </summary>
+            <param name="position">The position.</param>
+            <param name="size">The size.</param>
+            <param name="angle">The angle.</param>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.Declaratives.ShapeInfo.Position">
+            <summary>
+            Gets or sets the position.
+            </summary>
+            <value>The position.</value>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.Declaratives.ShapeInfo.Size">
+            <summary>
+            Gets or sets the size.
+            </summary>
+            <value>The size.</value>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.Declaratives.ShapeInfo.Angle">
+            <summary>
+            Gets or sets the angle.
+            </summary>
+            <value>The angle.</value>
+        </member>
+        <member name="T:Telerik.Windows.Diagrams.Core.VerticalSnappingLine">
+            <summary>
+            Object encapsulates information about vertical line used in snapping to items.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.VerticalSnappingLine.Start">
+            <summary>
+            The start point of the line.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.VerticalSnappingLine.End">
+            <summary>
+            The end point of the line.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Diagrams.Core.VirtualizationState">
+            <summary>
+            Represents possible virtualization state particular item could be in.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Diagrams.Core.VirtualizationState.Realized">
+            <summary>
+            Represents the state when the item is realized and participates in the layout.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Diagrams.Core.VirtualizationState.Virtualized">
+            <summary>
+            Represents the state when item is virtualized and does not participate in the layout.
+            </summary>
+        </member>
         <member name="T:Telerik.Windows.Diagrams.Core.CancelingEventArgs">
             <summary>
             Event args that can be canceled.
@@ -5908,6 +6123,46 @@
               <c>True</c> if cancel; otherwise, <c>false</c>.
             </value>
         </member>
+        <member name="T:Telerik.Windows.Diagrams.Core.CancelingManipulationEventArgs">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.CancelingManipulationEventArgs.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.CancelingManipulationEventArgs"/> class.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.CancelingManipulationEventArgs.#ctor(System.Windows.Point)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.CancelingManipulationEventArgs"/> class.
+            </summary>
+            <param name="mousePosition">The mouse position.</param>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.CancelingManipulationEventArgs.MousePosition">
+            <summary>
+            Gets the mouse point.
+            </summary>
+            <value>The mouse point.</value>
+        </member>
+        <member name="T:Telerik.Windows.Diagrams.Core.CancelingPositionChangedEventArgs">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.CancelingPositionChangedEventArgs.#ctor(System.Windows.Point,System.Windows.Point)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.CancelingPositionChangedEventArgs"/> class.
+            </summary>
+            <param name="currentMousePosition">The current mouse position.</param>
+            <param name="startMousePosition">The start mouse position.</param>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.CancelingPositionChangedEventArgs.StartMousePosition">
+            <summary>
+            Gets or sets the start mouse position.
+            </summary>
+            <value>The start mouse position.</value>
+        </member>
         <member name="T:Telerik.Windows.Diagrams.Core.CancellableCommandEventArgs">
             <summary>
             Represents Command event args.
@@ -5949,6 +6204,12 @@
             <summary>
             
             </summary>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.DiagramItemsEventArgs.#ctor(System.Collections.Generic.IEnumerable{Telerik.Windows.Diagrams.Core.IDiagramItem})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.DiagramItemsEventArgs"/> class.
+            </summary>
+            <param name="items">The items.</param>
         </member>
         <member name="P:Telerik.Windows.Diagrams.Core.DiagramItemsEventArgs.Items">
             <summary>
@@ -6050,6 +6311,30 @@
             <value>
             The new value.
             </value>
+        </member>
+        <member name="T:Telerik.Windows.Diagrams.Core.ItemsManipulationEventArgs">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.ItemsManipulationEventArgs.#ctor(System.Collections.Generic.IEnumerable{Telerik.Windows.Diagrams.Core.IDiagramItem})">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.ItemsManipulationEventArgs"/> class.
+            </summary>
+            <param name="items">The items.</param>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.ItemsManipulationEventArgs.#ctor(System.Collections.Generic.IEnumerable{Telerik.Windows.Diagrams.Core.IDiagramItem},System.Windows.Point)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.ItemsManipulationEventArgs"/> class.
+            </summary>
+            <param name="items">The items.</param>
+            <param name="mousePosition">The mouse position.</param>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.ItemsManipulationEventArgs.MousePosition">
+            <summary>
+            Gets the mouse position.
+            </summary>
+            <value>The mouse position.</value>
         </member>
         <member name="T:Telerik.Windows.Diagrams.Core.KeyArgs">
             <summary>
@@ -6233,6 +6518,14 @@
             <param name="items">The items.</param>
             <param name="newBounds">The new bounds.</param>
         </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.ResizingEventArgs.#ctor(System.Collections.Generic.IEnumerable{Telerik.Windows.Diagrams.Core.IDiagramItem},System.Windows.Rect,System.Windows.Point)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.ResizingEventArgs"/> class.
+            </summary>
+            <param name="items">The items.</param>
+            <param name="newBounds">The new bounds.</param>
+            <param name="mousePosition">The mouse position.</param>
+        </member>
         <member name="P:Telerik.Windows.Diagrams.Core.ResizingEventArgs.NewBounds">
             <summary>
             Gets the new bounds.
@@ -6248,13 +6541,22 @@
             Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.RotatingEventArgs"/> class.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.RotatingEventArgs.#ctor(System.Double,System.Double,System.Collections.Generic.IEnumerable{Telerik.Windows.Diagrams.Core.IDiagramItem})">
+        <member name="M:Telerik.Windows.Diagrams.Core.RotatingEventArgs.#ctor(System.Collections.Generic.IEnumerable{Telerik.Windows.Diagrams.Core.IDiagramItem},System.Double,System.Double)">
             <summary>
             Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.RotatingEventArgs"/> class.
             </summary>
             <param name="oldPosition">The old position.</param>
             <param name="newPosition">The new position.</param>
             <param name="items">The items.</param>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.RotatingEventArgs.#ctor(System.Collections.Generic.IEnumerable{Telerik.Windows.Diagrams.Core.IDiagramItem},System.Double,System.Double,System.Windows.Point)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.RotatingEventArgs"/> class.
+            </summary>
+            <param name="oldPosition">The old position.</param>
+            <param name="newPosition">The new position.</param>
+            <param name="items">The items.</param>
+            <param name="mousePosition">The mouse position.</param>
         </member>
         <member name="P:Telerik.Windows.Diagrams.Core.RotatingEventArgs.OldAngle">
             <summary>
@@ -6331,6 +6633,21 @@
         <member name="P:Telerik.Windows.Diagrams.Core.SerializationEventArgs`1.SerializationInfo">
             <summary>
             Gets the serialization info.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Diagrams.Core.SnappingLinesCalculatedEventArgs">
+            <summary>
+            Event arguments containing information about snapping lines.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.SnappingLinesCalculatedEventArgs.VerticalSnappingLines">
+            <summary>
+            The vertical snapping lines.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.SnappingLinesCalculatedEventArgs.HorizontalSnappingLines">
+            <summary>
+            The horizontal snapping lines.
             </summary>
         </member>
         <member name="T:Telerik.Windows.Diagrams.Core.CommonExtensions">
@@ -7379,6 +7696,18 @@
             <param name="shape">The shape.</param>
             <returns></returns>
         </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.SnappingExtensions.CreateVerticalSnappingLines(System.Collections.Generic.List{Telerik.Windows.Diagrams.Core.SnappingExtensions.LightweightSnappingLine})">
+            <summary>
+            Remove duplicated lines from the list. Create a new list containing only distinct lines.
+            Duplicated lines are merged into a single line containing all snapped pairs.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.SnappingExtensions.CreateHorizontalSnappingLines(System.Collections.Generic.List{Telerik.Windows.Diagrams.Core.SnappingExtensions.LightweightSnappingLine})">
+            <summary>
+            Remove duplicated lines from the list. Create a new list containing only distinct lines.
+            Duplicated lines are merged into a single line containing all snapped pairs.
+            </summary>
+        </member>
         <member name="T:Telerik.Windows.Diagrams.Core.Utils">
             <summary>
             
@@ -8140,6 +8469,13 @@
             <param name="value">The value.</param>
             <returns></returns>
         </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.Utils.ToInvariant(System.Windows.Media.DoubleCollection)">
+            <summary>
+            Converts the double collection to a string representation.
+            </summary>
+            <param name="collection">The collection.</param>
+            <returns></returns>
+        </member>
         <member name="M:Telerik.Windows.Diagrams.Core.Utils.ToPoint(System.String)">
             <summary>
             Attempts to convert the given string to a Point.
@@ -8152,6 +8488,13 @@
             Sizes from string.
             </summary>
             <param name="s">The value.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.Utils.ToDoubleCollection(System.String)">
+            <summary>
+            DoubleCollection from a string representation.
+            </summary>
+            <param name="s">The s.</param>
             <returns></returns>
         </member>
         <member name="M:Telerik.Windows.Diagrams.Core.Utils.ToDegrees(System.Double)">
@@ -8532,6 +8875,31 @@
             The target.
             </value>
         </member>
+        <member name="T:Telerik.Windows.Diagrams.Core.Interfaces.IManipulationService">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.Interfaces.IManipulationService.Initialize">
+            <summary>
+            Initializes this action.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.Interfaces.IManipulationService.Start">
+            <summary>
+            Starts the action.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.Interfaces.IManipulationService.Do(System.Windows.Point)">
+            <summary>
+            Performs the action.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.Interfaces.IManipulationService.Complete">
+            <summary>
+            Completes this action.
+            </summary>
+        </member>
         <member name="T:Telerik.Windows.Diagrams.Core.IObservableGraphSource">
             <summary>
             Represents an observable graph source.
@@ -8680,6 +9048,83 @@
             <param name="info">The info.</param>
             <returns></returns>
         </member>
+        <member name="T:Telerik.Windows.Diagrams.Core.ISupportManipulation">
+            <summary>
+            Interface for manipulation support.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.ISupportManipulation.IsRotationEnabled">
+            <summary>
+            Gets or sets a value indicating whether this instance is rotation enabled.
+            </summary>
+            <value>
+            	<c>True</c> if this instance is rotation enabled; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.ISupportManipulation.IsResizingEnabled">
+            <summary>
+            Gets or sets a value indicating whether this instance is resizing enabled.
+            </summary>
+            <value>
+            	<c>True</c> if this instance is resizing enabled; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.ISupportManipulation.IsDraggingEnabled">
+            <summary>
+            Gets or sets a value indicating whether dragging is enabled.
+            </summary>
+            <value>
+              <c>True</c> if dragging is enabled; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.ISupportManipulation.IsConnectorsManipulationEnabled">
+            <summary>
+            Gets or sets a value indicating whether manipulation on the connectors is enabled.
+            </summary>
+            <value>
+              <c>True</c> if manipulation on connectors is enabled; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.ISupportManipulation.IsManipulationAdornerVisible">
+            <summary>
+            Gets or sets a value indicating whether the manipulation adorner is visible.
+            </summary>
+            <value>
+              <c>True</c> if the manipulation adorner is visible; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.ISupportManipulation.AllowDelete">
+            <summary>
+            Gets or sets a value indicating whether deleting is allowed.
+            </summary>
+            <value>
+              <c>True</c> if deleting is allowed; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.ISupportManipulation.AllowCut">
+            <summary>
+            Gets or sets a value indicating whether cutting is allowed.
+            </summary>
+            <value>
+              <c>True</c> if cutting is allowed; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.ISupportManipulation.AllowCopy">
+            <summary>
+            Gets or sets a value indicating whether copying is allowed.
+            </summary>
+            <value>
+              <c>True</c> if copying is allowed; otherwise, <c>false</c>.
+            </value>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.ISupportManipulation.AllowPaste">
+            <summary>
+            Gets or sets a value indicating whether pasting is allowed.
+            </summary>
+            <value>
+              <c>True</c> if pasting is allowed; otherwise, <c>false</c>.
+            </value>
+        </member>
         <member name="T:Telerik.Windows.Diagrams.Core.ISupportRotation">
             <summary>
             Represents an item that supports rotation.
@@ -8706,6 +9151,16 @@
         <member name="P:Telerik.Windows.Diagrams.Core.ISupportMouseOver.IsMouseOver">
             <summary>
             Gets a value indicating whether this instance is mouse over.
+            </summary>
+        </member>
+        <member name="T:Telerik.Windows.Diagrams.Core.ISupportVirtualization">
+            <summary>
+            Represents an item that supports virtualization.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.ISupportVirtualization.VirtualizationState">
+            <summary>
+            Gets or sets the visibility state regarding virtualization logic.
             </summary>
         </member>
         <member name="T:Telerik.Windows.Diagrams.Core.IUndoRedoService">
@@ -10579,30 +11034,6 @@
             <c>True</c> if this instance is mouse captured; otherwise, <c>false</c>.
             </value>
         </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.IGraph.IsRotationEnabled">
-            <summary>
-            Gets or sets a value indicating whether this instance is rotation enabled.
-            </summary>
-            <value>
-            	<c>True</c> if this instance is rotation enabled; otherwise, <c>false</c>.
-            </value>
-        </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.IGraph.IsResizingEnabled">
-            <summary>
-            Gets or sets a value indicating whether this instance is resizing enabled.
-            </summary>
-            <value>
-            	<c>True</c> if this instance is resizing enabled; otherwise, <c>false</c>.
-            </value>
-        </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.IGraph.IsManipulationAdornerVisible">
-            <summary>
-            Gets or sets a value indicating whether the manipulation adorner is visible.
-            </summary>
-            <value>
-              <c>True</c> if the manipulation adorner is visible; otherwise, <c>false</c>.
-            </value>
-        </member>
         <member name="P:Telerik.Windows.Diagrams.Core.IGraph.Position">
             <summary>
             Gets or sets the position.
@@ -10674,14 +11105,6 @@
               <c>True</c> if editting is enabled; otherwise, <c>false</c>.
             </value>
         </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.IGraph.IsDraggingEnabled">
-            <summary>
-            Gets or sets a value indicating whether dragging is enabled.
-            </summary>
-            <value>
-              <c>True</c> if dragging is enabled; otherwise, <c>false</c>.
-            </value>
-        </member>
         <member name="P:Telerik.Windows.Diagrams.Core.IGraph.RectSelectionMode">
             <summary>
             Gets or sets the rect selection mode.
@@ -10706,50 +11129,10 @@
               <c>True</c> if zooming is enabled; otherwise, <c>false</c>.
             </value>
         </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.IGraph.IsConnectorsManipulationEnabled">
-            <summary>
-            Gets or sets a value indicating whether manipulation on the connectors is enabled.
-            </summary>
-            <value>
-              <c>True</c> if manipulation on connectors is enabled; otherwise, <c>false</c>.
-            </value>
-        </member>
         <member name="P:Telerik.Windows.Diagrams.Core.IGraph.Items">
             <summary>
             Gets the items.
             </summary>
-        </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.IGraph.AllowDelete">
-            <summary>
-            Gets or sets a value indicating whether deleting is allowed.
-            </summary>
-            <value>
-              <c>True</c> if deleting is allowed; otherwise, <c>false</c>.
-            </value>
-        </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.IGraph.AllowCut">
-            <summary>
-            Gets or sets a value indicating whether cutting is allowed.
-            </summary>
-            <value>
-              <c>True</c> if cutting is allowed; otherwise, <c>false</c>.
-            </value>
-        </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.IGraph.AllowCopy">
-            <summary>
-            Gets or sets a value indicating whether copying is allowed.
-            </summary>
-            <value>
-              <c>True</c> if copying is allowed; otherwise, <c>false</c>.
-            </value>
-        </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.IGraph.AllowPaste">
-            <summary>
-            Gets or sets a value indicating whether pasting is allowed.
-            </summary>
-            <value>
-              <c>True</c> if pasting is allowed; otherwise, <c>false</c>.
-            </value>
         </member>
         <member name="T:Telerik.Windows.Diagrams.Core.ILayer">
             <summary>
@@ -12266,6 +12649,26 @@
             ConnectorsSeparator.
             </summary>
         </member>
+        <member name="F:Telerik.Windows.Diagrams.Core.SerializationConstants.GraphPaperLineStroke">
+            <summary>
+            GraphPaperLineStroke.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Diagrams.Core.SerializationConstants.GraphPaperLineThickness">
+            <summary>
+            GraphPaperLineThickness.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Diagrams.Core.SerializationConstants.GraphPaperCellSize">
+            <summary>
+            GraphPaperCellSize.
+            </summary>
+        </member>
+        <member name="F:Telerik.Windows.Diagrams.Core.SerializationConstants.GraphPaperLineStrokeDashArray">
+            <summary>
+            GraphPaperLineStrokeDashArray.
+            </summary>
+        </member>
         <member name="T:Telerik.Windows.Diagrams.Core.SerializationInfo">
             <summary>
             A wrapper for the (de)serialization data.
@@ -12296,6 +12699,27 @@
             </summary>
             <param name="serializationInfoValue">The serialization info string.</param>
             <param name="isItemSerialization">If set to <c>true</c> [is item].</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.SerializationInfo.CreateItemsInfo(System.String)">
+            <summary>
+            Creates the items info.
+            </summary>
+            <param name="serializationString">The serialization string.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.SerializationInfo.CreateDiagramInfo(System.String)">
+            <summary>
+            Creates the diagram info.
+            </summary>
+            <param name="serializationString">The serialization string.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.SerializationInfo.CreateMetadataInfo(System.String)">
+            <summary>
+            Creates the metadata info.
+            </summary>
+            <param name="serializationString">The serialization string.</param>
             <returns></returns>
         </member>
         <member name="M:Telerik.Windows.Diagrams.Core.SerializationInfo.GetXml">
@@ -12361,18 +12785,6 @@
             This class is accountable for calculating alignment related transformations for position and size.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.AlignmentService.#ctor(Telerik.Windows.Diagrams.Core.IGraphInternal)">
-            <summary>
-            Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.AlignmentService"/> class.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.AlignmentService.SnapPoint(System.Windows.Point)">
-            <summary>
-            Snaps point. 
-            </summary>
-            <param name="point">The point to snap.</param>
-            <returns>The snapped point.</returns>
-        </member>
         <member name="M:Telerik.Windows.Diagrams.Core.AlignmentService.AlignBounds(System.Collections.Generic.IEnumerable{System.Windows.Rect},Telerik.Windows.Diagrams.Core.Alignment)">
             <summary>
             Calculates the most left/top/right/bottom position for every bounds in list.
@@ -12381,51 +12793,6 @@
             <param name="listOfBounds">List of bounds to align.</param>
             <param name="alignment">Determines whether alignment should be calculated towards left/top/right/bottom edge.</param>
             <returns>List of positions of the aligned bounds.</returns>
-        </member>
-        <member name="T:Telerik.Windows.Diagrams.Core.AlignmentService.VerticalSnappingLine">
-            <summary>
-            Object encapsulates information about vertical line used in snapping to items.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.AlignmentService.VerticalSnappingLine.Start">
-            <summary>
-            The start point of the line.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.AlignmentService.VerticalSnappingLine.End">
-            <summary>
-            The end point of the line.
-            </summary>
-        </member>
-        <member name="T:Telerik.Windows.Diagrams.Core.AlignmentService.HorizontalSnappingLine">
-            <summary>
-            Object encapsulates information about horizontal line used in snapping to items.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.AlignmentService.HorizontalSnappingLine.Start">
-            <summary>
-            The start point of the line.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.AlignmentService.HorizontalSnappingLine.End">
-            <summary>
-            The end point of the line.
-            </summary>
-        </member>
-        <member name="T:Telerik.Windows.Diagrams.Core.AlignmentService.SnappingLinesCalculatedEventArgs">
-            <summary>
-            Event arguments containing information about snapping lines.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.AlignmentService.SnappingLinesCalculatedEventArgs.VerticalSnappingLines">
-            <summary>
-            The vertical snapping lines.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.AlignmentService.SnappingLinesCalculatedEventArgs.HorizontalSnappingLines">
-            <summary>
-            The horizontal snapping lines.
-            </summary>
         </member>
         <member name="T:Telerik.Windows.Diagrams.Core.DraggingService">
             <summary>
@@ -12546,7 +12913,7 @@
             </summary>
             <param name="graph">The graph.</param>
         </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ManipulationPointService.ManipulateToPosition(System.Windows.Point)">
+        <member name="M:Telerik.Windows.Diagrams.Core.ManipulationPointService.StartManipulate(System.Windows.Point)">
             <summary>
             Manipulates the active manipulation point to the specified position.
             </summary>
@@ -12560,7 +12927,7 @@
             <param name="currentPoint">The current point.</param>
             <returns></returns>
         </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ManipulationPointService.UpdateManipulation(System.Windows.Point)">
+        <member name="M:Telerik.Windows.Diagrams.Core.ManipulationPointService.Manipulate(System.Windows.Point)">
             <summary>
             Updates the manipulation.
             </summary>
@@ -12596,60 +12963,58 @@
             Gets the manipulation point.
             </summary>
         </member>
-        <member name="T:Telerik.Windows.Diagrams.Core.ManipulationService">
+        <member name="T:Telerik.Windows.Diagrams.Core.AdornerService">
             <summary>
             
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ManipulationService.#ctor(Telerik.Windows.Diagrams.Core.IGraphInternal,Telerik.Windows.Diagrams.Core.IServiceLocator)">
+        <member name="M:Telerik.Windows.Diagrams.Core.AdornerService.#ctor(Telerik.Windows.Diagrams.Core.IGraphInternal)">
             <summary>
-            Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.ManipulationService"/> class.
+            Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.AdornerService"/> class.
             </summary>
             <param name="graph">The graph.</param>
-            <param name="locator">The locator.</param>
         </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ManipulationService.TopLeft">
+        <member name="M:Telerik.Windows.Diagrams.Core.AdornerService.TopLeft">
             <summary>
             Tops the left.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ManipulationService.TopRight">
+        <member name="M:Telerik.Windows.Diagrams.Core.AdornerService.TopRight">
             <summary>
             Tops the right.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ManipulationService.BottomRight">
+        <member name="M:Telerik.Windows.Diagrams.Core.AdornerService.BottomRight">
             <summary>
             Bottoms the right.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ManipulationService.BottomLeft">
+        <member name="M:Telerik.Windows.Diagrams.Core.AdornerService.BottomLeft">
             <summary>
             Bottoms the left.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ManipulationService.Center">
+        <member name="M:Telerik.Windows.Diagrams.Core.AdornerService.Center">
             <summary>
             Centers this instance.
             </summary>
             <returns></returns>
         </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ManipulationService.SetSelectionAdornerAround(System.Collections.Generic.IEnumerable{Telerik.Windows.Diagrams.Core.IShape})">
+        <member name="M:Telerik.Windows.Diagrams.Core.AdornerService.UpdateSelectedItems(System.Collections.Generic.List{Telerik.Windows.Diagrams.Core.IDiagramItem})">
             <summary>
-            Sets the selection rectangle around collection of items.
-            </summary>
-            <param name="items">List of items to be anclosed with selection rectangle.</param>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ManipulationService.UpdateSelectionBounds">
-            <summary>
-            Updates the selection bounds.
+            Updates the selected items.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ManipulationService.UpdateSelectionBounds(System.Windows.Point,System.Double,System.Double)">
+        <member name="M:Telerik.Windows.Diagrams.Core.AdornerService.UpdateAdornerBounds(System.Windows.Rect)">
+            <summary>
+            Updates the adorner bounds.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.AdornerService.UpdateAdornerBounds(System.Windows.Point,System.Double,System.Double)">
             <summary>
             Updates the bounds positions.
             </summary>
@@ -12657,19 +13022,24 @@
             <param name="deltaWidth">The delta width.</param>
             <param name="deltaHeight">The delta height.</param>
         </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.ManipulationService.AdornerAngle">
+        <member name="M:Telerik.Windows.Diagrams.Core.AdornerService.UpdateAdornerAngle(System.Double)">
+            <summary>
+            Updates the adorner angle.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.AdornerService.AdornerAngle">
             <summary>
             Gets the adorner angle.
             </summary>
         </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.ManipulationService.InflatedSelectionBounds">
-            <summary>
-            Gets the inflated selection bounds.
-            </summary>
-        </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.ManipulationService.SelectionBounds">
+        <member name="P:Telerik.Windows.Diagrams.Core.AdornerService.AdornerBounds">
             <summary>
             Gets the selection bounds.
+            </summary>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.AdornerService.InflatedAdornerBounds">
+            <summary>
+            Gets the inflated selection bounds.
             </summary>
         </member>
         <member name="T:Telerik.Windows.Diagrams.Core.ResizingService">
@@ -12701,16 +13071,10 @@
             Initializes a new instance of the <see cref="T:Telerik.Windows.Diagrams.Core.RotationService"/> class.
             </summary>
         </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.RotationService.InitiateRotate(System.Collections.Generic.List{Telerik.Windows.Diagrams.Core.IDiagramItem},System.Double)">
+        <member name="M:Telerik.Windows.Diagrams.Core.RotationService.InitializeRotate(System.Collections.Generic.List{Telerik.Windows.Diagrams.Core.IDiagramItem},System.Double,System.Windows.Rect)">
             <summary>
             Initiates the rotate.
             </summary>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.RotationService.RotationPoint">
-            <summary>
-            Rotations the point.
-            </summary>
-            <returns></returns>
         </member>
         <member name="P:Telerik.Windows.Diagrams.Core.RotationService.IsRotating">
             <summary>
@@ -12928,6 +13292,18 @@
             Gets the default Default, not assotiated with any Graph.
             </summary>
         </member>
+        <member name="T:Telerik.Windows.Diagrams.Core.SnappingService">
+            <summary>
+            This class is accountable for calculating snapping related transformations for position and size.
+            </summary>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.SnappingService.SnapPoint(System.Windows.Point)">
+            <summary>
+            Snaps point. 
+            </summary>
+            <param name="point">The point to snap.</param>
+            <returns>The snapped point.</returns>
+        </member>
         <member name="T:Telerik.Windows.Diagrams.Core.UndoRedoService">
             <summary>
             Service managing the undore actions.
@@ -12970,6 +13346,12 @@
             <summary>
             Clears the undo and redo stacks.
             </summary>
+        </member>
+        <member name="M:Telerik.Windows.Diagrams.Core.UndoRedoService.RemoveCommand(Telerik.Windows.Diagrams.Core.ICommand)">
+            <summary>
+            Removes the command.
+            </summary>
+            <param name="command">The command.</param>
         </member>
         <member name="M:Telerik.Windows.Diagrams.Core.UndoRedoService.OnActionExecuted(Telerik.Windows.Diagrams.Core.CommandEventArgs)">
             <summary>
@@ -13027,7 +13409,7 @@
         </member>
         <member name="M:Telerik.Windows.Diagrams.Core.VirtualizationService.Realize(System.Windows.Rect)">
             <summary>
-            Realizes the items conained in the bounds and virtualizes the others.
+            Realizes the items contained in provided bounds and virtualizes the others.
             </summary>
             <param name="enclosingBounds">Items inside will be realized.</param>
         </member>
@@ -13045,7 +13427,7 @@
         <member name="P:Telerik.Windows.Diagrams.Core.VirtualizationService.IsBlocked">
             <summary>
             When set to True, no virtualization or realization is done.
-            When set to False, virtualization or serialization is precessed normally.
+            When set to False, virtualization or serialization is processed normally.
             </summary>
         </member>
         <member name="T:Telerik.Windows.Diagrams.Core.ConnectionManipulationTool">
@@ -13091,20 +13473,10 @@
         <member name="P:Telerik.Windows.Diagrams.Core.ITool.IsActive">
             <summary>
             Gets or sets a value indicating whether this tool is active. If true the tool is actually performing work via the various mouse or keyboard event handlers.
-            If <see cref="P:Telerik.Windows.Diagrams.Core.ITool.IsEnabled"/> is false the tool can never be active. Furthermore, if the tool <see cref="P:Telerik.Windows.Diagrams.Core.ITool.IsSuspended"/> it means another tool has suspended the activity of this tool.
+            If <see cref="P:Telerik.Windows.Diagrams.Core.ITool.IsEnabled"/> is false the tool can never be active.
             
             </summary>
             <value><c>True</c> if this instance is active; otherwise, <c>false</c>.</value>
-        </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.ITool.IsSuspended">
-            <summary>
-            Gets or sets a value indicating whether this instance is suspended. A tool enters in a suspended mode when another tool has been activated and disallows another to continue its normal activity. For example, the <see cref="T:Telerik.Windows.Diagrams.Core.PointerTool"/> and other tools are
-            mutually exclusive and similarly for the drawing tools and the selection tool.
-            <para>This suspended state is independent of the <see cref="P:Telerik.Windows.Diagrams.Core.ITool.IsActive"/> and the <see cref="P:Telerik.Windows.Diagrams.Core.ITool.IsEnabled"/> states.</para>
-            </summary>
-            <value>
-            	<c>True</c> if this instance is suspended; otherwise, <c>false</c>.
-            </value>
         </member>
         <member name="P:Telerik.Windows.Diagrams.Core.ITool.Name">
             <summary>
@@ -13179,15 +13551,6 @@
             <summary>
             Gets or sets the IsEnabled.
             </summary>
-        </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.ToolBase.IsSuspended">
-            <summary>
-            Gets or sets a value indicating whether this instance is suspended. A tool enters in a suspended mode when another tool has been activated and disallows another to continue its normal activity.
-            <para>This suspended state is independent of the <see cref="P:Telerik.Windows.Diagrams.Core.ToolBase.IsActive"/> and the <see cref="P:Telerik.Windows.Diagrams.Core.ToolBase.IsEnabled"/> states.</para>
-            </summary>
-            <value>
-            	<c>True</c> if this instance is suspended; otherwise, <c>false</c>.
-            </value>
         </member>
         <member name="P:Telerik.Windows.Diagrams.Core.ToolBase.IsActive">
             <summary>
@@ -13386,11 +13749,6 @@
             
             </summary>
         </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.PrimaryMouseTool.IsDragging">
-            <summary>
-            
-            </summary>
-        </member>
         <member name="P:Telerik.Windows.Diagrams.Core.PrimaryMouseTool.HitItem">
             <summary>
             Gets the hit item.
@@ -13534,23 +13892,12 @@
             <param name="tool">The tool.</param>
             <returns></returns>
         </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.IToolService.SuspendAllTools">
-            <summary>
-            Suspends all the tools.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.IToolService.SuspendOtherTools(Telerik.Windows.Diagrams.Core.ITool)">
-            <summary>
-            Suspends the other tools than the given one.
-            </summary>
-            <param name="tool">The tool.</param>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.IToolService.UnsuspendAllTools">
-            <summary>
-            Unsuspends all tools.
-            </summary>
-        </member>
         <member name="P:Telerik.Windows.Diagrams.Core.IToolService.IsControlDown">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.IToolService.IsMouseDown">
              <summary>
             
              </summary>
@@ -13827,11 +14174,6 @@
             <param name="key"></param>
             <returns></returns>
         </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ToolService.SuspendOtherTools(Telerik.Windows.Diagrams.Core.ITool)">
-            <summary>
-            Suspends the other tools.
-            </summary>
-        </member>
         <member name="M:Telerik.Windows.Diagrams.Core.ToolService.DeactivateTool(Telerik.Windows.Diagrams.Core.ITool)">
             <summary>
             Deactivates the given tool.
@@ -13845,16 +14187,6 @@
             </summary>
             <param name="toolName">Label of the tool.</param>
             <returns></returns>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ToolService.SuspendAllTools">
-            <summary>
-            Suspends all tools.
-            </summary>
-        </member>
-        <member name="M:Telerik.Windows.Diagrams.Core.ToolService.UnsuspendAllTools">
-            <summary>
-            Unsuspends all tools.
-            </summary>
         </member>
         <member name="M:Telerik.Windows.Diagrams.Core.ToolService.ActivateTool(Telerik.Windows.Diagrams.Core.ITool)">
             <summary>
@@ -13893,6 +14225,11 @@
             </summary>
         </member>
         <member name="P:Telerik.Windows.Diagrams.Core.ToolService.IsControlDown">
+             <summary>
+            
+             </summary>
+        </member>
+        <member name="P:Telerik.Windows.Diagrams.Core.ToolService.IsMouseDown">
              <summary>
             
              </summary>
@@ -13953,11 +14290,6 @@
             <param name="diagramEvent">The diagram event.</param>
             <param name="args">The args.</param>
             <returns>Returns true if the event has been handled.</returns>
-        </member>
-        <member name="P:Telerik.Windows.Diagrams.Core.IGraphInternal.SelectionBounds">
-            <summary>
-            Gets the selection bounds.
-            </summary>
         </member>
         <member name="P:Telerik.Windows.Diagrams.Core.IGraphInternal.ActiveConnector">
             <summary>
