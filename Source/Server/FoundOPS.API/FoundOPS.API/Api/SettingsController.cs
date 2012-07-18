@@ -374,7 +374,7 @@ namespace FoundOPS.API.Api
             if (businessAccount == null)
                 return Request.CreateResponse(HttpStatusCode.Unauthorized);
 
-            var user = _coreEntitiesContainer.Parties.OfType<UserAccount>().Where(ua => ua.Id == settings.Id).Include(ua => ua.RoleMembership).First();
+            var user = _coreEntitiesContainer.Parties.OfType<UserAccount>().Where(ua => ua.Id == settings.Id).Include(ua => ua.RoleMembership).Include(ua => ua.LinkedEmployees).First();
 
             var emailExists = _coreEntitiesContainer.Parties.OfType<UserAccount>().Any(ua => ua.EmailAddress == settings.EmailAddress);
 
@@ -402,32 +402,49 @@ namespace FoundOPS.API.Api
                     user.RoleMembership.Add(newRole);
             }
 
-            var employee = _coreEntitiesContainer.Employees.FirstOrDefault(e => user.LinkedEmployees.FirstOrDefault(le => le.Id == e.Id) == e);
+            var userLinkedEmployee = user.LinkedEmployees.FirstOrDefault(e => e.EmployerId == businessAccount.Id);
 
-            if (employee != null && employee.Id != settings.Employee.Id)
+            var employee = userLinkedEmployee != null ? _coreEntitiesContainer.Employees.FirstOrDefault(e => userLinkedEmployee.Id == e.Id) : null;
+            
+            //Changing a user from one employee to another
+            if (employee != null && settings.Employee != null && employee.Id != settings.Employee.Id && settings.Employee.FirstName != "None")
             {
                 user.LinkedEmployees.Remove(employee);
-
-                var newEmployee = _coreEntitiesContainer.Employees.FirstOrDefault(e => e.Id == settings.Employee.Id);
-
-                if (newEmployee != null)
-                    user.LinkedEmployees.Add(employee);
-                else
-                {
-                    newEmployee = new FoundOps.Core.Models.CoreEntities.Employee
-                    {
-                        Id = Guid.NewGuid(),
-                        FirstName = settings.EmailAddress,
-                        LastName = settings.LastName,
-                        Employer = businessAccount
-                    };
-                    user.LinkedEmployees.Add(newEmployee);
-                }
+                
+                AddNewEmployeeToUser(settings, user, businessAccount); 
             }
-
+            //Changing a user from an employee to no employee
+            else if(settings.Employee != null && employee != null && settings.Employee.FirstName == "None")
+            {
+                user.LinkedEmployees.Remove(employee);
+            }
+            //Changing a user from no employee to an employee
+            else if (employee == null && settings.Employee != null)
+            {
+                AddNewEmployeeToUser(settings, user, businessAccount); 
+            }
             _coreEntitiesContainer.SaveChanges();
 
             return Request.CreateResponse(HttpStatusCode.Accepted);
+        }
+
+        private void AddNewEmployeeToUser(UserSettings settings, UserAccount user, BusinessAccount businessAccount)
+        {
+            var newEmployee = _coreEntitiesContainer.Employees.FirstOrDefault(e => e.Id == settings.Employee.Id);
+
+            if (newEmployee != null)
+                user.LinkedEmployees.Add(newEmployee);
+            else
+            {
+                newEmployee = new FoundOps.Core.Models.CoreEntities.Employee
+                {
+                    Id = Guid.NewGuid(),
+                    FirstName = settings.EmailAddress,
+                    LastName = settings.LastName,
+                    Employer = businessAccount
+                };
+                user.LinkedEmployees.Add(newEmployee);
+            }
         }
 
         [AcceptVerbs("POST")]
