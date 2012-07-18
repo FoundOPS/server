@@ -40,15 +40,16 @@ namespace FoundOPS.API.Api
         [AcceptVerbs("GET", "POST")]
         public JObject GetSession()
         {
-            var user = _coreEntitiesContainer.CurrentUserAccount().Include(ua => ua.PartyImage)
-                             .Include(ua => ua.RoleMembership).Include("RoleMembership.Blocks").Include("RoleMembership.OwnerBusinessAccount")
-                             .First();
+            var user = _coreEntitiesContainer.CurrentUserAccount().Include(ua => ua.RoleMembership)
+                .Include("RoleMembership.Blocks").Include("RoleMembership.OwnerBusinessAccount").First();
 
-            //Load all of the party images for the owner's of roles
-            var businessOwnerIds = user.RoleMembership.Select(r => r.OwnerBusinessAccount).OfType<BusinessAccount>().Select(ba => ba.Id).Distinct();
-            var partyImages = _coreEntitiesContainer.Files.OfType<PartyImage>().Where(pi => businessOwnerIds.Contains(pi.PartyId)).Distinct();
-            if (user.PartyImage != null)
-                partyImages = partyImages.Union(new[] { user.PartyImage });
+            //Load all of the party images for the owner's of roles, and the current user account
+            var partyIds = user.RoleMembership.Select(r => r.OwnerBusinessAccountId).Distinct()
+                .Union(new[] { new Guid?(user.Id) }).ToArray();
+
+            var partyImages = _coreEntitiesContainer.Files.OfType<PartyImage>()
+                .Where(pi => partyIds.Contains(pi.Id)).Distinct().ToList();
+
 
             //Go through each party image and get the url with the shared access key
             var partyImageUrls = new Dictionary<Guid, string>();
