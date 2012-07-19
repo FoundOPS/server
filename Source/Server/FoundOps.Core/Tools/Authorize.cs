@@ -1,7 +1,6 @@
 ﻿using System.Web;
-using System.Web.Security;
 
-namespace FoundOps.Server.Tools
+namespace FoundOps.Core.Tools
 {
     /// <summary>
     /// A copy of the Authorize attribute.

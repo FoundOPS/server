@@ -457,7 +457,6 @@
     <Compile Include="Services\CoreDomainService\CoreDomainService.ServiceTemplates.cs" />
     <Compile Include="Services\CoreDomainService\CoreDomainService.Invoicing.cs" />
     <Compile Include="Services\CoreDomainService\CoreDomainService.Records.cs" />
-    <Compile Include="Tools\Authorize.cs" />
     <Compile Include="Views\DomainServiceTools.cs" />
     <Compile Include="Services\M2M4RiaLinqToEntitiesDomainService.g.cs">
       <AutoGen>True</AutoGen>
@@ -540,7 +539,8 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Views\App\Index.cshtml" />
+    <Content Include="Views\App\IndexFullSource.cshtml" />
+    <Content Include="Views\App\IndexBuilt.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

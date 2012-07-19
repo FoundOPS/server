@@ -13,9 +13,7 @@ using ResourceWithLastPoint = FoundOPS.API.Models.ResourceWithLastPoint;
 
 namespace FoundOPS.API.Api
 {
-#if !DEBUG
-    [FoundOps.Server.Tools.Authorize]
-#endif
+    [FoundOps.Core.Tools.Authorize]
     public class TrackPointController : ApiController
     {
         public struct UpdateConstants

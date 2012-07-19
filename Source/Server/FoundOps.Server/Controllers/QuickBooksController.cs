@@ -8,7 +8,7 @@ using FoundOps.Core.Models.CoreEntities;
 
 namespace FoundOps.Server.Controllers
 {
-    [FoundOps.Server.Tools.Authorize]
+    [FoundOps.Core.Tools.Authorize]
     public class QuickBooksController : Controller
     {
         public CoreEntitiesContainer CoreEntitiesContainer = new CoreEntitiesContainer();

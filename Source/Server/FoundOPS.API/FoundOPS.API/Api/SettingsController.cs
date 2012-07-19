@@ -21,9 +21,7 @@ using Employee = FoundOPS.API.Models.Employee;
 
 namespace FoundOPS.API.Api
 {
-#if !DEBUG
-    [FoundOps.Server.Tools.Authorize]
-#endif
+    [FoundOps.Core.Tools.Authorize]
     public class SettingsController : ApiController
     {
         private readonly CoreEntitiesContainer _coreEntitiesContainer;

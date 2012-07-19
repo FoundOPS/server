@@ -1,6 +1,5 @@
 ﻿<!doctype html>
 
-<!-- Conditional comment for mobile ie7 blogs.msdn.com/b/iemobile/ -->
 <!--[if IEMobile 7 ]>
 <html class="no-js iem7" lang="en"> <![endif]-->
 <!--[if (gt IEMobile 7)|!(IEMobile)]><!-->
@@ -10,32 +9,18 @@
     <meta charset="utf-8">
     <title>FoundOPS</title>
 
-    <!-- From H5BP:M -->
     <meta name="description" content="">
-    <!-- Mobile viewport optimization h5bp.com/ad -->
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
     <!-- Enabling user-scalable=no or calling $("#nav").toggleClass("androidFixedPositionFix"); fixes fixed position bug in android 2.3 -->
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-    <!-- Home screen icon  Mathias Bynens mathiasbynens.be/notes/touch-icons -->
-    <!-- For iPhone 4 with high-resolution Retina display: -->
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="img/Icon-96x96.png">
-    <!-- For first-generation iPad: -->
-    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="img/Icon-72x72.png">
-    <!-- For non-Retina iPhone, iPod Touch, and Android 2.1+ devices: -->
-    <link rel="apple-touch-icon-precomposed" href="img/Icon-36x36.png">
-    <!-- For nokia devices: -->
-    <link rel="shortcut icon" href="img/Icon-36x36.png">
-    <!-- iOS web app, delete if not needed. https://github.com/h5bp/mobile-boilerplate/issues/94 -->
-    <!-- <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black"> -->
-    <!-- <script>(function(){var a;if(navigator.platform==="iPad"){a=window.orientation!==90||window.orientation===-90?"img/startup-tablet-landscape.png":"img/startup-tablet-portrait.png"}else{a=window.devicePixelRatio===2?"img/startup-retina.png":"img/startup.png"}document.write('<link rel="apple-touch-startup-image" href="'+a+'"/>')})()</script> -->
-
-    <!-- The script prevents links from opening in mobile safari. https://gist.github.com/1042026 -->
-    <!-- <script>(function(a,b,c){if(c in b&&b[c]){var d,e=a.location,f=/^(a|html)$/i;a.addEventListener("click",function(a){d=a.target;while(!f.test(d.nodeName))d=d.parentNode;"href"in d&&(d.href.indexOf("http")||~d.href.indexOf(e.host))&&(a.preventDefault(),e.href=d.href)},!1)}})(document,window.navigator,"standalone")</script> -->
-
-    <!-- Mobile IE allows us to activate ClearType technology for smoothing fonts for easy reading -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="@Model["BlobRoot"]img/Icon-96x96.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="@Model["BlobRoot"]img/Icon-72x72.png">
+    <link rel="apple-touch-icon-precomposed" href="@Model["BlobRoot"]img/Icon-36x36.png">
+    <link rel="shortcut icon" href="@Model["BlobRoot"]img/Icon-36x36.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <script>(function (a, b, c) { if (c in b && b[c]) { var d, e = a.location, f = /^(a|html)$/i; a.addEventListener("click", function (a) { d = a.target; while (!f.test(d.nodeName)) d = d.parentNode; "href" in d && (d.href.indexOf("http") || ~d.href.indexOf(e.host)) && (a.preventDefault(), e.href = d.href) }, !1) } })(document, window.navigator, "standalone")</script>
     <meta http-equiv="cleartype" content="on">
     <!-- more tags for your 'head' to consider h5bp.com/d/head-Tips -->
 </head>
@@ -50,7 +35,7 @@
                     style="height: 1px; width: 1px">
                 <param name="onSourceDownloadProgressChanged" value="onSourceDownloadProgressChanged"/>
                 <param name="splashscreensource" value='@Model["SplashSource"]' />
-                <param name="source" value='@Model["Source"]'/>
+                <param name="source" value='@Model["XapSource"]'/>
                 <param name="onLoad" value="onSilverlightPluginLoaded"/>
                 <param name="onError" value="onSilverlightError"/>
                 <param name="background" value="#ff333335"/>
@@ -70,19 +55,15 @@
 </div>
 <!--Setup an empty silverlight view, so there is something to navigate to-->
 <div data-role="view" id="silverlight"></div>
-
 </body>
-
 <script type="text/javascript">
     var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
     document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
 </script>
 
-<link rel="shortcut icon" href="./Icon-36x36"/>
-<link rel="stylesheet/less" type="text/less" href="styles/main.less">
-<script type="text/javascript" src="lib/less.min.js"></script>
+<link rel="stylesheet" type="text/css" href="@Model["BlobRoot"]main.css">
+<script data-main="@Model["BlobRoot"]main-built.js" src="lib/require-jquery.js"></script>
 
-<script data-main="js/main.js" src="lib/require-jquery.js"></script>
 <script id="navTemplate" type="text/x-kendo-template">
     <div id='navContainer'>
         <div id='navSearch' class='navElement'><input name='search' type='text' placeholder='Search...'/>
@@ -94,19 +75,16 @@
     </div>
     <img id='logo' src='./img/Logo.png' alt='FoundOPS'/>
 </script>
-
 <script id="expandTemplate" type="text/x-kendo-template">
     <a id="expandMenuButton">
         <div id='slideMenu'><img class='iconExpand' src='img/Expand.png'/></div>
     </a>
 </script>
-
 <script id="showMenuTemplate" type="text/x-kendo-template">
     <div id="showMenu">
         <a><img class='iconShow rotateIcon' src='img/Expand.png'/></a>
     </div>
 </script>
-
 <script id="sideBarElementTemplate" type="text/x-kendo-template">
     <a #= href # class='sideBarElement' data-color='#= color #' data-iconUrl='#= iconUrl #' data-hoverIconUrl='#=
     hoverIconUrl #'>

@@ -117,6 +117,9 @@
     <Compile Include="..\FoundOps.Common\Tools\SerializationTools.cs">
       <Link>Silverlight\SerializationTools.cs</Link>
     </Compile>
+    <Compile Include="..\FoundOps.Common\Tools\SharedConstants.cs">
+      <Link>Silverlight\SharedConstants.cs</Link>
+    </Compile>
     <Compile Include="..\FoundOps.Common\Tools\StreamHelpers.cs">
       <Link>Silverlight\StreamHelpers.cs</Link>
     </Compile>
