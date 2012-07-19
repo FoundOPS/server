@@ -151,7 +151,7 @@ namespace FoundOPS.API.Api
         }
 
         [AcceptVerbs("POST")]
-        public HttpResponseMessage UpdatePersonalSettings(UserSettings settings)
+        public HttpResponseMessage UpdatePersonalSettings(UserSettings settings, Guid? roleId)
         {
             var user = _coreEntitiesContainer.CurrentUserAccount().First();
 
@@ -159,10 +159,12 @@ namespace FoundOPS.API.Api
             if (user.Id != settings.Id)
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
 
+            var usersForBusinessAccount = this.GetAllUserSettings(roleId).ToArray();
+
             //If the email address of the current user changed, check the email address is not in use yet
             if (user.EmailAddress != settings.EmailAddress &&
-                _coreEntitiesContainer.Parties.OfType<UserAccount>().Any(ua => ua.EmailAddress == user.EmailAddress))
-                throw new Exception("The email address is already in use");
+                usersForBusinessAccount.Select(ua => ua.EmailAddress).Contains(settings.EmailAddress))
+                return Request.CreateResponse(HttpStatusCode.Conflict);
 
             //Update Properties
             user.FirstName = settings.FirstName;
@@ -176,6 +178,18 @@ namespace FoundOPS.API.Api
         }
 
         [AcceptVerbs("POST")]
+        public HttpResponseMessage CreatePassword(string newPass, string confirmPass)
+        {
+            if (MembershipService == null) { MembershipService = new PartyMembershipService(); }
+
+            var user = _coreEntitiesContainer.CurrentUserAccount().First();
+
+            return Request.CreateResponse(MembershipService.ChangePassword(user.EmailAddress, user.TemporaryPassword, newPass)
+                                           ? HttpStatusCode.Accepted
+                                           : HttpStatusCode.NotAcceptable);
+        }
+
+        [AcceptVerbs("POST")]
         public HttpResponseMessage UpdatePassword(string oldPass, string newPass, string confirmPass)
         {
             if (MembershipService == null) { MembershipService = new PartyMembershipService(); }
@@ -184,7 +198,7 @@ namespace FoundOPS.API.Api
 
             return Request.CreateResponse(MembershipService.ChangePassword(user.EmailAddress, oldPass, newPass)
                                            ? HttpStatusCode.Accepted
-                                           : HttpStatusCode.BadRequest);
+                                           : HttpStatusCode.NotAcceptable);
         }
 
         /// <summary>
@@ -218,7 +232,7 @@ namespace FoundOPS.API.Api
             if (!roleId.HasValue)
                 ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
 
-            var businessAccount = _coreEntitiesContainer.Owner(roleId.Value).FirstOrDefault();
+            var businessAccount = _coreEntitiesContainer.Owner<BusinessAccount>(roleId.Value, new[] { RoleType.Administrator }).FirstOrDefault();
 
             //If they are not an admin, they do not have the ability to view Users
             if (businessAccount == null)
@@ -267,7 +281,7 @@ namespace FoundOPS.API.Api
         public HttpResponseMessage InsertUserSettings(UserSettings settings, Guid? roleId)
         {
             //Check for admin abilities
-            var businessAccount = _coreEntitiesContainer.Owner<BusinessAccount>(roleId.Value, new[] { RoleType.Administrator })
+            var businessAccount = _coreEntitiesContainer.Owner<BusinessAccount>(roleId.Value, new[] { RoleType.Administrator }).Include(ba => ba.OwnedRoles)
                 .FirstOrDefault();
 
             //User must be in an admin role to Create new Users
@@ -276,8 +290,11 @@ namespace FoundOPS.API.Api
 
             #region Create new UserAccount
 
-            if (_coreEntitiesContainer.Parties.OfType<UserAccount>().Any(ua => ua.EmailAddress == settings.EmailAddress))
-                throw new Exception("The email address is already in use");
+            var usersForBusinessAccount = this.GetAllUserSettings(roleId).ToArray();
+
+            //check the email address is not in use yet for this business account
+            if (usersForBusinessAccount.Select(ua => ua.EmailAddress).Contains(settings.EmailAddress)) 
+                Request.CreateResponse(HttpStatusCode.Conflict);
 
             var temporaryPassword = EmailPasswordTools.GeneratePassword();
 
@@ -330,7 +347,7 @@ namespace FoundOPS.API.Api
 
             //Create the link that will login the new user and then redirect them to the
             //settings page where they can change their password
-            var redirect = ServerConstants.RootApplicationUrl + "/settings.html";
+            var redirect = ServerConstants.RootApplicationUrl + "/navigator.html#view/createPassword.html";
             var link = ServerConstants.RootApiUrl + "/api/Helper/Login?email=" + user.EmailAddress + "&pass=" + temporaryPassword + "&redirect=" + redirect;
 
             //Construct the email
@@ -346,7 +363,7 @@ namespace FoundOPS.API.Api
 
             #endregion
 
-            return Request.CreateResponse(HttpStatusCode.Accepted);
+            return Request.CreateResponse(HttpStatusCode.Created);
         }
 
         /// <summary>
@@ -362,20 +379,20 @@ namespace FoundOPS.API.Api
             //only under that scenario will they be able to edit the role type
             //Remove them from any roles they are in in the BA and set to the new role
             if (!roleId.HasValue)
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                return Request.CreateResponse(HttpStatusCode.NotAcceptable);
 
-            var businessAccount = _coreEntitiesContainer.Owner(roleId.Value).FirstOrDefault();
+            var businessAccount = _coreEntitiesContainer.Owner<BusinessAccount>(roleId.Value, new[] { RoleType.Administrator }).FirstOrDefault();
 
             if (businessAccount == null)
                 return Request.CreateResponse(HttpStatusCode.Unauthorized);
 
             var user = _coreEntitiesContainer.Parties.OfType<UserAccount>().Where(ua => ua.Id == settings.Id).Include(ua => ua.RoleMembership).Include(ua => ua.LinkedEmployees).First();
 
-            var emailExists = _coreEntitiesContainer.Parties.OfType<UserAccount>().Any(ua => ua.EmailAddress == settings.EmailAddress);
+            //If the email address of the current user changed, check the email address is not in use yet for this business account
+            var usersForBusinessAccount = this.GetAllUserSettings(roleId).ToArray();
 
-            //If the email address of the current user changed, check the email address is not in use yet
-            if (user.EmailAddress != settings.EmailAddress && emailExists)
-                throw new Exception("The email address is already in use");
+            if (user.EmailAddress != settings.EmailAddress && usersForBusinessAccount.Select(ua => ua.EmailAddress).Contains(settings.EmailAddress))
+                return Request.CreateResponse(HttpStatusCode.Conflict);
 
             user.FirstName = settings.FirstName;
             user.LastName = settings.LastName;
@@ -496,7 +513,7 @@ namespace FoundOPS.API.Api
             var businessAccount = _coreEntitiesContainer.Owner(roleId).FirstOrDefault();
 
             if (businessAccount == null)
-                ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
+                return Request.CreateResponse(HttpStatusCode.Unauthorized);
 
             businessAccount.Name = settings.Name;
             _coreEntitiesContainer.SaveChanges();
