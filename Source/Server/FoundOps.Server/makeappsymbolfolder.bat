@@ -1,0 +1,1 @@
+CALL mklink /D "C:\FoundOps\GitHub\Source\Server\FoundOps.Server\app" "C:\FoundOps\ng\app"

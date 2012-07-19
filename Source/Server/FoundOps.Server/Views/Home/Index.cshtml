@@ -40,9 +40,9 @@
     <!-- more tags for your 'head' to consider h5bp.com/d/head-Tips -->
 
     <link rel="shortcut icon" href="./Icon-36x36"/>
-    <link rel="stylesheet" type="text/css" href="styles/jquery.jscrollpane.css" media="all"/>
-    <link rel="stylesheet" type="text/css" href="styles/navigator.css">
-    <link rel="stylesheet" type="text/css" href="styles/settings.css" />
+    <link rel="stylesheet" type="text/css" href="app/styles/jquery.jscrollpane.css" media="all"/>
+    <link rel="stylesheet" type="text/css" href="app/styles/navigator.css">
+    <link rel="stylesheet" type="text/css" href="app/styles/settings.css" />
 </head>
 
 <body ontouchstart="">
@@ -54,31 +54,8 @@
             <object id="silverlightPlugin" data="data:application/x-silverlight-2," type="application/x-silverlight-2"
                     style="height: 1px; width: 1px">
                 <param name="onSourceDownloadProgressChanged" value="onSourceDownloadProgressChanged"/>
-                @{
-                var xapSource = "";
-                var splashSource = "";
-                switch (FoundOps.Server.Global.Mode)
-                {
-                case "DEBUG":
-                xapSource = Url.Content("/ClientBin/FoundOps.SLClient.Navigator.xap");
-                splashSource = Url.Content("/ClientBin/SplashScreen.xaml");
-                break;
-                case "TESTRELEASE":
-                xapSource = Url.Content("http://opsapptest.blob.core.windows.net/xaps/FoundOps.SLClient.Navigator.xap");
-                splashSource = Url.Content("http://opsapptest.blob.core.windows.net/xaps/SplashScreen.xaml");
-                break;
-                case "RELEASE":
-                xapSource = Url.Content("http://opsapplive.blob.core.windows.net/xaps/FoundOps.SLClient.Navigator.xap");
-                splashSource = Url.Content("http://opsapplive.blob.core.windows.net/xaps/SplashScreen.xaml");
-                break;
-                }
-
-                //Setup version
-                var sourceParam = xapSource + "?ignore=" + Model["SilverlightVersion"];
-                }
-                <param name="splashscreensource" value="@splashSource" />
-                <param name="source" value="@sourceParam"/>
-
+                <param name="splashscreensource" value='@Model["SilverlightVersion"]' />
+                <param name="source" value='@Model["Source"]'/>
                 <param name="onLoad" value="onSilverlightPluginLoaded"/>
                 <param name="onError" value="onSilverlightError"/>
                 <param name="background" value="#ff333335"/>
@@ -106,7 +83,7 @@
     document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
 </script>
 
-<script data-main="js/main.js" src="lib/require-jquery.js"></script>
+<script data-main="app/js/main.js" src="app/lib/require-jquery.js"></script>
 <script id="navTemplate" type="text/x-kendo-template">
     <div id='navContainer'>
         <div id='navSearch' class='navElement'><input name='search' type='text' placeholder='Search...'/>

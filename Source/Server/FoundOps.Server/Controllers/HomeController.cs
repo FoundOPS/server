@@ -38,21 +38,26 @@ namespace FoundOps.Server.Controllers
             response.Close();
             stream.Close();
 #endif
-            var model = new Dictionary<string, object> { { "SilverlightVersion", version } };
 
-            return View(model);
-        }
-
-#if !RELEASE
-        //Purely for debugging
-        public ActionResult TestSilverlight()
-        {
-            var random = new System.Random();
-            var version = random.Next(10000).ToString();
-            var model = new Dictionary<string, object> { { "SilverlightVersion", version } };
-            return View(model);
-        }
+#if DEBUG
+            var splashSource = Url.Content("/ClientBin/SplashScreen.xaml");
+            var xapSource = Url.Content("/ClientBin/FoundOps.SLClient.Navigator.xap");
+#elif TESTRELEASE
+            var splashSource = Url.Content("http://bt.foundops.com/xaps/SplashScreen.xaml");
+            var xapSource = Url.Content("http://bt.foundops.com/xaps/FoundOps.SLClient.Navigator.xap");
+#elif RELEASE
+            var splashSource = Url.Content("http://bp.foundops.com/xaps/SplashScreen.xaml");
+            var xapSource = Url.Content("http://bp.foundops.com/xaps/FoundOps.SLClient.Navigator.xap");
 #endif
+
+
+
+            //Setup version
+            var sourceParam = xapSource + "?ignore=" + version;
+
+            var model = new Dictionary<string, object> { { "SplashSource", splashSource }, { "Source", sourceParam } };
+            return View(model);
+        }
 
         [AddTestUsersThenAuthorize]
         public ActionResult MapView()

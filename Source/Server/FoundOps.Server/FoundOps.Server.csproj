@@ -35,7 +35,7 @@
     </SccAuxPath>
     <SccProvider>
     </SccProvider>
-    <SilverlightApplicationList>{FF7089B6-040E-4C6C-A386-BAB77C52CFCB}|..\..\Client\FoundOps.SLClient.Navigator\FoundOps.SLClient.Navigator.csproj|ClientBin|False</SilverlightApplicationList>
+    <SilverlightApplicationList>{FF7089B6-040E-4C6C-A386-BAB77C52CFCB}|...\Client\FoundOps.SLClient.Navigator\FoundOps.SLClient.Navigator.csproj|ClientBin|False</SilverlightApplicationList>
     <UseIISExpress>true</UseIISExpress>
     <JSLintSkip>\Scripts\Silverlight.js|\Scripts\modernizr-1.7.min.js|\Scripts\modernizr-1.7.js|\Scripts\MicrosoftMvcValidation.js|\Scripts\MicrosoftMvcValidation.debug.js|\Scripts\MicrosoftMvcAjax.js|\Scripts\MicrosoftMvcAjax.debug.js|\Scripts\MicrosoftAjax.js|\Scripts\MicrosoftAjax.debug.js|\Scripts\jquery.wt-rotator.js|\Scripts\jquery.validate.unobtrusive.min.js|\Scripts\jquery.validate.unobtrusive.js|\Scripts\jquery.validate.min.js|\Scripts\jquery.validate.js|\Scripts\jquery.validate-vsdoc.js|\Scripts\jquery.unobtrusive-ajax.min.js|\Scripts\jquery.unobtrusive-ajax.js|\Scripts\jquery.easing.1.3.min.js|\Scripts\jquery-ui.min.js|\Scripts\jquery-ui.js|\Scripts\jquery-ui-1.8.11.min.js|\Scripts\jquery-ui-1.8.11.js|\Scripts\jquery-1.6.1.min.js|\Scripts\jquery-1.5.1-vsdoc.js|\Scripts\touch.js|\Scripts\form.js|\Content\jquery.js|\Silverlight.js</JSLintSkip>
     <FileUpgradeFlags>
@@ -222,13 +222,7 @@
     <Content Include="Content\outerCircle.png" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\SiteLogo.png" />
-    <Content Include="img\businessAccounts.png" />
-    <Content Include="img\businessAccountsColor.png" />
-    <Content Include="img\emptyPerson.png" />
-    <Content Include="lib\filereader.swf" />
     <Content Include="Scripts\require-jquery.js" />
-    <Content Include="styles\jquery.jscrollpane.css" />
-    <Content Include="styles\navigator.css" />
     <Content Include="Content\TouchIcon.png" />
     <Content Include="Content\truck.png" />
     <Content Include="Content\twitter.png" />
@@ -238,75 +232,12 @@
     <Content Include="Scripts\jquery-1.6.1.min.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="img\android.png" />
-    <Content Include="img\apple.png" />
-    <Content Include="img\arrow.png" />
-    <Content Include="img\back.png" />
-    <Content Include="img\clients.png" />
-    <Content Include="img\clientsColor.png" />
-    <Content Include="img\Collapse.png" />
-    <Content Include="img\colorpicker_overlay.png" />
-    <Content Include="img\colorpicker_select.gif" />
-    <Content Include="img\custom_background.png" />
-    <Content Include="img\custom_indic.gif" />
-    <Content Include="img\custom_submit.png" />
-    <Content Include="img\david.png" />
-    <Content Include="img\depot.png" />
-    <Content Include="img\dispatcher.png" />
-    <Content Include="img\dispatcherColor.png" />
-    <Content Include="img\employees.png" />
-    <Content Include="img\employeesColor.png" />
-    <Content Include="img\Expand.png" />
-    <Content Include="img\flickr.png" />
-    <Content Include="img\google.png" />
-    <Content Include="img\got-grease-logo.png" />
-    <Content Include="img\highlight.png" />
-    <Content Include="img\imgTags.png" />
-    <Content Include="img\loading-image.gif" />
-    <Content Include="img\locations.png" />
-    <Content Include="img\locationsColor.png" />
-    <Content Include="img\Logo.png" />
-    <Content Include="img\LogoCharcoal.png" />
-    <Content Include="img\logout.png" />
-    <Content Include="img\logoutColor.png" />
-    <Content Include="img\Notify.png" />
-    <Content Include="img\outerCircle.png" />
-    <Content Include="img\popupArrow.png" />
-    <Content Include="img\popupBack.png" />
-    <Content Include="img\popupClose.png" />
-    <Content Include="img\popupClose2.png" />
-    <Content Include="img\regions.png" />
-    <Content Include="img\regionsColor.png" />
-    <Content Include="img\routes.png" />
-    <Content Include="img\routesColor.png" />
-    <Content Include="img\Search.png" />
-    <Content Include="img\SearchSolid.png" />
-    <Content Include="img\select2.png" />
-    <Content Include="img\services.png" />
-    <Content Include="img\servicesColor.png" />
-    <Content Include="img\ServicesGrey.png" />
-    <Content Include="img\settings.png" />
-    <Content Include="img\settingsColor.png" />
-    <Content Include="img\slider.png" />
-    <Content Include="img\spanBgTags.png" />
-    <Content Include="img\SplashPNG.png" />
-    <Content Include="img\sprite.png" />
-    <Content Include="img\transparent-black.png" />
-    <Content Include="img\truck.png" />
-    <Content Include="img\uservoice.png" />
-    <Content Include="img\uservoiceColor.png" />
-    <Content Include="img\vehicles.png" />
-    <Content Include="img\vehiclesColor.png" />
-    <Content Include="img\x.png" />
-    <Content Include="img\x2.png" />
-    <Content Include="js\main.js" />
     <Content Include="Scripts\map.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Scripts\mapdebug.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="lib\require-jquery.js" />
     <Content Include="Scripts\Silverlight.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -314,7 +245,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Silverlight.js" />
-    <Content Include="styles\settings.css" />
     <Content Include="Views\Shared\LogOnUserControl.ascx" />
   </ItemGroup>
   <ItemGroup>
@@ -358,9 +288,12 @@
     <Content Include="ClientBin\System.ComponentModel.Composition.Initialization.zip" />
     <Content Include="ClientBin\System.ServiceModel.DomainServices.Client.zip" />
     <Content Include="ClientBin\System.ServiceModel.DomainServices.Client.Web.zip" />
+    <Content Include="ClientBin\System.ServiceModel.Web.Extensions.zip" />
     <Content Include="ClientBin\System.Windows.Controls.zip" />
+    <Content Include="ClientBin\System.Windows.Controls.Input.zip" />
     <Content Include="ClientBin\System.Windows.Controls.Navigation.zip" />
     <Content Include="ClientBin\System.Windows.Data.zip" />
+    <Content Include="ClientBin\Telerik.Windows.Controls.DataVisualization.zip" />
     <Content Include="ClientBin\Telerik.Windows.Controls.zip" />
     <Content Include="ClientBin\Telerik.Windows.Controls.Docking.zip" />
     <Content Include="ClientBin\Telerik.Windows.Controls.GridView.zip" />
@@ -368,14 +301,11 @@
     <Content Include="ClientBin\Telerik.Windows.Controls.Navigation.zip" />
     <Content Include="ClientBin\Telerik.Windows.Controls.RibbonBar.zip" />
     <Content Include="ClientBin\Telerik.Windows.Data.zip" />
-    <Content Include="ClientBin\System.Xml.Linq.zip" />
-    <Content Include="ClientBin\System.ServiceModel.Web.Extensions.zip" />
-    <Content Include="ClientBin\Telerik.Windows.Controls.DataVisualization.zip" />
     <Content Include="ClientBin\Telerik.Windows.Documents.zip" />
     <Content Include="ClientBin\Telerik.Windows.Documents.FormatProviders.Pdf.zip" />
-    <Content Include="ClientBin\Telerik.Windows.Zip.zip" />
-    <Content Include="ClientBin\System.Windows.Controls.Input.zip" />
     <Content Include="ClientBin\Microsoft.CSharp.zip" />
+    <Content Include="ClientBin\System.Xml.Linq.zip" />
+    <Content Include="ClientBin\Telerik.Windows.Zip.zip" />
     <None Include="Content\PTS55F.eot" />
     <None Include="Content\PTS55F.ttf" />
     <None Include="disableTimeout.cmd">
@@ -403,17 +333,6 @@
     <Content Include="Views\Tools\ClearHistoricalTrackPoints.cshtml" />
     <Content Include="Views\Home\MapView.cshtml" />
     <Content Include="Views\Tools\CreateHistoricalTrackPoints.cshtml" />
-    <Content Include="view\businessSettings.html" />
-    <Content Include="view\changePassword.html" />
-    <Content Include="view\clearhist.html" />
-    <Content Include="view\importer.html" />
-    <Content Include="view\personalSettings.html" />
-    <Content Include="view\routeDestinationDetails.html" />
-    <Content Include="view\routeDetails.html" />
-    <Content Include="view\routeList.html" />
-    <Content Include="view\testContent.html" />
-    <Content Include="view\updates.html" />
-    <Content Include="view\usersSettings.html" />
     <Content Include="Web.base.config" />
     <Content Include="Web.base.Debug.config">
       <DependentUpon>Web.base.config</DependentUpon>
@@ -431,7 +350,6 @@
       <SubType>Designer</SubType>
     </Content>
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\TestSilverlight.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

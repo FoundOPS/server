@@ -20,6 +20,13 @@ namespace FoundOps.Server
             //Ignore All Services, For WCF RIA Services
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+#if DEBUG
+            //expose the app folder
+            routes.IgnoreRoute("app/{*path}");
+#endif
+            //expose the app build folder
+            routes.IgnoreRoute("ab/{*path}");
+
             //Default route: app.foundops.com/Controller/Action
             routes.MapRoute(
                 // Route name
