@@ -10,6 +10,7 @@ using FoundOps.Common.Tools;
 
 namespace FoundOps.Server.Controllers
 {
+    [FoundOps.Server.Tools.Authorize]
     public class AppController : Controller
     {
         //

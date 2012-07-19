@@ -11,7 +11,7 @@ using Route = FoundOPS.API.Models.Route;
 namespace FoundOPS.API.Api
 {
 #if !DEBUG
-    [Authorize]
+    [FoundOps.Server.Tools.Authorize]
 #endif
     /// <summary>
     /// An api controller which exposes Routes.

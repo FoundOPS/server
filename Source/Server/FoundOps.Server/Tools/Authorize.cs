@@ -1,10 +1,13 @@
 ﻿using System.Web;
-using System.Web.Mvc;
 using System.Web.Security;
 
 namespace FoundOps.Server.Tools
 {
-    public class AddTestUsersThenAuthorizeAttribute : AuthorizeAttribute
+    /// <summary>
+    /// A copy of the Authorize attribute.
+    /// If in debug mode, it adds a test user.
+    /// </summary>
+    public class AuthorizeAttribute : System.Web.Mvc.AuthorizeAttribute
     {
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {

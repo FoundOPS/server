@@ -457,13 +457,13 @@
     <Compile Include="Services\CoreDomainService\CoreDomainService.ServiceTemplates.cs" />
     <Compile Include="Services\CoreDomainService\CoreDomainService.Invoicing.cs" />
     <Compile Include="Services\CoreDomainService\CoreDomainService.Records.cs" />
+    <Compile Include="Tools\Authorize.cs" />
     <Compile Include="Views\DomainServiceTools.cs" />
     <Compile Include="Services\M2M4RiaLinqToEntitiesDomainService.g.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>M2M4RiaLinqToEntitiesDomainService.tt</DependentUpon>
     </Compile>
-    <Compile Include="Tools\AddTestUsersThenAuthorize.cs" />
     <Compile Include="Tools\ImageHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\CoreDomainService\CoreDomainService.Core.cs" />

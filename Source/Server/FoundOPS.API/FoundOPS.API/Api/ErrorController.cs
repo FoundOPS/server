@@ -10,7 +10,7 @@ namespace FoundOPS.API.Api
     /// An api controller to track errors.
     /// </summary>
 #if !DEBUG
-    [Authorize]
+    [FoundOps.Server.Tools.Authorize]
 #endif
     public class ErrorController : ApiController
     {

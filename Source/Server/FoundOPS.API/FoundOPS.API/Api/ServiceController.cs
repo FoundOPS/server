@@ -12,7 +12,7 @@ using Service = FoundOPS.API.Models.Service;
 namespace FoundOPS.API.Api
 {
 #if !DEBUG
-    [Authorize]
+    [FoundOps.Server.Tools.Authorize]
 #endif
     public class ServiceController : ApiController
     {

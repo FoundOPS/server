@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace FoundOps.Server.Controllers
 {
+    [FoundOps.Server.Tools.Authorize]
     public class FileController : AsyncController
     {
         private const int TimeoutMilliseconds = 5000;

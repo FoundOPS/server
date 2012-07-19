@@ -9,7 +9,7 @@ using FoundOps.Core.Tools;
 
 namespace FoundOps.Server.Controllers
 {
-    [Authorize]
+    [FoundOps.Server.Tools.Authorize]
     public class HelperController : AsyncController
     {
         //Look at http://code.google.com/p/zxing/wiki/BarcodeContents for formatting

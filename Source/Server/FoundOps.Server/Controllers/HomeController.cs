@@ -1,4 +1,3 @@
-using FoundOps.Server.Tools;
 using System.Web.Mvc;
 
 namespace FoundOps.Server.Controllers
@@ -10,7 +9,7 @@ namespace FoundOps.Server.Controllers
             return Redirect("/App/Index");
         }
 
-        [AddTestUsersThenAuthorize]
+        [FoundOps.Server.Tools.Authorize]
         public ActionResult MapView()
         {
             return View();

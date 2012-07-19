@@ -22,7 +22,7 @@ using Employee = FoundOPS.API.Models.Employee;
 namespace FoundOPS.API.Api
 {
 #if !DEBUG
-    [Authorize]
+    [FoundOps.Server.Tools.Authorize]
 #endif
     public class SettingsController : ApiController
     {
