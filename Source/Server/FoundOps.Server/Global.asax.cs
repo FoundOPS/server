@@ -1,4 +1,5 @@
 using System;
+using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
 
@@ -13,19 +14,12 @@ namespace FoundOps.Server
 #elif RELEASE
         public static string Mode = "RELEASE";
 #endif
-     
+
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{*allsvc}", new { allsvc = @".*\.svc(/.*)?" });
             //Ignore All Services, For WCF RIA Services
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
-#if DEBUG
-            //expose the app folder
-            routes.IgnoreRoute("app/{*path}");
-#endif
-            //expose the app build folder
-            routes.IgnoreRoute("ab/{*path}");
 
             //Default route: app.foundops.com/Controller/Action
             routes.MapRoute(

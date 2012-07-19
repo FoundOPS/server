@@ -38,11 +38,6 @@
     <!-- Mobile IE allows us to activate ClearType technology for smoothing fonts for easy reading -->
     <meta http-equiv="cleartype" content="on">
     <!-- more tags for your 'head' to consider h5bp.com/d/head-Tips -->
-
-    <link rel="shortcut icon" href="./Icon-36x36"/>
-    <link rel="stylesheet" type="text/css" href="app/styles/jquery.jscrollpane.css" media="all"/>
-    <link rel="stylesheet" type="text/css" href="app/styles/navigator.css">
-    <link rel="stylesheet" type="text/css" href="app/styles/settings.css" />
 </head>
 
 <body ontouchstart="">
@@ -54,7 +49,7 @@
             <object id="silverlightPlugin" data="data:application/x-silverlight-2," type="application/x-silverlight-2"
                     style="height: 1px; width: 1px">
                 <param name="onSourceDownloadProgressChanged" value="onSourceDownloadProgressChanged"/>
-                <param name="splashscreensource" value='@Model["SilverlightVersion"]' />
+                <param name="splashscreensource" value='@Model["SplashSource"]' />
                 <param name="source" value='@Model["Source"]'/>
                 <param name="onLoad" value="onSilverlightPluginLoaded"/>
                 <param name="onError" value="onSilverlightError"/>
@@ -83,11 +78,15 @@
     document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
 </script>
 
-<script data-main="app/js/main.js" src="app/lib/require-jquery.js"></script>
+<link rel="shortcut icon" href="./Icon-36x36"/>
+<link rel="stylesheet/less" type="text/less" href="styles/main.less">
+<script type="text/javascript" src="lib/less.min.js"></script>
+
+<script data-main="js/main.js" src="lib/require-jquery.js"></script>
 <script id="navTemplate" type="text/x-kendo-template">
     <div id='navContainer'>
         <div id='navSearch' class='navElement'><input name='search' type='text' placeholder='Search...'/>
-            <a><img class='navIcon' src='img/search.png'/></a>
+            <a><img src='img/search.png'/></a>
         </div>
         <div id='navClient' class='navElement popup last'>
             <a><img class='navIcon profile' src='#= data[0] #'/><img id='clientLogo' src='#= data[1] #'/></a>

@@ -65,7 +65,7 @@ namespace FoundOPS.API.Api
             dynamic config = new JObject();
             config.name = user.FirstName + " " + user.LastName;
             config.settingsUrl = "#view/personalSettings.html";
-            config.logOutUrl = "Account/LogOut";
+            config.logOutUrl = "../Account/LogOut";
             //config.avatarUrl = user.PartyImage != null
             //                       ? partyImageUrls[user.PartyImage.Id]
             //                       : "img/emptyPerson.png";
