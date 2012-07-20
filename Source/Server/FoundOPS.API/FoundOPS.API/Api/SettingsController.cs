@@ -291,8 +291,8 @@ namespace FoundOPS.API.Api
             var usersForBusinessAccount = this.GetAllUserSettings(roleId).ToArray();
 
             //check the email address is not in use yet for this business account
-            if (usersForBusinessAccount.Select(ua => ua.EmailAddress).Contains(settings.EmailAddress)) 
-                Request.CreateResponse(HttpStatusCode.Conflict);
+            if (usersForBusinessAccount.Select(ua => ua.EmailAddress).Contains(settings.EmailAddress))
+                return Request.CreateResponse(HttpStatusCode.Conflict);
 
             var temporaryPassword = EmailPasswordTools.GeneratePassword();
 
