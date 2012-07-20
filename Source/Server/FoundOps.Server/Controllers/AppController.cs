@@ -22,8 +22,10 @@ namespace FoundOps.Server.Controllers
         //#endif
         public ActionResult Index()
         {
+#if !DEBUG
             if (!HttpContext.User.Identity.IsAuthenticated)
                 return Redirect(ServerConstants.RootFrontSiteUrl);
+#endif
 
 #if DEBUG
             var random = new System.Random();

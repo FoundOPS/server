@@ -8,14 +8,15 @@
             RowIndicatorVisibility="Collapsed" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemsSource="{Binding QueryableCollectionView}">
         <telerik:RadGridView.Columns>
             <telerik:GridViewDataColumn Header="Name" DataMemberBinding="{Binding Name}" />
-            <telerik:GridViewDataColumn Header="Billing Location">
-                <telerik:GridViewDataColumn.CellTemplate>
+            <!--Causing crashing bug-->
+            <!--<telerik:GridViewDataColumn Header="Billing Location">
+              <telerik:GridViewDataColumn.CellTemplate>
                     <DataTemplate>
                         <RadioButton DataContext="{Binding}" GroupName="BillingLocationGroup" Checked="BillingLocationToggleButton_OnChecked" 
                                      IsChecked="{Binding IsDefaultBillingLocation}" />
                     </DataTemplate>
                 </telerik:GridViewDataColumn.CellTemplate>
-            </telerik:GridViewDataColumn>
+            </telerik:GridViewDataColumn>-->
         </telerik:RadGridView.Columns>
     </telerik:RadGridView>
 </UserControl>

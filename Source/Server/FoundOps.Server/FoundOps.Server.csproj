@@ -201,7 +201,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="app\.idea\app.iml" />
     <Content Include="app\.idea\codeStyleSettings.xml" />
     <Content Include="app\.idea\dictionaries\Rod.xml" />
     <Content Include="app\.idea\encodings.xml" />
@@ -214,9 +213,6 @@
     <Content Include="app\.idea\scopes\scope_settings.xml" />
     <Content Include="app\.idea\vcs.xml" />
     <Content Include="app\.idea\workspace.xml" />
-    <Content Include="app\.idea\workspace.xml.orig" />
-    <Content Include="app\built\main-built.js" />
-    <Content Include="app\built\main.css" />
     <Content Include="app\fixedPositionTest.html" />
     <Content Include="app\fixedPositionTest2.html" />
     <Content Include="app\img\addUser.png" />
@@ -365,17 +361,10 @@
     <Content Include="app\navigatorRotationTest.html" />
     <Content Include="app\popupTest.html" />
     <Content Include="app\rotationTest2.html" />
-    <Content Include="app\routes.json" />
     <Content Include="app\Statuses.html" />
-    <Content Include="app\styles\jquery.jscrollpane.less" />
-    <Content Include="app\styles\main.less" />
     <Content Include="app\styles\map.css" />
     <Content Include="app\styles\mapIE.css" />
     <Content Include="app\styles\mobile.css" />
-    <Content Include="app\styles\navigator.less" />
-    <Content Include="app\styles\popup.less" />
-    <Content Include="app\styles\PTS55F.eot" />
-    <Content Include="app\styles\PTS55F.ttf" />
     <Content Include="app\styles\statusStyle.css" />
     <Content Include="app\styles\statusStyleIE.css" />
     <Content Include="app\view\businessSettings.html" />
@@ -496,6 +485,15 @@
     <Content Include="ClientBin\Microsoft.CSharp.zip" />
     <Content Include="ClientBin\System.Xml.Linq.zip" />
     <Content Include="ClientBin\Telerik.Windows.Zip.zip" />
+    <Content Include="app\.idea\app.iml" />
+    <Content Include="app\.idea\workspace.xml.orig" />
+    <Content Include="app\routes.json" />
+    <Content Include="app\styles\jquery.jscrollpane.less" />
+    <Content Include="app\styles\main.less" />
+    <Content Include="app\styles\navigator.less" />
+    <Content Include="app\styles\popup.less" />
+    <Content Include="app\styles\PTS55F.eot" />
+    <Content Include="app\styles\PTS55F.ttf" />
     <None Include="Content\PTS55F.eot" />
     <None Include="Content\PTS55F.ttf" />
     <None Include="disableTimeout.cmd">
