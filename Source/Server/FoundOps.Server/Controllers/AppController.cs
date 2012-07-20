@@ -69,5 +69,11 @@ namespace FoundOps.Server.Controllers
             //#endif
             return View("IndexBuilt", model);
         }
+
+        [FoundOps.Core.Tools.Authorize]
+        public ActionResult MapView()
+        {
+            return View();
+        }
     }
 }
