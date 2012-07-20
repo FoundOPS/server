@@ -8,11 +8,5 @@ namespace FoundOps.Server.Controllers
         {
             return Redirect("/App/Index");
         }
-
-        [FoundOps.Core.Tools.Authorize]
-        public ActionResult MapView()
-        {
-            return View();
-        }
     }
 }
