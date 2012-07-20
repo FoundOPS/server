@@ -149,7 +149,7 @@ namespace FoundOPS.API.Api
         }
 
         [AcceptVerbs("POST")]
-        public HttpResponseMessage UpdatePersonalSettings(UserSettings settings, Guid? roleId)
+        public HttpResponseMessage UpdatePersonalSettings(UserSettings settings, Guid roleId)
         {
             var user = _coreEntitiesContainer.CurrentUserAccount().First();
 
@@ -506,7 +506,7 @@ namespace FoundOPS.API.Api
         }
 
         [AcceptVerbs("POST")]
-        public HttpResponseMessage UpdateBusinessSettings(Guid roleId, BusinessSettings settings)
+        public HttpResponseMessage UpdateBusinessSettings(BusinessSettings settings, Guid roleId)
         {
             var businessAccount = _coreEntitiesContainer.Owner(roleId).FirstOrDefault();
 
@@ -571,9 +571,7 @@ namespace FoundOPS.API.Api
 
             employees.Add(newEmployee);
 
-            var filteredEmployees = employees.Where(e => e.LinkedUserAccountId == null);
-
-            return filteredEmployees.Select(Employee.ConvertModel).OrderBy(e => e.FirstName).AsQueryable();
+            return employees.Select(Employee.ConvertModel).OrderBy(e => e.FirstName).AsQueryable();
         }
 
         #endregion
