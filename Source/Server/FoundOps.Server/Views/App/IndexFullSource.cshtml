@@ -1,0 +1,95 @@
+﻿<!doctype html>
+
+<!--[if IEMobile 7 ]>
+<html class="no-js iem7" lang="en"> <![endif]-->
+<!--[if (gt IEMobile 7)|!(IEMobile)]><!-->
+<html class="no-js" lang="en"> <!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <title>FoundOPS</title>
+
+    <meta name="description" content="">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <!-- Enabling user-scalable=no or calling $("#nav").toggleClass("androidFixedPositionFix"); fixes fixed position bug in android 2.3 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="img/Icon-96x96.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="img/Icon-72x72.png">
+    <link rel="apple-touch-icon-precomposed" href="img/Icon-36x36.png">
+    <link rel="shortcut icon" href="img/Icon-36x36.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <script>(function (a, b, c) { if (c in b && b[c]) { var d, e = a.location, f = /^(a|html)$/i; a.addEventListener("click", function (a) { d = a.target; while (!f.test(d.nodeName)) d = d.parentNode; "href" in d && (d.href.indexOf("http") || ~d.href.indexOf(e.host)) && (a.preventDefault(), e.href = d.href) }, !1) } })(document, window.navigator, "standalone")</script>
+    <meta http-equiv="cleartype" content="on">
+    <!-- more tags for your 'head' to consider h5bp.com/d/head-Tips -->
+</head>
+
+<body ontouchstart="">
+<div id="contentWrapper">
+    <div id="content">
+        <div id="remoteContent">
+        </div>
+        <div id="silverlightControlHost">
+            <object id="silverlightPlugin" data="data:application/x-silverlight-2," type="application/x-silverlight-2"
+                    style="height: 1px; width: 1px">
+                <param name="onSourceDownloadProgressChanged" value="onSourceDownloadProgressChanged"/>
+                <param name="splashscreensource" value="http://localhost:31820/ClientBin/SplashScreen.xaml"/>
+                <param name="source" value="http://localhost:31820/ClientBin/FoundOps.SLClient.Navigator.xap?rev=1"/>
+                <param name="onLoad" value="onSilverlightPluginLoaded"/>
+                <param name="onError" value="onSilverlightError"/>
+                <param name="background" value="#ff333335"/>
+                <param name="windowless" value="true"/>
+                <param name="minRuntimeVersion" value="5.0.61118.0"/>
+                <param name="enableHtmlAccess" value="true"/>
+                <param name="autoUpgrade" value="true"/>
+                <a href="http://go.microsoft.com/fwlink/?LinkID=149156&v=5.0.61118.0" style="text-decoration: none">
+                    <img src="http://go.microsoft.com/fwlink/?LinkId=161376" alt="Get Microsoft Silverlight"
+                         style="border-style: none"/>
+                </a>
+            </object>
+            <iframe id="_sl_historyFrame" style="visibility: hidden; height: 0px; width: 0px; z-index: -1;
+            border: 0px"></iframe>
+        </div>
+    </div>
+</div>
+<!--Setup an empty silverlight view, so there is something to navigate to-->
+<div data-role="view" id="silverlight"></div>
+</body>
+<script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+<link rel="stylesheet/less" type="text/less" href="styles/main.less">
+<script type="text/javascript" src="lib/less.min.js"></script>
+<script data-main="js/main.js" src="lib/require-jquery.js"></script>
+<script id="navTemplate" type="text/x-kendo-template">
+    <div id='navContainer'>
+        <div id='navSearch' class='navElement'><input name='search' type='text' placeholder='Search...'/>
+            <a><img src='img/search.png'/></a>
+        </div>
+        <div id='navClient' class='navElement popup last'>
+            <a><img class='navIcon profile' src='#= data[0] #'/><img id='clientLogo' src='#= data[1] #'/></a>
+        </div>
+    </div>
+    <img id='logo' src='./img/Logo.png' alt='FoundOPS'/>
+</script>
+<script id="expandTemplate" type="text/x-kendo-template">
+    <a id="expandMenuButton">
+        <div id='slideMenu'><img class='iconExpand' src='img/Expand.png'/></div>
+    </a>
+</script>
+<script id="showMenuTemplate" type="text/x-kendo-template">
+    <div id="showMenu">
+        <a><img class='iconShow rotateIcon' src='img/Expand.png'/></a>
+    </div>
+</script>
+<script id="sideBarElementTemplate" type="text/x-kendo-template">
+    <a #= href # class='sideBarElement' data-color='#= color #' data-iconUrl='#= iconUrl #' data-hoverIconUrl='#=
+    hoverIconUrl #'>
+    <span class='icon' style="background: url('#= iconUrl #') #= bgX # #= bgY # no-repeat"></span>
+    <span class='sectionName'>#= name #</span>
+    </a>
+</script>
+</html>

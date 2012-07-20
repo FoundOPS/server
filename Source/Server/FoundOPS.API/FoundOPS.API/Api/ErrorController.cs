@@ -9,9 +9,7 @@ namespace FoundOPS.API.Api
     /// <summary>
     /// An api controller to track errors.
     /// </summary>
-#if !DEBUG
-    [Authorize]
-#endif
+    [FoundOps.Core.Tools.Authorize]
     public class ErrorController : ApiController
     {
         private readonly CoreEntitiesContainer _coreEntitiesContainer;

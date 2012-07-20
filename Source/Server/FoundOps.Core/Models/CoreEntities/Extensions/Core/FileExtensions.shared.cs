@@ -51,7 +51,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         public string RawUrl
         {
-            get { return String.Format(@"{0}{1}/{2}", AzureTools.BlobStorageUrl, OwnerParty.Id, Id); }
+            get { return String.Format(@"{0}{1}/{2}", SharedConstants.BlobStorageUrl, OwnerParty.Id, Id); }
         }
     }
 }

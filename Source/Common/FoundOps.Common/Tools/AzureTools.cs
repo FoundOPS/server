@@ -8,19 +8,6 @@ namespace FoundOps.Common.Tools
     /// </summary>
     public static class AzureTools
     {
-#if DEBUG
-        public const string AccountName = "opsappdebug";
-        private const string BlobStorageSubDomain = "bd";
-#elif TESTRELEASE
-        public const string AccountName = "opsapptest";
-        private const string BlobStorageSubDomain = "bt";
-#elif RELEASE
-        public const string AccountName = "opsapplive";
-        private const string BlobStorageSubDomain = "bp";
-#endif
-
-        public const string BlobStorageUrl = @"http://" + BlobStorageSubDomain + @".foundops.com/";
-
         /// <summary>
         /// Builds the container URL. 
         /// Example url: http://bd.foundops.com/5B15B601-D082-4CAF-BF41-562A20CE1ABB
@@ -28,7 +15,7 @@ namespace FoundOps.Common.Tools
         /// <param name="ownerPartyId">The owner party id.</param>
         public static string BuildContainerUrl(Guid ownerPartyId)
         {
-            return string.Format(@"{0}{1}", BlobStorageUrl, ownerPartyId);
+            return string.Format(@"{0}{1}", SharedConstants.BlobStorageUrl, ownerPartyId);
         }
 
         /// <summary>

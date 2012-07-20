@@ -21,9 +21,7 @@ using Employee = FoundOPS.API.Models.Employee;
 
 namespace FoundOPS.API.Api
 {
-#if !DEBUG
-    [Authorize]
-#endif
+    [FoundOps.Core.Tools.Authorize]
     public class SettingsController : ApiController
     {
         private readonly CoreEntitiesContainer _coreEntitiesContainer;
@@ -65,7 +63,7 @@ namespace FoundOPS.API.Api
             dynamic config = new JObject();
             config.name = user.FirstName + " " + user.LastName;
             config.settingsUrl = "#view/personalSettings.html";
-            config.logOutUrl = "Account/LogOut";
+            config.logOutUrl = "../Account/LogOut";
             //config.avatarUrl = user.PartyImage != null
             //                       ? partyImageUrls[user.PartyImage.Id]
             //                       : "img/emptyPerson.png";

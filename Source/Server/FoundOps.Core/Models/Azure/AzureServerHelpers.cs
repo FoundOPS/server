@@ -20,7 +20,7 @@ namespace FoundOps.Core.Models.Azure
         /// <summary>
         /// The Azure storage connection string.
         /// </summary>
-        public static string StorageConnectionString = "DefaultEndpointsProtocol=http;AccountName=" + AzureTools.AccountName + ";AccountKey=" + AccountKey;
+        public static string StorageConnectionString = "DefaultEndpointsProtocol=http;AccountName=" + SharedConstants.AzureAccountName + ";AccountKey=" + AccountKey;
 
         /// <summary>
         /// The default expiration of a shared access key. Cannot be more than 1 hour without a signed identifier.
@@ -50,7 +50,7 @@ namespace FoundOps.Core.Models.Azure
         public static string GetBlobUrlHelper(Guid ownerPartyId, Guid fileGuid)
         {
             //Create service client for credentialed access to the Blob service
-            var blobClient = new CloudBlobClient(AzureTools.BlobStorageUrl, new StorageCredentialsAccountAndKey(AzureTools.AccountName, AccountKey)) { Timeout = DefaultTimeout };
+            var blobClient = new CloudBlobClient(SharedConstants.BlobStorageUrl, new StorageCredentialsAccountAndKey(SharedConstants.AzureAccountName, AccountKey)) { Timeout = DefaultTimeout };
 
             //Get a reference to a container, which may or may not exist
             var blobContainer = blobClient.GetContainerReference(AzureTools.BuildContainerUrl(ownerPartyId));
@@ -76,8 +76,8 @@ namespace FoundOps.Core.Models.Azure
         public static CloudBlob GetBlobHelper(Guid ownerPartyId, Guid fileGuid)
         {
             //Create service client for credentialed access to the Blob service.
-            var blobClient = new CloudBlobClient(AzureTools.BlobStorageUrl,
-                new StorageCredentialsAccountAndKey(AzureTools.AccountName, AccountKey)) { Timeout = DefaultTimeout };
+            var blobClient = new CloudBlobClient(SharedConstants.BlobStorageUrl,
+                new StorageCredentialsAccountAndKey(SharedConstants.AzureAccountName, AccountKey)) { Timeout = DefaultTimeout };
 
             //Get a reference to a container, which may or may not exist
             var blobContainer = blobClient.GetContainerReference(AzureTools.BuildContainerUrl(ownerPartyId));

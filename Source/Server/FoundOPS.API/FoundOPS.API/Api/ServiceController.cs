@@ -11,9 +11,7 @@ using Service = FoundOPS.API.Models.Service;
 
 namespace FoundOPS.API.Api
 {
-#if !DEBUG
-    [Authorize]
-#endif
+    [FoundOps.Core.Tools.Authorize]
     public class ServiceController : ApiController
     {
         private readonly CoreEntitiesContainer _coreEntitiesContainer;

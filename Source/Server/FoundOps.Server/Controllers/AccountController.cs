@@ -156,14 +156,14 @@ namespace FoundOps.Server.Controllers
 
         #region Password Actions
 
-        [Authorize]
+        [FoundOps.Core.Tools.Authorize]
         public ActionResult ChangePassword()
         {
             ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
             return View();
         }
 
-        [Authorize]
+        [FoundOps.Core.Tools.Authorize]
         [HttpPost]
         public ActionResult ChangePassword(ChangePasswordModel model)
         {

@@ -20,7 +20,7 @@ namespace FoundOps.Server.Controllers
             return View();
         }
 
-        [Authorize]
+        [FoundOps.Core.Tools.Authorize]
         public void SaveChangesError(Guid roleId, string errorString, string innerException)
         {
             //Current user logged in (email)

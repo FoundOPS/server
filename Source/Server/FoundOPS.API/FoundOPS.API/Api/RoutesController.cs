@@ -10,12 +10,10 @@ using Route = FoundOPS.API.Models.Route;
 
 namespace FoundOPS.API.Api
 {
-#if !DEBUG
-    [Authorize]
-#endif
     /// <summary>
     /// An api controller which exposes Routes.
     /// </summary>
+    [FoundOps.Core.Tools.Authorize]
     public class RoutesController : ApiController
     {
         private readonly CoreEntitiesContainer _coreEntitiesContainer;
