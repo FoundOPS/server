@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using FoundOps.Common.Tools;
+using FoundOps.Core.Models;
 
 #if !DEBUG //RELEASE or TESTRELEASE
 using System.IO;

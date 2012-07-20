@@ -1,4 +1,5 @@
 ﻿using System.Web;
+using System.Web.Security;
 
 namespace FoundOps.Core.Tools
 {
