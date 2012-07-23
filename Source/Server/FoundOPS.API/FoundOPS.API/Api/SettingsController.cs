@@ -1,4 +1,5 @@
-﻿using FoundOPS.API.Models;
+﻿using System.Web.Mvc;
+using FoundOPS.API.Models;
 using FoundOPS.API.Tools;
 using FoundOps.Common.NET;
 using FoundOps.Core.Models;
@@ -35,7 +36,7 @@ namespace FoundOPS.API.Api
 
         #region Session
 
-        [AcceptVerbs("GET", "POST")]
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
         public JObject GetSession()
         {
             var user = _coreEntitiesContainer.CurrentUserAccount().Include(ua => ua.RoleMembership)
@@ -125,7 +126,7 @@ namespace FoundOPS.API.Api
 
         #region Personal Settings
 
-        [AcceptVerbs("GET", "POST")]
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
         public UserSettings GetPersonalSettings()
         {
             var user = _coreEntitiesContainer.CurrentUserAccount().Include(u => u.PartyImage).First();
@@ -148,7 +149,7 @@ namespace FoundOPS.API.Api
             return userSettings;
         }
 
-        [AcceptVerbs("POST")]
+        [System.Web.Http.AcceptVerbs("POST")]
         public HttpResponseMessage UpdatePersonalSettings(UserSettings settings, Guid roleId)
         {
             var user = _coreEntitiesContainer.CurrentUserAccount().First();
@@ -175,7 +176,7 @@ namespace FoundOPS.API.Api
             return Request.CreateResponse(HttpStatusCode.Accepted);
         }
 
-        [AcceptVerbs("POST")]
+        [System.Web.Http.AcceptVerbs("POST")]
         public HttpResponseMessage CreatePassword(string newPass, string confirmPass)
         {
             if (MembershipService == null) { MembershipService = new PartyMembershipService(); }
@@ -187,7 +188,7 @@ namespace FoundOPS.API.Api
                                            : HttpStatusCode.NotAcceptable);
         }
 
-        [AcceptVerbs("POST")]
+        [System.Web.Http.AcceptVerbs("POST")]
         public HttpResponseMessage UpdatePassword(string oldPass, string newPass, string confirmPass)
         {
             if (MembershipService == null) { MembershipService = new PartyMembershipService(); }
@@ -223,7 +224,7 @@ namespace FoundOPS.API.Api
 
         #region User Settings
 
-        [AcceptVerbs("GET", "POST")]
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
         public IQueryable<UserSettings> GetAllUserSettings(Guid? roleId)
         {
             //If there is no RoleId passed, we can assume that the user is not authorized to see all the User Settings
@@ -275,7 +276,7 @@ namespace FoundOPS.API.Api
             return userAccountsQueryable.AsQueryable();
         }
 
-        [AcceptVerbs("POST")]
+        [System.Web.Http.AcceptVerbs("POST")]
         public HttpResponseMessage InsertUserSettings(UserSettings settings, Guid? roleId)
         {
             //Check for admin abilities
@@ -370,7 +371,7 @@ namespace FoundOPS.API.Api
         /// <param name="settings">The User Settigns being changed</param>
         /// <param name="roleId">roleId of the Admin user making the changed</param>
         /// <returns>HttpResponseMessage</returns>
-        [AcceptVerbs("POST")]
+        [System.Web.Http.AcceptVerbs("POST")]
         public HttpResponseMessage UpdateUserSettings(UserSettings settings, Guid? roleId)
         {
             //if role has value, means that they are editing as a admin -> find business off that role
@@ -457,7 +458,7 @@ namespace FoundOPS.API.Api
             }
         }
 
-        [AcceptVerbs("POST")]
+        [System.Web.Http.AcceptVerbs("POST")]
         public HttpResponseMessage DeleteUserSettings(UserSettings settings, Guid? roleId)
         {
             if (!roleId.HasValue)
@@ -485,7 +486,7 @@ namespace FoundOPS.API.Api
 
         #region Business Settings
 
-        [AcceptVerbs("GET", "POST")]
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
         public BusinessSettings GetBusinessSettings(Guid roleId)
         {
             var businessAccount = _coreEntitiesContainer.Owner(roleId).Include(ba => ba.PartyImage).FirstOrDefault();
@@ -505,7 +506,7 @@ namespace FoundOPS.API.Api
             return businessSettings;
         }
 
-        [AcceptVerbs("POST")]
+        [System.Web.Http.AcceptVerbs("POST")]
         public HttpResponseMessage UpdateBusinessSettings(BusinessSettings settings, Guid roleId)
         {
             var businessAccount = _coreEntitiesContainer.Owner(roleId).FirstOrDefault();
@@ -526,7 +527,7 @@ namespace FoundOPS.API.Api
         /// x, y, w, h: for cropping
         /// </summary>
         /// <returns>The image url, expiring in 3 hours</returns>
-        [AcceptVerbs("POST")]
+        [System.Web.Http.AcceptVerbs("POST")]
         public string UpdateBusinessImage(Guid roleId)
         {
             var businessAccount = _coreEntitiesContainer.Owner(roleId).Include(ba => ba.PartyImage).FirstOrDefault();
@@ -547,7 +548,7 @@ namespace FoundOPS.API.Api
 
         #region Employees
 
-        [AcceptVerbs("GET", "POST")]
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
         public IQueryable<Employee> GetAllEmployeesForBusiness(Guid? roleId)
         {
             //If there is no RoleId passed, we can assume that the user is not authorized to see all the User Settings
