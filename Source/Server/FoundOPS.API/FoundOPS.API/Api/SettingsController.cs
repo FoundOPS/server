@@ -345,9 +345,9 @@ namespace FoundOPS.API.Api
 
             //Create the link that will login the new user and then redirect them to the
             //settings page where they can change their password
+            //ex: http://localhost:9711/api/auth/Login?email=jperl@foundops.com&pass=seltzer&redirectUrl=http://localhost:8000/navigator.html%23view/createPassword.html
             var redirect = ServerConstants.RootApplicationUrl + "/navigator.html%23view/createPassword.html";
-            var link = ServerConstants.RootApiUrl + "/Account/Login?EmailAddress=" + user.EmailAddress + "&Password=" + temporaryPassword + "&returnUrl=" + redirect;
-            //http://localhost:31820/Account/Login?EmailAddress=jperl@foundops.com&Password=seltzer&returnUrl=http://localhost:8000/navigator.html%23view/createPassword.html
+            var link = ServerConstants.RootApiUrl + "/api/auth/Login?email=" + user.EmailAddress + "&pass=" + temporaryPassword + "&redirectUrl=" + redirect;
 
             //Construct the email
             var from = _coreEntitiesContainer.CurrentUserAccount().First().EmailAddress;
