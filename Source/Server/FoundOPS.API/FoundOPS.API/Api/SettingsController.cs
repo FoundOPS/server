@@ -416,45 +416,51 @@ namespace FoundOPS.API.Api
             var userLinkedEmployee = user.LinkedEmployees.FirstOrDefault(e => e.EmployerId == businessAccount.Id);
 
             var employee = userLinkedEmployee != null ? _coreEntitiesContainer.Employees.FirstOrDefault(e => userLinkedEmployee.Id == e.Id) : null;
-            
+
             //Changing a user from one employee to another
-            if (employee != null && settings.Employee != null && employee.Id != settings.Employee.Id && settings.Employee.FirstName != "None")
+            if (employee != null && settings.Employee != null && employee.Id != settings.Employee.Id
+                //ignore the none option
+                && settings.Employee.Id != Guid.Empty)
             {
                 user.LinkedEmployees.Remove(employee);
-                
-                AddNewEmployeeToUser(settings, user, businessAccount); 
+
+                LinkEmployeeToUser(settings, user, businessAccount);
             }
+
             //Changing a user from an employee to no employee
-            else if(settings.Employee != null && employee != null && settings.Employee.FirstName == "None")
+            //If the employee Id == Guid.Empty, the none option was chosen
+            else if (settings.Employee != null && employee != null && settings.Employee.Id == Guid.Empty)
             {
                 user.LinkedEmployees.Remove(employee);
             }
             //Changing a user from no employee to an employee
-            else if (employee == null && settings.Employee != null && settings.Employee.FirstName != "None")
+            else if (employee == null && settings.Employee != null && settings.Employee.Id != Guid.Empty)
             {
-                AddNewEmployeeToUser(settings, user, businessAccount); 
+                LinkEmployeeToUser(settings, user, businessAccount);
             }
+
             _coreEntitiesContainer.SaveChanges();
 
             return Request.CreateResponse(HttpStatusCode.Accepted);
         }
 
-        private void AddNewEmployeeToUser(UserSettings settings, UserAccount user, BusinessAccount businessAccount)
+        //This will link the employee to the user account. If there is no employee, it will create a new one
+        private void LinkEmployeeToUser(UserSettings settings, UserAccount user, BusinessAccount businessAccount)
         {
-            var newEmployee = _coreEntitiesContainer.Employees.FirstOrDefault(e => e.Id == settings.Employee.Id);
+            var employee = _coreEntitiesContainer.Employees.FirstOrDefault(e => e.Id == settings.Employee.Id);
 
-            if (newEmployee != null)
-                user.LinkedEmployees.Add(newEmployee);
+            if (employee != null)
+                user.LinkedEmployees.Add(employee);
             else
             {
-                newEmployee = new FoundOps.Core.Models.CoreEntities.Employee
+                employee = new FoundOps.Core.Models.CoreEntities.Employee
                 {
                     Id = Guid.NewGuid(),
                     FirstName = settings.EmailAddress,
                     LastName = settings.LastName,
                     Employer = businessAccount
                 };
-                user.LinkedEmployees.Add(newEmployee);
+                user.LinkedEmployees.Add(employee);
             }
         }
 
@@ -565,10 +571,12 @@ namespace FoundOPS.API.Api
 
             //Add blank employee
             var newEmployee = new FoundOps.Core.Models.CoreEntities.Employee
-                {
-                    FirstName = "None",
-                    LastName = ""
-                };
+            {
+                //Identify it with an empty guid
+                Id = new Guid(),
+                FirstName = "None",
+                LastName = ""
+            };
 
             employees.Add(newEmployee);
 
