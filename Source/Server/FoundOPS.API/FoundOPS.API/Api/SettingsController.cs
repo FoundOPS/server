@@ -346,8 +346,9 @@ namespace FoundOPS.API.Api
 
             //Create the link that will login the new user and then redirect them to the
             //settings page where they can change their password
-            var redirect = ServerConstants.RootApplicationUrl + "/navigator.html#view/createPassword.html";
-            var link = ServerConstants.RootApiUrl + "/api/Helper/Login?email=" + user.EmailAddress + "&pass=" + temporaryPassword + "&redirect=" + redirect;
+            //ex: http://localhost:9711/api/auth/Login?email=jperl@foundops.com&pass=seltzer&redirectUrl=http://localhost:8000/navigator.html%23view/createPassword.html
+            var redirect = ServerConstants.RootApplicationUrl + "/navigator.html%23view/createPassword.html";
+            var link = ServerConstants.RootApiUrl + "/api/auth/Login?email=" + user.EmailAddress + "&pass=" + temporaryPassword + "&redirectUrl=" + redirect;
 
             //Construct the email
             var from = _coreEntitiesContainer.CurrentUserAccount().First().EmailAddress;
@@ -430,7 +431,7 @@ namespace FoundOPS.API.Api
                 user.LinkedEmployees.Remove(employee);
             }
             //Changing a user from no employee to an employee
-            else if (employee == null && settings.Employee != null)
+            else if (employee == null && settings.Employee != null && settings.Employee.FirstName != "None")
             {
                 AddNewEmployeeToUser(settings, user, businessAccount); 
             }
