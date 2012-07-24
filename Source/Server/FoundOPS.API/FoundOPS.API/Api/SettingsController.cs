@@ -133,7 +133,7 @@ namespace FoundOPS.API.Api
                 Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                EmailAddress = user.EmailAddress
+                EmailAddress = user.EmailAddress.Trim()
             };
 
             //Load image url
@@ -165,7 +165,7 @@ namespace FoundOPS.API.Api
             //Update Properties
             user.FirstName = settings.FirstName;
             user.LastName = settings.LastName;
-            user.EmailAddress = settings.EmailAddress;
+            user.EmailAddress = settings.EmailAddress.Trim();
 
             //Save changes
             _coreEntitiesContainer.SaveChanges();
@@ -289,14 +289,14 @@ namespace FoundOPS.API.Api
             var usersForBusinessAccount = this.GetAllUserSettings(roleId).ToArray();
 
             //check the email address is not in use yet for this business account
-            if (usersForBusinessAccount.Select(ua => ua.EmailAddress).Contains(settings.EmailAddress))
+            if (usersForBusinessAccount.Select(ua => ua.EmailAddress.Trim()).Contains(settings.EmailAddress.Trim()))
                 return Request.CreateResponse(HttpStatusCode.Conflict);
 
             var temporaryPassword = EmailPasswordTools.GeneratePassword();
 
             var user = new UserAccount
             {
-                EmailAddress = settings.EmailAddress,
+                EmailAddress = settings.EmailAddress.Trim(),
                 Id = Guid.NewGuid(),
                 FirstName = settings.FirstName,
                 LastName = settings.LastName,
@@ -348,7 +348,6 @@ namespace FoundOPS.API.Api
             var link = ServerConstants.RootApiUrl + "/api/auth/Login?email=" + user.EmailAddress + "&pass=" + temporaryPassword + "&redirectUrl=" + redirect;
 
             //Construct the email
-            var from = _coreEntitiesContainer.CurrentUserAccount().First().EmailAddress;
             var subject = "Your FoundOPS invite from " + sender;
             var body = "Hi " + recipient + ", \r\n\r\n" + sender + " has created a user account for you in FoundOPS. \r\n\r\nFoundOPS is an easy to use " +
                                 "tool that helps field services teams communicate and provide the best " +
@@ -388,7 +387,8 @@ namespace FoundOPS.API.Api
             //If the email address of the current user changed, check the email address is not in use yet for this business account
             var usersForBusinessAccount = this.GetAllUserSettings(roleId).ToArray();
 
-            if (user.EmailAddress != settings.EmailAddress && usersForBusinessAccount.Select(ua => ua.EmailAddress).Contains(settings.EmailAddress))
+            //Email address already exists
+            if (user.EmailAddress.Trim() != settings.EmailAddress.Trim() && usersForBusinessAccount.Select(ua => ua.EmailAddress.Trim()).Contains(settings.EmailAddress.Trim()))
                 return Request.CreateResponse(HttpStatusCode.Conflict);
 
             user.FirstName = settings.FirstName;
