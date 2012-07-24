@@ -65,12 +65,9 @@ namespace FoundOPS.API.Api
             config.name = user.FirstName + " " + user.LastName;
             config.settingsUrl = "#view/personalSettings.html";
             config.logOutUrl = "../Account/LogOut";
-            //config.avatarUrl = user.PartyImage != null
-            //                       ? partyImageUrls[user.PartyImage.Id]
-            //                       : "img/emptyPerson.png";
-
-            //temporary until settings is working well
-            config.avatarUrl = "img/emptyPerson.png";
+            config.avatarUrl = user.PartyImage != null
+                                   ? partyImageUrls[user.PartyImage.Id]
+                                   : "img/emptyPerson.png";
 
             var jRoles = new List<JObject>();
             //Go through each of the user's roles
