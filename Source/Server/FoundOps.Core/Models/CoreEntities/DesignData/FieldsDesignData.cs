@@ -28,6 +28,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
         {
             DesignTextBoxSmallField = new TextBoxField
             {
+                Id = Guid.NewGuid(),
                 Name = "Lock Info",
                 Required = false,
                 Tooltip = "Helpful Hint",
@@ -36,6 +37,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             DesignTextBoxLargeField = new TextBoxField
             {
+                Id = Guid.NewGuid(),
                 Name = "Notes",
                 Required = false,
                 Tooltip = "Helpful Hint",
@@ -44,6 +46,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             DesignTimeField = new DateTimeField
             {
+                Id = Guid.NewGuid(),
                 Name = "Start/End Times",
                 Required = false,
                 Tooltip = "Helpful Hint",
@@ -54,6 +57,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             DesignNumberField = new NumericField
             {
+                Id = Guid.NewGuid(),
                 Name = "Number of Stops",
                 Required = false,
                 Tooltip = "Helpful Hint",
@@ -65,6 +69,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             DesignCurrencyField = new NumericField
             {
+                Id = Guid.NewGuid(),
                 Name = "Price",
                 Required = false,
                 Tooltip = "Helpful Hint",
@@ -73,6 +78,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             DesignPercentageField = new NumericField
             {
+                Id = Guid.NewGuid(),
                 Name = "Percentage",
                 Required = false,
                 Tooltip = "Helpful Hint",
@@ -81,6 +87,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             DesignCheckBoxField = new OptionsField
             {
+                Id = Guid.NewGuid(),
                 Name = "CheckBox Options",
                 Required = false,
                 Tooltip = "Helpful Hint",
@@ -90,6 +97,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             DesignComboBoxField = new OptionsField
             {
+                Id = Guid.NewGuid(),
                 Name = "ComboBox Options",
                 Required = false,
                 Tooltip = "Helpful Hint",
@@ -101,6 +109,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             DesignCheckListField = new OptionsField
             {
+                Id = Guid.NewGuid(),
                 Name = "CheckList Options",
                 Required = false,
                 Tooltip = "Helpful Hint",
@@ -113,6 +122,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             DesignLocationField = new LocationField
             {
+                Id = Guid.NewGuid(),
                 Name = "Locations",
                 Required = false,
                 Tooltip = "Helpful Hint"

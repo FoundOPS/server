@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FoundOps.Core.Models.CoreEntities.DesignData
 {
@@ -53,10 +54,16 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             };
             OilServiceTemplate.Invoice.Id = OilServiceTemplate.Id;
 
-            OilServiceTemplate.Fields.Add(CreateHoseLengthField());
-            OilServiceTemplate.Fields.Add(CreateLockInfoField());
-            OilServiceTemplate.Fields.Add(CreateNotesField());
-            OilServiceTemplate.Fields.Add(CreateServiceDestinationField());
+            var oilFields = new FieldsDesignData().DesignFields.ToArray();
+            foreach (var field in oilFields)
+                OilServiceTemplate.Fields.Add(field);
+
+            //OilServiceTemplate.Fields.Add(CreateHoseLengthField());
+            //OilServiceTemplate.Fields.Add(CreateLockInfoField());
+            //OilServiceTemplate.Fields.Add(CreateNotesField());
+            //OilServiceTemplate.Fields.Add(CreateServiceDestinationField());
+
+            var smallGreaseFields = new FieldsDesignData().DesignFields.ToArray();
 
             SmallGreaseTrapServiceTemplate = new ServiceTemplate
             {
@@ -68,10 +75,15 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             };
             SmallGreaseTrapServiceTemplate.Invoice.Id = SmallGreaseTrapServiceTemplate.Id;
 
-            SmallGreaseTrapServiceTemplate.Fields.Add(CreateHoseLengthField());
-            SmallGreaseTrapServiceTemplate.Fields.Add(CreateNotesField());
+            foreach (var field in smallGreaseFields)
+                SmallGreaseTrapServiceTemplate.Fields.Add(field);
+
+            //SmallGreaseTrapServiceTemplate.Fields.Add(CreateHoseLengthField());
+            //SmallGreaseTrapServiceTemplate.Fields.Add(CreateNotesField());
 
             SmallGreaseTrapServiceTemplate.Fields.Add(CreateServiceDestinationField());
+
+            var interceptorFields = new FieldsDesignData().DesignFields.ToArray();
 
             InterceptorServiceTemplate = new ServiceTemplate
             {
@@ -83,9 +95,14 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             };
             InterceptorServiceTemplate.Invoice.Id = InterceptorServiceTemplate.Id;
 
-            InterceptorServiceTemplate.Fields.Add(CreateHoseLengthField());
-            InterceptorServiceTemplate.Fields.Add(CreateNotesField());
-            InterceptorServiceTemplate.Fields.Add(CreateServiceDestinationField());
+            foreach (var field in interceptorFields)
+                InterceptorServiceTemplate.Fields.Add(field);
+
+            //InterceptorServiceTemplate.Fields.Add(CreateHoseLengthField());
+            //InterceptorServiceTemplate.Fields.Add(CreateNotesField());
+            //InterceptorServiceTemplate.Fields.Add(CreateServiceDestinationField());
+
+            var hydroFields = new FieldsDesignData().DesignFields.ToArray();
 
             HydrojettingServiceTemplate = new ServiceTemplate
             {
@@ -97,10 +114,14 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             };
             HydrojettingServiceTemplate.Invoice.Id = HydrojettingServiceTemplate.Id;
 
-            HydrojettingServiceTemplate.Fields.Add(CreateHoseLengthField());
-            HydrojettingServiceTemplate.Fields.Add(CreateNotesField());
+            foreach (var field in hydroFields)
+                HydrojettingServiceTemplate.Fields.Add(field);
 
-            HydrojettingServiceTemplate.Fields.Add(CreateServiceDestinationField());
+            //HydrojettingServiceTemplate.Fields.Add(CreateHoseLengthField());
+            //HydrojettingServiceTemplate.Fields.Add(CreateNotesField());
+            //HydrojettingServiceTemplate.Fields.Add(CreateServiceDestinationField());
+
+            var containerFields = new FieldsDesignData().DesignFields.ToArray();
 
             ContainerReplacementServiceTemplate = new ServiceTemplate
             {
@@ -112,12 +133,17 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             };
             ContainerReplacementServiceTemplate.Invoice.Id = ContainerReplacementServiceTemplate.Id;
 
-            ContainerReplacementServiceTemplate.Fields.Add(CreateHoseLengthField());
-            ContainerReplacementServiceTemplate.Fields.Add(CreateLockInfoField());
-            ContainerReplacementServiceTemplate.Fields.Add(CreateNotesField());
-            ContainerReplacementServiceTemplate.Fields.Add(CreateServiceDestinationField());
+            foreach (var field in containerFields)
+                ContainerReplacementServiceTemplate.Fields.Add(field);
+
+            //ContainerReplacementServiceTemplate.Fields.Add(CreateHoseLengthField());
+            //ContainerReplacementServiceTemplate.Fields.Add(CreateLockInfoField());
+            //ContainerReplacementServiceTemplate.Fields.Add(CreateNotesField());
+            //ContainerReplacementServiceTemplate.Fields.Add(CreateServiceDestinationField());
 
             #region Environmental Biotech
+
+            var enviroFields = new FieldsDesignData().DesignFields.ToArray();
 
             EnvironmentalBiotechServiceTemplate = new ServiceTemplate
             {
@@ -129,9 +155,12 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             };
             EnvironmentalBiotechServiceTemplate.Invoice.Id = EnvironmentalBiotechServiceTemplate.Id;
 
-            EnvironmentalBiotechServiceTemplate.Fields.Add(CreateNotesField());
-            EnvironmentalBiotechServiceTemplate.Fields.Add(CreateServiceDestinationField());
-            EnvironmentalBiotechServiceTemplate.Fields.Add(CreateEnvironmentalBiotechServicesCheckListField());
+            foreach (var field in enviroFields)
+                EnvironmentalBiotechServiceTemplate.Fields.Add(field);
+
+            //EnvironmentalBiotechServiceTemplate.Fields.Add(CreateNotesField());
+            //EnvironmentalBiotechServiceTemplate.Fields.Add(CreateServiceDestinationField());
+            //EnvironmentalBiotechServiceTemplate.Fields.Add(CreateEnvironmentalBiotechServicesCheckListField());
 
             #endregion
 
@@ -159,8 +188,12 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             };
             DirectServiceTemplate.Invoice.Id = DirectServiceTemplate.Id;
 
-            DirectServiceTemplate.Fields.Add(CreateNotesField());
-            DirectServiceTemplate.Fields.Add(CreateServiceDestinationField());
+            var directFields = new FieldsDesignData().DesignFields.ToArray();
+            foreach (var field in directFields)
+                DirectServiceTemplate.Fields.Add(field);
+
+            //DirectServiceTemplate.Fields.Add(CreateNotesField());
+            //DirectServiceTemplate.Fields.Add(CreateServiceDestinationField());
 
             RushServiceTemplate = new ServiceTemplate
             {
@@ -172,8 +205,12 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             };
             RushServiceTemplate.Invoice.Id = RushServiceTemplate.Id;
 
-            RushServiceTemplate.Fields.Add(CreateNotesField());
-            RushServiceTemplate.Fields.Add(CreateServiceDestinationField());
+            var rushFields = new FieldsDesignData().DesignFields.ToArray();
+            foreach (var field in rushFields)
+                RushServiceTemplate.Fields.Add(field);
+
+            //RushServiceTemplate.Fields.Add(CreateNotesField());
+            //RushServiceTemplate.Fields.Add(CreateServiceDestinationField());
 
             RegularServiceTemplate = new ServiceTemplate
             {
@@ -185,11 +222,15 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             };
             RegularServiceTemplate.Invoice.Id = RegularServiceTemplate.Id;
 
-            RegularServiceTemplate.Fields.Add(CreateNotesField());
-            RegularServiceTemplate.Fields.Add(CreateHoseLengthField());
-            RegularServiceTemplate.Fields.Add(CreateLockInfoField());
-            RegularServiceTemplate.Fields.Add(CreateEnvironmentalBiotechServicesCheckListField());
-            RegularServiceTemplate.Fields.Add(CreateServiceDestinationField());
+            var regularFields = new FieldsDesignData().DesignFields.ToArray();
+            foreach (var field in regularFields)
+                RegularServiceTemplate.Fields.Add(field);
+
+            //RegularServiceTemplate.Fields.Add(CreateNotesField());
+            //RegularServiceTemplate.Fields.Add(CreateHoseLengthField());
+            //RegularServiceTemplate.Fields.Add(CreateLockInfoField());
+            //RegularServiceTemplate.Fields.Add(CreateEnvironmentalBiotechServicesCheckListField());
+            //RegularServiceTemplate.Fields.Add(CreateServiceDestinationField());
 
             EconomyServiceTemplate = new ServiceTemplate
             {
@@ -201,8 +242,12 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             };
             EconomyServiceTemplate.Invoice.Id = EconomyServiceTemplate.Id;
 
-            EconomyServiceTemplate.Fields.Add(CreateNotesField());
-            EconomyServiceTemplate.Fields.Add(CreateServiceDestinationField());
+            var economyFields = new FieldsDesignData().DesignFields.ToArray();
+            foreach (var field in economyFields)
+                EconomyServiceTemplate.Fields.Add(field);
+
+            //EconomyServiceTemplate.Fields.Add(CreateNotesField());
+            //EconomyServiceTemplate.Fields.Add(CreateServiceDestinationField());
 
             SameDayDeliveryCompanyServiceTemplates = new List<ServiceTemplate>
                                                          {
