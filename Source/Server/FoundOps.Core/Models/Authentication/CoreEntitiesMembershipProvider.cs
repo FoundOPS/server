@@ -51,6 +51,9 @@ namespace FoundOps.Core.Models.Authentication
 
         public override bool ValidateUser(string username, string password)
         {
+            //trim the email address
+            username = username.Trim();
+
             var userParty = _coreEntitiesContainer.GetUserAccount(username);
 
             if (userParty == null || userParty.PasswordHash == null)

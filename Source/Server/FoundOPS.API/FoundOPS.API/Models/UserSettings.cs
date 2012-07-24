@@ -30,7 +30,7 @@ namespace FoundOPS.API.Models
                     Id = userAccount.Id,
                     FirstName = userAccount.FirstName,
                     LastName = userAccount.LastName,
-                    EmailAddress = userAccount.EmailAddress,
+                    EmailAddress = userAccount.EmailAddress.Trim(),
                     Role = role.Name
                 };
 

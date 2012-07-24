@@ -133,7 +133,7 @@ namespace FoundOPS.API.Api
                 Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                EmailAddress = user.EmailAddress
+                EmailAddress = user.EmailAddress.Trim()
             };
 
             //Load image url
@@ -165,7 +165,7 @@ namespace FoundOPS.API.Api
             //Update Properties
             user.FirstName = settings.FirstName;
             user.LastName = settings.LastName;
-            user.EmailAddress = settings.EmailAddress;
+            user.EmailAddress = settings.EmailAddress.Trim();
 
             //Save changes
             _coreEntitiesContainer.SaveChanges();
@@ -348,7 +348,6 @@ namespace FoundOPS.API.Api
             var link = ServerConstants.RootApiUrl + "/api/auth/Login?email=" + user.EmailAddress + "&pass=" + temporaryPassword + "&redirectUrl=" + redirect;
 
             //Construct the email
-            var from = _coreEntitiesContainer.CurrentUserAccount().First().EmailAddress.Trim();
             var subject = "Your FoundOPS invite from " + sender;
             var body = "Hi " + recipient + ", \r\n\r\n" + sender + " has created a user account for you in FoundOPS. \r\n\r\nFoundOPS is an easy to use " +
                                 "tool that helps field services teams communicate and provide the best " +
@@ -356,7 +355,7 @@ namespace FoundOPS.API.Api
                                 " \r\n\r\nIf you have any difficulty accepting the invitation, email us at " +
                                 "support@foundops.com. \r\n\r\n\r\nThe FoundOPS Team";
 
-            EmailPasswordTools.SendEmail(user.EmailAddress.Trim(), subject, body);
+            EmailPasswordTools.SendEmail(user.EmailAddress, subject, body);
 
             #endregion
 
