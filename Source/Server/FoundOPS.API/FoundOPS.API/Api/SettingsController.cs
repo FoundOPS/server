@@ -289,7 +289,7 @@ namespace FoundOPS.API.Api
             var usersForBusinessAccount = this.GetAllUserSettings(roleId).ToArray();
 
             //check the email address is not in use yet for this business account
-            if (usersForBusinessAccount.Select(ua => ua.EmailAddress).Contains(settings.EmailAddress))
+            if (usersForBusinessAccount.Select(ua => ua.EmailAddress.Trim()).Contains(settings.EmailAddress.Trim()))
                 return Request.CreateResponse(HttpStatusCode.Conflict);
 
             var temporaryPassword = EmailPasswordTools.GeneratePassword();
@@ -388,7 +388,8 @@ namespace FoundOPS.API.Api
             //If the email address of the current user changed, check the email address is not in use yet for this business account
             var usersForBusinessAccount = this.GetAllUserSettings(roleId).ToArray();
 
-            if (user.EmailAddress != settings.EmailAddress && usersForBusinessAccount.Select(ua => ua.EmailAddress).Contains(settings.EmailAddress))
+            //Email address already exists
+            if (user.EmailAddress.Trim() != settings.EmailAddress.Trim() && usersForBusinessAccount.Select(ua => ua.EmailAddress.Trim()).Contains(settings.EmailAddress.Trim()))
                 return Request.CreateResponse(HttpStatusCode.Conflict);
 
             user.FirstName = settings.FirstName;
