@@ -63,10 +63,10 @@ namespace FoundOps.Server.Controllers
                     {"BlobRoot", SharedConstants.BlobStorageUrl + "app/"}
                 };
 
-            //#if DEBUG
-            //            //if full source
-            //            return View("IndexFullSource", model);
-            //#endif
+#if DEBUG
+            //if full source
+            return View("IndexFullSource", model);
+#endif
             return View("IndexBuilt", model);
         }
 
