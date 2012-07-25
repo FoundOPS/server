@@ -65,7 +65,7 @@ BEGIN
 
 	--Fill in the Employee Name based on the Id
 	UPDATE @EmployeesForRoutesForDate
-	SET EmployeeName = (SELECT FirstName + ' ' + LastName FROM Parties_Person WHERE Id = EmployeeId)
+	SET EmployeeName = (SELECT FirstName + ' ' + LastName FROM Employees WHERE Id = EmployeeId)
 	FROM @EmployeesForRoutesForDate
 
 

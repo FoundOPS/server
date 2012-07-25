@@ -1,7 +1,6 @@
 ﻿CREATE TABLE [dbo].[Fields] (
     [Id]                UNIQUEIDENTIFIER NOT NULL,
     [Name]              NVARCHAR (MAX)   NOT NULL,
-    [Group]             NVARCHAR (MAX)   NOT NULL,
     [Required]          BIT              NOT NULL,
     [Tooltip]           NVARCHAR (MAX)   NULL,
     [ParentFieldId]     UNIQUEIDENTIFIER NULL,
@@ -10,6 +9,8 @@
     CONSTRAINT [FK_FieldField] FOREIGN KEY ([ParentFieldId]) REFERENCES [dbo].[Fields] ([Id]),
     CONSTRAINT [FK_ServiceTemplateField] FOREIGN KEY ([ServiceTemplateId]) REFERENCES [dbo].[ServiceTemplates] ([Id]) ON DELETE CASCADE
 );
+
+
 
 
 

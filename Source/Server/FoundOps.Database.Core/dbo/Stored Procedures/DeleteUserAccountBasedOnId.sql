@@ -10,21 +10,8 @@ CREATE PROCEDURE dbo.DeleteUserAccountBasedOnId
 	AS
 	BEGIN
 
-	DELETE FROM ContactInfoSet
-	WHERE		PartyId = @providerId
-
-	DELETE FROM Roles
-	WHERE		OwnerPartyId = @providerId
-
-	DELETE FROM Vehicles 
-	WHERE		OwnerPartyId = @providerId
-
-	DELETE FROM Files
-	WHERE		PartyId = @providerId
-
-	DELETE FROM UserAccountLog
-	WHERE UserAccountId = @providerId
-
+	EXECUTE [dbo].[DeleteBasicPartyBasedOnId] @providerId
+	
 	DELETE FROM Parties_UserAccount
 	WHERE Id = @providerId
 

@@ -150,6 +150,7 @@
     <None Include="Snapshots\FoundOps.Database.Core_20120604_08-00-38.dacpac" />
     <None Include="Snapshots\FoundOps.Database.Core_20120612_07-13-04.dacpac" />
     <None Include="Snapshots\FoundOps.Database.Core_20120626_06-59-06.dacpac" />
+    <None Include="Snapshots\FoundOps.Database.Core_20120724_08-51-31.dacpac" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\RouteEmployee.sql">
@@ -200,15 +201,7 @@
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
-    <Build Include="dbo\Tables\Parties_Person.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
     <Build Include="dbo\Tables\Parties_BusinessAccount.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
-    <Build Include="dbo\Tables\Parties_Business.sql">
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
@@ -337,7 +330,6 @@
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
     <Build Include="dbo\Views\ServiceTemplatesWithVendorId.sql" />
-    <Build Include="dbo\Views\PartiesWithName.sql" />
     <Build Include="dbo\Functions\GetPreviousOccurrence.sql" />
     <Build Include="dbo\Functions\GetPreviousDayInMonth.sql" />
     <Build Include="dbo\Functions\GetNextOccurence.sql" />
