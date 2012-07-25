@@ -87,7 +87,8 @@ namespace FoundOps.Core.Tools
         /// <returns></returns>
         public static UserAccount GetUserAccount(this CoreEntitiesContainer coreEntitiesContainer, string emailAddress)
         {
-            return coreEntitiesContainer.Parties.OfType<UserAccount>().First(userAccount => userAccount.EmailAddress == emailAddress);
+            var email = emailAddress.Trim();
+            return coreEntitiesContainer.Parties.OfType<UserAccount>().FirstOrDefault(userAccount => userAccount.EmailAddress == email);
         }
 
         /// <summary>
@@ -104,6 +105,7 @@ namespace FoundOps.Core.Tools
 #else
             currentUsersEmail = HttpContext.Current.User.Identity.Name;
 #endif
+            currentUsersEmail = currentUsersEmail.Trim();
             return coreEntitiesContainer.Parties.OfType<UserAccount>().Where(userAccount => userAccount.EmailAddress == currentUsersEmail);
         }
 

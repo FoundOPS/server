@@ -177,7 +177,9 @@ namespace FoundOps.Core.Models.Authentication
             try
             {
                 MembershipUser currentUser = _provider.GetUser(userName, true /* userIsOnline */);
-                return currentUser.ChangePassword(oldPassword, newPassword);
+                var worked = currentUser.ChangePassword(oldPassword, newPassword);
+
+                return worked;
             }
             catch (ArgumentException)
             {
