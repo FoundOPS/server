@@ -161,7 +161,7 @@ namespace FoundOPS.API.Api
             //If the email address of the current user changed, check the email address is not in use yet
             if (user.EmailAddress != settings.EmailAddress &&
                 usersForBusinessAccount.Select(ua => ua.EmailAddress).Contains(settings.EmailAddress))
-                return Request.CreateResponse(HttpStatusCode.Conflict);
+                return Request.CreateResponse(HttpStatusCode.Conflict, "This email address already exists");
 
             //Update Properties
             user.FirstName = settings.FirstName;
@@ -293,7 +293,7 @@ namespace FoundOPS.API.Api
 
             //check the email address is not in use yet for this business account
             if (usersForBusinessAccount.Select(ua => ua.EmailAddress.Trim()).Contains(settings.EmailAddress.Trim()))
-                return Request.CreateResponse(HttpStatusCode.Conflict);
+                return Request.CreateResponse(HttpStatusCode.Conflict, "This email address already exists");
 
             var temporaryPassword = EmailPasswordTools.GeneratePassword();
 
@@ -392,7 +392,7 @@ namespace FoundOPS.API.Api
 
             //Email address already exists
             if (user.EmailAddress.Trim() != settings.EmailAddress.Trim() && usersForBusinessAccount.Select(ua => ua.EmailAddress.Trim()).Contains(settings.EmailAddress.Trim()))
-                return Request.CreateResponse(HttpStatusCode.Conflict);
+                return Request.CreateResponse(HttpStatusCode.Conflict, "This email address already exists");
 
             user.FirstName = settings.FirstName;
             user.LastName = settings.LastName;
@@ -469,13 +469,13 @@ namespace FoundOPS.API.Api
         public HttpResponseMessage DeleteUserSettings(UserSettings settings, Guid? roleId)
         {
             if (!roleId.HasValue)
-                return Request.CreateResponse(HttpStatusCode.Unauthorized);
+                return Request.CreateResponse(HttpStatusCode.Unauthorized, "Invalid RoleId passed");
 
-            var businessAccount = _coreEntitiesContainer.Owner(roleId.Value).FirstOrDefault();
+            var businessAccount = _coreEntitiesContainer.Owner<BusinessAccount>(roleId.Value, new[] { RoleType.Administrator }).FirstOrDefault();
 
             //If they are not an admin, they do not have the ability to insert new Users
             if (businessAccount == null)
-                return Request.CreateResponse(HttpStatusCode.Unauthorized);
+                return Request.CreateResponse(HttpStatusCode.Unauthorized, "User does not have Admin abilities");
 
             var user = _coreEntitiesContainer.Parties.OfType<UserAccount>().First(ua => ua.Id == settings.Id);
 
@@ -496,7 +496,7 @@ namespace FoundOPS.API.Api
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         public BusinessSettings GetBusinessSettings(Guid roleId)
         {
-            var businessAccount = _coreEntitiesContainer.Owner(roleId).FirstOrDefault();
+            var businessAccount = _coreEntitiesContainer.Owner<BusinessAccount>(roleId, new[] { RoleType.Administrator }).FirstOrDefault();
 
             if (businessAccount == null)
                 ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
@@ -518,10 +518,10 @@ namespace FoundOPS.API.Api
         [System.Web.Http.AcceptVerbs("POST")]
         public HttpResponseMessage UpdateBusinessSettings(BusinessSettings settings, Guid roleId)
         {
-            var businessAccount = _coreEntitiesContainer.Owner(roleId).FirstOrDefault();
+            var businessAccount = _coreEntitiesContainer.Owner<BusinessAccount>(roleId, new[] { RoleType.Administrator }).FirstOrDefault();
 
             if (businessAccount == null)
-                return Request.CreateResponse(HttpStatusCode.Unauthorized);
+                return Request.CreateResponse(HttpStatusCode.Unauthorized, "User does not have Admin abilities");
 
             businessAccount.Name = settings.Name;
             _coreEntitiesContainer.SaveChanges();
@@ -539,7 +539,7 @@ namespace FoundOPS.API.Api
         [System.Web.Http.AcceptVerbs("POST")]
         public string UpdateBusinessImage(Guid roleId)
         {
-            var businessAccount = _coreEntitiesContainer.Owner(roleId).FirstOrDefault();
+            var businessAccount = _coreEntitiesContainer.Owner<BusinessAccount>(roleId, new[] { RoleType.Administrator }).FirstOrDefault();
 
             if (businessAccount == null)
                 ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
