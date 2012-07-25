@@ -49,7 +49,6 @@ namespace FoundOPS.API.Api
             var partyImages = _coreEntitiesContainer.Files.OfType<PartyImage>()
                 .Where(pi => partyIds.Contains(pi.Id)).Distinct().ToList();
 
-
             //Go through each party image and get the url with the shared access key
             var partyImageUrls = new Dictionary<Guid, string>();
             foreach (var partyImage in partyImages)
@@ -126,7 +125,9 @@ namespace FoundOPS.API.Api
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         public UserSettings GetPersonalSettings()
         {
-            var user = _coreEntitiesContainer.CurrentUserAccount().Include(u => u.PartyImage).First();
+            var user = _coreEntitiesContainer.CurrentUserAccount().First();
+
+            user.PartyImageReference.Load();
 
             var userSettings = new UserSettings
             {
@@ -206,7 +207,9 @@ namespace FoundOPS.API.Api
         /// <returns>The image url, expiring in 3 hours</returns>
         public string UpdateUserImage()
         {
-            var user = _coreEntitiesContainer.CurrentUserAccount().Include(u => u.PartyImage).First();
+            var user = _coreEntitiesContainer.CurrentUserAccount().First();
+
+            user.PartyImageReference.Load();
 
             if (user.PartyImage == null)
             {
@@ -493,10 +496,12 @@ namespace FoundOPS.API.Api
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         public BusinessSettings GetBusinessSettings(Guid roleId)
         {
-            var businessAccount = _coreEntitiesContainer.Owner(roleId).Include(ba => ba.PartyImage).FirstOrDefault();
+            var businessAccount = _coreEntitiesContainer.Owner(roleId).FirstOrDefault();
 
             if (businessAccount == null)
                 ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
+
+            businessAccount.PartyImageReference.Load();
 
             var businessSettings = new BusinessSettings { Name = businessAccount.Name };
 
@@ -534,10 +539,12 @@ namespace FoundOPS.API.Api
         [System.Web.Http.AcceptVerbs("POST")]
         public string UpdateBusinessImage(Guid roleId)
         {
-            var businessAccount = _coreEntitiesContainer.Owner(roleId).Include(ba => ba.PartyImage).FirstOrDefault();
+            var businessAccount = _coreEntitiesContainer.Owner(roleId).FirstOrDefault();
 
             if (businessAccount == null)
                 ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
+
+            businessAccount.PartyImageReference.Load();
 
             if (businessAccount.PartyImage == null)
             {

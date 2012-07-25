@@ -48,9 +48,9 @@ namespace FoundOps.Core.Models.CoreEntities
         public static Guid EmployeesBlockId = new Guid("5F4424A8-5327-4346-B9C3-884DB399F6D6");
 
         /// <summary>
-        /// The Feedback and Support Id
+        /// The Support Id
         /// </summary>
-        public static Guid FeedbackSupportBlockId = new Guid("E2EAA8CB-5C45-42DA-8060-F962C2E2B47F");
+        public static Guid SupportBlockId = new Guid("E2EAA8CB-5C45-42DA-8060-F962C2E2B47F");
 
         /// <summary>
         /// The ImportData block Id
@@ -88,7 +88,7 @@ namespace FoundOps.Core.Models.CoreEntities
         public static IEnumerable<Guid> RegularBlockIds = new[]
             {
                 ClientBlockId, ContactsBlockId, DispatcherBlockId,
-                EmployeesBlockId, FeedbackSupportBlockId, ImportDataBlockId,
+                EmployeesBlockId, SupportBlockId, ImportDataBlockId,
                 LocationsBlockId, RegionsBlockId, ServicesBlockId,
                 VehiclesBlockId, VehicleMaintenanceBlockId
             };
@@ -259,8 +259,8 @@ namespace FoundOps.Core.Models.CoreEntities
 
             FeebackSupportBlock = new Block
             {
-                Id = BlockConstants.FeedbackSupportBlockId,
-                Name = "Feedback and Support",
+                Id = BlockConstants.SupportBlockId,
+                Name = "Support",
                 Color = "blue",
                 IconUrl = "img/uservoice.png",
                 HoverIconUrl = "img/uservoiceColor.png"

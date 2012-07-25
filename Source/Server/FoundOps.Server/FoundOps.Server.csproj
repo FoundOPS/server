@@ -277,6 +277,7 @@
     <Content Include="app\img\vehiclesColor.png" />
     <Content Include="app\img\x.png" />
     <Content Include="app\img\x2.png" />
+    <Content Include="app\lib\filereader.swf" />
     <Content Include="app\view\businessSettings.html" />
     <Content Include="app\view\changePassword.html" />
     <Content Include="app\view\clearhist.html" />
@@ -392,9 +393,9 @@
     <Content Include="ClientBin\Telerik.Windows.Data.zip" />
     <Content Include="ClientBin\Telerik.Windows.Documents.zip" />
     <Content Include="ClientBin\Telerik.Windows.Documents.FormatProviders.Pdf.zip" />
-    <Content Include="ClientBin\Microsoft.CSharp.zip" />
     <Content Include="ClientBin\System.Xml.Linq.zip" />
     <Content Include="ClientBin\Telerik.Windows.Zip.zip" />
+    <Content Include="ClientBin\Microsoft.CSharp.zip" />
     <None Include="Content\PTS55F.eot" />
     <None Include="Content\PTS55F.ttf" />
     <None Include="disableTimeout.cmd">

@@ -262,6 +262,7 @@
     </Content>
     <Content Include="Web.base.Debug.config">
       <DependentUpon>Web.base.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Web.base.Release.config">
       <DependentUpon>Web.base.config</DependentUpon>

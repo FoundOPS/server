@@ -118,6 +118,7 @@
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\MEFedMVVM.SL.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.CSharp, Version=5.0.5.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.Expression.Interactions">
       <HintPath>..\..\Common\FoundOps.Common.Silverlight\Lib\Microsoft.Expression.Interactions.dll</HintPath>
       <Private>True</Private>

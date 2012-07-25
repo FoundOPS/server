@@ -42,22 +42,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        public IEnumerable<Block> OrderedBlocks
-        {
-            get
-            {
-                //Put the LogoutBlock at the bottom
-                var orderedBlocks = Blocks.Where(b => b.Name != "Logout" && b.Name != "Feedback and Support").OrderBy(b => b.Name).ToList();
-                var logoutBlock = Blocks.FirstOrDefault(b => b.Name == "Logout");
-                var feedbackBlock = Blocks.FirstOrDefault(b => b.Name == "Feedback and Support");
-                if (feedbackBlock != null)
-                    orderedBlocks.Add(feedbackBlock);
-                if (logoutBlock != null)
-                    orderedBlocks.Add(logoutBlock);
-                return orderedBlocks;
-            }
-        }
-
         public RoleType RoleType
         {
             get

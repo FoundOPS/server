@@ -124,9 +124,6 @@ namespace FoundOps.SLClient.UI.ViewModels
             {
                 case "Infinite Accordion": //The initial load
                     return;
-                case "Feedback and Support":
-                    section = Section.FeedbackAndSupport;
-                    break;
                 case "Business Accounts":
                     section = Section.BusinessAccounts;
                     break;
