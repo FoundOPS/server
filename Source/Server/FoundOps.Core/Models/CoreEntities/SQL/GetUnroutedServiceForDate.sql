@@ -258,23 +258,16 @@ BEGIN
 	EXCEPT
 	SELECT * FROM @PreRoutedServices
 
-	--UPDATE @UnroutedOrUncompletedServices
-	--SET DelayedParentId =	(
-	--							SELECT	t1.Id
-	--							FROM	RouteTasks t1, @UnroutedOrUncompletedServices
-	--							WHERE	DelayedChildId = 
-	--						)
-
 	UPDATE @UnroutedOrUncompletedServices
 	SET LocationId =	(
-							SELECT	DISTINCT LocationId
+							SELECT	TOP 1 LocationId
 							FROM	Fields_LocationField t1
 							WHERE	EXISTS
 							(
-								SELECT	Id
+								SELECT TOP 1	Id
 								FROM	Fields t2
 								WHERE	t2.Id = t1.Id 
-								AND (t2.ServiceTemplateId = RecurringServiceId OR t2.ServiceTemplateId = ServiceId)
+								AND (t2.ServiceTemplateId = [@UnroutedOrUncompletedServices].RecurringServiceId OR t2.ServiceTemplateId = [@UnroutedOrUncompletedServices].ServiceId)
 								AND LocationFieldTypeInt = 0
 							)
 						)
