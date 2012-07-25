@@ -38,15 +38,13 @@ namespace FoundOps.Server.Controllers
                     if (MembershipService.ValidateUser(model.EmailAddress, model.Password))
                     {
                         //Also authenticate API
-
-
                         ClearLoginAttempts();
                         FormsService.SignIn(model.EmailAddress, model.RememberMe);
 
                         if (!String.IsNullOrEmpty(returnUrl))
                             return Redirect(returnUrl);
 
-                        return RedirectToAction("Index", "Home");
+                        return Redirect(ServerConstants.ApplicationUrl);
                     }
                     ModelState.AddModelError("", "The email address or password provided is incorrect.");
                 }
@@ -209,6 +207,9 @@ namespace FoundOps.Server.Controllers
                     //Set new temporary password
                     var temporaryPassword = PasswordTools.GeneratePassword();
 
+                    //Change Password
+                    ((CoreEntitiesMembershipProvider)Membership.Provider).ChangePassword(model.EmailAddress, temporaryPassword);
+
                     //Send email
                     var ss = new SmtpClient("smtp.gmail.com", 587)
                     {
@@ -229,10 +230,7 @@ namespace FoundOps.Server.Controllers
                         DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure
                     };
                     ss.Send(mm);
-
-                    //Change Password
-                    ((CoreEntitiesMembershipProvider)Membership.Provider).ChangePassword(model.EmailAddress, temporaryPassword);
-
+          
                     return RedirectToAction("ForgotPasswordSuccess", "Account");
                 }
             }

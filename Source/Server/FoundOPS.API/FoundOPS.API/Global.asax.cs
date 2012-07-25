@@ -2,6 +2,8 @@
 using System.Web.Mvc;
 using System.Web.Routing;
 using FoundOPS.API.Tools;
+using FoundOps.Core.Models;
+using Thinktecture.IdentityModel.Http.Cors.WebApi;
 
 namespace FoundOPS.API
 {
@@ -46,6 +48,23 @@ namespace FoundOPS.API
 
             AreaRegistration.RegisterAllAreas();
             RegisterRoutes(RouteTable.Routes);
+
+            RegisterCors(GlobalConfiguration.Configuration);
+        }
+
+        public static void RegisterCors(HttpConfiguration httpConfig)
+        {
+            var corsConfig = new WebApiCorsConfiguration();
+
+            // this adds the CorsMessageHandler to the HttpConfiguration’s
+            // MessageHandlers collection
+            corsConfig.RegisterGlobal(httpConfig);
+
+            // this allow all CORS requests to the Settings controller
+            // from the http://localhost:31820 origin.
+            corsConfig.ForResources("Settings")
+                .ForOrigins(ServerConstants.RootApplicationUrl)
+                .AllowAll();
         }
     }
 }

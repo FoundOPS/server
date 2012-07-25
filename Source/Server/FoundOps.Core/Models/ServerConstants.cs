@@ -21,12 +21,13 @@ namespace FoundOps.Core.Models
         public static string RootApplicationUrl = "https://app.foundops.com";
         public static string RootApiUrl = "http://api.foundops.com";
 #endif
+        public static string ApplicationUrl = RootApplicationUrl + "/App/Index";
 
 #if DEBUG
         /// <summary>
         /// If set to true it will automatically login a FoundOPS Admin.
         /// </summary>
-        public static bool AutomaticLoginFoundOPSAdmin = true;
+        public static bool AutomaticLoginFoundOPSAdmin = false;
 #else
         public static bool AutomaticLoginOPSManager = false;
         public static bool AutomaticLoginFoundOPSAdmin = false;

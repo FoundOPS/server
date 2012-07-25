@@ -7,7 +7,7 @@
     <AzureEnableWebDeploy>False</AzureEnableWebDeploy>
     <AzureHostedServiceName>opsapp</AzureHostedServiceName>
     <AzureHostedServiceLabel>FoundOps-App</AzureHostedServiceLabel>
-    <AzureEnableIntelliTrace>False</AzureEnableIntelliTrace>
+    <AzureEnableIntelliTrace>True</AzureEnableIntelliTrace>
     <AzureEnableProfiling>False</AzureEnableProfiling>
     <AzureServiceConfiguration>Default</AzureServiceConfiguration>
     <AzureSolutionConfiguration>Release</AzureSolutionConfiguration>

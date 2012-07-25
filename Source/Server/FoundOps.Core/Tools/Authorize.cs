@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System.Runtime.Remoting.Contexts;
+using System.Web;
 using System.Web.Security;
 
 namespace FoundOps.Core.Tools
@@ -11,14 +12,15 @@ namespace FoundOps.Core.Tools
     {
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
-            #if DEBUG
+#if DEBUG
             if (Core.Models.ServerConstants.AutomaticLoginFoundOPSAdmin)
             {
                 FormsAuthentication.SignOut();
                 FormsAuthentication.SetAuthCookie("jperl@foundops.com", false);
                 return true;
             }
-            #endif
+#endif
+
             return base.AuthorizeCore(httpContext);
         }
     }

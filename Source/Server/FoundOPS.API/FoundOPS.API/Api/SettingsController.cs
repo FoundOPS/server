@@ -143,6 +143,10 @@ namespace FoundOPS.API.Api
                 var imageUrl = user.PartyImage.RawUrl + AzureServerHelpers.GetBlobUrlHelper(user.Id, user.PartyImage.Id);
                 userSettings.ImageUrl = imageUrl;
             }
+            else
+            {
+                userSettings.ImageUrl = "img/emptyPerson.png";
+            }
 
             return userSettings;
         }
