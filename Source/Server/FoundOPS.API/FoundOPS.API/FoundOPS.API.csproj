@@ -256,6 +256,7 @@
     <Compile Include="Models\Route.cs" />
     <Compile Include="Models\RouteDestination.cs" />
     <Compile Include="Models\Service.cs" />
+    <Compile Include="Models\TimeZoneInfo.cs" />
     <Compile Include="Models\TrackPoint.cs" />
     <Compile Include="Models\UserSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
