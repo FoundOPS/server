@@ -669,11 +669,14 @@ namespace FoundOps.SLClient.UI.ViewModels
             var newRoute = new Route
             {
                 Id = Guid.NewGuid(),
-                Date = SelectedDate,
                 DetailsLoaded = true,
                 OwnerBusinessAccount = (BusinessAccount)ContextManager.OwnerAccount,
                 RouteType = VM.DispatcherFilter.ServiceTemplateOptions.Where(o => o.IsSelected).Select(o => ((ServiceTemplate)o.Entity).Name).First()
             };
+
+            newRoute.Date = SelectedDate;
+            newRoute.StartTime = SelectedDate.Date.AddHours(9);
+            newRoute.EndTime = SelectedDate.Date.AddHours(17);
 
             ((ObservableCollection<Route>)SourceCollection).Add(newRoute);
 

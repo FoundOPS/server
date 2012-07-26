@@ -83,6 +83,8 @@ namespace FoundOps.Core.Models.CoreEntities
             //Setup roles
             new RolesDesignData(businessAccountsDesignData, userAccountsDesignData);
 
+            container.SaveChanges();
+
             //Populate ServiceProvider Design Data
             foreach (var serviceProvider in businessAccountsDesignData.DesignServiceProviders)
             {
