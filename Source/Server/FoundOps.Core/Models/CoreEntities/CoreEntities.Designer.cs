@@ -10866,6 +10866,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private Nullable<global::System.DateTime> _DateOfBirth;
         partial void OnDateOfBirthChanging(Nullable<global::System.DateTime> value);
         partial void OnDateOfBirthChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String TimeZone
+        {
+            get
+            {
+                return _TimeZone;
+            }
+            set
+            {
+                OnTimeZoneChanging(value);
+                ReportPropertyChanging("TimeZone");
+                _TimeZone = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("TimeZone");
+                OnTimeZoneChanged();
+            }
+        }
+        private global::System.String _TimeZone;
+        partial void OnTimeZoneChanging(global::System.String value);
+        partial void OnTimeZoneChanged();
 
         #endregion
 

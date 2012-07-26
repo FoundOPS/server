@@ -3,7 +3,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 07/26/2012 12:07:57
+-- Date Created: 07/26/2012 15:27:22
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -201,6 +201,12 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_ServiceTemplateServiceTemplate]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[ServiceTemplates] DROP CONSTRAINT [FK_ServiceTemplateServiceTemplate];
 GO
+IF OBJECT_ID(N'[dbo].[FK_TaskStatusBusinessAccount]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[TaskStatuses] DROP CONSTRAINT [FK_TaskStatusBusinessAccount];
+GO
+IF OBJECT_ID(N'[dbo].[FK_TaskStatusRouteTask]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[RouteTasks] DROP CONSTRAINT [FK_TaskStatusRouteTask];
+GO
 IF OBJECT_ID(N'[dbo].[FK_TextBoxField_inherits_Field]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Fields_TextBoxField] DROP CONSTRAINT [FK_TextBoxField_inherits_Field];
 GO
@@ -334,6 +340,9 @@ IF OBJECT_ID(N'[dbo].[ServiceTemplates]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[SubLocations]', 'U') IS NOT NULL
     DROP TABLE [dbo].[SubLocations];
+GO
+IF OBJECT_ID(N'[dbo].[TaskStatuses]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[TaskStatuses];
 GO
 IF OBJECT_ID(N'[dbo].[UserAccountLog]', 'U') IS NOT NULL
     DROP TABLE [dbo].[UserAccountLog];
@@ -743,6 +752,7 @@ CREATE TABLE [dbo].[Parties_UserAccount] (
     [MiddleInitial] nvarchar(max)  NULL,
     [GenderInt] smallint  NULL,
     [DateOfBirth] datetime  NULL,
+    [TimeZone] nvarchar(max)  NULL,
     [Id] uniqueidentifier  NOT NULL
 );
 GO

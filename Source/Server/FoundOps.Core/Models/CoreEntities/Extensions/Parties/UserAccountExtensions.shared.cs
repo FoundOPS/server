@@ -31,6 +31,8 @@ namespace FoundOps.Core.Models.CoreEntities
         }
         #endregion
 
+        public DateTime UserTimeZone { get; set; }
+
         public override string DisplayName
         {
             get { return String.Format("{0} {1}", this.FirstName, this.LastName); }

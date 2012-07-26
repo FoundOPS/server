@@ -498,6 +498,11 @@ namespace FoundOps.Server.Services.CoreDomainService
             if (currentUserAccount != null)
                 currentUserAccount.PartyImageReference.Load();
 
+            var time = DateTime.UtcNow;
+            //var tst = TimeZoneInfo.FindSystemTimeZoneById(currentUserAccount.)
+
+            //currentUserAccount.UserTimeZone =;
+
             return currentUserAccount;
         }
 

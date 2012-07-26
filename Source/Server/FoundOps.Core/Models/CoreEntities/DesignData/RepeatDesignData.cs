@@ -15,44 +15,46 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
         public RepeatDesignData()
         {
+            var date = DateTime.UtcNow.Date;
+
             DesignOnceRepeat = new Repeat
             {
-                StartDate = DateTime.UtcNow.Date,
+                StartDate = date,
                 Frequency = Frequency.Once
             };
             DesignDailyRepeat = new Repeat
             {
-                StartDate = DateTime.UtcNow.AddDays(-5),
+                StartDate = date.AddDays(-5),
                 Frequency = Frequency.Daily,
-                EndDate = DateTime.UtcNow.Add(new TimeSpan(10, 0, 0, 0)),
+                EndDate = date.Add(new TimeSpan(10, 0, 0, 0)),
                 RepeatEveryTimes = 2
             };
             DesignWeeklyRepeat = new Repeat
             {
-                StartDate = DateTime.UtcNow.Date.AddDays(-14),
+                StartDate = date.AddDays(-14),
                 Frequency = Frequency.Weekly,
                 FrequencyDetailAsWeeklyFrequencyDetail =
-                    new[] { DateTime.UtcNow.DayOfWeek},
+                    new[] { date.DayOfWeek},
                 RepeatEveryTimes = 2
             };
 
             DesignNeverEndingWeeklyRepeat = new Repeat
             {
-                StartDate = DateTime.UtcNow.Date.AddDays(-14),
+                StartDate = date.Date.AddDays(-14),
                 Frequency = Frequency.Weekly,
-                FrequencyDetailAsWeeklyFrequencyDetail = new[] { DateTime.UtcNow.DayOfWeek },
+                FrequencyDetailAsWeeklyFrequencyDetail = new[] { date.DayOfWeek },
                 RepeatEveryTimes = 2
             };
             DesignMonthlyRepeat = new Repeat
                                       {
-                                          StartDate = DateTime.UtcNow.AddDays(_random.Next(0, 7)),
+                                          StartDate = date.AddDays(_random.Next(0, 7)),
                                           Frequency = Frequency.Monthly,
-                                          EndDate = _random.Next(0, 2) == 0 ? DateTime.UtcNow.AddMonths(6) : new DateTime?(),
+                                          EndDate = _random.Next(0, 2) == 0 ? date.AddMonths(6) : new DateTime?(),
                                           RepeatEveryTimes = 2
                                       };
             DesignYearlyRepeat = new Repeat
             {
-                StartDate = DateTime.UtcNow,
+                StartDate = date,
                 Frequency = Frequency.Yearly,
                 EndAfterTimes = 10,
                 RepeatEveryTimes = 2
