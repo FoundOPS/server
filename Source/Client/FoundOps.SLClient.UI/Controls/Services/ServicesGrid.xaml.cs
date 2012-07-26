@@ -5,6 +5,7 @@ using System.Windows.Shapes;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.UI.Tools;
 using FoundOps.SLClient.Data.Tools;
 using Telerik.Windows.Data;
@@ -277,11 +278,13 @@ namespace FoundOps.SLClient.UI.Controls.Services
                 return style;
             var serviceDate = ((ServiceHolder)item).OccurDate.Date;
 
+            var userTime = Manager.Context.UserAccount.AdjustTimeForUserTimeZone(DateTime.UtcNow);
+
             //If the service is in the past it should be grey.
-            if (serviceDate < DateTime.UtcNow.Date)
+            if (serviceDate < userTime.Date)
                 style.Setters.Add(new Setter(Control.ForegroundProperty, new SolidColorBrush(Colors.Gray)));
             //If the service is today it should be green.
-            else if (serviceDate == DateTime.UtcNow.Date)
+            else if (serviceDate == userTime.Date)
                 style.Setters.Add(new Setter(Control.ForegroundProperty, new SolidColorBrush(Colors.Green)));
             //If the service is in the future it should be blue.
             else
