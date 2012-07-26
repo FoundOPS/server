@@ -4,10 +4,11 @@
     xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input" xmlns:Converters1="clr-namespace:FoundOps.Framework.Views.Converters" 
     xmlns:Selectors="clr-namespace:FoundOps.Framework.Views.Selectors" xmlns:Controls="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls" 
     xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI"
-    xmlns:Edit="clr-namespace:FoundOps.SLClient.UI.Controls.CustomFields.Edit" mc:Ignorable="d">
+    xmlns:Edit="clr-namespace:FoundOps.SLClient.UI.Controls.CustomFields.Edit"
+             xmlns:Converters2="clr-namespace:FoundOps.SLClient.UI.Converters" mc:Ignorable="d">
     <UserControl.Resources>
         <Converters1:ComboBoxSelectedItemConverter x:Key="ComboBoxSelectedItemConverter"/>
-        <Converters:DateTimeWithTodaysDateConverter x:Key="DateTimeWithTodaysDateConverter"/>
+        <Converters2:DateTimeWithTodaysDateConverter x:Key="DateTimeWithTodaysDateConverter"/>
         <Converters:ElementFromEnumerableConverter x:Key="ElementFromEnumerableConverter"/>
         <Converters1:OrderByNameConverter x:Key="OrderByNameConverter"/>
         <DataTemplate x:Key="CheckBoxTemplate">
