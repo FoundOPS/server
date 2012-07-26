@@ -1,3 +1,4 @@
+using FoundOps.Core.Models;
 using System.Web.Mvc;
 
 namespace FoundOps.Server.Controllers
@@ -6,7 +7,7 @@ namespace FoundOps.Server.Controllers
     {
         public ActionResult Index()
         {
-            return Redirect("/App/Index");
+            return Redirect(ServerConstants.ApplicationUrl);
         }
     }
 }

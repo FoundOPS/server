@@ -49,7 +49,7 @@
 <body>
     <div id="container">
         <div id="header">
-            <a href="@ServerConstants.RootApplicationUrl">
+            <a href="@ServerConstants.RootFrontSiteUrl">
                 <img id="SiteLogo" src="@Url.Content("../../Content/SiteLogo.png")" alt="FoundOPS" /></a>
             <div id="mainLoginContent">
                 @using (Html.BeginForm("Login", "Account"))
@@ -94,7 +94,7 @@
         <table id="bottomTable" class="tabs">
             <tr>
                 <td rowspan="5" valign="middle">
-                    <a href="@ServerConstants.RootApplicationUrl">
+                    <a href="@ServerConstants.RootFrontSiteUrl">
                         <img id="navLogo" src="@Url.Content("../Content/navLogo.png")" alt="FoundOPS" />
                     </a>
                 </td>
