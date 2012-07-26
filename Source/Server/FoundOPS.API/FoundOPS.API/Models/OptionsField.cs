@@ -50,7 +50,6 @@ namespace FoundOPS.API.Models
             var field = new FoundOps.Core.Models.CoreEntities.OptionsField
             {
                 Id = optionsField.Id,
-                Group = optionsField.Group,
                 Name = optionsField.Name,
                 Required = optionsField.Required,
                 Tooltip = optionsField.ToolTip,

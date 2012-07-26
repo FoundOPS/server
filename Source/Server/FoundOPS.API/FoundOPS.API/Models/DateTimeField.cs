@@ -46,7 +46,6 @@ namespace FoundOPS.API.Models
             var field = new FoundOps.Core.Models.CoreEntities.DateTimeField
             {
                 Id = dateTimeField.Id,
-                Group = dateTimeField.Group,
                 Name = dateTimeField.Name,
                 Required = dateTimeField.Required,
                 Tooltip = dateTimeField.ToolTip,

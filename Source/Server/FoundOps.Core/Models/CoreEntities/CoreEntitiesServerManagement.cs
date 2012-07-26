@@ -18,7 +18,6 @@ namespace FoundOps.Core.Models.CoreEntities
     {
         #region ConnectionString, Paths and Parameters
 
-
         public static string RootDirectory = @"C:\FoundOps\GitHub\Source\Server";
 
         private static readonly string ClearCoreEntitiesDatabaseScriptLocation =

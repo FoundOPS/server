@@ -40,7 +40,6 @@ namespace FoundOPS.API.Models
             var field = new FoundOps.Core.Models.CoreEntities.LocationField
             {
                 Id = locationField.Id,
-                Group = locationField.Group,
                 Name = locationField.Name,
                 Required = locationField.Required,
                 Tooltip = locationField.ToolTip,

@@ -557,6 +557,9 @@
         <edmx:AssociationConnector Association="CoreEntities.RoleBusinessAccount" />
         <edmx:InheritanceConnector EntityType="CoreEntities.UserAccount" />
         <edmx:InheritanceConnector EntityType="CoreEntities.UserAccount" />
+        <edmx:EntityTypeShape EntityType="CoreEntities.TaskStatus" Width="1.5" PointX="22.125" PointY="33.875" />
+        <edmx:AssociationConnector Association="CoreEntities.TaskStatusBusinessAccount" />
+        <edmx:AssociationConnector Association="CoreEntities.TaskStatusRouteTask" />
       </edmx:Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -110,7 +110,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
                     routeTask.Date = currentService.ServiceDate;
 
-                    routeTask.TaskStatus = this.ObjectContext.TaskStatuses.FirstOrDefault(ts => ts.BusinessAccountId == routeTask.BusinessAccountId && ts.DefaultTypeInt == ((int)StatusDetail.CreatedDefault))
+                    routeTask.TaskStatus = this.ObjectContext.TaskStatuses.FirstOrDefault(ts => ts.BusinessAccountId == routeTask.BusinessAccountId && ts.DefaultTypeInt == ((int)StatusDetail.CreatedDefault));
                 }
             }
 

@@ -38,7 +38,6 @@
             var field = new FoundOps.Core.Models.CoreEntities.TextBoxField
                 {
                     Id = textBoxField.Id,
-                    Group = textBoxField.Group,
                     Name = textBoxField.Name,
                     Required = textBoxField.Required,
                     Tooltip = textBoxField.ToolTip,

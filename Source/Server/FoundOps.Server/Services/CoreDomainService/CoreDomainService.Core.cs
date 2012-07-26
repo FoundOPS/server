@@ -77,7 +77,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         
         public IQueryable<TaskStatus> GetTaskStatusesForBusinessAccount (Guid roleId)
         {
-            var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
+            var businessForRole = ObjectContext.Owner(roleId).FirstOrDefault();
 
             var taskStatuses = this.ObjectContext.TaskStatuses.Where(ts => ts.BusinessAccountId == businessForRole.Id);
 

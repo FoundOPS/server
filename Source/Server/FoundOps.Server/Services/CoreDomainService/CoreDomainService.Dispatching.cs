@@ -228,7 +228,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         [Query]
         public IQueryable<RouteTask> GetUnroutedServices(Guid roleId, DateTime serviceDate)
         {
-            var businessForRole = ObjectContext.BusinessAccountOwnerOfRole(roleId);
+            var businessForRole = ObjectContext.Owner(roleId).FirstOrDefault();
 
 
             var tasks = new List<RouteTask>();

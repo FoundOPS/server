@@ -47,7 +47,6 @@
             var field = new FoundOps.Core.Models.CoreEntities.NumericField
             {
                 Id = numericField.Id,
-                Group = numericField.Group,
                 Name = numericField.Name,
                 Required = numericField.Required,
                 Tooltip = numericField.ToolTip,
