@@ -65,6 +65,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             var newRecurringService = new RecurringService();
             newRecurringService.AddRepeat();
 
+            newRecurringService.Repeat.StartDate = Manager.Context.UserAccount.AdjustTimeForUserTimeZone(DateTime.UtcNow);
+
             //The RecurringServices Add Button will pass a ClientLevel ServiceTemplate (Available Service)
             var clientLevelServiceTemplate = (ServiceTemplate)commandParameter;
 

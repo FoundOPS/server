@@ -398,7 +398,11 @@ namespace FoundOps.SLClient.UI.ViewModels
             if (Collection == null)
                 return null;
 
-            var newService = new Service { Id = Guid.NewGuid(), ServiceDate = Manager.Context.UserAccount.AdjustTimeForUserTimeZone(DateTime.UtcNow).Date };
+            var newService = new Service
+                {
+                    Id = Guid.NewGuid(),
+                    ServiceDate = Manager.Context.UserAccount.AdjustTimeForUserTimeZone(DateTime.UtcNow).Date
+                };
 
             //The RecurringServices Add Button will pass a ServiceProviderLevel or ClientLevel ServiceTemplate (Available Service)
             var parentServiceTemplate = (ServiceTemplate)commandParameter;
