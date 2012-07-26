@@ -3,6 +3,7 @@ using System.Reactive.Subjects;
 using System.Windows.Controls;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.Extensions.Services;
+using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
 using FoundOps.SLClient.UI.Tools;
 using MEFedMVVM.ViewModelLocator;
@@ -136,7 +137,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             DomainContext.GetRecurringServicesCSVForRole(ContextManager.RoleId, 
                 loadedCSV => csvLoadedObservable.OnNext(loadedCSV.Value), null);
 
-            var fileName = String.Format("RecurringServicesExport {0}.csv", DateTime.UtcNow.ToString("MM'-'dd'-'yyyy"));
+            var fileName = String.Format("RecurringServicesExport {0}.csv", Manager.Context.UserAccount.AdjustTimeForUserTimeZone(DateTime.UtcNow).ToString("MM'-'dd'-'yyyy"));
             var saveFileDialog = new SaveFileDialog { DefaultFileName = fileName, DefaultExt = ".csv", Filter = "CSV File|*.csv" };
 
             if (saveFileDialog.ShowDialog() != true) return;
