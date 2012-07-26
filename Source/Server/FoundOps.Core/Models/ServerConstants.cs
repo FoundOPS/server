@@ -14,7 +14,7 @@ namespace FoundOps.Core.Models
         public static string RootApiUrl = "http://localhost:9711";
 
 #elif TESTRELEASE
-        public static string RootApplicationUrl = "https://test.foundops.com";
+        public static string RootApplicationUrl = "http://test.foundops.com";
         public static string RootApiUrl = "http://testapi.foundops.com";
 
 #elif RELEASE

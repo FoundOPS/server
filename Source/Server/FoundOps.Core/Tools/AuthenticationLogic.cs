@@ -98,12 +98,11 @@ namespace FoundOps.Core.Tools
         /// <returns></returns>
         public static IQueryable<UserAccount> CurrentUserAccount(this CoreEntitiesContainer coreEntitiesContainer)
         {
-            string currentUsersEmail = "";
+            var currentUsersEmail = HttpContext.Current.User.Identity.Name;
+
 #if DEBUG
             if (ServerConstants.AutomaticLoginFoundOPSAdmin)
                 currentUsersEmail = "jperl@foundops.com";
-#else
-            currentUsersEmail = HttpContext.Current.User.Identity.Name;
 #endif
             currentUsersEmail = currentUsersEmail.Trim();
             return coreEntitiesContainer.Parties.OfType<UserAccount>().Where(userAccount => userAccount.EmailAddress == currentUsersEmail);

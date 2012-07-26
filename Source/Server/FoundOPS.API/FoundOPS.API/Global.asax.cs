@@ -61,9 +61,8 @@ namespace FoundOPS.API
             corsConfig.RegisterGlobal(httpConfig);
 
             // this allow all CORS requests to the Settings controller
-            // from the http://localhost:31820 origin.
             corsConfig.ForResources("Settings")
-                .ForOrigins(ServerConstants.RootApplicationUrl)
+                .ForAllOrigins()
                 .AllowAll();
         }
     }
