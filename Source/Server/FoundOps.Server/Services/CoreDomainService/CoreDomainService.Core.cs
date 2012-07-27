@@ -496,13 +496,21 @@ namespace FoundOps.Server.Services.CoreDomainService
                  .FirstOrDefault();
 
             if (currentUserAccount != null)
+            {
                 currentUserAccount.PartyImageReference.Load();
 
-            var tst = TimeZoneInfo.FindSystemTimeZoneById(currentUserAccount.TimeZone);
+                currentUserAccount.UserTimeZoneOffset = new TimeSpan(0, 0, 0, 0);
 
-            currentUserAccount.UserTimeZoneOffset = tst.BaseUtcOffset;
+                if (currentUserAccount.TimeZone == null)
+                {
+                    var tst = TimeZoneInfo.FindSystemTimeZoneById(currentUserAccount.TimeZone);
 
-            return currentUserAccount;
+                    currentUserAccount.UserTimeZoneOffset = tst.BaseUtcOffset;
+                }
+
+                return currentUserAccount;
+            }
+            throw new Exception("Something went very, very wrong...");
         }
 
         /// <summary>
