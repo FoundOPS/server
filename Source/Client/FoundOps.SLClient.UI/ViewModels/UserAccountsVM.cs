@@ -161,6 +161,8 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                 var newUserAccount = new UserAccount { TemporaryPassword = PasswordTools.GeneratePassword(), DisplayName = name };
 
+                newUserAccount.CreationDate = Manager.Context.UserAccount.AdjustTimeForUserTimeZone(DateTime.UtcNow);
+
                 //Add the new entity to the Context so it gets tracked/saved
                 DomainContext.Parties.Add(newUserAccount);
 

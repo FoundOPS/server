@@ -29,6 +29,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
         private void InitializeVehicles()
         {
+            var date = DateTime.UtcNow;
+
             DesignVehicle = new Vehicle
             {
                 LicensePlate = "375EMD",
@@ -45,7 +47,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 LastLongitude = -86.92,
                 LastSource = "Catch Me If You Can",
                 LastSpeed = 25.65,
-                LastTimeStamp = DateTime.UtcNow
+                LastTimeStamp = date
             };
 
             DesignVehicleTwo = new Vehicle
@@ -64,7 +66,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 LastLongitude = -86.94,
                 LastSource = "Find Me",
                 LastSpeed = 48.82,
-                LastTimeStamp = DateTime.UtcNow
+                LastTimeStamp = date
             };
 
             DesignVehicleThree = new Vehicle
@@ -83,7 +85,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 LastLongitude = -86.93,
                 LastSource = "US Fleet Tracker",
                 LastSpeed = 15.2,
-                LastTimeStamp = DateTime.UtcNow
+                LastTimeStamp = date
             };
 
             DesignVehicles = new List<Vehicle> { DesignVehicle, DesignVehicleTwo, DesignVehicleThree };

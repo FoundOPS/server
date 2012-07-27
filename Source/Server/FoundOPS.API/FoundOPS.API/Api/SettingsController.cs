@@ -19,6 +19,7 @@ using System.Net.Http;
 using System.Web.Http;
 using Newtonsoft.Json.Linq;
 using Employee = FoundOPS.API.Models.Employee;
+using TimeZoneInfo = FoundOPS.API.Models.TimeZoneInfo;
 
 namespace FoundOPS.API.Api
 {
@@ -307,7 +308,8 @@ namespace FoundOPS.API.Api
                 Id = Guid.NewGuid(),
                 FirstName = settings.FirstName,
                 LastName = settings.LastName,
-                PasswordHash = EncryptionTools.Hash(temporaryPassword)
+                PasswordHash = EncryptionTools.Hash(temporaryPassword),
+                TimeZone = settings.TimeZoneInfo.TimeZoneId
             };
 
             //Find the role in the BusinessAccount that matches the name of the one passed in.
@@ -401,6 +403,7 @@ namespace FoundOPS.API.Api
             user.FirstName = settings.FirstName;
             user.LastName = settings.LastName;
             user.EmailAddress = settings.EmailAddress;
+            user.TimeZone = settings.TimeZoneInfo.TimeZoneId;
 
             var userRole = _coreEntitiesContainer.Roles.FirstOrDefault(r => r.OwnerBusinessAccountId == businessAccount.Id && r.MemberParties.Any(p => p.Id == user.Id));
 
@@ -657,6 +660,22 @@ namespace FoundOPS.API.Api
             return readOnlyUrl;
         }
 
+
+        #endregion
+
+        #region TimeZones
+
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public IEnumerable<TimeZoneInfo> GetTimeZones()
+        {
+            var allTimeZones = System.TimeZoneInfo.GetSystemTimeZones();
+
+            var usTimeZones = allTimeZones.Where(tz => tz.DisplayName.Contains("US") || tz.Id == "Hawaiian Standard Time" || tz.Id == "Alaskan Standard Time");
+
+            var modelTimeZones = usTimeZones.Select(TimeZoneInfo.ConvertModel);
+
+            return modelTimeZones;
+        }
 
         #endregion
     }

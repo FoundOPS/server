@@ -36,7 +36,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         protected override void OnAddEntity(EmployeeHistoryEntry newEntity)
         {
-            newEntity.Date = DateTime.UtcNow.Date;
+            newEntity.Date = Manager.Context.UserAccount.AdjustTimeForUserTimeZone(DateTime.UtcNow).Date;
             newEntity.Employee = ContextManager.GetContext<Employee>();
 
             //Jump to the proper context, if not already

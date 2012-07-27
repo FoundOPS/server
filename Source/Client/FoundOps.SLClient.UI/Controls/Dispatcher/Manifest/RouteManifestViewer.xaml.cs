@@ -420,9 +420,6 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
 
             #region Analytics
 
-            //get current time
-            var currentTimeOfDay = DateTime.UtcNow.ToShortTimeString();
-
             //check for route manifest options
             if (Settings.IsHeaderVisible)
             {
@@ -475,8 +472,9 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
                 if (Settings.IsCustomMessageVisible)
                     Data.Services.Analytics.Track(Event.ManifestOption, detail: "Custom Message");
             }
+
             //Analytics - Track when manifests are printed
-            Data.Services.Analytics.Track(Event.PrintedManifest, detail: currentTimeOfDay);
+            Data.Services.Analytics.Track(Event.PrintedManifest, detail: DateTime.UtcNow.ToShortTimeString());
 
             #endregion
         }

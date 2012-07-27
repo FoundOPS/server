@@ -5,12 +5,11 @@
              xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input"
              xmlns:my3="clr-namespace:FoundOps.SLClient.UI.Controls.Clients" xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:Edit="clr-namespace:FoundOps.SLClient.UI.Controls.CustomFields.Edit"
-             xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI"
-             mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="ServicesVM"
+             xmlns:Converters1="clr-namespace:FoundOps.SLClient.UI.Converters" mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="ServicesVM"
              Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}" IsEnabled="{Binding SelectedEntity.DetailsLoaded}">
     <!--Use grid to allow scrollviewer to work-->
     <UserControl.Resources>
-        <Converters:CheckIfDateIsBeforeTodayConverter x:Key="CheckIfDateIsBeforeTodayConverter"/>
+        <Converters1:CheckIfDateIsBeforeTodayConverter x:Key="CheckIfDateIsBeforeTodayConverter"/>
     </UserControl.Resources>
     <Grid x:Name="LayoutRoot" Background="White">
         <Grid.RowDefinitions>

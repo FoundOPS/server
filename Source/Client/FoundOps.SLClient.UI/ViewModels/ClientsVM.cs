@@ -191,6 +191,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             newClient.Name = "";
             newClient.BusinessAccount = (BusinessAccount)this.ContextManager.OwnerAccount;
+            newClient.DateAdded = Manager.Context.UserAccount.AdjustTimeForUserTimeZone(DateTime.UtcNow);
 
             //Add a default Location
             //Set the OwnerParty to the current OwnerAccount

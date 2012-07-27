@@ -2,10 +2,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:Selectors="clr-namespace:FoundOps.Framework.Views.Selectors"
              xmlns:Converters1="clr-namespace:FoundOps.Framework.Views.Converters" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="300">
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             xmlns:Converters2="clr-namespace:FoundOps.SLClient.UI.Converters" mc:Ignorable="d" d:DesignHeight="100" d:DesignWidth="300">
     <UserControl.Resources>
         <Converters1:ComboBoxSelectedItemConverter x:Key="ComboBoxSelectedItemConverter"/>
-        <Converters:DateTimeWithTodaysDateConverter x:Key="DateTimeWithTodaysDateConverter"/>
+        <Converters2:DateTimeWithTodaysDateConverter x:Key="DateTimeWithTodaysDateConverter"/>
         <Converters:ElementFromEnumerableConverter x:Key="ElementFromEnumerableConverter"/>
         <Converters1:OrderByNameConverter x:Key="OrderByNameConverter"/>
         <DataTemplate x:Key="CheckBoxTemplate">

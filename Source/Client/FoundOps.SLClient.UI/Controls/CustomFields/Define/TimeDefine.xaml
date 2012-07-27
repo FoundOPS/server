@@ -2,9 +2,9 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input"
-    xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI" mc:Ignorable="d">
+             xmlns:Converters1="clr-namespace:FoundOps.SLClient.UI.Converters" mc:Ignorable="d">
     <UserControl.Resources>
-        <Converters:DateTimeWithTodaysDateConverter x:Key="DateTimeWithTodaysDateConverter"/>
+        <Converters1:DateTimeWithTodaysDateConverter x:Key="DateTimeWithTodaysDateConverter"/>
     </UserControl.Resources>
     <Grid Margin="5" DataContext="{Binding DateTimeField, ElementName=myTimeDetail}">
         <Grid.ColumnDefinitions >

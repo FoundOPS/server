@@ -3,6 +3,7 @@ using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Common.Silverlight.UI.Controls;
+using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
 using FoundOps.SLClient.UI.Controls.Dispatcher.Manifest;
 using FoundOps.SLClient.UI.Tools;
@@ -668,11 +669,14 @@ namespace FoundOps.SLClient.UI.ViewModels
             var newRoute = new Route
             {
                 Id = Guid.NewGuid(),
-                Date = SelectedDate,
                 DetailsLoaded = true,
                 OwnerBusinessAccount = (BusinessAccount)ContextManager.OwnerAccount,
                 RouteType = VM.DispatcherFilter.ServiceTemplateOptions.Where(o => o.IsSelected).Select(o => ((ServiceTemplate)o.Entity).Name).First()
             };
+
+            newRoute.Date = SelectedDate;
+            newRoute.StartTime = SelectedDate.Date.AddHours(9);
+            newRoute.EndTime = SelectedDate.Date.AddHours(17);
 
             ((ObservableCollection<Route>)SourceCollection).Add(newRoute);
 
@@ -726,7 +730,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         protected override void CheckDelete(Action<bool> checkCompleted)
         {
             //Id the Route's date is in the past you can not delete
-            if (SelectedEntity.Date < DateTime.UtcNow.Date)
+            if (SelectedEntity.Date < Manager.Context.UserAccount.AdjustTimeForUserTimeZone(DateTime.UtcNow).Date)
             {
                 MessageBox.Show("You cannot delete Routes in the past.");
                 checkCompleted(false);

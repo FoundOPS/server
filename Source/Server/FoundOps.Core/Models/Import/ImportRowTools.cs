@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.Extensions.Services;
+using FoundOps.Core.Tools;
 using Kent.Boogaart.KBCsv;
 using System;
 using System.Collections.Generic;
@@ -331,6 +332,12 @@ namespace FoundOps.Core.Models.Import
                 ServiceTemplate = clientServiceTemplate.MakeChild(ServiceTemplateLevel.RecurringServiceDefined)
             };
             recurringService.AddRepeat();
+
+            var coreEntitiesContainer = new CoreEntitiesContainer();
+
+            var user = coreEntitiesContainer.CurrentUserAccount().First();
+
+            recurringService.Repeat.StartDate = user.AdjustTimeForUserTimeZone(DateTime.UtcNow);
 
             if (locationAssociation != null)
                 recurringService.ServiceTemplate.SetDestination(locationAssociation);

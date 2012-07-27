@@ -5,6 +5,7 @@ using FoundOps.Common.Composite.Tools;
 using FoundOps.Common.Tools.ExtensionMethods;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.Extensions.Services;
+using FoundOps.SLClient.Data.Services;
 
 namespace FoundOps.SLClient.UI.Tools
 {
@@ -16,7 +17,7 @@ namespace FoundOps.SLClient.UI.Tools
         /// <summary>
         /// Generate ServiceTuples around the selectedService.
         /// </summary>
-        ///<param name="selectedService">The selected service to generate services around. If null, Services will be generated around DateTime.UtcNow</param>
+        ///<param name="selectedService">The selected service to generate services around. If null, Services will be generated around the current UTC time</param>
         ///<param name="services">The existing/new/modified (not generated) services</param>
         ///<param name="recurringServices">The recurring services</param>
         ///<param name="clientContext">The current client context</param>
@@ -130,7 +131,7 @@ namespace FoundOps.SLClient.UI.Tools
 
         /// <summary>
         /// A method to generate a SortedSet'ServiceTuple based on existing and generated services. 
-        /// It will be the size of pageSize with the selectedService in the middle. If selectedService is null, a service closest to DateTime.UtcNow will be in the middle
+        /// It will be the size of pageSize with the selectedService in the middle. If selectedService is null, a service closest to the current UTC time will be in the middle
         /// </summary>
         /// <param name="selectedService">The selected entity to generate services around. Can be null</param>
         /// <param name="existingServices">The existing services to include in the sorted list.</param>
@@ -141,7 +142,7 @@ namespace FoundOps.SLClient.UI.Tools
             var collection = new SortedSet<ServiceTuple>();
 
             //Start the date range initially with the selectedService's ServiceDate (or today if there is no selectedService) +- 1 day
-            var middleDate = selectedService != null ? selectedService.ServiceDate : DateTime.UtcNow.Date;
+            var middleDate = selectedService != null ? selectedService.ServiceDate : Manager.Context.UserAccount.AdjustTimeForUserTimeZone(DateTime.UtcNow).Date;
 
             var rangeStartDate = middleDate.AddDays(-1);
             var rangeEndDate = middleDate.AddDays(1);
@@ -346,7 +347,7 @@ namespace FoundOps.SLClient.UI.Tools
             var collectionAsList = serviceTuples.ToList();
 
             if (selectedEntity == null) //if there is no selectedEntity find the index of the closest ServiceDate on or after today
-                middleServiceIndexInt = collectionAsList.FindIndex(s => s.ServiceDate >= DateTime.UtcNow.Date);
+                middleServiceIndexInt = collectionAsList.FindIndex(s => s.ServiceDate >= Manager.Context.UserAccount.AdjustTimeForUserTimeZone(DateTime.UtcNow).Date);
             else if (selectedEntity.Generated) //Find the corresponding generated service
                 middleServiceIndexInt = collectionAsList.FindIndex(s => s.ServiceDate == selectedEntity.ServiceDate && s.RecurringServiceToGenerateFrom != null &&
                     s.RecurringServiceToGenerateFrom.Id == selectedEntity.RecurringServiceId);

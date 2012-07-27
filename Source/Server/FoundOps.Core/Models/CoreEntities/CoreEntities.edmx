@@ -622,6 +622,7 @@
           <Property Name="MiddleInitial" Type="nvarchar(max)" />
           <Property Name="GenderInt" Type="smallint" />
           <Property Name="DateOfBirth" Type="datetime" />
+          <Property Name="TimeZone" Type="nvarchar(max)" />
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="PartyRole">
@@ -2566,6 +2567,7 @@
           <Property Type="String" Name="MiddleInitial" Nullable="true" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Type="Int16" Name="GenderInt" Nullable="true" />
           <Property Type="DateTime" Name="DateOfBirth" Nullable="true" Precision="3" />
+          <Property Type="String" Name="TimeZone" MaxLength="Max" FixedLength="false" Nullable="true" Unicode="true" />
         </EntityType>
         <Association Name="UserAccountUserAccountLogEntry">
           <End Type="CoreEntities.UserAccount" Role="UserAccount" Multiplicity="1" />
@@ -3348,6 +3350,7 @@
           <ScalarProperty Name="MiddleInitial" ColumnName="MiddleInitial" />
           <ScalarProperty Name="GenderInt" ColumnName="GenderInt" />
           <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+          <ScalarProperty Name="TimeZone" ColumnName="TimeZone" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

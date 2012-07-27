@@ -104,7 +104,11 @@ namespace FoundOPS.API.Api
         /// <param name="currentBusinessAccountId">The business account to update the design data on.</param>
         private void SetupDesignDataForGetResourcesWithLatestPoints(Guid currentBusinessAccountId)
         {
-            var serviceDate = DateTime.UtcNow.Date;
+
+            var user = _coreEntitiesContainer.CurrentUserAccount().First();
+
+            var serviceDate = user.AdjustTimeForUserTimeZone(DateTime.UtcNow).Date;
+
             var routes = _coreEntitiesContainer.Routes.Where(r => r.Date == serviceDate && r.OwnerBusinessAccountId == currentBusinessAccountId).OrderBy(r => r.Id);
             var numberOfRoutes = routes.Count();
 
@@ -120,7 +124,7 @@ namespace FoundOPS.API.Api
                 foreach (var employee in route.Employees)
                 {
                     employee.LastCompassDirection = (employee.LastCompassDirection + 15) % 360;
-                    employee.LastTimeStamp = DateTime.UtcNow;
+                    employee.LastTimeStamp = user.AdjustTimeForUserTimeZone(DateTime.UtcNow);
                     employee.LastSpeed = random.Next(30, 50);
 
                     switch (routeNumber)

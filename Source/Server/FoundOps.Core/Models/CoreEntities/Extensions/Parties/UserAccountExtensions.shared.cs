@@ -31,6 +31,13 @@ namespace FoundOps.Core.Models.CoreEntities
         }
         #endregion
 
+        public TimeSpan UserTimeZoneOffset { get; set; }
+
+        public DateTime AdjustTimeForUserTimeZone(DateTime systemTime)
+        {
+            return systemTime.Add(UserTimeZoneOffset);
+        }
+
         public override string DisplayName
         {
             get { return String.Format("{0} {1}", this.FirstName, this.LastName); }
