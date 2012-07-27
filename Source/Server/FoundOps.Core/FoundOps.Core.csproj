@@ -228,6 +228,7 @@
     <Content Include="Models\CoreEntities\SQL Tests\ProagateNameChangeTest.sql" />
     <Content Include="Models\CoreEntities\SQL Tests\ProagateNewServiceTemplatesToClientTest.sql" />
     <Content Include="Models\CoreEntities\SQL\CheckServiceTemplateForChildren.sql" />
+    <Content Include="Models\CoreEntities\SQL\GetServiceHoldersWithFields.sql" />
     <Content Include="Models\CoreEntities\SQL\DeleteFieldAndChildrenBasedOnFieldId.sql" />
     <Content Include="Models\CoreEntities\SQL\DeleteRecurringService.sql" />
     <Content Include="Models\CoreEntities\SQL\DeleteBasicPartyBasedOnId.sql" />

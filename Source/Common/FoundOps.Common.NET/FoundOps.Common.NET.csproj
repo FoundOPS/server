@@ -124,6 +124,7 @@
       <Link>Silverlight\StreamHelpers.cs</Link>
     </Compile>
     <Compile Include="BingLocationServices.cs" />
+    <Compile Include="DataReaderTools.cs" />
     <Compile Include="EncryptionTools.cs" />
     <Compile Include="EntityCloneTools.cs" />
     <Compile Include="EntityDataReader.cs" />
