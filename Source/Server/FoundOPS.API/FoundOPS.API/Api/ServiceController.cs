@@ -1,4 +1,7 @@
-﻿using FoundOps.Core.Models.CoreEntities;
+﻿using System.Data;
+using System.Data.SqlClient;
+using FoundOps.Common.NET;
+using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
 using System;
 using System.Collections.Generic;
@@ -28,7 +31,10 @@ namespace FoundOPS.API.Api
         public IQueryable<Dictionary<string, object>> GetServicesHoldersWithFields(Guid roleId, Guid? clientContext, Guid? recurringServiceContext,
             DateTime startDate, DateTime endDate)
         {
-            var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRoleQueryable(roleId).FirstOrDefault();
+            var currentBusinessAccount = _coreEntitiesContainer.Owner(roleId).FirstOrDefault();
+
+            if(currentBusinessAccount == null)
+                throw new Exception("Hopefully this never happens...");
 
             var connectionString = ConfigWrapper.ConnectionString("CoreConnectionString");
 

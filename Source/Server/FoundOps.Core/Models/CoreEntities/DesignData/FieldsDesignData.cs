@@ -32,7 +32,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Name = "Lock Info",
                 Required = false,
                 Tooltip = "Helpful Hint",
-                IsMultiline = false
+                IsMultiline = false,
+                Value = "Small"
             };
 
             DesignTextBoxLargeField = new TextBoxField
@@ -41,7 +42,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Name = "Notes",
                 Required = false,
                 Tooltip = "Helpful Hint",
-                IsMultiline = true
+                IsMultiline = true,
+                Value = "Large"
             };
 
             DesignTimeField = new DateTimeField
@@ -52,19 +54,21 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Tooltip = "Helpful Hint",
                 Earliest = DateTime.UtcNow,
                 Latest = DateTime.UtcNow.AddHours(2),
-                DateTimeType = DateTimeType.TimeOnly
+                DateTimeType = DateTimeType.TimeOnly,
+                Value = DateTime.UtcNow
             };
 
             DesignNumberField = new NumericField
             {
                 Id = Guid.NewGuid(),
-                Name = "Number of Stops",
+                Name = "Number of Hours",
                 Required = false,
                 Tooltip = "Helpful Hint",
                 Mask = "g",
                 Maximum = 8,
                 Minimum = 1,
-                DecimalPlaces = 3
+                DecimalPlaces = 3,
+                Value = 1
             };
 
             DesignCurrencyField = new NumericField
@@ -73,7 +77,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Name = "Price",
                 Required = false,
                 Tooltip = "Helpful Hint",
-                Mask = "c"
+                Mask = "c",
+                Value = (decimal?) 2.54
             };
 
             DesignPercentageField = new NumericField
@@ -82,7 +87,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Name = "Percentage",
                 Required = false,
                 Tooltip = "Helpful Hint",
-                Mask = "p"
+                Mask = "p",
+                Value = (decimal?) .54
             };
 
             DesignCheckBoxField = new OptionsField
@@ -93,7 +99,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Tooltip = "Helpful Hint",
                 AllowMultipleSelection = false
             };
-            DesignCheckBoxField.Options.Add(new Option { Name = "Collected paperwork" });
+            DesignCheckBoxField.Options.Add(new Option { Name = "Collected paperwork", IsChecked = true});
 
             DesignComboBoxField = new OptionsField
             {
@@ -103,9 +109,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Tooltip = "Helpful Hint",
                 AllowMultipleSelection = false
             };
-            DesignComboBoxField.Options.Add(new Option { Name = "Yes" });
-            DesignComboBoxField.Options.Add(new Option { Name = "No" });
-            DesignComboBoxField.Options.Add(new Option { Name = "Maybe" });
+            DesignComboBoxField.Options.Add(new Option { Name = "Yes", IsChecked = false });
+            DesignComboBoxField.Options.Add(new Option { Name = "No", IsChecked = false });
+            DesignComboBoxField.Options.Add(new Option { Name = "Maybe", IsChecked = true});
 
             DesignCheckListField = new OptionsField
             {
@@ -116,9 +122,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 AllowMultipleSelection = true
             };
 
-            DesignCheckListField.Options.Add(new Option { Name = "Yes" });
-            DesignCheckListField.Options.Add(new Option { Name = "No" });
-            DesignCheckListField.Options.Add(new Option { Name = "Maybe" });
+            DesignCheckListField.Options.Add(new Option { Name = "Op 1", IsChecked = true});
+            DesignCheckListField.Options.Add(new Option { Name = "Op 2", IsChecked = false});
+            DesignCheckListField.Options.Add(new Option { Name = "Op 3", IsChecked = true});
 
             DesignLocationField = new LocationField
             {

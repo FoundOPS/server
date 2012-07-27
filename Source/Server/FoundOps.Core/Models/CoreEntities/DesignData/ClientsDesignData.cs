@@ -61,6 +61,13 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 //This adds 2 locations per client. NOTE: If there are more than 3 clients, this or LocationsDesignData must be updated to have enough locations
                 new LocationsDesignData(client, regionsDesignData.DesignRegions, clientIndex, 1);
                 
+                if(client.Locations.FirstOrDefault() == null)
+                {
+                    var location = new LocationsDesignData().DesignLocations.First();
+
+                    client.Locations.Add(location);
+                }
+
                 //Set the default billing location
                 client.Locations.First().IsDefaultBillingLocation = true;
 
