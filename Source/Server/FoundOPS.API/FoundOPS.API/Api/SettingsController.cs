@@ -601,7 +601,7 @@ namespace FoundOPS.API.Api
         /// The Request should send a form with 6 inputs: imageData, imageFileName, x, y, w, h
         /// </summary>
         /// <param name="partyToUpdate">The party to update</param>
-        /// <returns>The image url, expiring in 3 hours</returns>
+        /// <returns>The image url, expiring in 1 hour</returns>
         private string UpdatePartyImageHelper(Party partyToUpdate)
         {
             var formDataTask = Request.ReadMultipartAsync(new[] { "imageFileName", "imageData" });
