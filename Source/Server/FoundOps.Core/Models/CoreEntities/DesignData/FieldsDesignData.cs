@@ -49,7 +49,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             DesignTimeField = new DateTimeField
             {
                 Id = Guid.NewGuid(),
-                Name = "Start/End Times",
+                Name = "Start and End Times",
                 Required = false,
                 Tooltip = "Helpful Hint",
                 Earliest = DateTime.UtcNow,

@@ -188,7 +188,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// Gets the uservoice block.
         /// </summary>
-        public static Block FeebackSupportBlock { get; private set; }
+        public static Block SupportBlock { get; private set; }
 
         /// <summary>
         /// Gets the import data block.
@@ -257,7 +257,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 IsSilverlight = true
             };
 
-            FeebackSupportBlock = new Block
+            SupportBlock = new Block
             {
                 Id = BlockConstants.SupportBlockId,
                 Name = "Support",
@@ -302,7 +302,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 Color = "green",
                 IconUrl = "img/services.png",
                 HoverIconUrl = "img/servicesColor.png",
-                IsSilverlight = true
+                Url = "#view/services.html"
             };
 
             VehiclesBlock = new Block
@@ -329,7 +329,7 @@ namespace FoundOps.Core.Models.CoreEntities
                ClientsBlock,
                DispatcherBlock,
                EmployeesBlock,
-               FeebackSupportBlock,
+               SupportBlock,
                ImportDataBlock, 
                LocationsBlock,
                RegionsBlock,
