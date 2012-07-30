@@ -130,12 +130,15 @@ namespace FoundOPS.API.Api
 
             user.PartyImageReference.Load();
 
+            var timezone = GetTimeZones().FirstOrDefault(tz => tz.TimeZoneId == user.TimeZone);
+
             var userSettings = new UserSettings
             {
                 Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                EmailAddress = user.EmailAddress.Trim()
+                EmailAddress = user.EmailAddress.Trim(),
+                TimeZoneInfo = timezone
             };
 
             //Load image url
@@ -172,6 +175,7 @@ namespace FoundOPS.API.Api
             user.FirstName = settings.FirstName;
             user.LastName = settings.LastName;
             user.EmailAddress = settings.EmailAddress.Trim();
+            user.TimeZone = settings.TimeZoneInfo.TimeZoneId;
 
             //Save changes
             _coreEntitiesContainer.SaveChanges();
