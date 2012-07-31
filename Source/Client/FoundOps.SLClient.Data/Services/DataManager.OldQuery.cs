@@ -35,13 +35,13 @@ namespace FoundOps.SLClient.Data.Services
         #region Query Methods
 
         /// <summary>
-        /// Gets the current party.
+        /// Gets the current businessAccount.
         /// </summary>
         /// <param name="roleId">The role id.</param>
-        /// <param name="getCurrentPartyCallback">The get current party callback.</param>
-        public void GetCurrentParty(Guid roleId, Action<Party> getCurrentPartyCallback)
+        /// <param name="getCurrentPartyCallback">The get current businessAccount callback.</param>
+        public void GetCurrentBusinessAccount(Guid roleId, Action<BusinessAccount> getCurrentBusinessAccountCallback)
         {
-            LoadSingle(DomainContext.PartyForRoleQuery(roleId), getCurrentPartyCallback);
+            LoadSingle(DomainContext.BusinessAccountForRoleQuery(roleId), getCurrentBusinessAccountCallback);
         }
 
         /// <summary>

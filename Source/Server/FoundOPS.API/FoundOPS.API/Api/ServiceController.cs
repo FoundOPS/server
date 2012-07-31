@@ -33,7 +33,7 @@ namespace FoundOPS.API.Api
         {
             var currentBusinessAccount = _coreEntitiesContainer.Owner(roleId).FirstOrDefault();
 
-            if(currentBusinessAccount == null)
+            if (currentBusinessAccount == null)
                 throw new Exception("Hopefully this never happens...");
 
             var connectionString = ConfigWrapper.ConnectionString("CoreConnectionString");
@@ -63,7 +63,7 @@ namespace FoundOPS.API.Api
 
             var result = DataReaderTools.GetDynamicSqlData(connectionString, command);
 
-            var list = result.Item2.OrderBy(d => (DateTime) d["OccurDate"]).ToList();
+            var list = result.Item2.OrderBy(d => (DateTime)d["OccurDate"]).ToList();
 
             if (list.Any())
             {
@@ -79,7 +79,7 @@ namespace FoundOPS.API.Api
         /// <summary>
         /// Gets the service and fields
         /// </summary>
-        public IQueryable<Service> GetServiceDetails(Guid? serviceId, DateTime? serviceDate, Guid? recurringServiceId)
+        public HttpResponseMessage GetServiceDetails(Guid? serviceId, DateTime? serviceDate, Guid? recurringServiceId)
         {
             //A service's id and a recurring service's id are the same id's as its service template
             var serviceTemplateIdToLoad = serviceId.HasValue ? serviceId.Value : recurringServiceId.Value;
@@ -89,6 +89,13 @@ namespace FoundOPS.API.Api
                                         from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
                                         // from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty() //no reason to pass LocationField yet
                                         select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options }).ToArray();//, locations };
+
+
+            //Check the current user has access to the business account
+            var businessAccount = _coreEntitiesContainer.BusinessAccount(templatesWithDetails.First().OwnerClient.BusinessAccountId.Value).First();
+
+            if (businessAccount == null)
+                return Request.CreateResponse(HttpStatusCode.Unauthorized);
 
             //The set of services to convert then return
             var modelServices = new List<FoundOps.Core.Models.CoreEntities.Service>();
@@ -109,7 +116,7 @@ namespace FoundOPS.API.Api
 
                 //Generate the service from the recurring service
                 //No need to add it to the object context, because setting the association will automatically add it
-                var generatedService = GenerateServiceOnDate(serviceDate.Value, recurringService);
+                var generatedService = GenerateServiceOnDate(serviceDate.Value, recurringService, businessAccount);
 
                 //Return the generated service
                 modelServices.Add(generatedService);
@@ -120,7 +127,7 @@ namespace FoundOPS.API.Api
             //Convert the FoundOPS model Service to the API model Service
             apiServices.AddRange(modelServices.Select(Service.ConvertModel));
 
-            return apiServices.AsQueryable();
+            return Request.CreateResponse<IQueryable<Service>>(HttpStatusCode.OK, apiServices.AsQueryable());
         }
 
         /// <summary>
@@ -171,12 +178,12 @@ namespace FoundOPS.API.Api
             //The service does not exist yet. Generate it from the recurring service, save it, return it
             else
             {
-                var recurringService = _coreEntitiesContainer.RecurringServices.Include(rs => rs.Client).Include(rs => rs.ServiceTemplate)
+                var recurringService = _coreEntitiesContainer.RecurringServices.Include(rs => rs.Client).Include(rs => rs.Client.BusinessAccount).Include(rs => rs.ServiceTemplate)
                     .First(rs => rs.Id == loadedRouteTask.RecurringServiceId.Value);
 
                 //Generate the service from the recurring service
                 //No need to add it to the object context, because setting the association will automatically add it
-                var generatedService = GenerateServiceOnDate(loadedRouteTask.Date, recurringService);
+                var generatedService = GenerateServiceOnDate(loadedRouteTask.Date, recurringService, recurringService.Client.BusinessAccount);
 
                 //Return the generated service
                 modelServices.Add(generatedService);
@@ -205,7 +212,7 @@ namespace FoundOPS.API.Api
         /// </summary>
         /// <param name="date">The date to generate a service for.</param>
         /// <param name="recurringService"> </param>
-        private FoundOps.Core.Models.CoreEntities.Service GenerateServiceOnDate(DateTime date, RecurringService recurringService)
+        private FoundOps.Core.Models.CoreEntities.Service GenerateServiceOnDate(DateTime date, RecurringService recurringService, BusinessAccount businessAccount)
         {
             return new FoundOps.Core.Models.CoreEntities.Service
             {
@@ -213,8 +220,8 @@ namespace FoundOPS.API.Api
                 ClientId = recurringService.ClientId,
                 Client = recurringService.Client,
                 RecurringServiceParent = recurringService,
-                ServiceProviderId = recurringService.Client.BusinessAccount.Id,
-                ServiceProvider = recurringService.Client.BusinessAccount,
+                ServiceProviderId = businessAccount.Id,
+                ServiceProvider = businessAccount,
                 ServiceTemplate = recurringService.ServiceTemplate.MakeChild(ServiceTemplateLevel.ServiceDefined)
             };
         }
