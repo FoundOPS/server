@@ -100,7 +100,7 @@ namespace FoundOPS.API.Api
                 var existingService = _coreEntitiesContainer.Services.Include(s => s.Client).First(s => s.Id == serviceId.Value);
 
                 //Check the current user has access to the business account
-                var businessAccount = _coreEntitiesContainer.Owner(existingService.ServiceProviderId).FirstOrDefault();
+                var businessAccount = _coreEntitiesContainer.BusinessAccount(existingService.ServiceProviderId).FirstOrDefault();
                 if (businessAccount == null)
                     return Request.CreateResponse(HttpStatusCode.Unauthorized);
 
