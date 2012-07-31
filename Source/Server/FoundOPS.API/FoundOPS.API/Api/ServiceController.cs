@@ -91,12 +91,6 @@ namespace FoundOPS.API.Api
                                         select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options }).ToArray();//, locations };
 
 
-            //Check the current user has access to the business account
-            var businessAccount = _coreEntitiesContainer.BusinessAccount(templatesWithDetails.First().OwnerClient.BusinessAccountId.Value).First();
-
-            if (businessAccount == null)
-                return Request.CreateResponse(HttpStatusCode.Unauthorized);
-
             //The set of services to convert then return
             var modelServices = new List<FoundOps.Core.Models.CoreEntities.Service>();
 
@@ -104,6 +98,11 @@ namespace FoundOPS.API.Api
             if (serviceId.HasValue)
             {
                 var existingService = _coreEntitiesContainer.Services.Include(s => s.Client).First(s => s.Id == serviceId.Value);
+
+                //Check the current user has access to the business account
+                var businessAccount = _coreEntitiesContainer.Owner(existingService.ServiceProviderId).FirstOrDefault();
+                if (businessAccount == null)
+                    return Request.CreateResponse(HttpStatusCode.Unauthorized);
 
                 //Return the existing service
                 modelServices.Add(existingService);
@@ -113,6 +112,11 @@ namespace FoundOPS.API.Api
             {
                 var recurringService = _coreEntitiesContainer.RecurringServices.Include(rs => rs.Client).Include(rs => rs.ServiceTemplate)
                     .First(rs => rs.Id == recurringServiceId.Value);
+
+                //Check the current user has access to the business account
+                var businessAccount = _coreEntitiesContainer.BusinessAccount(recurringService.Client.BusinessAccountId.Value).FirstOrDefault();
+                if (businessAccount == null)
+                    return Request.CreateResponse(HttpStatusCode.Unauthorized);
 
                 //Generate the service from the recurring service
                 //No need to add it to the object context, because setting the association will automatically add it
