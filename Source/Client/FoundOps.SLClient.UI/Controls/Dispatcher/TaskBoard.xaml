@@ -11,7 +11,7 @@
     <Controls1:RadBusyIndicator HorizontalAlignment="Stretch" VerticalAlignment="Stretch" BusyContent="Loading Tasks" IsBusy="{Binding TasksLoading}">
         <Grid x:Name="LayoutRoot" Background="White">
             <telerik:RadGridView x:Name="TaskBoardRadGridView" AutoGenerateColumns="False" RowIndicatorVisibility="Collapsed" IsFilteringAllowed="False"
-                                 SelectionChanged="TaskBoardRadGridViewSelectionChanged" BeginningEdit="TaskBoardRadGridViewBeginningEdit" SelectionMode="Multiple" 
+                                 SelectionChanged="TaskBoardRadGridViewSelectionChanged" BeginningEdit="TaskBoardRadGridViewBeginningEdit" SelectionMode="Extended" 
                                  telerikDragDrop:RadDragAndDropManager.AllowDrag="True" ItemsSource="{Binding CollectionView}">
                 <telerik:RadGridView.RowStyle>
                     <Style TargetType="telerikGridElements:GridViewRow" x:Name="GridDragStyle">
@@ -20,28 +20,28 @@
                     </Style>
                 </telerik:RadGridView.RowStyle>
                 <telerik:RadGridView.Columns>
-                    <telerik:GridViewDataColumn Header="Name" DataMemberBinding="{Binding ServiceName}"> <!-- IsReadOnlyBinding="{Binding ServiceId, Converter={StaticResource ExistsBoolConverter}}"-->
+                    <telerik:GridViewDataColumn Header="Name" DataMemberBinding="{Binding Name}"> <!-- IsReadOnlyBinding="{Binding ServiceId, Converter={StaticResource ExistsBoolConverter}}"-->
                         <telerik:GridViewDataColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock Text="{Binding ServiceName}"/>
+                                <TextBlock Text="{Binding Name}"/>
                             </DataTemplate>
                         </telerik:GridViewDataColumn.CellTemplate>
                         <telerik:GridViewDataColumn.CellEditTemplate>
                             <DataTemplate>
-                                <TextBox Text="{Binding ServiceName, Mode=TwoWay}"/>
+                                <TextBox Text="{Binding Name, Mode=TwoWay}"/>
                             </DataTemplate>
                         </telerik:GridViewDataColumn.CellEditTemplate>
                     </telerik:GridViewDataColumn>
                     <!--<telerik:GridViewDataColumn Header="Region"/>-->
                     <!--Location Name-->
-                    <telerik:GridViewDataColumn Header="Location" DataMemberBinding="{Binding LocationName}" />
+                    <telerik:GridViewDataColumn Header="Location" DataMemberBinding="{Binding Location.Name}" />
                     <!--Region Name-->
-                    <telerik:GridViewDataColumn Header="Region" DataMemberBinding="{Binding RegionName}" />
+                    <telerik:GridViewDataColumn Header="Region" DataMemberBinding="{Binding Location.Region.Name}" />
                     <!--Location Address-->
-                    <telerik:GridViewDataColumn Header="Address" DataMemberBinding="{Binding AddressLine}"/>
-                    <telerik:GridViewDataColumn Header="Client" DataMemberBinding="{Binding ClientName}" />
-                    <telerik:GridViewDataColumn Header="Scheduled Date" DataMemberBinding="{Binding OccurDate}" DataFormatString="{} {0:MMM dd, yyyy}"/>
-                    <telerik:GridViewDataColumn Header="Status" DataMemberBinding="{Binding StatusInt, Converter={StaticResource StatusIntToStringConverter}}"/>
+                    <telerik:GridViewDataColumn Header="Address" DataMemberBinding="{Binding Location.AddressLineOne}"/>
+                    <telerik:GridViewDataColumn Header="Client" DataMemberBinding="{Binding Client.Name}" />
+                    <telerik:GridViewDataColumn Header="Scheduled Date" DataMemberBinding="{Binding Date}" DataFormatString="{} {0:MMM dd, yyyy}"/>
+                    <telerik:GridViewDataColumn Header="Status" DataMemberBinding="{Binding TaskStatus.Name}"/>
                 </telerik:RadGridView.Columns>
             </telerik:RadGridView>
         </Grid>

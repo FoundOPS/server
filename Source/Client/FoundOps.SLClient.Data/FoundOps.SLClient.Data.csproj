@@ -251,6 +251,9 @@
     <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\SubLocationsDesignData.cs">
       <Link>DesignData\SubLocationsDesignData.cs</Link>
     </Compile>
+    <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\TaskStatusDesignData.cs">
+      <Link>DesignData\TaskStatusDesignData.cs</Link>
+    </Compile>
     <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\UserAccountsDesignData.cs">
       <Link>DesignData\UserAccountsDesignData.cs</Link>
     </Compile>
@@ -279,7 +282,6 @@
     <Compile Include="ExportContext.cs" />
     <Compile Include="Extensions\AddressExtensions.cs" />
     <Compile Include="Extensions\ClientExtensions.cs" />
-    <Compile Include="Extensions\TaskHolderExtensions.cs" />
     <Compile Include="Extensions\ServiceHolderExtensions.cs" />
     <Compile Include="Extensions\EmployeeExtensions.cs" />
     <Compile Include="Extensions\FileExtensions.cs" />

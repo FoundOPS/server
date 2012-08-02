@@ -3,6 +3,7 @@ using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Common.Silverlight.UI.Controls;
+using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
 using FoundOps.SLClient.UI.Controls.Dispatcher.Manifest;
 using FoundOps.SLClient.UI.Tools;
@@ -21,6 +22,7 @@ using System.Reactive.Subjects;
 using System.ServiceModel.DomainServices.Client;
 using System.Threading.Tasks;
 using System.Windows;
+using TaskStatus = FoundOps.Core.Models.CoreEntities.TaskStatus;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -79,6 +81,16 @@ namespace FoundOps.SLClient.UI.ViewModels
         #endregion
 
         #endregion
+
+        public IEnumerable<TaskStatus> TaskStatusesForBusinessAccount
+        {
+            get { return _taskStatusesForBusinessAccount; }
+            set 
+            { 
+                _taskStatusesForBusinessAccount = value;
+                this.RaisePropertyChanged("TaskStatusesForBusinessAccount");
+            }
+        }
 
         private readonly ObservableAsPropertyHelper<bool> _manifestOpenHelper;
         private readonly Subject<bool> _manifestOpenSubject = new Subject<bool>();
@@ -208,6 +220,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         private RouteManifestViewer _routeManifestViewer;
 
         private AlgorithmVM _algorithmVM = new AlgorithmVM();
+        private IEnumerable<TaskStatus> _taskStatusesForBusinessAccount;
 
         #endregion
 
@@ -223,7 +236,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Setup ObservableAsPropertyHelpers
             _manifestOpenHelper = _manifestOpenSubject.ToProperty(this, x => x.ManifestOpen);
             _selectedDateHelper = this.ObservableToProperty(_selectedDateSubject, x => x.SelectedDate, DateTime.Now.Date);
-            _selectedRouteDestinationHelper = _selectedRouteDestinationSubject.ToProperty(this, x => x.SelectedRouteDestination);
+            //throttle because when selecting multiple route destinations in route list, it will cycle through and select each one
+            _selectedRouteDestinationHelper = _selectedRouteDestinationSubject.Throttle(TimeSpan.FromMilliseconds(300)).ToProperty(this, x => x.SelectedRouteDestination);
             _selectedRouteTaskHelper = _selectedRouteTaskSubject.ToProperty(this, x => x.SelectedRouteTask);
             _routeTypesHelper = RouteTypesObservable.ToProperty(this, x => x.RouteTypes);
 
@@ -237,7 +251,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             });
 
             //Update the SelectedRouteDestinationVM whenever the RouteDestination changes
-            _selectedRouteDestinationSubject.ObserveOnDispatcher().Subscribe(rd =>
+            _selectedRouteDestinationSubject.Throttle(TimeSpan.FromMilliseconds(300)).ObserveOnDispatcher().Subscribe(rd =>
             {
                 if (this.SelectedRouteDestinationVM != null)
                     this.SelectedRouteDestinationVM.Dispose();
@@ -254,6 +268,19 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         private void SetupDataLoading()
         {
+            #region Load Task Status types
+
+            //Whenever the role id changes, load task statuses
+            ContextManager.RoleIdObservable.Subscribe(roleId => DomainContext.LoadAsync(DomainContext.GetTaskStatusesForBusinessAccountQuery(roleId)).ContinueWith(
+                status =>
+                    {
+                        TaskStatusesForBusinessAccount = status.Result;
+
+                        var test = TaskStatusesForBusinessAccount.ToArray();
+                    }));
+
+            #endregion
+
             #region Load Routes
 
             //Load the Routes whenever
@@ -291,10 +318,6 @@ namespace FoundOps.SLClient.UI.ViewModels
                         return;
                     }
 
-                    //Setup RouteTaskHolders for existing RouteTasks
-                    foreach (var routeTask in task.Result.SelectMany(r => r.RouteDestinations.SelectMany(rd => rd.RouteTasks)))
-                        routeTask.SetupTaskHolder();
-
                     //Update the CollectionView
                     ViewObservable.OnNext(new DomainCollectionViewFactory<Route>(new EntityList<Route>(DomainContext.Routes, task.Result)).View);
                 }, TaskScheduler.FromCurrentSynchronizationContext());
@@ -320,7 +343,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 cancelLastDetailsLoad.OnNext(true);
 
                 //Load the RouteTask's ServiceHolder details
-                selectedRouteTask.ParentRouteTaskHolder.ServiceHolder.LoadDetails(cancelLastDetailsLoad, () => selectedRouteTask.DetailsLoaded = true);
+                selectedRouteTask.ServiceHolder.LoadDetails(cancelLastDetailsLoad, () => selectedRouteTask.DetailsLoaded = true);
             });
 
             #endregion
@@ -330,7 +353,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Whenever the selectedRouteDestination changes load the RouteDestination's details
             //a) cancel the last loads
             //b) load the details
-            _selectedRouteDestinationSubject.Where(se => se != null).ObserveOnDispatcher().Subscribe(selectedRouteDestination =>
+            _selectedRouteDestinationSubject.Throttle(TimeSpan.FromMilliseconds(300)).Where(se => se != null).ObserveOnDispatcher().Subscribe(selectedRouteDestination =>
             {
                 //a) cancel the last loads
                 cancelLastDetailsLoad.OnNext(true);
@@ -375,7 +398,6 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Update the filter whenever
             //a) the filter changes
             //b) the SourceCollection (an ObservableCollection) changes or the CollectionView is set
-
             VM.DispatcherFilter.FilterUpdatedObservable.AsGeneric()
            .Merge(SourceCollectionChangedOrSet)
            .Throttle(TimeSpan.FromMilliseconds(100)).ObserveOnDispatcher()
@@ -418,12 +440,12 @@ namespace FoundOps.SLClient.UI.ViewModels
                 var serviceTypesToRoute = CollectionView.Cast<Route>().Select(r => r.RouteType).Distinct();
 
                 //Populate the routes with the unrouted tasks
-                _algorithmVM.OrderTasks((IEnumerable<TaskHolder>)VM.TaskBoard.CollectionView, serviceTypesToRoute).Take(1)
+                _algorithmVM.OrderTasks((IEnumerable<RouteTask>)VM.TaskBoard.CollectionView, serviceTypesToRoute).Take(1)
                 .Subscribe(organizedTaskHolderCollections =>
                 {
                     foreach (var taskHolderCollection in organizedTaskHolderCollections)
                     {
-                        var serviceType = taskHolderCollection.First().ServiceName;
+                        var serviceType = taskHolderCollection.First().Name;
                         var routes = CollectionView.Cast<Route>().Where(r => r.RouteType == serviceType);
 
                         //Add the tasks to routes, and remove the tasks from the task board
@@ -437,8 +459,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                     //No need to load the regions because they are already loaded (from the filter)
                     cancelLoadLocationDetails.OnNext(true);
                     var locationIdsToLoad =
-                        organizedTaskHolderCollections.SelectMany(thc => thc).Select(rth => rth.ChildRouteTask).Where(crt => crt.Location == null && crt.LocationId.HasValue)
-                            .Select(crt => crt.LocationId.Value).Distinct();
+                        organizedTaskHolderCollections.SelectMany(thc => thc).Where(crt => crt.Location == null && crt.LocationId.HasValue)
+                            .Select(crt => crt.LocationId != null ? crt.LocationId.Value : new Guid()).Distinct();
 
                     if (!locationIdsToLoad.Any()) return;
                     var locationsQuery = DomainContext.GetLocationsQuery(ContextManager.RoleId, locationIdsToLoad);
@@ -537,7 +559,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                         }, TaskScheduler.FromCurrentSynchronizationContext());
 
                     //Load the Fields info of the RouteTasks
-                    var serviceHoldersToLoad = SelectedEntity.RouteDestinations.SelectMany(rd => rd.RouteTasks).Select(rt => rt.ParentRouteTaskHolder.ServiceHolder);
+                    var serviceHoldersToLoad = SelectedEntity.RouteDestinations.SelectMany(rd => rd.RouteTasks).Select(rt => rt.ServiceHolder);
                     ServiceHolder.LoadDetails(serviceHoldersToLoad, cancelLoadDetails, false, () =>
                     {
                         fieldsLoaded = true;
@@ -555,14 +577,13 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// Puts the tasks into routes and removes the tasks from the TaskBoard.
         /// </summary>
         /// <param name="routesWithServiceType">Type of the routes with service.</param>
-        /// <param name="organizedTaskHolders">The organized = task holders.</param>
+        /// <param name="organizedRouteTasks">The organized = task holders.</param>
         /// <returns>The routed tasks.</returns>
-        private void PutTasksIntoRoutes(IEnumerable<Route> routesWithServiceType, IEnumerable<TaskHolder> organizedTaskHolders)
+        private void PutTasksIntoRoutes(IEnumerable<Route> routesWithServiceType, IEnumerable<RouteTask> organizedRouteTasks)
         {
             var routedTasks = new List<RouteTask>();
 
             routesWithServiceType = routesWithServiceType.ToArray();
-            var organizedRouteTasks = organizedTaskHolders.Select(th => th.ChildRouteTask).ToArray();
 
             var routeCount = routesWithServiceType.Count();
             var routeTasksCount = organizedRouteTasks.Count();
@@ -589,7 +610,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                     //Move the route task index forward
                     currentRouteTaskIndex++;
 
-                    routeTask.Status = Status.Routed;
+                    routeTask.TaskStatus = routeTask.OwnerBusinessAccount.TaskStatuses.FirstOrDefault(ts => ts.DefaultTypeInt == ((int)StatusDetail.RoutedDefault));
 
                     //Create a new route destination and add the task to it
                     var newRouteDestination = new RouteDestination
@@ -609,8 +630,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             }
 
             //remove the routed task holders from the task board
-            foreach (var taskHolder in organizedTaskHolders)
-                ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Remove(taskHolder);
+            foreach (var taskHolder in organizedRouteTasks)
+                ((ObservableCollection<RouteTask>)VM.TaskBoard.CollectionView.SourceCollection).Remove(taskHolder);
         }
 
         #region Protected
@@ -648,11 +669,14 @@ namespace FoundOps.SLClient.UI.ViewModels
             var newRoute = new Route
             {
                 Id = Guid.NewGuid(),
-                Date = SelectedDate,
                 DetailsLoaded = true,
                 OwnerBusinessAccount = (BusinessAccount)ContextManager.OwnerAccount,
                 RouteType = VM.DispatcherFilter.ServiceTemplateOptions.Where(o => o.IsSelected).Select(o => ((ServiceTemplate)o.Entity).Name).First()
             };
+
+            newRoute.Date = SelectedDate;
+            newRoute.StartTime = SelectedDate.Date.AddHours(9);
+            newRoute.EndTime = SelectedDate.Date.AddHours(17);
 
             ((ObservableCollection<Route>)SourceCollection).Add(newRoute);
 
@@ -675,16 +699,17 @@ namespace FoundOps.SLClient.UI.ViewModels
             var tasksForTaskBoard = deletedRoute.RouteDestinations.SelectMany(routeDestination => routeDestination.RouteTasks).ToArray();
 
             //Add the task holders to keep back to the task board
-            foreach (var routeTask in tasksForTaskBoard)
-            {
-                //Get the ParentRouteTaskHolder
-                var taskHolder = routeTask.ParentRouteTaskHolder;
+            //foreach (var routeTask in tasksForTaskBoard)
+            //{
+            //    //Get the ParentRouteTaskHolder
+            //    var taskHolder = routeTask.ParentRouteTaskHolder;
 
-                taskHolder.StatusInt = (int)Status.Created;
+            //    //Sets that RouteTasks Status to be the Created Default for the OwnerBusinessAccount
+            //    routeTask.TaskStatus = routeTask.TaskStatus.GetDefaultTaskStatus(routeTask.OwnerBusinessAccount, StatusDetail.CreatedDefault);
 
-                //Add the TaskHolder back to VM.TaskBoard.LoadedTaskHolders 
-                ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Add(taskHolder);
-            }
+            //    //Add the TaskHolder back to VM.TaskBoard.LoadedTaskHolders 
+            //    ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Add(taskHolder);
+            //}
 
             //Delete the Route, RouteDestinations, and RouteTasks
             DataManager.RemoveEntities(new Entity[] { deletedRoute }.Union(deletedRoute.RouteDestinations).Union(tasksForTaskBoard).ToArray());
@@ -705,7 +730,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         protected override void CheckDelete(Action<bool> checkCompleted)
         {
             //Id the Route's date is in the past you can not delete
-            if (SelectedEntity.Date < DateTime.UtcNow.Date)
+            if (SelectedEntity.Date < Manager.Context.UserAccount.AdjustTimeForUserTimeZone(DateTime.UtcNow).Date)
             {
                 MessageBox.Show("You cannot delete Routes in the past.");
                 checkCompleted(false);

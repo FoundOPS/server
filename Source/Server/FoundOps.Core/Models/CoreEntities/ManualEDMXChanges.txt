@@ -92,18 +92,6 @@ Add after </EntityContainer> (the one after FK association sets)
                    Mode="In"
                    Type="bit"/>
       </Function>
-      <Function Name="GetUnroutedServicesForDate" IsComposable="false">
-        <CommandText>
-          SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude, StatusInt
-          FROM dbo.GetUnroutedServicesForDate(@serviceProviderContext, @serviceDate)
-        </CommandText>
-        <Parameter Name="serviceProviderContext"
-                   Mode="In"
-                   Type="uniqueidentifier"/>
-        <Parameter Name="serviceDate"
-                   Mode="In"
-                   Type="datetime"/>
-      </Function>
       <Function Name="GetResourcesWithLastPoint" IsComposable="false">
         <CommandText>
           SELECT EmployeeId, VehicleId, EntityName, Heading, Latitude, Longitude, CollectedTimeStamp, Speed, Source, RouteId, Accuracy

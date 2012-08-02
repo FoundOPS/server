@@ -199,7 +199,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             DomainContext.GetLocationsCSVForRole(ContextManager.RoleId, clientContext != null ? clientContext.Id : new Guid(), regionContext != null ? regionContext.Id : new Guid(),
                 loadedCSV => csvLoadedObservable.OnNext(loadedCSV.Value), null);
 
-            var fileName = String.Format("LocationsExport {0}.csv", DateTime.UtcNow.ToString("MM'-'dd'-'yyyy"));
+            var fileName = String.Format("LocationsExport {0}.csv", Manager.Context.UserAccount.AdjustTimeForUserTimeZone(DateTime.UtcNow).ToString("MM'-'dd'-'yyyy"));
             var saveFileDialog = new SaveFileDialog { DefaultFileName = fileName, DefaultExt = ".csv", Filter = "CSV File|*.csv" };
 
             if (saveFileDialog.ShowDialog() != true) return;

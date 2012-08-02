@@ -27,9 +27,11 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
         private void InitializeEmployees()
         {
+            var date = DateTime.UtcNow.Date;
+
             DesignEmployeeHistory = new EmployeeHistoryEntry
             {
-                Date = DateTime.UtcNow,
+                Date = date,
                 Type = "Employment Application",
                 Summary = "Applied for secretary position",
                 Notes = "Meets requirements"
@@ -37,7 +39,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             DesignEmployeeHistoryTwo = new EmployeeHistoryEntry
             {
-                Date = DateTime.UtcNow,
+                Date = date,
                 Type = "Performance Review",
                 Summary = "Passed",
                 Notes = "No noteworthy complaints"
@@ -45,7 +47,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             DesignEmployeeHistoryThree = new EmployeeHistoryEntry
             {
-                Date = DateTime.UtcNow,
+                Date = date,
                 Type = "Termination",
                 Summary = "Moved away",
                 Notes = "Received severence pay"

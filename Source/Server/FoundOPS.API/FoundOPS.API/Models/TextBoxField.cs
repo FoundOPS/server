@@ -27,5 +27,27 @@
 
             return field;
         }
+
+        /// <summary>
+        /// Converts the API model back to the FoundOPS model
+        /// </summary>
+        /// <param name="textBoxField"></param>
+        /// <returns></returns>
+        public static FoundOps.Core.Models.CoreEntities.TextBoxField ConvertBackTextBoxField(TextBoxField textBoxField)
+        {
+            var field = new FoundOps.Core.Models.CoreEntities.TextBoxField
+                {
+                    Id = textBoxField.Id,
+                    Name = textBoxField.Name,
+                    Required = textBoxField.Required,
+                    Tooltip = textBoxField.ToolTip,
+                    ParentFieldId = textBoxField.ParentFieldId,
+                    ServiceTemplateId = textBoxField.ServiceTemplateId,
+                    IsMultiline = textBoxField.IsMultiLine,
+                    Value = textBoxField.Value
+                };
+
+            return field;
+        }
     }
 }

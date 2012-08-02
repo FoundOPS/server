@@ -160,7 +160,6 @@ namespace FoundOps.SLClient.UI.ViewModels
                     break;
                 case "Time":
                     fieldToAdd = new DateTimeField { DateTimeType = DateTimeType.TimeOnly };
-                    //CurrentServiceTemplateContext.Values.Add(new DateTimeValue { Data = DateTime.UtcNow }); //Setup a Default Value
                     break;
                 //NOTE: For now this is only available on FoundOPS & ServiceProvider level service templates that do not have a destination field
                 case "Destination":

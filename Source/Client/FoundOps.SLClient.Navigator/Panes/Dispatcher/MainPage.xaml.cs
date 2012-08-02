@@ -150,10 +150,10 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             if (CheckSourceForHeaderCell(e.Options.Source))
                 return;
 
-            var draggedTaskHolders = e.Options.Payload as IEnumerable;
+            var draggedItems = e.Options.Payload as IEnumerable; //draggedTHs = e.Options.Payload as IEnumerable;
 
-            var draggedItems = (from object draggedItem in draggedTaskHolders
-                                select ((TaskHolder)draggedItem).ChildRouteTask).ToList();
+            //var draggedItems = (from object draggedItem in draggedTHs 
+                                //select ((TH)draggedItem).ChildRouteTask).ToList(); 
 
             if (draggedItems == null) return;
 
@@ -208,10 +208,10 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             if (destinationCheck == null) return "";
 
             //If its not null we set the destination to e.Options.Destination.DataContext
-            var destination = destinationCheck.DataContext;
+            var destination = destinationCheck.DataContext; 
 
             //Collection of dragged items
-            var payloadCollection = ((IEnumerable<object>)e.Options.Payload).Select(o => ((TaskHolder)o).ChildRouteTask).ToArray();
+            var payloadCollection = ((IEnumerable<object>)e.Options.Payload).Cast<RouteTask>().ToArray(); //.Select(o => ((TH)o).ChildRouteTask)
 
             //The first item, used in various checks to be sure that all dragged items have the same service, location, etc.
             var payloadCheck = payloadCollection.First();
@@ -225,13 +225,13 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 
             if (routeTasks.Count() > 1)
             {
-                var services = routeTasks.Select(rt => rt.ParentRouteTaskHolder.ServiceName).Where(n => n != null).Distinct();
+                var services = routeTasks.Select(rt => rt.Name).Where(n => n != null).Distinct();
 
                 if (services.Count() > 1)
                     return ErrorConstants.DifferentService;
 
                 //FirstOrDefault might be null but the second might have a service 
-                payloadCheck = (RouteTask)DragDropTools.CheckItemsForService(payloadCollection);
+                payloadCheck = DragDropTools.CheckItemsForService(payloadCollection);  
             }
 
             #endregion
@@ -356,7 +356,7 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             DragDropTools.AddRouteTaskToRoute(routeTask, destination, placeInRoute, dropPlacement);
 
             //Remove the RouteTask from the TaskBoard
-            ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Remove(((RouteTask)draggedItem).ParentRouteTaskHolder);
+            ((ObservableCollection<RouteTask>)VM.TaskBoard.CollectionView.SourceCollection).Remove(((RouteTask)draggedItem));
         }
 
         /// <summary>

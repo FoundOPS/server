@@ -18,7 +18,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
         private readonly Random _random = new Random();
         private readonly string[] _routeNames = { "SF Bay Area", "Shelter Island", "North Side", "South Side" };
-        private readonly Status[] _statuses = { Status.Routed, Status.InProgress, Status.Completed, Status.Cancelled, Status.OnHold };
 
         public RoutesDesignData()
             : this(new BusinessAccountsDesignData().GotGrease)
@@ -53,21 +52,23 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
         /// </summary>
         private void InitializeRoutes(BusinessAccount ownerBusinessAccount)
         {
+            var date = DateTime.UtcNow.Date;
+
             DesignRoutes = new List<Route>();
 
             var serviceTemplates = _ownerBusinessAccount.ServiceTemplates.Where(st => st.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined).ToArray();
 
             //Create three routes for yesterday
             for (int i = 0; i <= 3; i++)
-                CreateRoute(DateTime.UtcNow.AddDays(-1), serviceTemplates.RandomItem(), ownerBusinessAccount, i);
+                CreateRoute(date.AddDays(-1), serviceTemplates.RandomItem(), ownerBusinessAccount, i);
 
             //Create three routes for today
             for (int i = 0; i <= 3; i++)
-                CreateRoute(DateTime.UtcNow, serviceTemplates.RandomItem(), ownerBusinessAccount, i);
+                CreateRoute(date, serviceTemplates.RandomItem(), ownerBusinessAccount, i);
 
             //Create three routes for tomorrow
             for (int i = 0; i <= 3; i++)
-                CreateRoute(DateTime.UtcNow.AddDays(1), serviceTemplates.RandomItem(), ownerBusinessAccount, i);
+                CreateRoute(date.AddDays(1), serviceTemplates.RandomItem(), ownerBusinessAccount, i);
         }
 
 
@@ -127,7 +128,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                     EstimatedDuration = new TimeSpan(0, _random.Next(25), 0),
                     OwnerBusinessAccount = ownerBusinessAccount,
                     Service = newService,
-                    Status = _statuses.RandomItem()
+                    TaskStatus = ownerBusinessAccount.TaskStatuses.FirstOrDefault(ts => ts.DefaultTypeInt != null && ts.DefaultTypeInt == ((int)StatusDetail.RoutedDefault))
                 };
 
                 var routeDestination = new RouteDestination { OrderInRoute = orderInRoute };

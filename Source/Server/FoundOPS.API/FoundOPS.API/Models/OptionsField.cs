@@ -6,7 +6,7 @@ namespace FoundOPS.API.Models
     {
         public bool AllowMultipleSelection { get; set; }
 
-        public int TypeInt { get; set; }
+        public short TypeInt { get; set; }
 
         public List<Option> Options { get; set; }
 
@@ -36,6 +36,31 @@ namespace FoundOPS.API.Models
 
             foreach (var option in fieldModel.Options)
                 field.Options.Add(Option.ConvertOptionModel(option));
+
+            return field;
+        }
+
+        /// <summary>
+        /// Converts the API model back to the FoundOPS model
+        /// </summary>
+        /// <param name="optionsField"></param>
+        /// <returns></returns>
+        public static FoundOps.Core.Models.CoreEntities.Field ConvertBackOptionsField(OptionsField optionsField)
+        {
+            var field = new FoundOps.Core.Models.CoreEntities.OptionsField
+            {
+                Id = optionsField.Id,
+                Name = optionsField.Name,
+                Required = optionsField.Required,
+                Tooltip = optionsField.ToolTip,
+                ParentFieldId = optionsField.ParentFieldId,
+                ServiceTemplateId = optionsField.ServiceTemplateId,
+                AllowMultipleSelection = optionsField.AllowMultipleSelection,
+                TypeInt = optionsField.TypeInt
+            };
+
+            foreach (var option in optionsField.Options)
+                field.Options.Add(Option.ConvertBackOption(option));
 
             return field;
         }

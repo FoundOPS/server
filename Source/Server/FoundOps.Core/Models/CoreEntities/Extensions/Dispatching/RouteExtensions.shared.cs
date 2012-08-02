@@ -26,8 +26,8 @@ namespace FoundOps.Core.Models.CoreEntities
         {
             Id = Guid.NewGuid();
             Date = DateTime.UtcNow;
-            StartTime = DateTime.UtcNow.SetTime(9,0);
-            EndTime = DateTime.UtcNow.SetTime(17, 0);
+            StartTime = DateTime.UtcNow;
+            EndTime = DateTime.UtcNow;
             Name = "Route Name";
             OnCreation();
         }

@@ -1,4 +1,5 @@
-﻿using FoundOps.Common.Tools;
+﻿using FoundOps.Common.NET;
+using FoundOps.Common.Tools;
 
 namespace FoundOps.Core.Models
 {
@@ -37,5 +38,8 @@ namespace FoundOps.Core.Models
         /// The root directory of the server projects.
         /// </summary>
         public static string RootDirectory = @"C:\FoundOps\GitHub\Source\Server";
+
+        public static readonly string SqlConnectionString = ConfigWrapper.ConnectionString("CoreConnectionString");
+        public static readonly string ContainerConnectionString = ConfigWrapper.ConnectionString("CoreEntitiesContainer");
     }
 }

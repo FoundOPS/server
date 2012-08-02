@@ -1,6 +1,9 @@
+using System.Data.SqlClient;
 using System.ServiceModel.DomainServices.Server;
+using Dapper;
 using FoundOps.Common.Composite;
 using FoundOps.Common.NET;
+using FoundOps.Core.Models;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
 using Route = FoundOps.Core.Models.CoreEntities.Route;
@@ -152,7 +155,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             //route.Vehicles.Load();
             //route.Vehicles.Clear();
-            
+
             route.RouteDestinations.Load();
             foreach (var routeDestination in route.RouteDestinations.ToArray())
                 DeleteRouteDestination(routeDestination);
@@ -206,7 +209,9 @@ namespace FoundOps.Server.Services.CoreDomainService
             this.ObjectContext.DetachExistingAndAttach(routeDestination);
 
             routeDestination.RouteTasks.Load();
-            routeDestination.RouteTasks.Clear();
+
+            if (routeDestination.RouteTasks.Any())
+                routeDestination.RouteTasks.Clear();
 
             this.ObjectContext.RouteDestinations.DeleteObject(routeDestination);
         }
@@ -219,15 +224,48 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// Returns the scheduled RouteTasks for the day based on the ServiceProvider that are not in a route.
         /// </summary>
         /// <param name="roleId">The role id.</param>
-        /// <param name="serviceDate">The service date.</param>
+        /// <param name="serviceDate">The service date.</param>  
         [Query]
-        public IQueryable<TaskHolder> GetUnroutedServices(Guid roleId, DateTime serviceDate)
+        public IQueryable<RouteTask> GetUnroutedServices(Guid roleId, DateTime serviceDate)
         {
-            var businessAccount = ObjectContext.Owner(roleId).First();
+            var businessForRole = ObjectContext.Owner(roleId).FirstOrDefault();
 
-            var unroutedServicesForDate = ObjectContext.GetUnroutedServicesForDate(businessAccount.Id, serviceDate);
 
-            return unroutedServicesForDate.AsQueryable();
+            var tasks = new List<RouteTask>();
+
+            using (var conn = new SqlConnection(ServerConstants.SqlConnectionString))
+            {
+                conn.Open();
+
+                var parameters = new DynamicParameters();
+                parameters.Add("@serviceProviderIdContext", businessForRole.Id);
+                parameters.Add("@serviceDate", serviceDate);
+
+                //Calls a stored procedure that will find any Services scheduled for today and create a routetask for them if one doesnt exist
+                //Then it will return all RouteTasks that are not in a route joined with their Locations, Location.Regions and Clients
+                //Dapper will then map the output table to RouteTasks, RouteTasks.Location, RouteTasks.Location.Region and RouteTasks.Client
+                //While that is being mapped we also attach the Client, Location and Region to the objectContext
+                var data = conn.Query<RouteTask, Location, Region, Client, TaskStatus, RouteTask>("sp_GetUnroutedServicesForDate", (routeTask, location, region, client, taskStatus) =>
+                {
+                    this.ObjectContext.DetachExistingAndAttach(location);
+                    routeTask.Location = location;
+
+                    this.ObjectContext.DetachExistingAndAttach(region);
+                    routeTask.Location.Region = region;
+
+                    this.ObjectContext.DetachExistingAndAttach(client);
+                    routeTask.Client = client;
+
+                    this.ObjectContext.DetachExistingAndAttach(taskStatus);
+                    routeTask.TaskStatus = taskStatus;
+
+                    return routeTask;
+                }, parameters, commandType: CommandType.StoredProcedure);
+
+                conn.Close();
+
+                return data.AsQueryable();
+            }
         }
 
         /// <summary>
@@ -268,6 +306,34 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             this.ObjectContext.DetachExistingAndAttach(routeTask);
             this.ObjectContext.RouteTasks.DeleteObject(routeTask);
+        }
+
+        #endregion
+
+        #region TaskStatus
+
+        public IQueryable<TaskStatus> GetTaskStatus()
+        {
+            throw new NotSupportedException("Exists solely to generate TaskStatus' in the clients data project");
+        }
+
+        public void InsertTaskStatus(TaskStatus taskStatus)
+        {
+            if ((taskStatus.EntityState != EntityState.Detached))
+                this.ObjectContext.ObjectStateManager.ChangeObjectState(taskStatus, EntityState.Added);
+            else
+                this.ObjectContext.TaskStatuses.AddObject(taskStatus);
+        }
+
+        public void UpdateTaskStatus(TaskStatus taskStatus)
+        {
+            this.ObjectContext.TaskStatuses.AttachAsModified(taskStatus);
+        }
+
+        public void DeleteTaskStatus(TaskStatus taskStatus)
+        {
+            this.ObjectContext.DetachExistingAndAttach(taskStatus);
+            this.ObjectContext.TaskStatuses.DeleteObject(taskStatus);
         }
 
         #endregion

@@ -18,10 +18,7 @@ namespace FoundOps.Core.Models.CoreEntities
     {
         #region ConnectionString, Paths and Parameters
 
-        public static readonly string SqlConnectionString = ConfigWrapper.ConnectionString("CoreConnectionString");
-        private static readonly string ContainerConnectionString = ConfigWrapper.ConnectionString("CoreEntitiesContainer");
-
-        private static readonly string RootDirectory = ServerConstants.RootDirectory;
+        public static string RootDirectory = @"C:\FoundOps\GitHub\Source\Server";
 
         private static readonly string ClearCoreEntitiesDatabaseScriptLocation =
             RootDirectory + @"\FoundOps.Core\Models\CoreEntities\ClearCoreEntities.edmx.sql";
@@ -37,7 +34,7 @@ namespace FoundOps.Core.Models.CoreEntities
             var createFile = new FileInfo(CreateCoreEntitiesDatabaseScriptLocation);
             string clearScript = clearFile.OpenText().ReadToEnd();
             string createScript = createFile.OpenText().ReadToEnd();
-            using (var conn = new SqlConnection(SqlConnectionString))
+            using (var conn = new SqlConnection(ServerConstants.SqlConnectionString))
             {
                 var server = new Microsoft.SqlServer.Management.Smo.Server(new ServerConnection(conn));
                 server.ConnectionContext.ExecuteNonQuery(clearScript);
@@ -60,7 +57,7 @@ namespace FoundOps.Core.Models.CoreEntities
         {
             ClearCreateCoreEntitiesDatabase();
 
-            var container = new CoreEntitiesContainer(ContainerConnectionString);
+            var container = new CoreEntitiesContainer(ServerConstants.ContainerConnectionString);
 
             //Setup blocks
             PopulateBlocks(container);
@@ -72,19 +69,21 @@ namespace FoundOps.Core.Models.CoreEntities
             var userAccountsDesignData = new UserAccountsDesignData
                                              {
                                                  //Set Passwords
-                                                 Andrew = { PasswordHash = EncryptionTools.Hash("f00sballchamp") },
-                                                 Jon = { PasswordHash = EncryptionTools.Hash("seltzer") },
-                                                 Oren = { PasswordHash = EncryptionTools.Hash("nachoman") },
-                                                 Zach = { PasswordHash = EncryptionTools.Hash("curlyhair") },
-                                                 David = { PasswordHash = EncryptionTools.Hash("starofdavid") },
-                                                 Linda = { PasswordHash = EncryptionTools.Hash("auntie") },
-                                                 Terri = { PasswordHash = EncryptionTools.Hash("iam1randompassword") },
-                                                 AlanMcClure = { PasswordHash = EncryptionTools.Hash("youngster") }
+                                                 Andrew = { PasswordHash = EncryptionTools.Hash("f00sballchamp"), TimeZone = "Eastern Standard Time" },
+                                                 Jon = { PasswordHash = EncryptionTools.Hash("seltzer"), TimeZone = "Eastern Standard Time" },
+                                                 Oren = { PasswordHash = EncryptionTools.Hash("nachoman"), TimeZone = "Eastern Standard Time" },
+                                                 Zach = { PasswordHash = EncryptionTools.Hash("curlyhair"), TimeZone = "Eastern Standard Time" },
+                                                 David = { PasswordHash = EncryptionTools.Hash("starofdavid"), TimeZone = "Eastern Standard Time" },
+                                                 Linda = { PasswordHash = EncryptionTools.Hash("auntie"), TimeZone = "Eastern Standard Time" },
+                                                 Terri = { PasswordHash = EncryptionTools.Hash("iam1randompassword"), TimeZone = "Eastern Standard Time" },
+                                                 AlanMcClure = { PasswordHash = EncryptionTools.Hash("youngster"), TimeZone = "Eastern Standard Time" }
                                              };
 
 
             //Setup roles
             new RolesDesignData(businessAccountsDesignData, userAccountsDesignData);
+
+            container.SaveChanges();
 
             //Populate ServiceProvider Design Data
             foreach (var serviceProvider in businessAccountsDesignData.DesignServiceProviders)

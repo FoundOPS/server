@@ -112,51 +112,23 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
 
                 var placeInRoute = DragDropTools.GetDropPlacement(destination, dropPlacement);
 
-
-                #region Modify placeInRoute
-
-                if (placeInRoute > 0)
+                //Modify placeInRoute
+                if (placeInRoute > 0 && dropPlacement != DropPlacement.After)
                     placeInRoute--;
 
-                if (dropPlacement == DropPlacement.After)
-                    placeInRoute++;
-
-                #endregion
-
-                //if(((RouteDestination)((RouteTask)draggedItems.FirstOrDefault())).RouteTasks.Count == 1)
-                //if(e.Options.Destination is TaskBoard)
-                //{
-                //    var destinations = draggedItems.OfType<RouteDestination>().ToArray();
-                //    var routeTasks = draggedItems.OfType<RouteTask>().ToArray();
-                //    var taskHolders = routeTasks.Select(rt => rt.ParentRouteTaskHolder);
-
-                //    var allTaskHoldersToAdd = taskHolders.Union(destinations.SelectMany(rd => rd.RouteTasks.Select(rt => rt.ParentRouteTaskHolder)));
-
-                //    //Add the TaskHolder back to VM.TaskBoard.LoadedTaskHolders 
-                //    ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).AddRange(allTaskHoldersToAdd);
-
-                //    //Delete the Route, RouteDestinations, and RouteTasks
-                //    foreach (var routeDestination in destinations)
-                //        VM.Routes.DeleteRouteDestination(routeDestination);
-                //    foreach (var routeTask in routeTasks)
-                //        VM.Routes.DeleteRouteTask(routeTask);
-                //}
-                //else
-                //{
                 //Go in reverse to preserve the order that the objects were previously in
                 foreach (var draggedItem in draggedItems.Reverse())
                 {
                     if (e.Options.Destination is TaskBoard)
                     {
+                        DragDropTools.RemoveFromRoute(draggedItem);
                         AddToTaskBoard(draggedItem);
-                        RemoveFromRoute(draggedItem);
                     }
                     else
                     {
                         AddToRoute(draggedItem, destination, placeInRoute, dropPlacement);
                     }
                 }
-                //}
 
                 VM.Routes.DispatcherSave();
             }
@@ -265,7 +237,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
 
                 //FirstOrDefault might be null but the second might have a service 
                 if (payloadCheck is RouteTask)
-                    payloadCheck = DragDropTools.CheckItemsForService(payloadCollection);
+                    payloadCheck = DragDropTools.CheckItemsForService(payloadCollection.Cast<RouteTask>());
             }
 
             #endregion
@@ -366,82 +338,19 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
             //If the draggedItem is a RouteDestination, add all its RouteTasks to the TaskBoard
             if (draggedItem is RouteDestination)
             {
-                foreach (var task in ((RouteDestination) draggedItem).RouteTasks)
-                    CreateNewRouteTaskAndAddToTaskBoard(task);
+                foreach (var task in ((RouteDestination)draggedItem).RouteTasks)
+                    DragDropTools.AddRouteTaskToTaskBoard(task);
                 //TODO:add analytic
             }
             //Id the draggedItem is a RouteTask, simply add it to the TaskBoard
             if (draggedItem is RouteTask)
             {
-                CreateNewRouteTaskAndAddToTaskBoard(((RouteTask) draggedItem));
+                DragDropTools.AddRouteTaskToTaskBoard(((RouteTask)draggedItem));
                 //TODO:add analytic
             }
         }
 
-        private void CreateNewRouteTaskAndAddToTaskBoard(RouteTask routeTask)
-        {
-            var oldRouteTask = routeTask;
-
-            //Create a new RouteTask to be saved as the ChildRouteTask of the TaskHolder
-            var newRouteTask = new RouteTask
-            {
-                Id = Guid.NewGuid(),
-                BusinessAccountId = oldRouteTask.BusinessAccountId,
-                Client = oldRouteTask.Client,
-                ClientId = oldRouteTask.ClientId,
-                Date = oldRouteTask.Date,
-                EstimatedDuration = oldRouteTask.EstimatedDuration,
-                Location = oldRouteTask.Location,
-                LocationId = oldRouteTask.LocationId,
-                Name = oldRouteTask.Name,
-                OwnerBusinessAccount = oldRouteTask.OwnerBusinessAccount,
-                ParentRecurringService = oldRouteTask.ParentRecurringService,
-                ParentRouteTaskHolder = oldRouteTask.ParentRouteTaskHolder,
-                RecurringServiceId = oldRouteTask.RecurringServiceId,
-                RouteDestination = null,
-                RouteDestinationId = null,
-                Service = oldRouteTask.Service,
-                ServiceId = oldRouteTask.ServiceId,
-                Status = Status.Created
-            };
-
-            VM.Routes.DeleteRouteTask(oldRouteTask);
-
-            var taskHolder = routeTask.ParentRouteTaskHolder;
-
-            taskHolder.ChildRouteTask = null;
-            taskHolder.ChildRouteTask = newRouteTask;
-
-            Manager.Data.DetachEntities(new[] { newRouteTask });
-
-            ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Add(routeTask.ParentRouteTaskHolder);
-        }
-
-        /// <summary>
-        /// Removes the dragged item from the route.
-        /// </summary>
-        /// <param name="draggedItem">The dragged item.</param>
-        private void RemoveFromRoute(object draggedItem)
-        {
-            //If you are dragging the RouteDestination into the TaskBoard -> delete the RouteDestination completely
-            if (draggedItem is RouteDestination)
-                VM.Routes.DeleteRouteDestination((RouteDestination)draggedItem);
-
-            if (draggedItem is RouteTask)
-            {
-                var draggedRouteTask = (RouteTask)draggedItem;
-
-                var oldRouteDestination = draggedRouteTask.RouteDestination;
-
-                //if the old route destination has no tasks, delete it
-                if (oldRouteDestination.RouteTasks.Count == 0)
-                    VM.Routes.DeleteRouteDestination(oldRouteDestination);
-                else
-                    draggedRouteTask.RemoveRouteDestination();
-            }
-        }
-
-        /// <summary>
+        /// <summary> 
         /// Adds to route.
         /// </summary>
         /// <param name="draggedItem">The dragged item.</param>

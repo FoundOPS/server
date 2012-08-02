@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using FoundOPS.API.Api;
 using FoundOps.Core.Models.CoreEntities;
 
 namespace FoundOPS.API.Models
@@ -15,6 +16,8 @@ namespace FoundOPS.API.Models
         public string LastName { get; set; }
 
         public Employee Employee { get; set; }
+
+        public TimeZoneInfo TimeZoneInfo { get; set; }
 
         /// <summary>
         /// Administrator, Mobile, Regular
@@ -38,6 +41,12 @@ namespace FoundOPS.API.Models
             {
                 userSettings.Employee = Employee.ConvertModel(foundOpsEmployee);
             }
+
+            var controller = new SettingsController();
+
+            var timeZoneinfo = controller.GetTimeZones().FirstOrDefault(tz => tz.TimeZoneId == userAccount.TimeZone);
+
+            userSettings.TimeZoneInfo = timeZoneinfo;
 
             return userSettings;
         }

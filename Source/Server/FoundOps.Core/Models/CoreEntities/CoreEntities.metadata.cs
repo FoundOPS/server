@@ -31,6 +31,9 @@ namespace FoundOps.Core.Models.CoreEntities
             }
 
             [Include]
+            public EntityCollection<TaskStatus> TaskStatuses { get; set; }            
+            
+            [Include]
             public EntityCollection<Location> Depots { get; set; }
 
             [Include]
@@ -396,6 +399,9 @@ namespace FoundOps.Core.Models.CoreEntities
 
             [Include]
             public Location Location { get; set; }
+
+            [Include]
+            public TaskStatus TaskStatus { get; set; }
 
             [Include]
             public Service Service { get; set; }

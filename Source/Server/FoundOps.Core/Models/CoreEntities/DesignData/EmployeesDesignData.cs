@@ -33,6 +33,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
         private void InitializeEmployees()
         {
+            var dateTime = DateTime.UtcNow;
+
             DesignEmployee = new Employee
             {
                 FirstName = "Jon",
@@ -45,14 +47,14 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 State = "IN",
                 ZipCode = "47906",
                 Permissions = "none",
-                HireDate = DateTime.UtcNow,
+                HireDate = dateTime.Date,
                 SSN = "123-45-6789",
                 LastCompassDirection = 100,
                 LastLatitude = 40.4599,
                 LastLongitude = -86.9309,
                 LastSource = "Android",
                 LastSpeed = 25.65,
-                LastTimeStamp = DateTime.UtcNow,
+                LastTimeStamp = dateTime,
                 LinkedUserAccountId = _userAccountDesignData.Jon.Id
             };
 
@@ -68,14 +70,14 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 State = "IN",
                 ZipCode = "47906",
                 Permissions = "",
-                HireDate = DateTime.UtcNow,
+                HireDate = dateTime.Date,
                 SSN = "000-11-2222",
                 LastCompassDirection = 32,
                 LastLatitude = 40.4585,
                 LastLongitude = -86.9329,
                 LastSource = "iPhone",
                 LastSpeed = 15.2,
-                LastTimeStamp = DateTime.UtcNow,
+                LastTimeStamp = dateTime,
                 LinkedUserAccountId = _userAccountDesignData.Zach.Id
             };
 
@@ -91,14 +93,14 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 State = "IN",
                 ZipCode = "47906",
                 Permissions = "Level 2",
-                HireDate = DateTime.UtcNow,
+                HireDate = dateTime.Date,
                 SSN = "654-98-0123",
                 LastCompassDirection = -11,
                 LastLatitude = 40.4559,
                 LastLongitude = -86.9305,
                 LastSource = "Windows Phone",
                 LastSpeed = 48.82,
-                LastTimeStamp = DateTime.UtcNow,
+                LastTimeStamp = dateTime,
                 LinkedUserAccountId = _userAccountDesignData.Oren.Id
             };
 

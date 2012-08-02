@@ -11,12 +11,12 @@ namespace FoundOps.Core.Models.CoreEntities
     /// </summary>
     public enum Status
     {
-        Created = 1,
+        Unrouted = 1,
         Routed = 2,
         InProgress = 3,
         OnHold = 4,
         Completed = 5,
-        Cancelled = 6
+        Incomplete = 6
     }
 
     public partial class RouteTask : IEntityDefaultCreation, ICompositeRaiseEntityPropertyChanged
@@ -61,14 +61,14 @@ namespace FoundOps.Core.Models.CoreEntities
 #endif
         #endregion
 
-        public Status Status
-        {
-            get { return (Status)StatusInt; }
-            set
-            {
-                StatusInt = (int)value;
-                CompositeRaiseEntityPropertyChanged("Status");
-            }
-        }
+        //public Status Status
+        //{
+        //    get { return (Status)StatusInt; }
+        //    set
+        //    {
+        //        StatusInt = (int)value;
+        //        CompositeRaiseEntityPropertyChanged("Status");
+        //    }
+        //}
     }
 }

@@ -230,6 +230,7 @@
   <ItemGroup>
     <Compile Include="Api\AuthController.cs" />
     <Compile Include="Api\ErrorController.cs" />
+    <Compile Include="Api\TaskStatusesController.cs" />
     <Compile Include="Controllers\HelperController.cs" />
     <Compile Include="Api\SettingsController.cs" />
     <Compile Include="Api\ServiceController.cs" />
@@ -247,6 +248,7 @@
     <Compile Include="Models\LocationField.cs" />
     <Compile Include="Models\Option.cs" />
     <Compile Include="Models\OptionsField.cs" />
+    <Compile Include="Models\TaskStatus.cs" />
     <Compile Include="Models\TextBoxField.cs" />
     <Compile Include="Models\DateTimeField.cs" />
     <Compile Include="Models\NumericField.cs" />
@@ -256,6 +258,7 @@
     <Compile Include="Models\Route.cs" />
     <Compile Include="Models\RouteDestination.cs" />
     <Compile Include="Models\Service.cs" />
+    <Compile Include="Models\TimeZoneInfo.cs" />
     <Compile Include="Models\TrackPoint.cs" />
     <Compile Include="Models\UserSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

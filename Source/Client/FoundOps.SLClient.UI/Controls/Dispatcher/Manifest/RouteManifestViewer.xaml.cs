@@ -338,11 +338,11 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
                         {
                             var routeTask = manifestFieldsControl.DataContext as RouteTask;
 
-                            if (routeTask == null || routeTask.ParentRouteTaskHolder.ServiceHolder == null
-                                || routeTask.ParentRouteTaskHolder.ServiceHolder.Service == null)
+                            if (routeTask == null || routeTask.ServiceHolder == null
+                                || routeTask.ServiceHolder.Service == null)
                                 continue;
 
-                            var serviceTemplate = routeTask.ParentRouteTaskHolder.ServiceHolder.Service.ServiceTemplate;
+                            var serviceTemplate = routeTask.ServiceHolder.Service.ServiceTemplate;
 
                             manifestFieldsControl.ServiceTemplate = serviceTemplate;
                             manifestFieldsControl.UpdateLayout();
@@ -420,9 +420,6 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
 
             #region Analytics
 
-            //get current time
-            var currentTimeOfDay = DateTime.UtcNow.ToShortTimeString();
-
             //check for route manifest options
             if (Settings.IsHeaderVisible)
             {
@@ -475,8 +472,9 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
                 if (Settings.IsCustomMessageVisible)
                     Data.Services.Analytics.Track(Event.ManifestOption, detail: "Custom Message");
             }
+
             //Analytics - Track when manifests are printed
-            Data.Services.Analytics.Track(Event.PrintedManifest, detail: currentTimeOfDay);
+            Data.Services.Analytics.Track(Event.PrintedManifest, detail: DateTime.UtcNow.ToShortTimeString());
 
             #endregion
         }

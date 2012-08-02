@@ -36,5 +36,30 @@
 
             return field;
         }
+
+        /// <summary>
+        /// Converts the API model back to the FoundOPS model
+        /// </summary>
+        /// <param name="numericField"></param>
+        /// <returns></returns>
+        public static FoundOps.Core.Models.CoreEntities.Field ConvertBackNumericField(NumericField numericField)
+        {
+            var field = new FoundOps.Core.Models.CoreEntities.NumericField
+            {
+                Id = numericField.Id,
+                Name = numericField.Name,
+                Required = numericField.Required,
+                Tooltip = numericField.ToolTip,
+                ParentFieldId = numericField.ParentFieldId,
+                ServiceTemplateId = numericField.ServiceTemplateId,
+                Mask = numericField.Mask,
+                DecimalPlaces = numericField.DecimalPlaces,
+                Minimum = numericField.Minimum,
+                Maximum = numericField.Maximum,
+                Value = numericField.Value
+            };
+
+            return field;
+        }
     }
 }

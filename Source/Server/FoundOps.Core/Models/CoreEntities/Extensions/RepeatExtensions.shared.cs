@@ -263,18 +263,6 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         /// <summary>
-        /// Gets the next repeat date.
-        /// </summary>
-        public DateTime? NextRepeatDate
-        {
-            get
-            {
-                var nextScheduledDateFromToday = NextRepeatDateOnOrAfterDate(DateTime.UtcNow);
-                return nextScheduledDateFromToday;
-            }
-        }
-
-        /// <summary>
         /// Returns the next scheduled date.
         /// </summary>
         /// <param name="onOrAfterDate">The on or after date.</param>
@@ -730,9 +718,10 @@ namespace FoundOps.Core.Models.CoreEntities
             }
 
             return null;
-        }
 
             #endregion
+        }
+
 
         private DateTime? CheckDateAvailability(DateTime? endDate, DateTime newOnOrAfterDate)
         {

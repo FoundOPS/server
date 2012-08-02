@@ -1,12 +1,13 @@
+USE [Core]
+GO
+/****** Object:  StoredProcedure [dbo].[sp_GetUnroutedServicesForDate]    Script Date: 7/5/2012 2:15:25 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-Use Core
-GO
-IF OBJECT_ID(N'[dbo].[GetUnroutedServicesForDate]', N'FN') IS NOT NULL
-DROP FUNCTION [dbo].[GetUnroutedServicesForDate]
-GO
+--IF OBJECT_ID(N'[dbo].[GetUnroutedServicesForDate]', N'FN') IS NOT NULL
+--DROP FUNCTION [dbo].[GetUnroutedServicesForDate]
+--GO
 /*****************************************************************************************************************************************************************************************************************************
 * FUNCTION GetUnroutedServicesForDate will take the context provided and find all the services that are scheduled for that day
 ** Input Parameters **
@@ -19,25 +20,9 @@ GO
 * {GUID}			|           | 1/1/2012 <-- Existing service				| Direct	  |	GotGrease?		| {GUID}	| North		 | GotGrease?	   | {GUID} 	| 6789 Help Ln	| 43.265	| -89.254	| 2	
 * {GUID}			| {GUID}	| 1/2/2012 <-- Existing service w/ RS parent| Regular     | AB Couriers		| {GUID}	| West		 | AB Couriers	   | {GUID}		| 4953 Joe Way	| 44.165	| -79.365	| 4	
 ****************************************************************************************************************************************************************************************************************************/
-CREATE FUNCTION [dbo].[GetUnroutedServicesForDate]
+CREATE PROCEDURE [dbo].[sp_GetUnroutedServicesForDate]
 (@serviceProviderIdContext uniqueidentifier,
 @serviceDate date)
-RETURNS @ServicesTableToReturn TABLE
-	(
-		RecurringServiceId uniqueidentifier,
-		ServiceId uniqueidentifier,
-		OccurDate date,
-		ServiceName nvarchar(max),
-		ClientName nvarchar(max),
-		ClientId uniqueidentifier,
-		RegionName nvarchar(max),
-		LocationName nvarchar(max),
-		LocationId uniqueidentifier,
-		AddressLine nvarchar(max),
-		Latitude decimal(18,8),
-		Longitude decimal(18,8),
-		StatusInt int
-	) 
 AS
 BEGIN
 
@@ -100,7 +85,7 @@ BEGIN
 	DELETE FROM @TempGenServiceTableWithNextOccurrence
 	WHERE NextDate IS NULL OR NextDate <> @serviceDate
 
-	--This table will store all Existing Services after to the OnOrAfterDate
+	--This table will store all Existing Services after the OnOrAfterDate
 	DECLARE @TempNextExistingServiceTable TABLE
 	(ServiceId uniqueidentifier,
 	RecurringServiceId uniqueidentifier,
@@ -208,32 +193,12 @@ BEGIN
 									)
 								)
 							)
-	----If a Service from a previous day has already been routed for the given ServiceDate, add it to @PreRoutedServices
-	----This will cause it to not be included in the final output
-	--INSERT INTO @PreRoutedServices (RecurringServiceId, ServiceId, OccurDate, ServiceName)
-	--SELECT	t1.RecurringServiceId, t1.ServiceId, t1.Date, t1.Name
-	--FROM	RouteTasks t1
-	--WHERE	EXISTS
-	--		(
-	--			SELECT	* 
-	--			FROM	RouteDestinations t2 
-	--			WHERE	EXISTS 
-	--					(
-	--						SELECT	* 
-	--						FROM	Routes t3 
-	--						WHERE	t3.Id = t2.RouteId 
-	--								AND t3.Date = @serviceDate
-	--					) 
-	--					AND t2.Id = t1.RouteDestinationId
-	--		) 
-	--		AND t1.BusinessAccountId = @serviceProviderIdContext
-	--		AND t1.DelayedChildId IS NULL
-			 
-	----Add all RouteTasks that were put on hold in the past into the table to be returned
-	--INSERT INTO @serviceForDayTable (RecurringServiceId, ServiceId, OccurDate, ServiceName)
-	--SELECT	t1.RecurringServiceId, t1.ServiceId, t1.Date, t1.Name 
-	--FROM	RouteTasks t1
-	--WHERE	t1.Date < @serviceDate AND t1.StatusInt = 4 AND t1.BusinessAccountId = @serviceProviderIdContext AND t1.DelayedChildId IS NULL							
+						
+	
+	INSERT INTO @PreRoutedServices
+	SELECT RecurringServiceId, ServiceId, [Date], Name
+	FROM dbo.RouteTasks
+	WHERE Date = @serviceDate AND BusinessAccountId = @serviceProviderIdContext AND RouteDestinationId IS NULL
 
 	DECLARE @UnroutedOrUncompletedServices TABLE
 	(
@@ -249,8 +214,7 @@ BEGIN
 		AddressLine nvarchar(max),
 		Latitude float,
 		Longitude float,
-		StatusInt int--,
-		--DelayedParentId uniqueidentifier
+		StatusName nvarchar(max)
 	) 
 
 	INSERT INTO @UnroutedOrUncompletedServices (RecurringServiceId, ServiceId, OccurDate, ServiceName)
@@ -337,10 +301,6 @@ BEGIN
 							)
 	WHERE ClientId IS NULL
 
-	UPDATE	@UnroutedOrUncompletedServices
-	SET		StatusInt =		1
-	WHERE StatusInt IS NULL
-
 	DECLARE @ServicesForDateTable TABLE
 		(
 			RecurringServiceId uniqueidentifier,
@@ -355,13 +315,13 @@ BEGIN
 			AddressLine nvarchar(max),
 			Latitude decimal(18,8),
 			Longitude decimal(18,8),
-			StatusInt int
+			StatusName nvarchar(max)
 		) 
 
 	--This will be a complete table of all services that should have been scheduled for the date provided
 	--This does not take into account dates that have been excluded
-	INSERT @ServicesForDateTable (RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude, StatusInt)
-	SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude, StatusInt FROM @UnroutedOrUncompletedServices
+	INSERT @ServicesForDateTable (RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude, StatusName)
+	SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude, StatusName FROM @UnroutedOrUncompletedServices
 
 -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Now that we have all the services that would have been on the date provided, we will take ExcludedDates into account
@@ -441,7 +401,7 @@ BEGIN
 			AddressLine nvarchar(max),
 			Latitude decimal(18,8),
 			Longitude decimal(18,8),
-			StatusInt int
+			StatusName nvarchar(max)
 		) 
 
 	--Find all ExcludedServices from @ServicesForDateTable
@@ -449,11 +409,99 @@ BEGIN
 	SELECT t1.* FROM @ServicesForDateTable t1, @RecurringServicesWithExcludedDatesSplit t2
 	WHERE t1.RecurringServiceId = t2.Id AND t1.OccurDate = t2.ExcludedDate
 
+	CREATE TABLE #ServicesTableToReturn
+(
+		Id UNIQUEIDENTIFIER,
+		RecurringServiceId uniqueidentifier,
+		ServiceId uniqueidentifier,
+		OccurDate date,
+		ServiceName nvarchar(max),
+		ClientName nvarchar(max),
+		ClientId UNIQUEIDENTIFIER ,
+		RegionName nvarchar(max),
+		LocationName nvarchar(max),
+		LocationId uniqueidentifier,
+		AddressLine nvarchar(max),
+		Latitude decimal(18,8),
+		Longitude decimal(18,8),
+		StatusName nvarchar(max)
+	) 
+
 	--Add all services that have not been excluded to the output table
-	INSERT INTO @ServicesTableToReturn
+	INSERT INTO #ServicesTableToReturn(RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude, StatusName)
 	SELECT * FROM @ServicesForDateTable
 	EXCEPT
 	SELECT * FROM @SevicesThatHaveBeenExcluded
 
+	UPDATE #ServicesTableToReturn
+	SET Id = NEWID()
+
+	--CREATE TABLE #Return
+	--(
+	--Id UNIQUEIDENTIFIER PRIMARY KEY,
+	--RecurringServiceId uniqueidentifier,
+	--ServiceId uniqueidentifier,
+	--OccurDate date,
+	--ServiceName nvarchar(max),
+	--ClientName nvarchar(max),
+	--ClientId uniqueidentifier,
+	--RegionName nvarchar(max),
+	--LocationName nvarchar(max),
+	--LocationId uniqueidentifier,
+	--AddressLine nvarchar(max),
+	--Latitude decimal(18,8),
+	--Longitude decimal(18,8),
+	--StatusName nvarchar(max)
+	--)
+
+	--INSERT INTO #Return
+	--SELECT * FROM #ServicesTableToReturn
+
+	CREATE TABLE #RouteTasks
+			( Id UNIQUEIDENTIFIER,
+			  LocationId UNIQUEIDENTIFIER,
+			  RouteDestinationId UNIQUEIDENTIFIER,
+			  ClientId UNIQUEIDENTIFIER,
+			  ServiceId UNIQUEIDENTIFIER,
+			  ReadOnly BIT,
+			  BusinessAccountId UNIQUEIDENTIFIER,
+			  EstimatedDuration TIME,
+			  Name NVARCHAR(MAX),
+			  StatusInt INT,
+			  [Date] DATETIME,
+			  OrderInRouteDestination INT,
+			  RecurringServiceId UNIQUEIDENTIFIER,
+			  DelayedChildId UNIQUEIDENTIFIER,
+			  TaskStatusId UNIQUEIDENTIFIER
+			)
+
+	INSERT INTO #RouteTasks(Id, LocationId, ClientId, ServiceId, Name, [Date], RecurringServiceId)
+	SELECT Id, LocationId, ClientId, ServiceId, ServiceName, OccurDate, RecurringServiceId
+	FROM #ServicesTableToReturn
+
+	UPDATE #RouteTasks
+	SET ReadOnly = 0,
+		BusinessAccountId = @serviceProviderIdContext,
+		EstimatedDuration = '0:0:16.00',
+		OrderInRouteDestination = 0,
+		TaskStatusId = (SELECT TOP 1 Id FROM dbo.TaskStatuses WHERE BusinessAccountId = @serviceProviderIdContext AND DefaultTypeInt = 1),
+		StatusInt = 0
+
+	INSERT INTO dbo.RouteTasks
+	SELECT * FROM #RouteTasks
+
+	SELECT * FROM dbo.RouteTasks
+	LEFT JOIN dbo.Locations
+	ON dbo.RouteTasks.LocationId = dbo.Locations.Id
+	LEFT JOIN dbo.Regions
+	ON dbo.Locations.RegionId = dbo.Regions.Id
+	LEFT JOIN dbo.Clients
+	ON dbo.RouteTasks.ClientId = dbo.Clients.Id  
+	LEFT JOIN dbo.TaskStatuses
+	ON dbo.RouteTasks.TaskStatusId = dbo.TaskStatuses.Id
+	WHERE dbo.RouteTasks.BusinessAccountId = @serviceProviderIdContext AND [Date] = @serviceDate AND RouteDestinationId IS NULL 
+
+	DROP TABLE #ServicesTableToReturn
+	DROP TABLE #RouteTasks
 RETURN 
 END

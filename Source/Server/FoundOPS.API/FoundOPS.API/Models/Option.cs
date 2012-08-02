@@ -38,5 +38,25 @@ namespace FoundOPS.API.Models
 
             return option;
         }
+
+        /// <summary>
+        /// Converts the API model back to the FoundOPS model
+        /// </summary>
+        /// <param name="modelOption"></param>
+        /// <returns></returns>
+        public static FoundOps.Core.Models.CoreEntities.Option ConvertBackOption(Option modelOption)
+        {
+            var option = new FoundOps.Core.Models.CoreEntities.Option
+            {
+                Id = modelOption.Id,
+                Name = modelOption.Name,
+                IsChecked = modelOption.IsChecked,
+                OptionsFieldId = modelOption.OptionsFieldId,
+                Index = modelOption.Index,
+                Tooltip = modelOption.Tooltip
+            };
+
+            return option;
+        }
     }
 }

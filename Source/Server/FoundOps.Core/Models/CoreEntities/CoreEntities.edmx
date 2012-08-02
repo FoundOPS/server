@@ -43,6 +43,7 @@
           <EntitySet Name="Services" EntityType="CoreEntities.Store.Services" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="ServiceTemplates" EntityType="CoreEntities.Store.ServiceTemplates" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="SubLocations" EntityType="CoreEntities.Store.SubLocations" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="TaskStatuses" EntityType="CoreEntities.Store.TaskStatuses" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="UserAccountLog" EntityType="CoreEntities.Store.UserAccountLog" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="VehicleMaintenanceLineItems" EntityType="CoreEntities.Store.VehicleMaintenanceLineItems" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="VehicleMaintenanceLog" EntityType="CoreEntities.Store.VehicleMaintenanceLog" store:Type="Tables" Schema="dbo" />
@@ -297,6 +298,14 @@
             <End Role="ServiceTemplates" EntitySet="ServiceTemplates" />
             <End Role="ServiceTemplates1" EntitySet="ServiceTemplates" />
           </AssociationSet>
+          <AssociationSet Name="FK_TaskStatusBusinessAccount" Association="CoreEntities.Store.FK_TaskStatusBusinessAccount">
+            <End Role="Parties_BusinessAccount" EntitySet="Parties_BusinessAccount" />
+            <End Role="TaskStatuses" EntitySet="TaskStatuses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TaskStatusRouteTask" Association="CoreEntities.Store.FK_TaskStatusRouteTask">
+            <End Role="TaskStatuses" EntitySet="TaskStatuses" />
+            <End Role="RouteTasks" EntitySet="RouteTasks" />
+          </AssociationSet>
           <AssociationSet Name="FK_TextBoxField_inherits_Field" Association="CoreEntities.Store.FK_TextBoxField_inherits_Field">
             <End Role="Fields" EntitySet="Fields" />
             <End Role="Fields_TextBoxField" EntitySet="Fields_TextBoxField" />
@@ -348,18 +357,6 @@
         <Parameter Name="getNext"
                    Mode="In"
                    Type="bit"/>
-      </Function>
-      <Function Name="GetUnroutedServicesForDate" IsComposable="false">
-        <CommandText>
-          SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName, ClientId, RegionName, LocationName, LocationId, AddressLine, Latitude, Longitude, StatusInt
-          FROM dbo.GetUnroutedServicesForDate(@serviceProviderContext, @serviceDate)
-        </CommandText>
-        <Parameter Name="serviceProviderContext"
-                   Mode="In"
-                   Type="uniqueidentifier"/>
-        <Parameter Name="serviceDate"
-                   Mode="In"
-                   Type="datetime"/>
       </Function>
       <Function Name="GetResourcesWithLastPoint" IsComposable="false">
         <CommandText>
@@ -625,6 +622,7 @@
           <Property Name="MiddleInitial" Type="nvarchar(max)" />
           <Property Name="GenderInt" Type="smallint" />
           <Property Name="DateOfBirth" Type="datetime" />
+          <Property Name="TimeZone" Type="nvarchar(max)" />
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="PartyRole">
@@ -731,6 +729,7 @@
           <Property Name="OrderInRouteDestination" Type="int" Nullable="false" />
           <Property Name="RecurringServiceId" Type="uniqueidentifier" />
           <Property Name="DelayedChildId" Type="uniqueidentifier" />
+          <Property Name="TaskStatusId" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="RouteVehicle">
           <Key>
@@ -780,6 +779,17 @@
           <Property Name="Notes" Type="nvarchar(max)" />
           <Property Name="LocationId" Type="uniqueidentifier" />
           <Property Name="Number" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TaskStatuses">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Color" Type="nvarchar(max)" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="DefaultTypeInt" Type="int" />
+          <Property Name="RouteRequired" Type="bit" Nullable="false" />
+          <Property Name="BusinessAccountId" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="UserAccountLog">
           <Key>
@@ -1623,6 +1633,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_TaskStatusBusinessAccount">
+          <End Role="Parties_BusinessAccount" Type="CoreEntities.Store.Parties_BusinessAccount" Multiplicity="0..1" />
+          <End Role="TaskStatuses" Type="CoreEntities.Store.TaskStatuses" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Parties_BusinessAccount">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TaskStatuses">
+              <PropertyRef Name="BusinessAccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TaskStatusRouteTask">
+          <End Role="TaskStatuses" Type="CoreEntities.Store.TaskStatuses" Multiplicity="0..1" />
+          <End Role="RouteTasks" Type="CoreEntities.Store.RouteTasks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TaskStatuses">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RouteTasks">
+              <PropertyRef Name="TaskStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_TextBoxField_inherits_Field">
           <End Role="Fields" Type="CoreEntities.Store.Fields" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1739,6 +1773,10 @@
         </Function>
         <Function Name="PropagateNewServiceTemplateToClients" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="serviceTemplateId" Type="uniqueidentifier" Mode="In" />
+        </Function>
+        <Function Name="sp_GetUnroutedServicesForDate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="serviceProviderIdContext" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="serviceDate" Type="date" Mode="In" />
         </Function>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -1990,6 +2028,15 @@
             <End Role="Role" EntitySet="Roles" />
             <End Role="BusinessAccount" EntitySet="Parties" />
           </AssociationSet>
+          <EntitySet Name="TaskStatuses" EntityType="CoreEntities.TaskStatus" />
+          <AssociationSet Name="TaskStatusBusinessAccount" Association="CoreEntities.TaskStatusBusinessAccount">
+            <End Role="TaskStatus" EntitySet="TaskStatuses" />
+            <End Role="BusinessAccount" EntitySet="Parties" />
+          </AssociationSet>
+          <AssociationSet Name="TaskStatusRouteTask" Association="CoreEntities.TaskStatusRouteTask">
+            <End Role="TaskStatus" EntitySet="TaskStatuses" />
+            <End Role="RouteTask" EntitySet="RouteTasks" />
+          </AssociationSet>
           <FunctionImport Name="DeleteBasicPartyBasedOnId">
             <Parameter Name="providerId" Mode="In" Type="Guid" />
           </FunctionImport>
@@ -2027,8 +2074,8 @@
           <FunctionImport Name="PropagateNewServiceTemplateToClients">
             <Parameter Name="serviceTemplateId" Mode="In" Type="Guid" />
           </FunctionImport>
-          <FunctionImport Name="GetUnroutedServicesForDate" ReturnType="Collection(CoreEntities.TaskHolder)">
-            <Parameter Name="serviceProviderContext" Mode="In" Type="Guid" />
+          <FunctionImport Name="sp_GetUnroutedServicesForDate">
+            <Parameter Name="serviceProviderIdContext" Mode="In" Type="Guid" />
             <Parameter Name="serviceDate" Mode="In" Type="DateTime" />
           </FunctionImport>
           <FunctionImport Name="GetServiceHolders" ReturnType="Collection(CoreEntities.ServiceHolder)">
@@ -2310,6 +2357,8 @@
           <NavigationProperty Name="ParentRecurringService" Relationship="CoreEntities.RouteTaskRecurringService" FromRole="RouteTask" ToRole="RecurringService" />
           <Property Type="Guid" Name="RecurringServiceId" Nullable="true" />
           <Property Type="Guid" Name="DelayedChildId" Nullable="true" />
+          <NavigationProperty Name="TaskStatus" Relationship="CoreEntities.TaskStatusRouteTask" FromRole="RouteTask" ToRole="TaskStatus" />
+          <Property Type="Guid" Name="TaskStatusId" Nullable="true" />
         </EntityType>
         <Association Name="RouteTaskLocation">
           <End Type="CoreEntities.RouteTask" Role="RouteTask" Multiplicity="*" />
@@ -2468,6 +2517,7 @@
           <NavigationProperty Name="OwnedLocations" Relationship="CoreEntities.LocationBusinessAccount" FromRole="BusinessAccount" ToRole="Location" />
           <Property Type="String" Name="Name" Nullable="true" Unicode="true" MaxLength="Max" FixedLength="false" />
           <NavigationProperty Name="OwnedRoles" Relationship="CoreEntities.RoleBusinessAccount" FromRole="BusinessAccount" ToRole="Role" />
+          <NavigationProperty Name="TaskStatuses" Relationship="CoreEntities.TaskStatusBusinessAccount" FromRole="BusinessAccount" ToRole="TaskStatus" />
         </EntityType>
         <Association Name="BusinessAccountService">
           <End Type="CoreEntities.BusinessAccount" Role="BusinessAccount" Multiplicity="1" />
@@ -2517,6 +2567,7 @@
           <Property Type="String" Name="MiddleInitial" Nullable="true" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Type="Int16" Name="GenderInt" Nullable="true" />
           <Property Type="DateTime" Name="DateOfBirth" Nullable="true" Precision="3" />
+          <Property Type="String" Name="TimeZone" MaxLength="Max" FixedLength="false" Nullable="true" Unicode="true" />
         </EntityType>
         <Association Name="UserAccountUserAccountLogEntry">
           <End Type="CoreEntities.UserAccount" Role="UserAccount" Multiplicity="1" />
@@ -3100,21 +3151,6 @@
           <Property Type="DateTime" Name="OccurDate" Nullable="false" />
           <Property Type="String" Name="ServiceName" Nullable="true" />
         </ComplexType>
-        <ComplexType Name="TaskHolder" >
-          <Property Type="Guid" Name="RecurringServiceId" Nullable="true" />
-          <Property Type="Guid" Name="ServiceId" Nullable="true" />
-          <Property Type="String" Name="ServiceName" Nullable="true" />
-          <Property Type="String" Name="ClientName" Nullable="true" />
-          <Property Type="String" Name="RegionName" Nullable="true" />
-          <Property Type="String" Name="AddressLine" Nullable="true" />
-          <Property Type="Decimal" Name="Latitude" Nullable="true" />
-          <Property Type="Decimal" Name="Longitude" Nullable="true" />
-          <Property Type="DateTime" Name="OccurDate" Nullable="false" />
-          <Property Type="String" Name="LocationName" Nullable="true" />
-          <Property Type="Guid" Name="LocationId" Nullable="true" />
-          <Property Type="Guid" Name="ClientId" Nullable="true" />
-          <Property Type="Int32" Name="StatusInt" Nullable="false" />
-        </ComplexType>
         <Association Name="RouteTaskRecurringService">
           <End Type="CoreEntities.RouteTask" Role="RouteTask" Multiplicity="*" />
           <End Type="CoreEntities.RecurringService" Role="RecurringService" Multiplicity="0..1" />
@@ -3216,6 +3252,43 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="TaskStatus">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="String" Name="Color" Nullable="true" FixedLength="false" MaxLength="Max" Unicode="true" />
+          <Property Type="String" Name="Name" Nullable="true" FixedLength="false" MaxLength="Max" Unicode="true" />
+          <Property Type="Int32" Name="DefaultTypeInt" Nullable="true" />
+          <Property Type="Boolean" Name="RouteRequired" Nullable="false" />
+          <NavigationProperty Name="BusinessAccount" Relationship="CoreEntities.TaskStatusBusinessAccount" FromRole="TaskStatus" ToRole="BusinessAccount" />
+          <Property Type="Guid" Name="BusinessAccountId" Nullable="true" />
+          <NavigationProperty Name="RouteTasks" Relationship="CoreEntities.TaskStatusRouteTask" FromRole="TaskStatus" ToRole="RouteTask" />
+        </EntityType>
+        <Association Name="TaskStatusBusinessAccount">
+          <End Type="CoreEntities.TaskStatus" Role="TaskStatus" Multiplicity="*" />
+          <End Type="CoreEntities.BusinessAccount" Role="BusinessAccount" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="BusinessAccount">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="TaskStatus">
+              <PropertyRef Name="BusinessAccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TaskStatusRouteTask">
+          <End Type="CoreEntities.TaskStatus" Role="TaskStatus" Multiplicity="0..1" />
+          <End Type="CoreEntities.RouteTask" Role="RouteTask" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TaskStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="RouteTask">
+              <PropertyRef Name="TaskStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3277,6 +3350,7 @@
           <ScalarProperty Name="MiddleInitial" ColumnName="MiddleInitial" />
           <ScalarProperty Name="GenderInt" ColumnName="GenderInt" />
           <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+          <ScalarProperty Name="TimeZone" ColumnName="TimeZone" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -3658,6 +3732,7 @@
           <ScalarProperty Name="OrderInRouteDestination" ColumnName="OrderInRouteDestination" />
           <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
           <ScalarProperty Name="DelayedChildId" ColumnName="DelayedChildId" />
+          <ScalarProperty Name="TaskStatusId" ColumnName="TaskStatusId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -3678,6 +3753,18 @@
         <MappingFragment StoreEntitySet="ServiceTemplatesWithVendorId">
           <ScalarProperty Name="BusinessAccountId" ColumnName="BusinessAccountId" />
           <ScalarProperty Name="ServiceTemplateId" ColumnName="ServiceTemplateId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TaskStatuses">
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.TaskStatus)">
+        <MappingFragment StoreEntitySet="TaskStatuses">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Color" ColumnName="Color" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="DefaultTypeInt" ColumnName="DefaultTypeInt" />
+          <ScalarProperty Name="RouteRequired" ColumnName="RouteRequired" />
+          <ScalarProperty Name="BusinessAccountId" ColumnName="BusinessAccountId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -3725,25 +3812,7 @@
           <FunctionImportMapping FunctionImportName="PropagateNameChange" FunctionName="CoreEntities.Store.PropagateNameChange" />
           <FunctionImportMapping FunctionImportName="PropagateNewFields" FunctionName="CoreEntities.Store.PropagateNewFields" />
           <FunctionImportMapping FunctionImportName="PropagateNewServiceTemplateToClients" FunctionName="CoreEntities.Store.PropagateNewServiceTemplateToClients" />
-          <FunctionImportMapping FunctionImportName="GetUnroutedServicesForDate" FunctionName="CoreEntities.Store.GetUnroutedServicesForDate">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="CoreEntities.TaskHolder">
-                <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
-                <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
-                <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
-                <ScalarProperty Name="ClientName" ColumnName="ClientName" />
-                <ScalarProperty Name="RegionName" ColumnName="RegionName" />
-                <ScalarProperty Name="AddressLine" ColumnName="AddressLine" />
-                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
-                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
-                <ScalarProperty Name="OccurDate" ColumnName="OccurDate" />
-                <ScalarProperty Name="LocationName" ColumnName="LocationName" />
-                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
-                <ScalarProperty Name="ClientId" ColumnName="ClientId" />
-                <ScalarProperty Name="StatusInt" ColumnName="StatusInt" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_GetUnroutedServicesForDate" FunctionName="CoreEntities.Store.sp_GetUnroutedServicesForDate" />
           <FunctionImportMapping FunctionImportName="GetServiceHolders" FunctionName="CoreEntities.Store.GetServiceHolders">
             <ResultMapping>
               <ComplexTypeMapping TypeName="CoreEntities.ServiceHolder">

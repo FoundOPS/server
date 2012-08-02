@@ -29,5 +29,27 @@ namespace FoundOPS.API.Models
 
             return field;
         }
+
+        /// <summary>
+        /// Converts the API model back to the FoundOPS model
+        /// </summary>
+        /// <param name="locationField"></param>
+        /// <returns></returns>
+        public static FoundOps.Core.Models.CoreEntities.Field ConvertBackLocationField(LocationField locationField)
+        {
+            var field = new FoundOps.Core.Models.CoreEntities.LocationField
+            {
+                Id = locationField.Id,
+                Name = locationField.Name,
+                Required = locationField.Required,
+                Tooltip = locationField.ToolTip,
+                ParentFieldId = locationField.ParentFieldId,
+                ServiceTemplateId = locationField.ServiceTemplateId,
+                LocationId = locationField.LocationId,
+                LocationFieldTypeInt = locationField.LocationFieldTypeInt
+            };
+
+            return field;
+        }
     }
 }

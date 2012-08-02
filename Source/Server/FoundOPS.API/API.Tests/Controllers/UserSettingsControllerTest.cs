@@ -83,5 +83,15 @@ namespace API.Tests.Controllers
 
             var response = controller.UpdateUserSettings(user, new Guid("EF8B0F5E-44BC-4A88-B3F0-59D8A29F5066"));
         }
+
+        [TestMethod]
+        public void GetTimeZones()
+        {
+            var request = new HttpRequestMessage(HttpMethod.Post, "http://localhost");
+
+            var controller = new SettingsController { Request = request };
+
+            var response = controller.GetTimeZones();
+        }
     }
 }

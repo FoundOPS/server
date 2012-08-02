@@ -19,6 +19,7 @@ using System.Net.Http;
 using System.Web.Http;
 using Newtonsoft.Json.Linq;
 using Employee = FoundOPS.API.Models.Employee;
+using TimeZoneInfo = FoundOPS.API.Models.TimeZoneInfo;
 
 namespace FoundOPS.API.Api
 {
@@ -33,6 +34,33 @@ namespace FoundOPS.API.Api
             _coreEntitiesContainer = new CoreEntitiesContainer();
             _coreEntitiesContainer.ContextOptions.LazyLoadingEnabled = false;
         }
+
+        #region Conflicts and Responses
+
+        /// <summary>
+        /// Will return true if the email already exists.
+        /// </summary>
+        /// <param name="newEmail">The new email address</param>
+        /// <param name="oldEmail">If the oldEmail and newEmail match this will return no conflict.</param>
+        private bool UserExistsConflict(string newEmail, string oldEmail)
+        {
+            return oldEmail != newEmail && UserExistsConflict(newEmail);
+        }
+
+        private bool UserExistsConflict(string newEmail)
+        {
+            return _coreEntitiesContainer.Parties.OfType<UserAccount>().Any(ua => ua.EmailAddress.Trim() == newEmail.Trim());
+        }
+
+        /// <summary>
+        /// The user exists response.
+        /// </summary>
+        private HttpResponseMessage UserExistsResponse()
+        {
+            return Request.CreateResponse(HttpStatusCode.Conflict, "This email address already exists");
+        }
+
+        #endregion
 
         #region Session
 
@@ -129,12 +157,15 @@ namespace FoundOPS.API.Api
 
             user.PartyImageReference.Load();
 
+            var timezone = GetTimeZones().FirstOrDefault(tz => tz.TimeZoneId == user.TimeZone);
+
             var userSettings = new UserSettings
             {
                 Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                EmailAddress = user.EmailAddress.Trim()
+                EmailAddress = user.EmailAddress.Trim(),
+                TimeZoneInfo = timezone
             };
 
             //Load image url
@@ -160,17 +191,14 @@ namespace FoundOPS.API.Api
             if (user.Id != settings.Id)
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
 
-            var usersForBusinessAccount = this.GetAllUserSettings(roleId).ToArray();
-
-            //If the email address of the current user changed, check the email address is not in use yet
-            if (user.EmailAddress != settings.EmailAddress &&
-                usersForBusinessAccount.Select(ua => ua.EmailAddress).Contains(settings.EmailAddress))
-                return Request.CreateResponse(HttpStatusCode.Conflict, "This email address already exists");
+            if (UserExistsConflict(settings.EmailAddress, user.EmailAddress))
+                return UserExistsResponse();
 
             //Update Properties
             user.FirstName = settings.FirstName;
             user.LastName = settings.LastName;
             user.EmailAddress = settings.EmailAddress.Trim();
+            user.TimeZone = settings.TimeZoneInfo.TimeZoneId;
 
             //Save changes
             _coreEntitiesContainer.SaveChanges();
@@ -277,7 +305,8 @@ namespace FoundOPS.API.Api
                                          let account = _coreEntitiesContainer.Parties.OfType<UserAccount>().Where(ua => ua.Id == user.Id).Include(ua => ua.LinkedEmployees).First()
                                          select UserSettings.ConvertModel(account, role)).ToList();
 
-            return userAccountsQueryable.AsQueryable();
+            //do not return FoundOPS accounts
+            return userAccountsQueryable.Where(ua => !ua.EmailAddress.Contains("foundops.com")).AsQueryable();
         }
 
         [System.Web.Http.AcceptVerbs("POST")]
@@ -293,11 +322,9 @@ namespace FoundOPS.API.Api
 
             #region Create new UserAccount
 
-            var usersForBusinessAccount = this.GetAllUserSettings(roleId).ToArray();
-
             //check the email address is not in use yet for this business account
-            if (usersForBusinessAccount.Select(ua => ua.EmailAddress.Trim()).Contains(settings.EmailAddress.Trim()))
-                return Request.CreateResponse(HttpStatusCode.Conflict, "This email address already exists");
+            if (UserExistsConflict(settings.EmailAddress))
+                return UserExistsResponse();
 
             var temporaryPassword = EmailPasswordTools.GeneratePassword();
 
@@ -307,7 +334,8 @@ namespace FoundOPS.API.Api
                 Id = Guid.NewGuid(),
                 FirstName = settings.FirstName,
                 LastName = settings.LastName,
-                PasswordHash = EncryptionTools.Hash(temporaryPassword)
+                PasswordHash = EncryptionTools.Hash(temporaryPassword),
+                TimeZone = settings.TimeZoneInfo.TimeZoneId
             };
 
             //Find the role in the BusinessAccount that matches the name of the one passed in.
@@ -390,17 +418,13 @@ namespace FoundOPS.API.Api
                 return Request.CreateResponse(HttpStatusCode.Unauthorized);
 
             var user = _coreEntitiesContainer.Parties.OfType<UserAccount>().Where(ua => ua.Id == settings.Id).Include(ua => ua.RoleMembership).Include(ua => ua.LinkedEmployees).First();
-
-            //If the email address of the current user changed, check the email address is not in use yet for this business account
-            var usersForBusinessAccount = this.GetAllUserSettings(roleId).ToArray();
-
-            //Email address already exists
-            if (user.EmailAddress.Trim() != settings.EmailAddress.Trim() && usersForBusinessAccount.Select(ua => ua.EmailAddress.Trim()).Contains(settings.EmailAddress.Trim()))
-                return Request.CreateResponse(HttpStatusCode.Conflict, "This email address already exists");
+            if (UserExistsConflict(settings.EmailAddress, user.EmailAddress))
+                return UserExistsResponse();
 
             user.FirstName = settings.FirstName;
             user.LastName = settings.LastName;
             user.EmailAddress = settings.EmailAddress;
+            user.TimeZone = settings.TimeZoneInfo.TimeZoneId;
 
             var userRole = _coreEntitiesContainer.Roles.FirstOrDefault(r => r.OwnerBusinessAccountId == businessAccount.Id && r.MemberParties.Any(p => p.Id == user.Id));
 
@@ -657,6 +681,22 @@ namespace FoundOPS.API.Api
             return readOnlyUrl;
         }
 
+
+        #endregion
+
+        #region TimeZones
+
+        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        public IEnumerable<TimeZoneInfo> GetTimeZones()
+        {
+            var allTimeZones = System.TimeZoneInfo.GetSystemTimeZones();
+
+            var usTimeZones = allTimeZones.Where(tz => tz.DisplayName.Contains("US") || tz.Id == "Hawaiian Standard Time" || tz.Id == "Alaskan Standard Time");
+
+            var modelTimeZones = usTimeZones.Select(TimeZoneInfo.ConvertModel);
+
+            return modelTimeZones;
+        }
 
         #endregion
     }

@@ -31,9 +31,11 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
         private void InitializeInvoices()
         {
+            var date = DateTime.UtcNow.Date;
+
             DesignInvoice = new Invoice
             {
-                DueDate = DateTime.UtcNow,
+                DueDate = date,
                 FixedScheduleOptionInt = (Int32)FixedScheduleOption.FirstOfMonth,
                 Memo = "Cleaning Grease Trap",
                 RelativeScheduleDays = 5,
@@ -42,7 +44,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             DesignInvoiceTwo = new Invoice
             {
-                DueDate = DateTime.UtcNow.AddDays(5),
+                DueDate =date.AddDays(5),
                 FixedScheduleOptionInt = (Int32)FixedScheduleOption.MiddleOfMonth,
                 Memo = "Food Delivery",
                 RelativeScheduleDays = 10,
@@ -51,7 +53,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             DesignInvoiceThree = new Invoice
             {
-                DueDate = DateTime.UtcNow.AddDays(40),
+                DueDate = date.AddDays(40),
                 FixedScheduleOptionInt = (Int32)FixedScheduleOption.LastOfMonth,
                 Memo = "Deliver Freight",
                 RelativeScheduleDays = 34,

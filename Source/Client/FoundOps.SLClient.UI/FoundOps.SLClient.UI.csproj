@@ -452,6 +452,7 @@
     <Compile Include="Controls\Vehicles\VehicleLarge.xaml.cs">
       <DependentUpon>VehicleLarge.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\DateTimeConverters.cs" />
     <Compile Include="Converters\TimeSpanConverters.cs" />
     <Compile Include="Controls\Dispatcher\Converters\ClientConverters.cs" />
     <Compile Include="Controls\Dispatcher\Converters\LocationConverters.cs" />
