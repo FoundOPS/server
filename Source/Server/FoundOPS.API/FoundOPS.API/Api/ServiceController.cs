@@ -242,16 +242,15 @@ namespace FoundOPS.API.Api
         [AcceptVerbs("POST")]
         public HttpResponseMessage UpdateServiceDetails(Service service)
         {
-            //TODO: Check the current user is allowed to update the service
-            //TODO: Generate the service if it does not exist
             var foundOpsService = _coreEntitiesContainer.Services.FirstOrDefault(s => s.Id == service.Id);
 
             //The Service passed was generated on the Mobile device. Create a new FoundOPS Service and add appropriate field values
             if (foundOpsService == null)
             {
-                var recurringService = _coreEntitiesContainer.RecurringServices.FirstOrDefault(rs => rs.Id == service.RecurringServiceId);
+                var recurringService = _coreEntitiesContainer.RecurringServices.Include(rs=>rs.Client).FirstOrDefault(rs => rs.Id == service.RecurringServiceId);
+                var businessAccount = _coreEntitiesContainer.BusinessAccount(recurringService.Client.BusinessAccountId.Value).First();
 
-                foundOpsService = GenerateServiceOnDate(service.ServiceDate, recurringService);
+                foundOpsService = GenerateServiceOnDate(service.ServiceDate, recurringService, businessAccount);
 
                 //Remove all fields that were generated with the Service Template
                 foreach (var field in foundOpsService.ServiceTemplate.Fields)

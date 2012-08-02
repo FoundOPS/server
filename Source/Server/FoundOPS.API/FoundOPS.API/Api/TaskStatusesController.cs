@@ -28,7 +28,7 @@ namespace FoundOPS.API.Api
         {
             var status = TaskStatus.ConvertFromModel(taskStatus);
 
-            var businessAccount = _coreEntitiesContainer.Owner<BusinessAccount>(roleId, new[] { RoleType.Administrator }).Include(ba => ba.TaskStatuses).FirstOrDefault();
+            var businessAccount = _coreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator }).Include(ba => ba.TaskStatuses).FirstOrDefault();
 
             if (businessAccount == null)
                 return Request.CreateResponse(HttpStatusCode.Unauthorized, "User does not have Admin abilities");
@@ -55,7 +55,7 @@ namespace FoundOPS.API.Api
         [AcceptVerbs("POST")]
         public HttpResponseMessage UpdateTaskStatus(TaskStatus taskStatus, Guid roleId)
         {
-            var businessAccount = _coreEntitiesContainer.Owner<BusinessAccount>(roleId, new[] { RoleType.Administrator }).Include(ba => ba.TaskStatuses).FirstOrDefault();
+            var businessAccount = _coreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator }).Include(ba => ba.TaskStatuses).FirstOrDefault();
 
             if (businessAccount == null)
                 return Request.CreateResponse(HttpStatusCode.Unauthorized, "User does not have Admin abilities");
@@ -100,7 +100,7 @@ namespace FoundOPS.API.Api
         [AcceptVerbs("POST")]
         public HttpResponseMessage DeleteTaskStatus(TaskStatus taskStatus, Guid roleId)
         {
-            var businessAccount = _coreEntitiesContainer.Owner<BusinessAccount>(roleId, new[] { RoleType.Administrator }).Include(ba => ba.TaskStatuses).FirstOrDefault();
+            var businessAccount = _coreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator }).Include(ba => ba.TaskStatuses).FirstOrDefault();
 
             if (businessAccount == null)
                 return Request.CreateResponse(HttpStatusCode.Unauthorized, "User does not have Admin abilities");
