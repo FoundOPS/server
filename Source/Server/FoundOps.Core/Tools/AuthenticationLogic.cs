@@ -14,36 +14,24 @@ namespace FoundOps.Core.Tools
         #region Roles
 
         /// <summary>
-        /// Gets the owner party of a role.
+        /// Gets the owner BusinessAccount of a role.
         /// It will return one entity as an IQueryable for performance.
         /// Returns null if the user does not have access to the BusinessAccount.
         /// </summary>
         /// <param name="coreEntitiesContainer">The core entities container.</param>
         /// <param name="roleId">The role id.</param>
         /// <param name="allowedRoleTypes">Return null if the user does not have access to one of these role types.</param>
-        public static IQueryable<T> Owner<T>(this CoreEntitiesContainer coreEntitiesContainer, Guid roleId, RoleType[] allowedRoleTypes) where T : Party
+        public static IQueryable<BusinessAccount> Owner(this CoreEntitiesContainer coreEntitiesContainer, Guid roleId, RoleType[] allowedRoleTypes)
         {
             var ownerParty = from role in RolesCurrentUserHasAccessTo(coreEntitiesContainer, allowedRoleTypes)
                              where role.Id == roleId
                              select role.OwnerBusinessAccount;
 
-            return ownerParty.OfType<T>();
+            return ownerParty;
         }
 
         /// <summary>
-        /// Override of Owner (gets the owner party of a role). Defaults allowedRoleTypes to Administrator and Regular roles.
-        /// It will return one entity as an IQueryable for performance.
-        /// Returns null if the user does not have access to the BusinessAccount.
-        /// </summary>
-        /// <param name="coreEntitiesContainer">The core entities container.</param>
-        /// <param name="roleId">The role id.</param>
-        public static IQueryable<T> Owner<T>(this CoreEntitiesContainer coreEntitiesContainer, Guid roleId) where T : Party
-        {
-            return coreEntitiesContainer.Owner<T>(roleId, new[] { RoleType.Administrator, RoleType.Regular });
-        }
-
-        /// <summary>
-        /// Override of Owner (gets the owner party of a role). Defaults allowedRoleTypes to Administrator and Regular roles, and defaults to the BusinessAccount type.
+        /// Override of Owner. Defaults allowedRoleTypes to Administrator and Regular roles.
         /// It will return one entity as an IQueryable for performance.
         /// Returns null if the user does not have access to the BusinessAccount.
         /// </summary>
@@ -51,7 +39,36 @@ namespace FoundOps.Core.Tools
         /// <param name="roleId">The role id.</param>
         public static IQueryable<BusinessAccount> Owner(this CoreEntitiesContainer coreEntitiesContainer, Guid roleId)
         {
-            return coreEntitiesContainer.Owner<BusinessAccount>(roleId);
+            return coreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator, RoleType.Regular });
+        }
+
+        /// <summary>
+        /// Gets the business account for an Id.
+        /// It will return one entity as an IQueryable for performance.
+        /// Returns null if the user does not have access to the BusinessAccount.
+        /// </summary>
+        /// <param name="coreEntitiesContainer">The core entities container.</param>
+        /// <param name="businessAccountId">The businessAccount Id.</param>
+        /// <param name="allowedRoleTypes">Return null if the user does not have access to one of these role types.</param>
+        public static IQueryable<BusinessAccount> BusinessAccount(this CoreEntitiesContainer coreEntitiesContainer, Guid businessAccountId, RoleType[] allowedRoleTypes)
+        {
+            var ownerParty = from role in RolesCurrentUserHasAccessTo(coreEntitiesContainer, allowedRoleTypes)
+                             where role.OwnerBusinessAccountId == businessAccountId
+                             select role.OwnerBusinessAccount;
+
+            return ownerParty;
+        }
+
+        /// <summary>
+        /// Override of BusinessAccount. Defaults allowedRoleTypes to Administrator and Regular roles.
+        /// It will return one entity as an IQueryable for performance.
+        /// Returns null if the user does not have access to the BusinessAccount.
+        /// </summary>
+        /// <param name="coreEntitiesContainer">The core entities container.</param>
+        /// <param name="businessAccountId">The businessAccount Id.</param>
+        public static IQueryable<BusinessAccount> BusinessAccount(this CoreEntitiesContainer coreEntitiesContainer, Guid businessAccountId)
+        {
+            return coreEntitiesContainer.BusinessAccount(businessAccountId, new[] { RoleType.Administrator, RoleType.Regular });
         }
 
         /// <summary>

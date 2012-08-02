@@ -563,8 +563,8 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public IQueryable<Vehicle> GetVehiclesForParty(Guid roleId)
         {
-            var party = ObjectContext.Owner<Party>(roleId).First();
-            return this.ObjectContext.Vehicles.Where(v => v.OwnerPartyId == party.Id).OrderBy(v => v.VehicleId);
+            var businessAccount = ObjectContext.Owner(roleId).First();
+            return this.ObjectContext.Vehicles.Where(v => v.OwnerPartyId == businessAccount.Id).OrderBy(v => v.VehicleId);
         }
 
         /// <summary>
@@ -632,7 +632,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public IQueryable<VehicleMaintenanceLineItem> GetVehicleMaintenanceLineItemsForParty(Guid roleId)
         {
-            var party = ObjectContext.Owner<Party>(roleId).First();
+            var party = ObjectContext.Owner(roleId).First();
 
             return
                 this.ObjectContext.VehicleMaintenanceLineItems.Include(vm => vm.VehicleMaintenanceLogEntry)
@@ -679,7 +679,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public IQueryable<VehicleMaintenanceLogEntry> GetVehicleMaintenanceLogForParty(Guid roleId)
         {
-            var party = ObjectContext.Owner<Party>(roleId).First();
+            var party = ObjectContext.Owner(roleId).First();
 
             return ObjectContext.VehicleMaintenanceLog.Where(vm => vm.Vehicle.OwnerPartyId == party.Id)
                    .Include(vml => vml.LineItems).OrderBy(vm => vm.Date);

@@ -263,7 +263,7 @@ namespace FoundOPS.API.Api
             if (!roleId.HasValue)
                 ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
 
-            var businessAccount = _coreEntitiesContainer.Owner<BusinessAccount>(roleId.Value, new[] { RoleType.Administrator }).FirstOrDefault();
+            var businessAccount = _coreEntitiesContainer.Owner(roleId.Value, new[] { RoleType.Administrator }).FirstOrDefault();
 
             //If they are not an admin, they do not have the ability to view Users
             if (businessAccount == null)
@@ -313,7 +313,7 @@ namespace FoundOPS.API.Api
         public HttpResponseMessage InsertUserSettings(UserSettings settings, Guid? roleId)
         {
             //Check for admin abilities
-            var businessAccount = _coreEntitiesContainer.Owner<BusinessAccount>(roleId.Value, new[] { RoleType.Administrator }).Include(ba => ba.OwnedRoles)
+            var businessAccount = _coreEntitiesContainer.Owner(roleId.Value, new[] { RoleType.Administrator }).Include(ba => ba.OwnedRoles)
                 .FirstOrDefault();
 
             //User must be in an admin role to Create new Users
@@ -412,7 +412,7 @@ namespace FoundOPS.API.Api
             if (!roleId.HasValue)
                 return Request.CreateResponse(HttpStatusCode.NotAcceptable);
 
-            var businessAccount = _coreEntitiesContainer.Owner<BusinessAccount>(roleId.Value, new[] { RoleType.Administrator }).FirstOrDefault();
+            var businessAccount = _coreEntitiesContainer.Owner(roleId.Value, new[] { RoleType.Administrator }).FirstOrDefault();
 
             if (businessAccount == null)
                 return Request.CreateResponse(HttpStatusCode.Unauthorized);
@@ -499,7 +499,7 @@ namespace FoundOPS.API.Api
             if (!roleId.HasValue)
                 return Request.CreateResponse(HttpStatusCode.Unauthorized, "Invalid RoleId passed");
 
-            var businessAccount = _coreEntitiesContainer.Owner<BusinessAccount>(roleId.Value, new[] { RoleType.Administrator }).FirstOrDefault();
+            var businessAccount = _coreEntitiesContainer.Owner(roleId.Value, new[] { RoleType.Administrator }).FirstOrDefault();
 
             //If they are not an admin, they do not have the ability to insert new Users
             if (businessAccount == null)
@@ -524,7 +524,7 @@ namespace FoundOPS.API.Api
         [System.Web.Http.AcceptVerbs("GET", "POST")]
         public BusinessSettings GetBusinessSettings(Guid roleId)
         {
-            var businessAccount = _coreEntitiesContainer.Owner<BusinessAccount>(roleId, new[] { RoleType.Administrator }).FirstOrDefault();
+            var businessAccount = _coreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator }).FirstOrDefault();
 
             if (businessAccount == null)
                 ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
@@ -546,7 +546,7 @@ namespace FoundOPS.API.Api
         [System.Web.Http.AcceptVerbs("POST")]
         public HttpResponseMessage UpdateBusinessSettings(BusinessSettings settings, Guid roleId)
         {
-            var businessAccount = _coreEntitiesContainer.Owner<BusinessAccount>(roleId, new[] { RoleType.Administrator }).FirstOrDefault();
+            var businessAccount = _coreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator }).FirstOrDefault();
 
             if (businessAccount == null)
                 return Request.CreateResponse(HttpStatusCode.Unauthorized, "User does not have Admin abilities");
@@ -567,7 +567,7 @@ namespace FoundOPS.API.Api
         [System.Web.Http.AcceptVerbs("POST")]
         public string UpdateBusinessImage(Guid roleId)
         {
-            var businessAccount = _coreEntitiesContainer.Owner<BusinessAccount>(roleId, new[] { RoleType.Administrator }).FirstOrDefault();
+            var businessAccount = _coreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator }).FirstOrDefault();
 
             if (businessAccount == null)
                 ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
