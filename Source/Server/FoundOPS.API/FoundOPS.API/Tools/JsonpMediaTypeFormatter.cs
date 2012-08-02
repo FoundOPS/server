@@ -20,6 +20,8 @@ namespace FoundOPS.API.Tools
             SupportedMediaTypes.Add(new MediaTypeHeaderValue("text/javascript"));
 
             MediaTypeMappings.Add(new UriPathExtensionMapping("jsonp", DefaultMediaType));
+
+            this.SerializerSettings.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Auto;
         }
 
         public string CallbackQueryParameter

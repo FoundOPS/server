@@ -3,7 +3,7 @@ using System.ComponentModel;
 
 namespace FoundOPS.API.Models
 {
-    public class Field
+    public abstract class Field
     {
         public Guid Id { get; set; }
 
