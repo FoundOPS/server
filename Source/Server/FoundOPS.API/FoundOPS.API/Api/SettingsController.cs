@@ -35,6 +35,33 @@ namespace FoundOPS.API.Api
             _coreEntitiesContainer.ContextOptions.LazyLoadingEnabled = false;
         }
 
+        #region Conflicts and Responses
+
+        /// <summary>
+        /// Will return true if the email already exists.
+        /// </summary>
+        /// <param name="newEmail">The new email address</param>
+        /// <param name="oldEmail">If the oldEmail and newEmail match this will return no conflict.</param>
+        private bool UserExistsConflict(string newEmail, string oldEmail)
+        {
+            return oldEmail != newEmail && UserExistsConflict(newEmail);
+        }
+
+        private bool UserExistsConflict(string newEmail)
+        {
+            return _coreEntitiesContainer.Parties.OfType<UserAccount>().Any(ua => ua.EmailAddress.Trim() == newEmail.Trim());
+        }
+
+        /// <summary>
+        /// The user exists response.
+        /// </summary>
+        private HttpResponseMessage UserExistsResponse()
+        {
+            return Request.CreateResponse(HttpStatusCode.Conflict, "This email address already exists");
+        }
+
+        #endregion
+
         #region Session
 
         [System.Web.Http.AcceptVerbs("GET", "POST")]
@@ -164,12 +191,8 @@ namespace FoundOPS.API.Api
             if (user.Id != settings.Id)
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
 
-            var usersForBusinessAccount = this.GetAllUserSettings(roleId).ToArray();
-
-            //If the email address of the current user changed, check the email address is not in use yet
-            if (user.EmailAddress != settings.EmailAddress &&
-                usersForBusinessAccount.Select(ua => ua.EmailAddress).Contains(settings.EmailAddress))
-                return Request.CreateResponse(HttpStatusCode.Conflict, "This email address already exists");
+            if (UserExistsConflict(settings.EmailAddress, user.EmailAddress))
+                return UserExistsResponse();
 
             //Update Properties
             user.FirstName = settings.FirstName;
@@ -299,11 +322,9 @@ namespace FoundOPS.API.Api
 
             #region Create new UserAccount
 
-            var usersForBusinessAccount = this.GetAllUserSettings(roleId).ToArray();
-
             //check the email address is not in use yet for this business account
-            if (usersForBusinessAccount.Select(ua => ua.EmailAddress.Trim()).Contains(settings.EmailAddress.Trim()))
-                return Request.CreateResponse(HttpStatusCode.Conflict, "This email address already exists");
+            if (UserExistsConflict(settings.EmailAddress))
+                return UserExistsResponse();
 
             var temporaryPassword = EmailPasswordTools.GeneratePassword();
 
@@ -397,13 +418,8 @@ namespace FoundOPS.API.Api
                 return Request.CreateResponse(HttpStatusCode.Unauthorized);
 
             var user = _coreEntitiesContainer.Parties.OfType<UserAccount>().Where(ua => ua.Id == settings.Id).Include(ua => ua.RoleMembership).Include(ua => ua.LinkedEmployees).First();
-
-            //If the email address of the current user changed, check the email address is not in use yet for this business account
-            var usersForBusinessAccount = this.GetAllUserSettings(roleId).ToArray();
-
-            //Email address already exists
-            if (user.EmailAddress.Trim() != settings.EmailAddress.Trim() && usersForBusinessAccount.Select(ua => ua.EmailAddress.Trim()).Contains(settings.EmailAddress.Trim()))
-                return Request.CreateResponse(HttpStatusCode.Conflict, "This email address already exists");
+            if (UserExistsConflict(settings.EmailAddress, user.EmailAddress))
+                return UserExistsResponse();
 
             user.FirstName = settings.FirstName;
             user.LastName = settings.LastName;
