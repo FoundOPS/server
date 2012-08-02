@@ -282,7 +282,8 @@ namespace FoundOPS.API.Api
                                          let account = _coreEntitiesContainer.Parties.OfType<UserAccount>().Where(ua => ua.Id == user.Id).Include(ua => ua.LinkedEmployees).First()
                                          select UserSettings.ConvertModel(account, role)).ToList();
 
-            return userAccountsQueryable.AsQueryable();
+            //do not return FoundOPS accounts
+            return userAccountsQueryable.Where(ua => !ua.EmailAddress.Contains("foundops.com")).AsQueryable();
         }
 
         [System.Web.Http.AcceptVerbs("POST")]
