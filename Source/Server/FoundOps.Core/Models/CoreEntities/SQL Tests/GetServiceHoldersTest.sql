@@ -1,12 +1,12 @@
-USE [Core]
+USE [LiveCore]
 GO
-/****** Object:  StoredProcedure [dbo].[GetServiceHolders]    Script Date: 7/3/2012 9:36:44 AM ******/
+/****** Object:  StoredProcedure [dbo].[GetServiceHoldersTest]    Script Date: 7/3/2012 9:36:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE PROCEDURE [dbo].[GetServiceHolders]
+ALTER PROCEDURE [dbo].[GetServiceHoldersTest]
 	(
 	@serviceProviderIdContext UNIQUEIDENTIFIER, 
 	@clientIdContext UNIQUEIDENTIFIER, 

@@ -244,8 +244,8 @@ namespace FoundOps.SLClient.Data.Services
             //b) load the ServiceProvider's ServiceTemplates
             RoleIdObservable.ObserveOnDispatcher().Subscribe(roleId =>
             {
-                //a) load the OwnerAccount of the Role (usually a ServiceProvider)
-                Manager.Data.GetCurrentParty(roleId, account => ((BehaviorSubject<Party>)OwnerAccountObservable).OnNext(account));
+                //a) load the ServiceProvider of the Role 
+                Manager.Data.GetCurrentBusinessAccount(roleId, account => ((BehaviorSubject<Party>)OwnerAccountObservable).OnNext(account));
 
                 //b) load the ServiceProvider's ServiceTemplates
                 _serviceTemplatesLoading.OnNext(true);

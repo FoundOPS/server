@@ -58,11 +58,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             foreach (var field in oilFields)
                 OilServiceTemplate.Fields.Add(field);
 
-            //OilServiceTemplate.Fields.Add(CreateHoseLengthField());
-            //OilServiceTemplate.Fields.Add(CreateLockInfoField());
-            //OilServiceTemplate.Fields.Add(CreateNotesField());
-            //OilServiceTemplate.Fields.Add(CreateServiceDestinationField());
-
             var smallGreaseFields = new FieldsDesignData().DesignFields.ToArray();
 
             SmallGreaseTrapServiceTemplate = new ServiceTemplate
@@ -77,11 +72,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             foreach (var field in smallGreaseFields)
                 SmallGreaseTrapServiceTemplate.Fields.Add(field);
-
-            //SmallGreaseTrapServiceTemplate.Fields.Add(CreateHoseLengthField());
-            //SmallGreaseTrapServiceTemplate.Fields.Add(CreateNotesField());
-
-            SmallGreaseTrapServiceTemplate.Fields.Add(CreateServiceDestinationField());
 
             var interceptorFields = new FieldsDesignData().DesignFields.ToArray();
 
@@ -98,10 +88,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             foreach (var field in interceptorFields)
                 InterceptorServiceTemplate.Fields.Add(field);
 
-            //InterceptorServiceTemplate.Fields.Add(CreateHoseLengthField());
-            //InterceptorServiceTemplate.Fields.Add(CreateNotesField());
-            //InterceptorServiceTemplate.Fields.Add(CreateServiceDestinationField());
-
             var hydroFields = new FieldsDesignData().DesignFields.ToArray();
 
             HydrojettingServiceTemplate = new ServiceTemplate
@@ -117,10 +103,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             foreach (var field in hydroFields)
                 HydrojettingServiceTemplate.Fields.Add(field);
 
-            //HydrojettingServiceTemplate.Fields.Add(CreateHoseLengthField());
-            //HydrojettingServiceTemplate.Fields.Add(CreateNotesField());
-            //HydrojettingServiceTemplate.Fields.Add(CreateServiceDestinationField());
-
             var containerFields = new FieldsDesignData().DesignFields.ToArray();
 
             ContainerReplacementServiceTemplate = new ServiceTemplate
@@ -135,11 +117,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             foreach (var field in containerFields)
                 ContainerReplacementServiceTemplate.Fields.Add(field);
-
-            //ContainerReplacementServiceTemplate.Fields.Add(CreateHoseLengthField());
-            //ContainerReplacementServiceTemplate.Fields.Add(CreateLockInfoField());
-            //ContainerReplacementServiceTemplate.Fields.Add(CreateNotesField());
-            //ContainerReplacementServiceTemplate.Fields.Add(CreateServiceDestinationField());
 
             #region Environmental Biotech
 
@@ -157,10 +134,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             foreach (var field in enviroFields)
                 EnvironmentalBiotechServiceTemplate.Fields.Add(field);
-
-            //EnvironmentalBiotechServiceTemplate.Fields.Add(CreateNotesField());
-            //EnvironmentalBiotechServiceTemplate.Fields.Add(CreateServiceDestinationField());
-            //EnvironmentalBiotechServiceTemplate.Fields.Add(CreateEnvironmentalBiotechServicesCheckListField());
 
             #endregion
 
@@ -192,9 +165,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             foreach (var field in directFields)
                 DirectServiceTemplate.Fields.Add(field);
 
-            //DirectServiceTemplate.Fields.Add(CreateNotesField());
-            //DirectServiceTemplate.Fields.Add(CreateServiceDestinationField());
-
             RushServiceTemplate = new ServiceTemplate
             {
                 Id = new Guid("{88E8A760-0FEC-478F-867D-4AE07EDEDD19}"),
@@ -208,9 +178,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             var rushFields = new FieldsDesignData().DesignFields.ToArray();
             foreach (var field in rushFields)
                 RushServiceTemplate.Fields.Add(field);
-
-            //RushServiceTemplate.Fields.Add(CreateNotesField());
-            //RushServiceTemplate.Fields.Add(CreateServiceDestinationField());
 
             RegularServiceTemplate = new ServiceTemplate
             {
@@ -226,12 +193,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             foreach (var field in regularFields)
                 RegularServiceTemplate.Fields.Add(field);
 
-            //RegularServiceTemplate.Fields.Add(CreateNotesField());
-            //RegularServiceTemplate.Fields.Add(CreateHoseLengthField());
-            //RegularServiceTemplate.Fields.Add(CreateLockInfoField());
-            //RegularServiceTemplate.Fields.Add(CreateEnvironmentalBiotechServicesCheckListField());
-            //RegularServiceTemplate.Fields.Add(CreateServiceDestinationField());
-
             EconomyServiceTemplate = new ServiceTemplate
             {
                 Id = new Guid("{BE09BB53-DE15-4E6C-BF7A-1595EA91DF56}"),
@@ -246,9 +207,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             foreach (var field in economyFields)
                 EconomyServiceTemplate.Fields.Add(field);
 
-            //EconomyServiceTemplate.Fields.Add(CreateNotesField());
-            //EconomyServiceTemplate.Fields.Add(CreateServiceDestinationField());
-
             SameDayDeliveryCompanyServiceTemplates = new List<ServiceTemplate>
                                                          {
                                                              DirectServiceTemplate,
@@ -259,74 +217,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             #endregion
         }
-
-        #region Create Field Methods
-
-        private static Field CreateHoseLengthField()
-        {
-            var hoseLength = new OptionsField
-            {
-                Id = Guid.NewGuid(),
-                Name = "Hose Length",
-                Required = false
-            };
-
-            hoseLength.Options.Add(new Option { Name = "5 Feet", Index = 0 });
-            hoseLength.Options.Add(new Option { Name = "10 Feet", Index = 1 });
-            hoseLength.Options.Add(new Option { Name = "15 Feet", Index = 2 });
-
-            return hoseLength;
-        }
-        private static Field CreateLockInfoField()
-        {
-            return new TextBoxField
-            {
-                Id = Guid.NewGuid(),
-                Name = "Lock Info",
-                IsMultiline = false,
-                Required = false
-            };
-        }
-        private static Field CreateNotesField()
-        {
-            return new TextBoxField
-            {
-                Id = Guid.NewGuid(),
-                Name = "Notes",
-                IsMultiline = true,
-                Required = false
-            };
-        }
-        private static Field CreateServiceDestinationField()
-        {
-            return new LocationField
-            {
-                Id = Guid.NewGuid(),
-                Name = "Service Destination",
-                Tooltip = "Enter the Service Destination here",
-                LocationFieldType = LocationFieldType.Destination,
-                Required = true
-            };
-        }
-        private static Field CreateEnvironmentalBiotechServicesCheckListField()
-        {
-            var environmentalBiotechServicesCheckListField = new OptionsField
-            {
-                Id = Guid.NewGuid(),
-                Name = "Subservices to Provide",
-                AllowMultipleSelection = true,
-                OptionsType = OptionsType.Checklist,
-                Required = true
-            };
-
-            environmentalBiotechServicesCheckListField.Options.Add(new Option { Name = "Grease Eradication Bacteria", Index = 0 });
-            environmentalBiotechServicesCheckListField.Options.Add(new Option { Name = "Sugar Eradication Bacteria", Index = 1 });
-            environmentalBiotechServicesCheckListField.Options.Add(new Option { Name = "Urinal Eradication Bacteria", Index = 2, Tooltip = "Crystal Drip System" });
-
-            return environmentalBiotechServicesCheckListField;
-        }
-
-        #endregion
 
         #endregion
     }

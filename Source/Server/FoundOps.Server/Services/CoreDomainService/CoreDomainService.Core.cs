@@ -344,17 +344,13 @@ namespace FoundOps.Server.Services.CoreDomainService
         #region Party
 
         /// <summary>
-        /// Returns the party for the current role. If it is a BusinessAccount it will include the Depots.
+        /// Returns the BusinessAccount for the current role
         /// </summary>
-        public Party PartyForRole(Guid roleId)
+        public BusinessAccount BusinessAccountForRole(Guid roleId)
         {
-            var ownerParty = ObjectContext.Owner<Party>(roleId).First();
+            var businessAccount = ObjectContext.Owner(roleId).Include(ba => ba.Depots).First();
 
-            var businessAccount = ownerParty as BusinessAccount;
-            if (businessAccount != null)
-                (businessAccount).Depots.Load();
-
-            return ownerParty;
+            return businessAccount;
         }
 
         public IQueryable<Party> GetPartys()
