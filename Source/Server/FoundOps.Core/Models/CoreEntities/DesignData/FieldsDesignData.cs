@@ -78,7 +78,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Required = false,
                 Tooltip = "Helpful Hint",
                 Mask = "c",
-                Value = (decimal?) 2.54
+                Value = (decimal?)2.54
             };
 
             DesignPercentageField = new NumericField
@@ -88,7 +88,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Required = false,
                 Tooltip = "Helpful Hint",
                 Mask = "p",
-                Value = (decimal?) .54
+                Value = (decimal?).54
             };
 
             DesignCheckBoxField = new OptionsField
@@ -97,7 +97,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Name = "CheckBox Options",
                 Required = false,
                 Tooltip = "Helpful Hint",
-                AllowMultipleSelection = false
+                AllowMultipleSelection = false,
+                OptionsType = OptionsType.Checkbox
             };
             DesignCheckBoxField.Options.Add(new Option { Name = "Collected paperwork", IsChecked = true});
 
@@ -107,11 +108,12 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Name = "ComboBox Options",
                 Required = false,
                 Tooltip = "Helpful Hint",
-                AllowMultipleSelection = false
+                AllowMultipleSelection = false,
+                OptionsType = OptionsType.Combobox
             };
-            DesignComboBoxField.Options.Add(new Option { Name = "Yes", IsChecked = false });
-            DesignComboBoxField.Options.Add(new Option { Name = "No", IsChecked = false });
-            DesignComboBoxField.Options.Add(new Option { Name = "Maybe", IsChecked = true});
+            DesignComboBoxField.Options.Add(new Option { Name = "Yes", IsChecked = false, Index = 0 });
+            DesignComboBoxField.Options.Add(new Option { Name = "No", IsChecked = false, Index = 1 });
+            DesignComboBoxField.Options.Add(new Option { Name = "Maybe", IsChecked = true, Index = 2 });
 
             DesignCheckListField = new OptionsField
             {
@@ -119,12 +121,13 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Name = "CheckList Options",
                 Required = false,
                 Tooltip = "Helpful Hint",
-                AllowMultipleSelection = true
+                AllowMultipleSelection = true,
+                OptionsType = OptionsType.Checklist
             };
 
-            DesignCheckListField.Options.Add(new Option { Name = "Op 1", IsChecked = true});
-            DesignCheckListField.Options.Add(new Option { Name = "Op 2", IsChecked = false});
-            DesignCheckListField.Options.Add(new Option { Name = "Op 3", IsChecked = true});
+            DesignCheckListField.Options.Add(new Option { Name = "Op 1", IsChecked = true, Index = 0 });
+            DesignCheckListField.Options.Add(new Option { Name = "Op 2", IsChecked = false, Index = 1 });
+            DesignCheckListField.Options.Add(new Option { Name = "Op 3", IsChecked = true, Index = 2 });
 
             DesignLocationField = new LocationField
             {

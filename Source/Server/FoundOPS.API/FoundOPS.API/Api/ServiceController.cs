@@ -68,6 +68,7 @@ namespace FoundOPS.API.Api
             if (list.Any())
             {
                 //Insert the first row to be a dictionary of the column's types
+                //TODO: Load the service type & fields. Then for DateTime fields with Date or Time only, change their type to Date and Time
                 var columnTypes = result.Item1.ToDictionary(kvp => kvp.Key, kvp => (Object)kvp.Value.ToString());
 
                 list.Insert(0, columnTypes);

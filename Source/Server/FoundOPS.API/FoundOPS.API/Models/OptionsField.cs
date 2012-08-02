@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace FoundOPS.API.Models
 {
@@ -34,7 +35,7 @@ namespace FoundOPS.API.Models
                 TypeInt = fieldModel.TypeInt
             };
 
-            foreach (var option in fieldModel.Options)
+            foreach (var option in fieldModel.Options.OrderBy(o => o.Index))
                 field.Options.Add(Option.ConvertOptionModel(option));
 
             return field;
