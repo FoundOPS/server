@@ -8,7 +8,7 @@ namespace FoundOPS.API.Models
 
         public string Name { get; set; }
 
-        public Guid TaskStatusId { get; set; }
+        public Guid? TaskStatusId { get; set; }
 
         public static RouteTask ConvertModel(FoundOps.Core.Models.CoreEntities.RouteTask routeTaskModel)
         {
