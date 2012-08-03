@@ -244,17 +244,29 @@ namespace FoundOps.Server.Services.CoreDomainService
                 //While that is being mapped we also attach the Client, Location and Region to the objectContext
                 var data = conn.Query<RouteTask, Location, Region, Client, TaskStatus, RouteTask>("sp_GetUnroutedServicesForDate", (routeTask, location, region, client, taskStatus) =>
                 {
-                    this.ObjectContext.DetachExistingAndAttach(location);
-                    routeTask.Location = location;
+                    if (location != null)
+                    {
+                        this.ObjectContext.DetachExistingAndAttach(location);
+                        routeTask.Location = location;
 
-                    this.ObjectContext.DetachExistingAndAttach(region);
-                    routeTask.Location.Region = region;
+                        if (region != null)
+                        {
+                            this.ObjectContext.DetachExistingAndAttach(region);
+                            routeTask.Location.Region = region;
+                        }
+                    }
 
-                    this.ObjectContext.DetachExistingAndAttach(client);
-                    routeTask.Client = client;
+                    if (client != null)
+                    {
+                        this.ObjectContext.DetachExistingAndAttach(client);
+                        routeTask.Client = client;
+                    }
 
-                    this.ObjectContext.DetachExistingAndAttach(taskStatus);
-                    routeTask.TaskStatus = taskStatus;
+                    if (taskStatus != null)
+                    {
+                        this.ObjectContext.DetachExistingAndAttach(taskStatus);
+                        routeTask.TaskStatus = taskStatus;
+                    }
 
                     return routeTask;
                 }, parameters, commandType: CommandType.StoredProcedure);
