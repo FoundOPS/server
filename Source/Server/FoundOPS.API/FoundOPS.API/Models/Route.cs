@@ -10,6 +10,8 @@ namespace FoundOPS.API.Models
 
         public string Name { get; set; }
 
+        public Guid BusinessAccountId { get; set; }
+
         public List<RouteDestination> RouteDestinations { get; set; }
 
         public Route()
@@ -24,7 +26,7 @@ namespace FoundOPS.API.Models
         /// <returns>The corresponding API model for Route.</returns>
         public static Route ConvertModel(FoundOps.Core.Models.CoreEntities.Route routeModel)
         {
-            var route = new Route { Id = routeModel.Id, Name = routeModel.Name };
+            var route = new Route { Id = routeModel.Id, Name = routeModel.Name, BusinessAccountId = routeModel.OwnerBusinessAccountId };
 
             foreach (var routeDestinationModel in routeModel.RouteDestinations.OrderBy(rd => rd.OrderInRoute))
                 route.RouteDestinations.Add(RouteDestination.ConvertModel(routeDestinationModel));
