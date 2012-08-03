@@ -77,10 +77,10 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                   Name = "Percentage",
                   Required = false,
                   Tooltip = "Helpful Hint",
-                  Maximum = 1,
+                  Maximum = 100,
                   Minimum = 0,
                   Mask = "p",
-                  Value = (decimal?).54
+                  Value = 25
               };
 
             var designCheckBoxField = new OptionsField
