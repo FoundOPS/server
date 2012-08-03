@@ -28,8 +28,7 @@
 <body ontouchstart="">
 <div id="contentWrapper">
     <div id="content">
-        <div id="remoteContent">
-        </div>
+        <div id="remoteContent"></div>
         <div id="silverlightControlHost">
             <object id="silverlightPlugin" data="data:application/x-silverlight-2," type="application/x-silverlight-2"
                     style="height: 1px; width: 1px">
@@ -63,6 +62,7 @@
 <link rel="stylesheet/less" type="text/less" href="styles/main.less">
 <script type="text/javascript" src="lib/less.min.js"></script>
 <script data-main="js/main.js" src="lib/require-jquery.js"></script>
+
 <script id="navTemplate" type="text/x-kendo-template">
     <div id='navContainer'>
         <div id='navSearch' class='navElement'><input name='search' type='text' placeholder='Search...'/>
@@ -81,7 +81,7 @@
 </script>
 <script id="showMenuTemplate" type="text/x-kendo-template">
     <div id="showMenu">
-        <a><img class='iconShow rotateIcon' src='img/Expand.png'/></a>
+        <a><img class='iconShow' src='img/Expand.png'/></a>
     </div>
 </script>
 <script id="sideBarElementTemplate" type="text/x-kendo-template">

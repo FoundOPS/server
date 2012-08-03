@@ -33,6 +33,9 @@ namespace FoundOps.Common.NET
         /// <param name="entity">The entity.</param>
         public static void DetachExistingAndAttach<T>(this ObjectContext context, T entity) where T : IEntityWithKey
         {
+            if(entity == null)
+                return;
+
             var entitySetName = context.GetEntitySet<T>().Name;
             ObjectStateEntry entry;
             //See if there is an existing ObjectStateEntry of the entity

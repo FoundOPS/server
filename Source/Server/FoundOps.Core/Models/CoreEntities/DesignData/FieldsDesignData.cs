@@ -1,22 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using FoundOps.Core.Models.CoreEntities;
 
 namespace FoundOps.Core.Models.CoreEntities.DesignData
 {
     public class FieldsDesignData
     {
-        public TextBoxField DesignTextBoxSmallField { get; private set; }
-        public TextBoxField DesignTextBoxLargeField { get; private set; }
-        public DateTimeField DesignTimeField { get; private set; }
-        public NumericField DesignNumberField { get; private set; }
-        public NumericField DesignCurrencyField { get; private set; }
-        public NumericField DesignPercentageField { get; private set; }
-        public OptionsField DesignCheckBoxField { get; private set; }
-        public OptionsField DesignComboBoxField { get; private set; }
-        public OptionsField DesignCheckListField { get; private set; }
-        public LocationField DesignLocationField { get; private set; }
-
         public IEnumerable<Field> DesignFields { get; private set; }
 
         public FieldsDesignData()
@@ -26,7 +14,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
         private void InitializeFields()
         {
-            DesignTextBoxSmallField = new TextBoxField
+            var designTextBoxSmallField = new TextBoxField
             {
                 Id = Guid.NewGuid(),
                 Name = "Lock Info",
@@ -36,7 +24,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Value = "Small"
             };
 
-            DesignTextBoxLargeField = new TextBoxField
+            var designTextBoxLargeField = new TextBoxField
             {
                 Id = Guid.NewGuid(),
                 Name = "Notes",
@@ -46,99 +34,104 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Value = "Large"
             };
 
-            DesignTimeField = new DateTimeField
-            {
-                Id = Guid.NewGuid(),
-                Name = "Start and End Times",
-                Required = false,
-                Tooltip = "Helpful Hint",
-                Earliest = DateTime.UtcNow,
-                Latest = DateTime.UtcNow.AddHours(2),
-                DateTimeType = DateTimeType.TimeOnly,
-                Value = DateTime.UtcNow
-            };
+            var designTimeField = new DateTimeField
+             {
+                 Id = Guid.NewGuid(),
+                 Name = "Start and End Times",
+                 Required = false,
+                 Tooltip = "Helpful Hint",
+                 Earliest = DateTime.UtcNow,
+                 Latest = DateTime.UtcNow.AddHours(2),
+                 DateTimeType = DateTimeType.TimeOnly,
+                 Value = DateTime.UtcNow
+             };
 
-            DesignNumberField = new NumericField
-            {
-                Id = Guid.NewGuid(),
-                Name = "Number of Hours",
-                Required = false,
-                Tooltip = "Helpful Hint",
-                Mask = "g",
-                Maximum = 8,
-                Minimum = 1,
-                DecimalPlaces = 3,
-                Value = 1
-            };
+            var designNumberField = new NumericField
+             {
+                 Id = Guid.NewGuid(),
+                 Name = "Number of Hours",
+                 Required = false,
+                 Tooltip = "Helpful Hint",
+                 Mask = "g",
+                 Maximum = 8,
+                 Minimum = 1,
+                 DecimalPlaces = 3,
+                 Value = 1
+             };
 
-            DesignCurrencyField = new NumericField
-            {
-                Id = Guid.NewGuid(),
-                Name = "Price",
-                Required = false,
-                Tooltip = "Helpful Hint",
-                Mask = "c",
-                Value = (decimal?)2.54
-            };
+            var designCurrencyField = new NumericField
+             {
+                 Id = Guid.NewGuid(),
+                 Name = "Price",
+                 Required = false,
+                 Tooltip = "Helpful Hint",
+                 Mask = "c",
+                 Maximum = 1000,
+                 Minimum = 0,
+                 Value = (decimal?)2.54
+             };
 
-            DesignPercentageField = new NumericField
-            {
-                Id = Guid.NewGuid(),
-                Name = "Percentage",
-                Required = false,
-                Tooltip = "Helpful Hint",
-                Mask = "p",
-                Value = (decimal?).54
-            };
+            var designPercentageField = new NumericField
+              {
+                  Id = Guid.NewGuid(),
+                  Name = "Percentage",
+                  Required = false,
+                  Tooltip = "Helpful Hint",
+                  Maximum = 1,
+                  Minimum = 0,
+                  Mask = "p",
+                  Value = (decimal?).54
+              };
 
-            DesignCheckBoxField = new OptionsField
-            {
-                Id = Guid.NewGuid(),
-                Name = "CheckBox Options",
-                Required = false,
-                Tooltip = "Helpful Hint",
-                AllowMultipleSelection = false,
-                OptionsType = OptionsType.Checkbox
-            };
-            DesignCheckBoxField.Options.Add(new Option { Name = "Collected paperwork", IsChecked = true});
+            var designCheckBoxField = new OptionsField
+              {
+                  Id = Guid.NewGuid(),
+                  Name = "CheckBox Options",
+                  Required = false,
+                  Tooltip = "Helpful Hint",
+                  AllowMultipleSelection = false,
+                  OptionsType = OptionsType.Checkbox
+              };
+            designCheckBoxField.Options.Add(new Option { Name = "Collected paperwork", IsChecked = true });
 
-            DesignComboBoxField = new OptionsField
-            {
-                Id = Guid.NewGuid(),
-                Name = "ComboBox Options",
-                Required = false,
-                Tooltip = "Helpful Hint",
-                AllowMultipleSelection = false,
-                OptionsType = OptionsType.Combobox
-            };
-            DesignComboBoxField.Options.Add(new Option { Name = "Yes", IsChecked = false, Index = 0 });
-            DesignComboBoxField.Options.Add(new Option { Name = "No", IsChecked = false, Index = 1 });
-            DesignComboBoxField.Options.Add(new Option { Name = "Maybe", IsChecked = true, Index = 2 });
+            var designComboBoxField = new OptionsField
+             {
+                 Id = Guid.NewGuid(),
+                 Name = "ComboBox Options",
+                 Required = false,
+                 Tooltip = "Helpful Hint",
+                 AllowMultipleSelection = false,
+                 OptionsType = OptionsType.Combobox
+             };
+            designComboBoxField.Options.Add(new Option { Name = "Yes", IsChecked = false, Index = 0 });
+            designComboBoxField.Options.Add(new Option { Name = "No", IsChecked = false, Index = 1 });
+            designComboBoxField.Options.Add(new Option { Name = "Maybe", IsChecked = true, Index = 2 });
 
-            DesignCheckListField = new OptionsField
-            {
-                Id = Guid.NewGuid(),
-                Name = "CheckList Options",
-                Required = false,
-                Tooltip = "Helpful Hint",
-                AllowMultipleSelection = true,
-                OptionsType = OptionsType.Checklist
-            };
+            var designCheckListField = new OptionsField
+              {
+                  Id = Guid.NewGuid(),
+                  Name = "CheckList Options",
+                  Required = false,
+                  Tooltip = "Helpful Hint",
+                  AllowMultipleSelection = true,
+                  OptionsType = OptionsType.Checklist
+              };
 
-            DesignCheckListField.Options.Add(new Option { Name = "Op 1", IsChecked = true, Index = 0 });
-            DesignCheckListField.Options.Add(new Option { Name = "Op 2", IsChecked = false, Index = 1 });
-            DesignCheckListField.Options.Add(new Option { Name = "Op 3", IsChecked = true, Index = 2 });
-
-            DesignLocationField = new LocationField
+            var designLocationField = new LocationField
             {
                 Id = Guid.NewGuid(),
                 Name = "Locations",
                 Required = false,
-                Tooltip = "Helpful Hint"
+                Tooltip = "Helpful Hint",
+                LocationFieldType = LocationFieldType.Destination
             };
 
-            DesignFields = new List<Field> { DesignTextBoxSmallField, DesignTextBoxLargeField, DesignTimeField, DesignNumberField, DesignCurrencyField, DesignPercentageField, 
-                DesignCheckBoxField, DesignComboBoxField, DesignCheckListField, DesignLocationField};
+            designCheckListField.Options.Add(new Option { Name = "Op 1", IsChecked = true, Index = 0 });
+            designCheckListField.Options.Add(new Option { Name = "Op 2", IsChecked = false, Index = 1 });
+            designCheckListField.Options.Add(new Option { Name = "Op 3", IsChecked = true, Index = 2 });
+
+            DesignFields = new List<Field> { designTextBoxSmallField, designTextBoxLargeField, designTimeField, designNumberField, designCurrencyField, designPercentageField, 
+                designCheckBoxField, designComboBoxField, designCheckListField, designLocationField};
         }
     }
 }

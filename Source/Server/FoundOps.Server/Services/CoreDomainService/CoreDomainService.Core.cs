@@ -74,8 +74,8 @@ namespace FoundOps.Server.Services.CoreDomainService
                        ? null
                        : this.ObjectContext.Parties.OfType<BusinessAccount>().Include(ba => ba.Depots).OrderBy(b => b.Name);
         }
-        
-        public IQueryable<TaskStatus> GetTaskStatusesForBusinessAccount (Guid roleId)
+
+        public IQueryable<TaskStatus> GetTaskStatusesForBusinessAccount(Guid roleId)
         {
             var businessForRole = ObjectContext.Owner(roleId).FirstOrDefault();
 
@@ -129,7 +129,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             //Add the default statuses to the BusinessAccount
             foreach (var status in defaultStatuses)
                 account.TaskStatuses.Add(status);
-            
+
             if ((account.EntityState != EntityState.Detached))
             {
                 this.ObjectContext.ObjectStateManager.ChangeObjectState(account, EntityState.Added);
@@ -142,17 +142,17 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         private IEnumerable<TaskStatus> AddDefaultTaskStatuses()
         {
-            var taskStatuses = new List<TaskStatus> {};
+            var taskStatuses = new List<TaskStatus> { };
 
             var taskStatus = new TaskStatus
                                  {
                                      Id = Guid.NewGuid(),
                                      Name = "Created",
                                      Color = "FFFF00",
-                                     DefaultTypeInt = ((int) StatusDetail.CreatedDefault),
+                                     DefaultTypeInt = ((int)StatusDetail.CreatedDefault),
                                      RouteRequired = false
                                  };
-            
+
             taskStatuses.Add(taskStatus);
 
             taskStatus = new TaskStatus
@@ -178,7 +178,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             taskStatuses.Add(taskStatus);
 
             return taskStatuses.ToArray();
-        } 
+        }
 
         private void UpdateBusinessAccount(BusinessAccount account)
         {
@@ -361,8 +361,8 @@ namespace FoundOps.Server.Services.CoreDomainService
         public void InsertParty(Party account)
         {
             if (account is BusinessAccount)
-                InsertBusinessAccount((BusinessAccount)account); 
-            else 
+                InsertBusinessAccount((BusinessAccount)account);
+            else
             {
                 if ((account.EntityState != EntityState.Detached))
                 {
@@ -480,32 +480,29 @@ namespace FoundOps.Server.Services.CoreDomainService
         #region User Accounts
 
         /// <summary>
-        /// Gets the current user account. Includes RoleMembership, RoleMembership.OwnerParty, OwnedRoles, OwnedRoles.Blocks, LinkedEmployees
-        /// and PartyImage.
-        /// TODO optimize
+        /// Gets the current user account, includes PartyImage.
         /// </summary>
         public UserAccount CurrentUserAccount()
         {
-            var currentUserAccount = ObjectContext.CurrentUserAccount()
-                .Include(ua => ua.RoleMembership).Include("RoleMembership.Blocks").Include("RoleMembership.OwnerBusinessAccount")
-                 .Include(ua => ua.LinkedEmployees)
-                 .FirstOrDefault();
+            var currentUserAccount = ObjectContext.CurrentUserAccount().FirstOrDefault();
 
             if (currentUserAccount != null)
             {
                 currentUserAccount.PartyImageReference.Load();
 
-                currentUserAccount.UserTimeZoneOffset = new TimeSpan(0, 0, 0, 0);
-
                 if (currentUserAccount.TimeZone == null)
                 {
+                    currentUserAccount.UserTimeZoneOffset = new TimeSpan(0, 0, 0, 0);
+                }
+                else
+                {
                     var tst = TimeZoneInfo.FindSystemTimeZoneById(currentUserAccount.TimeZone);
-
                     currentUserAccount.UserTimeZoneOffset = tst.BaseUtcOffset;
                 }
 
                 return currentUserAccount;
             }
+
             throw new Exception("Something went very, very wrong...");
         }
 

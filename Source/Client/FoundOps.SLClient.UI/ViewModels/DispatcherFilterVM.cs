@@ -136,8 +136,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         public bool RouteTaskIncludedInFilter(RouteTask routeTask)
         {
             var meetsRouteTypeFilter = ServiceTemplateOptions.Any(option => option.IsSelected && ((ServiceTemplate)option.Entity).Name == routeTask.Name);
-            var meetsRegionsFilter = RegionOptions.Any(option => (option.IsSelected && ((Region)option.Entity).Name == routeTask.Location.Region.Name)) ||
-                routeTask.Location.Region.Name == null || !RegionOptions.Any();
+            var meetsRegionsFilter = routeTask.Location == null || routeTask.Location.Region == null || !RegionOptions.Any() ||
+                RegionOptions.Any(option => (option.IsSelected && routeTask.Location.Region.Name == ((Region)option.Entity).Name));
 
             return meetsRouteTypeFilter && meetsRegionsFilter;
         }
@@ -156,8 +156,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             var meetsRouteTypeFilter = ServiceTemplateOptions.Any(option => option.IsSelected && ((ServiceTemplate)option.Entity).Name == route.RouteType);
 
             //Only filter by region if there are locations or locations with regions in the route
-            var meetsRegionsFilter = !regionsForRoute.Any()
-                || RegionOptions.Any(option => option.IsSelected && regionsForRoute.Contains(((Region)option.Entity).Name)) || !RegionOptions.Any();
+            var meetsRegionsFilter = !regionsForRoute.Any() || !RegionOptions.Any() || 
+                RegionOptions.Any(option => option.IsSelected && regionsForRoute.Contains(((Region)option.Entity).Name));
 
             return meetsRouteTypeFilter && meetsRegionsFilter;
         }

@@ -144,13 +144,13 @@ namespace FoundOps.SLClient.UI.ViewModels
                     fieldToAdd = new OptionsField { AllowMultipleSelection = false, OptionsType = OptionsType.Combobox };
                     break;
                 case "Currency":
-                    fieldToAdd = new NumericField { DecimalPlaces = 2, Mask = "c" };
+                    fieldToAdd = new NumericField { DecimalPlaces = 2, Mask = "c", Minimum = 0, Maximum = 999 };
                     break;
                 case "Number":
-                    fieldToAdd = new NumericField { DecimalPlaces = 2, Mask = "g" };
+                    fieldToAdd = new NumericField { DecimalPlaces = 2, Mask = "g", Minimum = -999, Maximum = 999 };
                     break;
                 case "Percentage":
-                    fieldToAdd = new NumericField { DecimalPlaces = 2, Mask = "p" };
+                    fieldToAdd = new NumericField { DecimalPlaces = 2, Mask = "p", Minimum = 0, Maximum = 1 };
                     break;
                 case "Textbox Small":
                     fieldToAdd = new TextBoxField { IsMultiline = false };
