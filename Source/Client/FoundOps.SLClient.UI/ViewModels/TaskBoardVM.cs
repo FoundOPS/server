@@ -98,6 +98,9 @@ namespace FoundOps.SLClient.UI.ViewModels
             {
                 _cancelLastTasksLoad.OnNext(true);
 
+                if(VM.Routes.SelectedDate == new DateTime())
+                    return;
+
                 Manager.CoreDomainContext.LoadAsync(DomainContext.GetUnroutedServicesQuery(ContextManager.RoleId, VM.Routes.SelectedDate), _cancelLastTasksLoad).ContinueWith(
                     task =>
                     {

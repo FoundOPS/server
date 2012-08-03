@@ -153,7 +153,7 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             var draggedItems = e.Options.Payload as IEnumerable; //draggedTHs = e.Options.Payload as IEnumerable;
 
             //var draggedItems = (from object draggedItem in draggedTHs 
-                                //select ((TH)draggedItem).ChildRouteTask).ToList(); 
+            //select ((TH)draggedItem).ChildRouteTask).ToList(); 
 
             if (draggedItems == null) return;
 
@@ -208,7 +208,7 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             if (destinationCheck == null) return "";
 
             //If its not null we set the destination to e.Options.Destination.DataContext
-            var destination = destinationCheck.DataContext; 
+            var destination = destinationCheck.DataContext;
 
             //Collection of dragged items
             var payloadCollection = ((IEnumerable<object>)e.Options.Payload).Cast<RouteTask>().ToArray(); //.Select(o => ((TH)o).ChildRouteTask)
@@ -231,7 +231,7 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
                     return ErrorConstants.DifferentService;
 
                 //FirstOrDefault might be null but the second might have a service 
-                payloadCheck = DragDropTools.CheckItemsForService(payloadCollection);  
+                payloadCheck = DragDropTools.CheckItemsForService(payloadCollection);
             }
 
             #endregion
@@ -542,7 +542,7 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
                 .Subscribe(_ => SetMapSelectedRoute());
 
             //Whenever the selected date changes: update the map's date
-            this.RoutesVM.SelectedDateObservable.Throttle(TimeSpan.FromSeconds(1)).ObserveOnDispatcher()
+            this.RoutesVM.SelectedDateObservable.Where(sd => sd != new DateTime()).Throttle(TimeSpan.FromSeconds(1)).ObserveOnDispatcher()
                 .Subscribe(_ => SetMapDate());
 
             //set _mapLoaded to true whenever the map is loaded

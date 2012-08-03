@@ -31,8 +31,6 @@ namespace FoundOps.Core.Models.CoreEntities
         }
         #endregion
 
-        public TimeSpan UserTimeZoneOffset { get; set; }
-
         public DateTime AdjustTimeForUserTimeZone(DateTime systemTime)
         {
             return systemTime.Add(UserTimeZoneOffset);

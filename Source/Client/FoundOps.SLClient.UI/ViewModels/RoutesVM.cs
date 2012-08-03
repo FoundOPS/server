@@ -85,8 +85,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         public IEnumerable<TaskStatus> TaskStatusesForBusinessAccount
         {
             get { return _taskStatusesForBusinessAccount; }
-            set 
-            { 
+            set
+            {
                 _taskStatusesForBusinessAccount = value;
                 this.RaisePropertyChanged("TaskStatusesForBusinessAccount");
             }
@@ -105,7 +105,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         public bool ManifestOpen { get { return _manifestOpenHelper.Value; } set { _manifestOpenSubject.OnNext(value); } }
 
         private readonly ObservableAsPropertyHelper<DateTime> _selectedDateHelper;
-        private readonly BehaviorSubject<DateTime> _selectedDateSubject = new BehaviorSubject<DateTime>(DateTime.Now.Date);
+        private readonly BehaviorSubject<DateTime> _selectedDateSubject = new BehaviorSubject<DateTime>(DateTime.UtcNow.Date);
         /// <summary>
         /// An Observable of the SelectedDate.
         /// </summary>
@@ -235,11 +235,17 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             //Setup ObservableAsPropertyHelpers
             _manifestOpenHelper = _manifestOpenSubject.ToProperty(this, x => x.ManifestOpen);
-            _selectedDateHelper = this.ObservableToProperty(_selectedDateSubject, x => x.SelectedDate, DateTime.Now.Date);
+            _selectedDateHelper = this.ObservableToProperty(_selectedDateSubject, x => x.SelectedDate);
             //throttle because when selecting multiple route destinations in route list, it will cycle through and select each one
             _selectedRouteDestinationHelper = _selectedRouteDestinationSubject.Throttle(TimeSpan.FromMilliseconds(300)).ToProperty(this, x => x.SelectedRouteDestination);
             _selectedRouteTaskHelper = _selectedRouteTaskSubject.ToProperty(this, x => x.SelectedRouteTask);
             _routeTypesHelper = RouteTypesObservable.ToProperty(this, x => x.RouteTypes);
+
+            //when the user account loads, adjust for time zone
+            DataManager.ContextManager.UserAccountObservable.WhereNotNull().Subscribe(ua =>
+            {
+                SelectedDate = ua.AdjustTimeForUserTimeZone(DateTime.UtcNow).Date;
+            });
 
             //Update the SelectedRouteVM whenever the RouteDestination changes
             SelectedEntityObservable.ObserveOnDispatcher().Subscribe(r =>
@@ -273,11 +279,11 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Whenever the role id changes, load task statuses
             ContextManager.RoleIdObservable.Subscribe(roleId => DomainContext.LoadAsync(DomainContext.GetTaskStatusesForBusinessAccountQuery(roleId)).ContinueWith(
                 status =>
-                    {
-                        TaskStatusesForBusinessAccount = status.Result;
+                {
+                    TaskStatusesForBusinessAccount = status.Result;
 
-                        var test = TaskStatusesForBusinessAccount.ToArray();
-                    }));
+                    var test = TaskStatusesForBusinessAccount.ToArray();
+                }));
 
             #endregion
 
@@ -290,7 +296,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             //d) Discard was called
             //e) Changes were rejected
             VM.Navigation.CurrentSectionObservable.Where(section => section == "Dispatcher").AsGeneric()
-            .Merge(ContextManager.OwnerAccountObservable.Where(o=>VM.Navigation.CurrentSectionObservable.First() == "Dispatcher").AsGeneric())
+            .Merge(ContextManager.OwnerAccountObservable.AsGeneric())
             .Merge(SelectedDateObservable.AsGeneric())
             .Merge(DiscardObservable.AsGeneric())
             .Merge(DataManager.RejectChangesDueToError)
@@ -299,6 +305,11 @@ namespace FoundOps.SLClient.UI.ViewModels
             {
                 //Cancel the last RoutesLoad (if it is in the process of loading)
                 _cancelLastRoutesLoad.OnNext(true);
+
+                //if the current section is not the dispatcher or the date is not set, return
+                if (VM.Navigation.CurrentSectionObservable.First() != "Dispatcher" || SelectedDate == new DateTime())
+                    return;
+
                 //Notify the RoutesVM is loading Routes
                 IsLoadingSubject.OnNext(true);
 
@@ -487,7 +498,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             #region Date Modifiers
 
-            SetSelectedDayToToday = new RelayCommand(() => this.SelectedDate = DateTime.Now.Date);
+            SetSelectedDayToToday = new RelayCommand(() => this.SelectedDate = Manager.Context.UserAccount.AdjustTimeForUserTimeZone(DateTime.UtcNow).Date);
             SetSelectedDayOneDayPrevious = new RelayCommand(() => this.SelectedDate = SelectedDate.Date.AddDays(-1));
             SetSelectedDayOneDayForward = new RelayCommand(() => this.SelectedDate = SelectedDate.Date.AddDays(1));
 
@@ -671,12 +682,11 @@ namespace FoundOps.SLClient.UI.ViewModels
                 Id = Guid.NewGuid(),
                 DetailsLoaded = true,
                 OwnerBusinessAccount = (BusinessAccount)ContextManager.OwnerAccount,
-                RouteType = VM.DispatcherFilter.ServiceTemplateOptions.Where(o => o.IsSelected).Select(o => ((ServiceTemplate)o.Entity).Name).First()
+                RouteType = VM.DispatcherFilter.ServiceTemplateOptions.Where(o => o.IsSelected).Select(o => ((ServiceTemplate)o.Entity).Name).First(),
+                Date = SelectedDate,
+                StartTime = SelectedDate.Date.AddHours(9),
+                EndTime = SelectedDate.Date.AddHours(17)
             };
-
-            newRoute.Date = SelectedDate;
-            newRoute.StartTime = SelectedDate.Date.AddHours(9);
-            newRoute.EndTime = SelectedDate.Date.AddHours(17);
 
             ((ObservableCollection<Route>)SourceCollection).Add(newRoute);
 
