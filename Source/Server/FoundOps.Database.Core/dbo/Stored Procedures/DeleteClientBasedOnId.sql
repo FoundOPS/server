@@ -13,9 +13,6 @@ CREATE PROCEDURE dbo.DeleteClientBasedOnId
 
 	DELETE FROM RouteDestinations
 	WHERE ClientId = @clientId
-	
-	DELETE FROM RouteTasks
-	WHERE ClientId = @clientId
 
 	DELETE FROM Services
 	WHERE ClientId = @clientId

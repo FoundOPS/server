@@ -11,8 +11,8 @@
     </Sites>
     <Endpoints>
       <InputEndpoint name="Endpoint1" protocol="http" port="80" />
-      <InputEndpoint name="Endpoint2" protocol="https" port="443" certificate="test.foundops.com" />
-      <!--<InputEndpoint name="Endpoint2" protocol="https" port="443" certificate="app.foundops.com" />-->
+      <!--<InputEndpoint name="Endpoint2" protocol="https" port="443" certificate="test.foundops.com" />-->
+      <InputEndpoint name="Endpoint2" protocol="https" port="443" certificate="app.foundops.com" />
     </Endpoints>
     <Imports>
       <Import moduleName="Diagnostics" />
@@ -21,8 +21,8 @@
       <Task commandLine="disableTimeout.cmd" executionContext="elevated" />
     </Startup>
     <Certificates>
-      <Certificate name="test.foundops.com" storeLocation="LocalMachine" storeName="My" />
-      <!--<Certificate name="app.foundops.com" storeLocation="LocalMachine" storeName="My" />-->
+      <!--<Certificate name="test.foundops.com" storeLocation="LocalMachine" storeName="My" />-->
+      <Certificate name="app.foundops.com" storeLocation="LocalMachine" storeName="My" />
     </Certificates>
   </WebRole>
 </ServiceDefinition>

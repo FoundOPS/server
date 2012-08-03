@@ -12,7 +12,7 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 	BEGIN
 
 	DELETE FROM RouteEmployee
-	WHERE EXISTS
+	WHERE Routes_Id IN
 	(
 		SELECT Id
 		FROM Routes
@@ -20,7 +20,7 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 	)
 
 	DELETE FROM RouteVehicle
-	WHERE EXISTS
+	WHERE Routes_Id IN
 	(
 		SELECT Id
 		FROM Routes

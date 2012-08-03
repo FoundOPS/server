@@ -8,10 +8,13 @@
     [MiddleInitial] NVARCHAR (MAX)   NULL,
     [GenderInt]     SMALLINT         NULL,
     [DateOfBirth]   DATETIME         NULL,
+    [TimeZone]      NVARCHAR (MAX)   NULL,
     [Id]            UNIQUEIDENTIFIER NOT NULL,
     CONSTRAINT [PK_Parties_UserAccount] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_UserAccount_inherits_Party] FOREIGN KEY ([Id]) REFERENCES [dbo].[Parties] ([Id]) ON DELETE CASCADE
 );
+
+
 
 
 

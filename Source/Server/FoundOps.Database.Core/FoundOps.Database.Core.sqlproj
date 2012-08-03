@@ -340,7 +340,6 @@
     <Build Include="dbo\Functions\GetFirstDayOfMonth.sql" />
     <Build Include="dbo\Functions\CheckServiceTemplateForChildren.sql" />
     <Build Include="dbo\Functions\Split.sql" />
-    <Build Include="dbo\Functions\GetUnroutedServicesForDate.sql" />
     <Build Include="dbo\Functions\GetServiceHolders.sql" />
     <Build Include="dbo\Stored Procedures\DeleteUserAccountBasedOnId.sql" />
     <Build Include="dbo\Stored Procedures\DeleteServiceTemplatesAndChildrenBasedOnContextId.sql" />
@@ -358,5 +357,7 @@
     <Build Include="dbo\Stored Procedures\PropagateNewServiceTemplateToClients.sql" />
     <Build Include="dbo\Stored Procedures\PropagateNewFields.sql" />
     <Build Include="dbo\Stored Procedures\PropagateNameChange.sql" />
+    <Build Include="dbo\Tables\TaskStatuses.sql" />
+    <Build Include="dbo\Stored Procedures\sp_GetUnroutedServicesForDate.sql" />
   </ItemGroup>
 </Project>
