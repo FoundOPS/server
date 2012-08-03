@@ -230,9 +230,6 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             var businessForRole = ObjectContext.Owner(roleId).FirstOrDefault();
 
-
-            var tasks = new List<RouteTask>();
-
             using (var conn = new SqlConnection(ServerConstants.SqlConnectionString))
             {
                 conn.Open();

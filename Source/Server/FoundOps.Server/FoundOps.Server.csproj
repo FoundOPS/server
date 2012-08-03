@@ -282,6 +282,7 @@
     <Content Include="app\view\changePassword.html" />
     <Content Include="app\view\clearhist.html" />
     <Content Include="app\view\createPassword.html" />
+    <Content Include="app\view\dispatcherSettings.html" />
     <Content Include="app\view\importer.html" />
     <Content Include="app\view\personalSettings.html" />
     <Content Include="app\view\routeDestinationDetails.html" />
@@ -396,6 +397,7 @@
     <Content Include="ClientBin\System.Xml.Linq.zip" />
     <Content Include="ClientBin\Telerik.Windows.Zip.zip" />
     <Content Include="ClientBin\Microsoft.CSharp.zip" />
+    <Content Include="ClientBin\Telerik.Windows.Controls.DomainServices.zip" />
     <None Include="Content\PTS55F.eot" />
     <None Include="Content\PTS55F.ttf" />
     <None Include="disableTimeout.cmd">
