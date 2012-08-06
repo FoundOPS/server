@@ -127,9 +127,10 @@ namespace FoundOPS.API.Api
         #region GET
 
         [AcceptVerbs("GET", "POST")]
-        public IQueryable<TaskStatus> GetStatuses(Guid roleId)
+        public IQueryable<TaskStatus> GetStatuses(Guid? roleId, Guid? businessAccountId)
         {
-            var currentBusinessAccount = _coreEntitiesContainer.Owner(roleId).Include(ba => ba.TaskStatuses).FirstOrDefault();
+            var currentBusinessAccount = roleId != null && roleId.HasValue ? _coreEntitiesContainer.Owner(roleId.Value).Include(ba => ba.TaskStatuses).FirstOrDefault() :
+                _coreEntitiesContainer.BusinessAccount(businessAccountId.Value).Include(ba => ba.TaskStatuses).FirstOrDefault();
 
             if (currentBusinessAccount == null)
                 ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
