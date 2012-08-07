@@ -17,8 +17,8 @@ namespace FoundOps.Core.Models.CoreEntities
             var lastPasswordChangeDateEntry =
                 orderedUserAccountLog.FirstOrDefault(entry => entry.UserAccountLogType == UserAccountLogType.PasswordChange);
 
-             var lastLockoutDateEntry =
-                orderedUserAccountLog.FirstOrDefault(entry => entry.UserAccountLogType == UserAccountLogType.PasswordChange);
+            var lastLockoutDateEntry =
+               orderedUserAccountLog.FirstOrDefault(entry => entry.UserAccountLogType == UserAccountLogType.PasswordChange);
 
             var lastActivityDateEntry =
                 orderedUserAccountLog.FirstOrDefault();
@@ -30,7 +30,7 @@ namespace FoundOps.Core.Models.CoreEntities
                                       this.Id, this.EmailAddress, "", "", true,
                                       false, this.CreationDate,
                                       lastLoginDateEntry != null ? lastLoginDateEntry.TimeStamp : DateTime.MinValue,
-                                      lastActivityDateEntry != null ? lastActivityDateEntry.TimeStamp: DateTime.MinValue,
+                                      lastActivityDateEntry != null ? lastActivityDateEntry.TimeStamp : DateTime.MinValue,
                                       lastPasswordChangeDateEntry != null
                                           ? lastPasswordChangeDateEntry.TimeStamp
                                           : DateTime.MinValue,
@@ -44,12 +44,33 @@ namespace FoundOps.Core.Models.CoreEntities
         [DataMember]
         public string TemporaryPassword { get; set; }
 
-
+        private TimeSpan _userTimeZoneOffset;
         /// <summary>
         /// The user's timezone offset (depends on their TimeZone settings)
         /// It's not shared so that it doesn't get generated twice on the client.
         /// </summary>
         [DataMember]
-        public TimeSpan UserTimeZoneOffset { get; set; }
+        public TimeSpan UserTimeZoneOffset
+        {
+            get
+            {
+#if !SILVERLIGHT
+                if (TimeZone == null)
+                {
+                    _userTimeZoneOffset = new TimeSpan(0, 0, 0, 0);
+                }
+                else
+                {
+                    var tst = TimeZoneInfo.FindSystemTimeZoneById(TimeZone);
+                    _userTimeZoneOffset = tst.BaseUtcOffset;
+                }
+#endif
+                return _userTimeZoneOffset;
+            }
+            set
+            {
+                _userTimeZoneOffset = value;
+            }
+        }
     }
 }

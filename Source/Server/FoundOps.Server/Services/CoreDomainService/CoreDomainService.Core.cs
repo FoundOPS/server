@@ -490,16 +490,6 @@ namespace FoundOps.Server.Services.CoreDomainService
             {
                 currentUserAccount.PartyImageReference.Load();
 
-                if (currentUserAccount.TimeZone == null)
-                {
-                    currentUserAccount.UserTimeZoneOffset = new TimeSpan(0, 0, 0, 0);
-                }
-                else
-                {
-                    var tst = TimeZoneInfo.FindSystemTimeZoneById(currentUserAccount.TimeZone);
-                    currentUserAccount.UserTimeZoneOffset = tst.BaseUtcOffset;
-                }
-
                 return currentUserAccount;
             }
 
