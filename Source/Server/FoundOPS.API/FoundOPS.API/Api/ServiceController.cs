@@ -11,6 +11,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using Service = FoundOPS.API.Models.Service;
+using ServiceType = FoundOPS.API.Models.ServiceType;
 
 namespace FoundOPS.API.Api
 {
@@ -27,9 +28,21 @@ namespace FoundOPS.API.Api
 
         #region GET
 
+        /// <summary>
+        /// Return the ServiceProvider's service types
+        /// </summary>
+        [AcceptVerbs("GET", "POST")]
+        public IQueryable<ServiceType> GetServiceTypes(Guid roleId)
+        {
+            var serviceTemplates = _coreEntitiesContainer.Owner(roleId).SelectMany(ba => ba.ServiceTemplates)
+                .Where(st => st.LevelInt == (int)ServiceTemplateLevel.ServiceProviderDefined);
+
+            return serviceTemplates.Select(ServiceType.ConvertModel).AsQueryable().OrderBy(st => st.Name);
+        }
+
         [AcceptVerbs("GET", "POST")]
         public IQueryable<Dictionary<string, object>> GetServicesHoldersWithFields(Guid roleId, Guid? clientContext, Guid? recurringServiceContext,
-            DateTime startDate, DateTime endDate)
+            DateTime startDate, DateTime endDate, Guid serviceType)
         {
             var currentBusinessAccount = _coreEntitiesContainer.Owner(roleId).FirstOrDefault();
 
@@ -247,7 +260,7 @@ namespace FoundOPS.API.Api
             //The Service passed was generated on the Mobile device. Create a new FoundOPS Service and add appropriate field values
             if (foundOpsService == null)
             {
-                var recurringService = _coreEntitiesContainer.RecurringServices.Include(rs=>rs.Client).FirstOrDefault(rs => rs.Id == service.RecurringServiceId);
+                var recurringService = _coreEntitiesContainer.RecurringServices.Include(rs => rs.Client).FirstOrDefault(rs => rs.Id == service.RecurringServiceId);
                 var businessAccount = _coreEntitiesContainer.BusinessAccount(recurringService.Client.BusinessAccountId.Value).First();
 
                 foundOpsService = GenerateServiceOnDate(service.ServiceDate, recurringService, businessAccount);
@@ -267,7 +280,7 @@ namespace FoundOPS.API.Api
                 }
             }
             //The Service passed exists. Load all Field information update Field values
-            else 
+            else
             {
                 var templatesWithDetails = (from serviceTemplate in _coreEntitiesContainer.ServiceTemplates.Where(st => foundOpsService.Id == st.Id)
                                             from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
