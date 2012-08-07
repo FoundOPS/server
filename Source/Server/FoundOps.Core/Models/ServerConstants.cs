@@ -25,13 +25,19 @@ namespace FoundOps.Core.Models
         public static string ApplicationUrl = RootApplicationUrl + "/App/Index";
 
 #if DEBUG
+        public enum AutoLogin
+        {
+            None,
+            //Auto login an admin
+            Admin,
+            //Auto login a mobile user
+            Mobile
+        }
+
         /// <summary>
         /// If set to true it will automatically login a FoundOPS Admin.
         /// </summary>
-        public static bool AutomaticLoginFoundOPSAdmin = true;
-#else
-        public static bool AutomaticLoginOPSManager = false;
-        public static bool AutomaticLoginFoundOPSAdmin = false;
+        public static AutoLogin LoginMode = AutoLogin.Mobile;
 #endif
 
         /// <summary>
