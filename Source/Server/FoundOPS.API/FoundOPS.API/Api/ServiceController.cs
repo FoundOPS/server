@@ -134,7 +134,7 @@ namespace FoundOPS.API.Api
 
                 //Generate the service from the recurring service
                 //No need to add it to the object context, because setting the association will automatically add it
-                var generatedService = GenerateServiceOnDate(serviceDate.Value, recurringService, businessAccount);
+                var generatedService = GenerateServiceOnDate(Guid.NewGuid(), serviceDate.Value, recurringService, businessAccount);
 
                 //Return the generated service
                 modelServices.Add(generatedService);
@@ -201,7 +201,7 @@ namespace FoundOPS.API.Api
 
                 //Generate the service from the recurring service
                 //No need to add it to the object context, because setting the association will automatically add it
-                var generatedService = GenerateServiceOnDate(loadedRouteTask.Date, recurringService, recurringService.Client.BusinessAccount);
+                var generatedService = GenerateServiceOnDate(Guid.NewGuid(), loadedRouteTask.Date, recurringService, recurringService.Client.BusinessAccount);
 
                 //Return the generated service
                 modelServices.Add(generatedService);
@@ -230,10 +230,11 @@ namespace FoundOPS.API.Api
         /// </summary>
         /// <param name="date">The date to generate a service for.</param>
         /// <param name="recurringService"> </param>
-        private FoundOps.Core.Models.CoreEntities.Service GenerateServiceOnDate(DateTime date, RecurringService recurringService, BusinessAccount businessAccount)
+        private FoundOps.Core.Models.CoreEntities.Service GenerateServiceOnDate(Guid id, DateTime date, RecurringService recurringService, BusinessAccount businessAccount)
         {
             return new FoundOps.Core.Models.CoreEntities.Service
             {
+                Id = id,
                 ServiceDate = date,
                 ClientId = recurringService.ClientId,
                 Client = recurringService.Client,
@@ -261,9 +262,15 @@ namespace FoundOPS.API.Api
             if (foundOpsService == null)
             {
                 var recurringService = _coreEntitiesContainer.RecurringServices.Include(rs => rs.Client).FirstOrDefault(rs => rs.Id == service.RecurringServiceId);
+                //Load recurring service template
+                var templatesWithDetails = (from serviceTemplate in _coreEntitiesContainer.ServiceTemplates.Where(st => recurringService.Id == st.Id)
+                                            from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
+                                            //from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty() //LocationField not editable yet
+                                            select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options }).ToArray();//, locations };
+
                 var businessAccount = _coreEntitiesContainer.BusinessAccount(recurringService.Client.BusinessAccountId.Value).First();
 
-                foundOpsService = GenerateServiceOnDate(service.ServiceDate, recurringService, businessAccount);
+                foundOpsService = GenerateServiceOnDate(service.Id, service.ServiceDate, recurringService, businessAccount);
 
                 //Remove all fields that were generated with the Service Template
                 foreach (var field in foundOpsService.ServiceTemplate.Fields)
