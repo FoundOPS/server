@@ -37,7 +37,7 @@ namespace FoundOps.Core.Models
         /// <summary>
         /// If set to true it will automatically login a FoundOPS Admin.
         /// </summary>
-        public static AutoLogin LoginMode = AutoLogin.Mobile;
+        public static AutoLogin LoginMode = AutoLogin.Admin;
 #endif
 
         /// <summary>

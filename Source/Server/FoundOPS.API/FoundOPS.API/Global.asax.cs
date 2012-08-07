@@ -1,4 +1,4 @@
-﻿using System.Web.Http;
+using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
 using FoundOPS.API.Tools;
@@ -60,10 +60,14 @@ namespace FoundOPS.API
             // MessageHandlers collection
             corsConfig.RegisterGlobal(httpConfig);
 
-            // this allow all CORS requests to the Settings controller
-            corsConfig.ForResources("Settings")
-                .ForAllOrigins()
-                .AllowAll();
+            // this allow all CORS requests
+            corsConfig.ForAllResources()
+#if DEBUG
+            .ForOrigins(ServerConstants.RootApplicationUrl, "http://localhost:8000")
+#else
+            .ForOrigins(ServerConstants.RootApplicationUrl)
+#endif
+.AllowAll();
         }
     }
 }
