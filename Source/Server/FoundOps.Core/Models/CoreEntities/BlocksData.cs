@@ -157,9 +157,9 @@ namespace FoundOps.Core.Models.CoreEntities
                 Id = BlockConstants.RoutesBlockId,
                 Color = "green",
                 Name = "Routes",
-                HideFromNavigation = true,
                 IconUrl = "img/routes.png",
-                HoverIconUrl = "img/routesColor.png"
+                HoverIconUrl = "img/routesColor.png",
+                Url = "#view/routes.html"
             };
 
             //RoutesBlock is hidden for now
