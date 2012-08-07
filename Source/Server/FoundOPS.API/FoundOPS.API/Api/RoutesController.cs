@@ -40,8 +40,8 @@ namespace FoundOPS.API.Api
         {
             var apiRoutes = new List<Route>();
 
-            //Find routes for the passed service date. 
-            //If it is null used the UtcDate of today
+            //Find routes for the passed service date
+            //if the date is null use today (adjusted for the user)
             var date = _coreEntitiesContainer.CurrentUserAccount().First().AdjustTimeForUserTimeZone(DateTime.UtcNow).Date;
 
             if (serviceDateUtc.HasValue)
