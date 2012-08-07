@@ -1684,6 +1684,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.String _Name;
         partial void OnNameChanging(global::System.String value);
         partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String ServicesConfiguration
+        {
+            get
+            {
+                return _ServicesConfiguration;
+            }
+            set
+            {
+                OnServicesConfigurationChanging(value);
+                ReportPropertyChanging("ServicesConfiguration");
+                _ServicesConfiguration = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("ServicesConfiguration");
+                OnServicesConfigurationChanged();
+            }
+        }
+        private global::System.String _ServicesConfiguration;
+        partial void OnServicesConfigurationChanging(global::System.String value);
+        partial void OnServicesConfigurationChanged();
 
         #endregion
 

@@ -243,6 +243,7 @@
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\ContactInfo.cs" />
     <Compile Include="Models\BusinessSettings.cs" />
+    <Compile Include="Models\Column.cs" />
     <Compile Include="Models\ServiceType.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\RouteTask.cs" />
