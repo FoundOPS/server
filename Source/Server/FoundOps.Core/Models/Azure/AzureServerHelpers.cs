@@ -64,11 +64,6 @@ namespace FoundOps.Core.Models.Azure
 
             var url = blob.GetSharedAccessSignature(new SharedAccessPolicy { Permissions = SharedAccessPermissions.Read, SharedAccessExpiryTime = DateTime.UtcNow + DefaultExpiration });
 
-#if DEBUG
-            //Need to wait a little while debugging or else the shared access key wont be ready by the time it is accessed
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(1));
-#endif
-
             return url;
         }
 
