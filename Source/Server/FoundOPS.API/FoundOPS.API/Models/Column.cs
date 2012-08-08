@@ -13,11 +13,11 @@
         /// <summary>
         /// If the column is hidden or not
         /// </summary>
-        public string Hidden { get; set; }
+        public bool Hidden { get; set; }
 
         /// <summary>
-        /// The column width
+        /// The column width (a string so that px or % can be used)
         /// </summary>
-        public double Width { get; set; }
+        public string Width { get; set; }
     }
 }
