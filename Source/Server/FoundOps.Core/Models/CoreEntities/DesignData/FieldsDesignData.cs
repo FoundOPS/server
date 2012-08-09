@@ -34,14 +34,17 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Value = "Large"
             };
 
+            var nineAm = DateTime.Now.Date.AddHours(9);
+            var sevenPm = DateTime.Now.Date.AddHours(19);
+
             var designTimeField = new DateTimeField
              {
                  Id = Guid.NewGuid(),
                  Name = "Start and End Times",
                  Required = false,
                  Tooltip = "Helpful Hint",
-                 Earliest = DateTime.UtcNow,
-                 Latest = DateTime.UtcNow.AddHours(2),
+                 Earliest = nineAm,
+                 Latest = sevenPm,
                  DateTimeType = DateTimeType.TimeOnly,
                  Value = DateTime.UtcNow
              };
