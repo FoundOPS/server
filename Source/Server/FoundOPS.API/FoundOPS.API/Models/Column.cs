@@ -19,5 +19,10 @@
         /// The column width (a string so that px or % can be used)
         /// </summary>
         public string Width { get; set; }
+
+        /// <summary>
+        /// The column order
+        /// </summary>
+        public int Order { get; set; }
     }
 }
