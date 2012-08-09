@@ -362,6 +362,32 @@ namespace FoundOPS.API.Api
             return response;
         }
 
+        [AcceptVerbs("POST")]
+        public HttpResponseMessage DeleteService(Service service)
+        {
+            var businessAccount = _coreEntitiesContainer.BusinessAccount(service.ServiceProviderId).FirstOrDefault();
+            if (businessAccount == null)
+                return Request.CreateResponse(HttpStatusCode.Unauthorized);
+
+            var existingService = _coreEntitiesContainer.Services.FirstOrDefault(s => s.Id == service.Id);
+            if (existingService != null)
+            {
+                _coreEntitiesContainer.Services.DeleteObject(existingService);
+            }
+
+            //add an excluded date to the recurring service
+            if (service.RecurringServiceId.HasValue)
+            {
+                var recurringService = _coreEntitiesContainer.RecurringServices.FirstOrDefault(rs => rs.Id == service.RecurringServiceId.Value);
+                var excludedDates = recurringService.ExcludedDates.ToList();
+                excludedDates.Add(service.ServiceDate);
+                recurringService.ExcludedDates = excludedDates;
+            }
+
+            _coreEntitiesContainer.SaveChanges();
+            return Request.CreateResponse(HttpStatusCode.Accepted);
+        }
+
         #endregion
     }
 
