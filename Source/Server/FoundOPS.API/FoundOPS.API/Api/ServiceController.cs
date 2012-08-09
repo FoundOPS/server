@@ -85,23 +85,29 @@ namespace FoundOPS.API.Api
             return Request.CreateResponse(HttpStatusCode.Accepted);
         }
 
+        /// <summary>
+        /// Get service holders with fields 
+        /// </summary>
+        /// <param name="roleId">The role</param>
+        /// <param name="clientContext">The Id of the client to filter by</param>
+        /// <param name="recurringServiceContext">The Id of the recurring service to filter by</param>
+        /// <param name="startDate">The start date (in the user's time zone)</param>
+        /// <param name="endDate">The end date (in the user's time zone)</param>
+        /// <param name="serviceType">The service type Id to filter by</param>
+        /// <returns>A queryable of dictionaries that resemble record type javascript objects when serialized</returns>
         [AcceptVerbs("GET", "POST")]
-        public IQueryable<Dictionary<string, object>> GetServicesHoldersWithFields(Guid roleId, Guid? clientContext,
+        public HttpResponseMessage GetServicesHoldersWithFields(Guid roleId, Guid? clientContext,
                                                                                    Guid? recurringServiceContext,
                                                                                    DateTime startDate, DateTime endDate,
                                                                                    Guid serviceType)
         {
             var currentBusinessAccount = _coreEntitiesContainer.Owner(roleId).FirstOrDefault();
-
             if (currentBusinessAccount == null)
-                throw new Exception("Hopefully this never happens...");
-
-            var connectionString = ConfigWrapper.ConnectionString("CoreConnectionString");
+                return Request.CreateResponse(HttpStatusCode.BadRequest);
 
             var command = new SqlCommand("GetServiceHoldersWithFields") { CommandType = CommandType.StoredProcedure };
 
-            var serviceProviderIdContext = command.Parameters.Add("@serviceProviderIdContext",
-                                                                  SqlDbType.UniqueIdentifier);
+            var serviceProviderIdContext = command.Parameters.Add("@serviceProviderIdContext", SqlDbType.UniqueIdentifier);
             serviceProviderIdContext.Value = currentBusinessAccount.Id;
 
             var clientIdContext = command.Parameters.Add("@clientIdContext", SqlDbType.UniqueIdentifier);
@@ -110,8 +116,7 @@ namespace FoundOPS.API.Api
             else
                 clientIdContext.Value = DBNull.Value;
 
-            var recurringServiceIdContext = command.Parameters.Add("@recurringServiceIdContext",
-                                                                   SqlDbType.UniqueIdentifier);
+            var recurringServiceIdContext = command.Parameters.Add("@recurringServiceIdContext", SqlDbType.UniqueIdentifier);
             if (recurringServiceContext.HasValue)
                 recurringServiceIdContext.Value = recurringServiceContext.Value;
             else
@@ -123,6 +128,7 @@ namespace FoundOPS.API.Api
             var lastDate = command.Parameters.Add("@lastDate", SqlDbType.Date);
             lastDate.Value = endDate;
 
+            var connectionString = ConfigWrapper.ConnectionString("CoreConnectionString");
             var result = DataReaderTools.GetDynamicSqlData(connectionString, command);
 
             var list = result.Item2.OrderBy(d => (DateTime)d["OccurDate"]).ToList();
@@ -132,11 +138,10 @@ namespace FoundOPS.API.Api
                 //Insert the first row to be a dictionary of the column's types
                 //TODO: Load the service type & fields. Then for DateTime fields with Date or Time only, change their type to Date and Time
                 var columnTypes = result.Item1.ToDictionary(kvp => kvp.Key, kvp => (Object)kvp.Value.ToString());
-
                 list.Insert(0, columnTypes);
             }
 
-            return list.AsQueryable();
+            return Request.CreateResponse(HttpStatusCode.OK, list.AsQueryable());
         }
 
         /// <summary>
