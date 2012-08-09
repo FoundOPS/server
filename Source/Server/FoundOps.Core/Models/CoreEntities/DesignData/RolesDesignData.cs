@@ -116,7 +116,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             if (roleType == RoleType.Administrator)
             {
                 role.Name = "Administrator";
-                foreach (var block in BlocksData.RegularBlocks.Union(BlocksData.RegularBlocks))
+                foreach (var block in BlocksData.RegularBlocks.Union(BlocksData.RegularBlocks).Union(BlocksData.MobileBlocks))
                     role.Blocks.Add(block);
             }
             else if (roleType == RoleType.Mobile)

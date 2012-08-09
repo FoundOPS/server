@@ -297,6 +297,13 @@ namespace FoundOps.SLClient.UI.ViewModels
             foreach (var blockId in BlockConstants.RegularBlockIds.Union(BlockConstants.MobileBlockIds))
                 administratorRole.RoleBlockToBlockSet.Add(new RoleBlock { BlockId = blockId });
 
+            //Add regular role
+            var regularRole = new Role { Id = Guid.NewGuid(), Name = "Regular", OwnerBusinessAccount = newBusinessAccount, RoleType = RoleType.Regular };
+
+            //Add the mobile and regular blocks to the regular role
+            foreach (var blockId in BlockConstants.RegularBlockIds.Union(BlockConstants.MobileBlockIds))
+                regularRole.RoleBlockToBlockSet.Add(new RoleBlock { BlockId = blockId });
+
             //Add mobile role
             var mobileRole = new Role { Id = Guid.NewGuid(), Name = "Mobile", OwnerBusinessAccount = newBusinessAccount, RoleType = RoleType.Mobile };
 

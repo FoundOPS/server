@@ -338,7 +338,7 @@ namespace FoundOPS.API.Api
                 TimeZone = settings.TimeZoneInfo.TimeZoneId
             };
 
-            //Find the role in the BusinessAccount that matches the name of the one passed in.
+            //Find the role in the BusinessAccount that matches the name of the one passed in
             var newRole = _coreEntitiesContainer.Roles.FirstOrDefault(r => r.OwnerBusinessAccountId == businessAccount.Id && r.Name == settings.Role);
 
             if (newRole != null)
@@ -348,7 +348,6 @@ namespace FoundOPS.API.Api
 
             //Add the newly created UserAccount to the database
             _coreEntitiesContainer.Parties.AddObject(user);
-
 
             if (settings.Employee.LastName != null)
             {
