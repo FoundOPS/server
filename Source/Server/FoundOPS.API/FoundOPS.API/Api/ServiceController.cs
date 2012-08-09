@@ -72,12 +72,18 @@ namespace FoundOPS.API.Api
         }
 
 
-        public HttpResponseMessage UpdateServiceColumns(Guid roleId, Dictionary<Guid, Column[]> servicesConfiguration)
+        public HttpResponseMessage UpdateServiceColumns(Guid roleId, Guid serviceId, Column[] columns)
         {
             var businessAccount = _coreEntitiesContainer.Owner(roleId).First();
 
-            if (servicesConfiguration == null)
-                servicesConfiguration = new Dictionary<Guid, Column[]>();
+            var servicesConfiguration = new Dictionary<Guid, Column[]>();
+            if (businessAccount.ServicesConfiguration != null)
+                servicesConfiguration = SerializationTools.Deserialize<Dictionary<Guid, Column[]>>(businessAccount.ServicesConfiguration);
+
+            if (servicesConfiguration.ContainsKey(serviceId))
+                servicesConfiguration[serviceId] = columns;
+            else
+                servicesConfiguration.Add(serviceId, columns);
 
             businessAccount.ServicesConfiguration = SerializationTools.Serialize(servicesConfiguration);
             _coreEntitiesContainer.SaveChanges();
