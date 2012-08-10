@@ -23,7 +23,8 @@ CREATE PROCEDURE GetServiceHoldersWithFields
 	  @clientIdContext UNIQUEIDENTIFIER ,
 	  @recurringServiceIdContext UNIQUEIDENTIFIER ,
 	  @firstDate DATE ,
-	  @lastDate DATE
+	  @lastDate DATE ,
+	  @serviceTypeContext NVARCHAR(MAX)
 	)
 AS 
 	BEGIN
@@ -44,7 +45,8 @@ AS
 		INSERT	INTO #ServiceHolders (RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName)
 				EXEC [dbo].[GetServiceHolders] @serviceProviderIdContext,
 					@clientIdContext, @recurringServiceIdContext, @firstDate,
-					@lastDate
+					@lastDate, @serviceTypeContext
+		
 	
 		DECLARE @ServiceTemplateIds TABLE 
 		(
