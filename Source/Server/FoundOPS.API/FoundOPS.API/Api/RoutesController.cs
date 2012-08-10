@@ -1,3 +1,5 @@
+using System.Net;
+using System.Net.Http;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
 using System;
@@ -7,6 +9,7 @@ using System.Linq;
 using System.Web.Http;
 using Location = FoundOPS.API.Models.Location;
 using Route = FoundOPS.API.Models.Route;
+using RouteTask = FoundOPS.API.Models.RouteTask;
 
 namespace FoundOPS.API.Api
 {
@@ -91,17 +94,26 @@ namespace FoundOPS.API.Api
 
             return currentBusinessAccount.Depots.Select(Location.ConvertModel).AsQueryable();
         }
+        #endregion
 
-        //[AcceptVerbs("POST")]
-        //public IQueryable<Status> GetStatuses(Guid roleId)
-        //{
-        //    var currentBusinessAccount = _coreEntitiesContainer.BusinessAccountOwnerOfRoleQueryable(roleId).FirstOrDefault();
+        #region Post
 
-        //    if (currentBusinessAccount == null)
-        //        ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
+        /// <summary>
+        /// Pushes changes made to a RouteTask from the API model to the FoundOPS model
+        /// </summary>
+        /// <param name="routeTask">The API model of a RouteTask</param>
+        [AcceptVerbs("POST")]
+        public HttpResponseMessage UpdateRouteTask(RouteTask routeTask)
+        {
+            var routeTaskModel = _coreEntitiesContainer.RouteTasks.First(rt => rt.Id == routeTask.Id);
 
-        //    return currentBusinessAccount..AsQueryable(); 
-        //}
+            //status is the only thing that can change
+            routeTaskModel.TaskStatusId = routeTask.TaskStatusId;
+
+            _coreEntitiesContainer.SaveChanges();
+
+            return Request.CreateResponse(HttpStatusCode.Accepted);
+        }
 
         #endregion
     }
