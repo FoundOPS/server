@@ -204,11 +204,12 @@ AS
 			
 			--Concatinates all Options that were checked as follows: op1, op2, op3,
 			UPDATE #OptionsFields
-			SET Value = (SELECT Name + ', ' AS 'data()'
+			SET Value = (SELECT Name + ', ' AS 'data()' 
 			FROM @CheckedOptions 
 			WHERE OptionsFieldId = [#OptionsFields].Id
+			ORDER BY Name
 			FOR XML PATH(''))
-
+			
 			--Removes the extra comma inserted at the end of the Value string because of concatination
 			UPDATE #OptionsFields
 			SET Value = LEFT(Value, LEN(Value) -1)
