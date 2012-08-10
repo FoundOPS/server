@@ -129,12 +129,13 @@ namespace FoundOPS.API.Api
         [AcceptVerbs("GET", "POST")]
         public IQueryable<TaskStatus> GetStatuses(Guid roleId)
         {
-            var currentBusinessAccount = _coreEntitiesContainer.Owner(roleId, new []{ RoleType.Mobile, RoleType.Administrator, RoleType.Regular }).Include(ba => ba.TaskStatuses).FirstOrDefault();
+            var currentBusinessAccount = _coreEntitiesContainer.Owner(roleId, new[] { RoleType.Mobile, RoleType.Administrator, RoleType.Regular }).Include(ba => ba.TaskStatuses).FirstOrDefault();
 
             if (currentBusinessAccount == null)
                 ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
 
-            var statuses = currentBusinessAccount.TaskStatuses.Select(TaskStatus.ConvertModel).AsQueryable();
+            var statuses = currentBusinessAccount.TaskStatuses.Select(TaskStatus.ConvertModel).OrderBy(ts => ts.Name)
+                .AsQueryable();
 
             return statuses;
         }
