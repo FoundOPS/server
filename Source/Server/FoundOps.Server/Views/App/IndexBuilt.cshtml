@@ -28,7 +28,9 @@
 <body ontouchstart="">
 <div id="contentWrapper">
     <div id="content">
-        <div id="remoteContent"></div>
+        <div id="remoteContent">
+            <div data-role="view" id="silverlight"></div>
+        </div>
         <div id="silverlightControlHost">
             <object id="silverlightPlugin" data="data:application/x-silverlight-2," type="application/x-silverlight-2"
                     style="height: 1px; width: 1px">
@@ -52,7 +54,6 @@
     </div>
 </div>
 <!--Setup an empty silverlight view, so there is something to navigate to-->
-<div data-role="view" id="silverlight"></div>
 </body>
 <script type="text/javascript">
     var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
@@ -67,7 +68,7 @@
         <div id='navSearch' class='navElement'><input name='search' type='text' placeholder='Search...'/>
             <a><img src='img/search.png'/></a>
         </div>
-        <div id='navClient' class='navElement popup last'>
+        <div id='navClient' class='navElement last'>
             <a><img class='navIcon profile' src='#= data[0] #'/><img id='clientLogo' src='#= data[1] #'/></a>
         </div>
     </div>

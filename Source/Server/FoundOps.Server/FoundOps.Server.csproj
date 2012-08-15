@@ -128,6 +128,7 @@
     <Reference Include="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel">
       <Private>True</Private>
     </Reference>
@@ -201,30 +202,39 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\.idea\codeStyleSettings.xml" />
+    <Content Include="app\.idea\dictionaries\Rod.xml" />
+    <Content Include="app\.idea\encodings.xml" />
+    <Content Include="app\.idea\inspectionProfiles\profiles_settings.xml" />
+    <Content Include="app\.idea\inspectionProfiles\Project_Default.xml" />
+    <Content Include="app\.idea\jsLinters\jshint.xml" />
+    <Content Include="app\.idea\jsLinters\jslint.xml" />
+    <Content Include="app\.idea\misc.xml" />
+    <Content Include="app\.idea\modules.xml" />
+    <Content Include="app\.idea\scopes\scope_settings.xml" />
+    <Content Include="app\.idea\vcs.xml" />
+    <Content Include="app\.idea\workspace.xml" />
+    <Content Include="app\img\2select2.png" />
     <Content Include="app\img\addUser.png" />
     <Content Include="app\img\android.png" />
     <Content Include="app\img\apple.png" />
     <Content Include="app\img\arrow.png" />
     <Content Include="app\img\back.png" />
-    <Content Include="app\img\BusinessAccounts.png" />
-    <Content Include="app\img\BusinessAccountsColor.png" />
+    <Content Include="app\img\btnSprite.png" />
+    <Content Include="app\img\businessAccounts.png" />
+    <Content Include="app\img\businessAccountsColor.png" />
     <Content Include="app\img\clients.png" />
     <Content Include="app\img\clientsColor.png" />
     <Content Include="app\img\Collapse.png" />
     <Content Include="app\img\colorpicker_overlay.png" />
     <Content Include="app\img\colorpicker_select.gif" />
-    <Content Include="app\img\crop.jpg" />
     <Content Include="app\img\custom_background.png" />
     <Content Include="app\img\custom_indic.gif" />
     <Content Include="app\img\custom_submit.png" />
     <Content Include="app\img\david.png" />
-    <Content Include="app\img\deleteBtn.png" />
-    <Content Include="app\img\deleteBtnHover.png" />
     <Content Include="app\img\depot.png" />
     <Content Include="app\img\dispatcher.png" />
     <Content Include="app\img\dispatcherColor.png" />
-    <Content Include="app\img\editBtn.png" />
-    <Content Include="app\img\editBtnHover.png" />
     <Content Include="app\img\employees.png" />
     <Content Include="app\img\employeesColor.png" />
     <Content Include="app\img\emptyPerson.png" />
@@ -247,6 +257,7 @@
     <Content Include="app\img\LogoCharcoal.png" />
     <Content Include="app\img\logout.png" />
     <Content Include="app\img\logoutColor.png" />
+    <Content Include="app\img\LogoWhiteText%28TransparentBg%29.png" />
     <Content Include="app\img\Notify.png" />
     <Content Include="app\img\outerCircle.png" />
     <Content Include="app\img\popupArrow.png" />
@@ -267,8 +278,10 @@
     <Content Include="app\img\settingsColor.png" />
     <Content Include="app\img\slider.png" />
     <Content Include="app\img\spanBgTags.png" />
+    <Content Include="app\img\spinner.gif" />
     <Content Include="app\img\SplashPNG.png" />
     <Content Include="app\img\sprite.png" />
+    <Content Include="app\img\TileBg.png" />
     <Content Include="app\img\transparent-black.png" />
     <Content Include="app\img\truck.png" />
     <Content Include="app\img\uservoice.png" />
@@ -277,7 +290,115 @@
     <Content Include="app\img\vehiclesColor.png" />
     <Content Include="app\img\x.png" />
     <Content Include="app\img\x2.png" />
+    <Content Include="app\js\containers\map.js" />
+    <Content Include="app\js\containers\silverlight.js" />
+    <Content Include="app\js\db\developer.js" />
+    <Content Include="app\js\db\models.js" />
+    <Content Include="app\js\db\SaveHistory.js" />
+    <Content Include="app\js\db\services.js" />
+    <Content Include="app\js\db\session.js" />
+    <Content Include="app\js\main.js" />
+    <Content Include="app\js\sections\businessSettings.js" />
+    <Content Include="app\js\sections\changePassword.js" />
+    <Content Include="app\js\sections\createPassword.js" />
+    <Content Include="app\js\sections\dispatcherSettings.js" />
+    <Content Include="app\js\sections\personalSettings.js" />
+    <Content Include="app\js\sections\routeDestinationDetails.js" />
+    <Content Include="app\js\sections\routeDetails.js" />
+    <Content Include="app\js\sections\routes.js" />
+    <Content Include="app\js\sections\routeTask.js" />
+    <Content Include="app\js\sections\services.js" />
+    <Content Include="app\js\sections\usersSettings.js" />
+    <Content Include="app\js\tools.js" />
+    <Content Include="app\js\ui\colorPicker.js" />
+    <Content Include="app\js\ui\kendoChanges.js" />
+    <Content Include="app\js\ui\leaflet.js" />
+    <Content Include="app\js\ui\popup.js" />
+    <Content Include="app\js\ui\ui.js" />
+    <Content Include="app\js\widgets\contacts.js" />
+    <Content Include="app\js\widgets\imageUpload.js" />
+    <Content Include="app\js\widgets\navigator.js" />
+    <Content Include="app\js\widgets\serviceDetails.js" />
+    <Content Include="app\js\widgets\settingsMenu.js" />
+    <Content Include="app\lib\Default\editor.png" />
+    <Content Include="app\lib\Default\imagebrowser.png" />
+    <Content Include="app\lib\Default\loading-image.gif" />
+    <Content Include="app\lib\Default\loading.gif" />
+    <Content Include="app\lib\Default\slider-h.gif" />
+    <Content Include="app\lib\Default\slider-v.gif" />
+    <Content Include="app\lib\Default\sprite.png" />
     <Content Include="app\lib\filereader.swf" />
+    <Content Include="app\lib\helper.js" />
+    <Content Include="app\lib\images\android-sprite.png" />
+    <Content Include="app\lib\images\iconmasks.svg" />
+    <Content Include="app\lib\images\icons.png" />
+    <Content Include="app\lib\images\ios-sprite.png" />
+    <Content Include="app\lib\images\marker-shadow.png" />
+    <Content Include="app\lib\images\marker.png" />
+    <Content Include="app\lib\images\zoom-in.png" />
+    <Content Include="app\lib\images\zoom-out.png" />
+    <Content Include="app\lib\jcrop.js" />
+    <Content Include="app\lib\jquery-ui-1.8.21.core.min.js" />
+    <Content Include="app\lib\jquery.autosize.js" />
+    <Content Include="app\lib\jquery.FileReader.js" />
+    <Content Include="app\lib\jquery.form.js" />
+    <Content Include="app\lib\jquery.js" />
+    <Content Include="app\lib\jquery.jScrollPane.js" />
+    <Content Include="app\lib\jquery.maskMoney.js" />
+    <Content Include="app\lib\jquery.min.js">
+      <DependentUpon>jquery.js</DependentUpon>
+    </Content>
+    <Content Include="app\lib\jquery.mousewheel.js" />
+    <Content Include="app\lib\jquery.qrcode.js" />
+    <Content Include="app\lib\jquery.qrcode.min.js">
+      <DependentUpon>jquery.qrcode.js</DependentUpon>
+    </Content>
+    <Content Include="app\lib\kendo.all.js" />
+    <Content Include="app\lib\kendo.all.min.js">
+      <DependentUpon>kendo.all.js</DependentUpon>
+    </Content>
+    <Content Include="app\lib\kendo.mobile.min.js" />
+    <Content Include="app\lib\kendo.web.min.js" />
+    <Content Include="app\lib\leaflet.js" />
+    <Content Include="app\lib\less-1.3.0.min.js" />
+    <Content Include="app\lib\less.min.js" />
+    <Content Include="app\lib\live.js" />
+    <Content Include="app\lib\Metro\editor.png" />
+    <Content Include="app\lib\Metro\imagebrowser.png" />
+    <Content Include="app\lib\Metro\loading-image.gif" />
+    <Content Include="app\lib\Metro\loading.gif" />
+    <Content Include="app\lib\Metro\slider-h.gif" />
+    <Content Include="app\lib\Metro\slider-v.gif" />
+    <Content Include="app\lib\Metro\sprite.png" />
+    <Content Include="app\lib\modernizr-2.0.6.min.js" />
+    <Content Include="app\lib\moment.js" />
+    <Content Include="app\lib\mwheelIntent.js" />
+    <Content Include="app\lib\noty.js" />
+    <Content Include="app\lib\pubsub.js" />
+    <Content Include="app\lib\qrcode.js" />
+    <Content Include="app\lib\require-jquery.js" />
+    <Content Include="app\lib\select2.js" />
+    <Content Include="app\lib\swfobject.js" />
+    <Content Include="app\lib\testr.js" />
+    <Content Include="app\lib\text.js" />
+    <Content Include="app\lib\textures\glass.png" />
+    <Content Include="app\lib\textures\highlight.png" />
+    <Content Include="app\lib\underscore.js" />
+    <Content Include="app\lib\userVoice.js" />
+    <Content Include="app\login.html" />
+    <Content Include="app\map.html" />
+    <Content Include="app\navigator-built.html" />
+    <Content Include="app\navigator.html" />
+    <Content Include="app\styles\kendo.common.min.css" />
+    <Content Include="app\styles\kendo.default.min.css" />
+    <Content Include="app\styles\kendo.metro.min.css" />
+    <Content Include="app\styles\kendo.mobile.all.min.css" />
+    <Content Include="app\styles\leaflet.css" />
+    <Content Include="app\styles\leaflet.ie.css" />
+    <Content Include="app\styles\map.css" />
+    <Content Include="app\styles\mapIE.css" />
+    <Content Include="app\styles\mobile.css" />
+    <Content Include="app\styles\select2.css" />
     <Content Include="app\view\businessSettings.html" />
     <Content Include="app\view\changePassword.html" />
     <Content Include="app\view\clearhist.html" />
@@ -287,7 +408,9 @@
     <Content Include="app\view\personalSettings.html" />
     <Content Include="app\view\routeDestinationDetails.html" />
     <Content Include="app\view\routeDetails.html" />
-    <Content Include="app\view\routeList.html" />
+    <Content Include="app\view\routes.html" />
+    <Content Include="app\view\routeTask.html" />
+    <Content Include="app\view\services.html" />
     <Content Include="app\view\testContent.html" />
     <Content Include="app\view\updates.html" />
     <Content Include="app\view\usersSettings.html" />
@@ -398,6 +521,14 @@
     <Content Include="ClientBin\Telerik.Windows.Zip.zip" />
     <Content Include="ClientBin\Microsoft.CSharp.zip" />
     <Content Include="ClientBin\Telerik.Windows.Controls.DomainServices.zip" />
+    <Content Include="app\.idea\app.iml" />
+    <Content Include="app\.idea\workspace.xml.orig" />
+    <Content Include="app\styles\jquery.jscrollpane.less" />
+    <Content Include="app\styles\main.less" />
+    <Content Include="app\styles\navigator.less" />
+    <Content Include="app\styles\popup.less" />
+    <Content Include="app\styles\PTS55F.eot" />
+    <Content Include="app\styles\PTS55F.ttf" />
     <None Include="Content\PTS55F.eot" />
     <None Include="Content\PTS55F.ttf" />
     <None Include="disableTimeout.cmd">

@@ -33,11 +33,6 @@ namespace FoundOps.Core.Models.CoreEntities
         public static Guid ClientBlockId = new Guid("076E5CC5-E1DF-47A0-BCE7-DBCF3281895A");
 
         /// <summary>
-        /// The Contacts block Id
-        /// </summary>
-        public static Guid ContactsBlockId = new Guid("{C1D81ECE-A5D7-420D-9BCF-AA9298F98EBC}");
-
-        /// <summary>
         /// The Dispatchers block Id
         /// </summary>
         public static Guid DispatcherBlockId = new Guid("C6C6C562-AFF4-4555-94DC-6C53A90A6B27");
@@ -87,7 +82,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         public static IEnumerable<Guid> RegularBlockIds = new[]
             {
-                ClientBlockId, ContactsBlockId, DispatcherBlockId,
+                ClientBlockId, DispatcherBlockId,
                 EmployeesBlockId, SupportBlockId, ImportDataBlockId,
                 LocationsBlockId, RegionsBlockId, ServicesBlockId,
                 VehiclesBlockId, VehicleMaintenanceBlockId

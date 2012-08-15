@@ -1,21 +1,23 @@
-using System.Data.SqlClient;
-using System.ServiceModel.DomainServices.Server;
 using Dapper;
 using FoundOps.Common.Composite;
 using FoundOps.Common.NET;
 using FoundOps.Core.Models;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
-using Route = FoundOps.Core.Models.CoreEntities.Route;
-using RouteDestination = FoundOps.Core.Models.CoreEntities.RouteDestination;
-using RouteTask = FoundOps.Core.Models.CoreEntities.RouteTask;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.Data.Objects;
+using System.Data.SqlClient;
 using System.Linq;
+using System.Net;
+using System.Runtime.Serialization.Json;
 using System.ServiceModel.DomainServices.EntityFramework;
+using System.ServiceModel.DomainServices.Server;
+using TaskOptimizer.API;
+using Route = FoundOps.Core.Models.CoreEntities.Route;
+using RouteDestination = FoundOps.Core.Models.CoreEntities.RouteDestination;
+using RouteTask = FoundOps.Core.Models.CoreEntities.RouteTask;
 
 namespace FoundOps.Server.Services.CoreDomainService
 {
@@ -25,6 +27,49 @@ namespace FoundOps.Server.Services.CoreDomainService
     /// </summary>
     public partial class CoreDomainService
     {
+        #region Algorithms
+
+        /// <summary>
+        /// Calculate the best order for the route
+        /// </summary>
+        /// <param name="coordinates">Lat/lngs seperated by $. Ex 12.3455,-10.9876&12.2222,-10.123</param>
+        [Invoke]
+        public OSMResponse MakeTransaction(string coordinates)
+        {
+            var requestUrl = "http://foundops.cloudapp.net:8081/route/" + coordinates;
+            requestUrl = requestUrl.Substring(0, requestUrl.Length - 1);
+            var request = (HttpWebRequest)WebRequest.Create(requestUrl);
+            using (var response = (HttpWebResponse)request.GetResponse())
+            {
+                if (response.StatusCode != HttpStatusCode.OK)
+                    throw new Exception(String.Format(
+                        "Server error (HTTP {0}: {1}).",
+                        response.StatusCode,
+                        response.StatusDescription));
+                var jsonSerializer = new DataContractJsonSerializer(typeof(OSMResponse));
+                var objResponse = jsonSerializer.ReadObject(response.GetResponseStream());
+                var jsonResponse = objResponse as OSMResponse;
+                jsonResponse.Route_Instructions = jsonResponse.Raw_Route.Select(objs => new OSMInstruction(objs)).ToArray();
+
+                var altInstructions = new List<AlternativeInstructions>();
+                foreach (var instSet in jsonResponse.Raw_Alternatives)
+                {
+                    var i = new OSMInstruction[instSet.Length];
+                    for (var j = 0; j < instSet.Length; j++)
+                    {
+                        i[j] = new OSMInstruction(instSet[j]);
+                    }
+                    var alt = new AlternativeInstructions { Instructions = i };
+                    altInstructions.Add(alt);
+                }
+                jsonResponse.Alternative_Instructions = altInstructions.ToArray();
+                jsonResponse.Via_Points = jsonResponse.Raw_Via.Select(rawCoord => new Coordinate(Convert.ToDouble(rawCoord[0]), Convert.ToDouble(rawCoord[1]))).ToArray();
+                return jsonResponse;
+            }
+        }
+
+        #endregion
+
         #region Route
 
         /// <summary>

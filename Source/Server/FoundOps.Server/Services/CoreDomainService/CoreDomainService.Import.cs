@@ -154,7 +154,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             if (clientNameCell == null)
                 throw ImportRowTools.Exception("Client not set", row);
 
-            var associatedClient = clientAssociations.FirstOrDefault(ca => ca.Name == clientNameCell.Value);
+            var associatedClient = clientAssociations.FirstOrDefault(ca => ca.Name.ToLower().Trim() == clientNameCell.Value.ToLower().Trim());
             if (associatedClient == null)
                 throw ImportRowTools.Exception(String.Format("Could not find Client '{0}'", clientNameCell.Value), row);
 
@@ -179,6 +179,8 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             if (locationLongitude == null)
                 throw ImportRowTools.Exception("Longitude not set", importRow);
+
+            //TODO remove
 
             associatedLocation =
                 locationAssociations.FirstOrDefault(
