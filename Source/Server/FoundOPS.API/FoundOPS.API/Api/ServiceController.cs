@@ -12,12 +12,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Column = FoundOPS.API.Models.Column;
+using Service = FoundOPS.API.Models.Service;
+using ServiceType = FoundOPS.API.Models.ServiceType;
 using DateTimeField = FoundOps.Core.Models.CoreEntities.DateTimeField;
+using LocationField = FoundOps.Core.Models.CoreEntities.LocationField;
 using NumericField = FoundOps.Core.Models.CoreEntities.NumericField;
 using OptionsField = FoundOps.Core.Models.CoreEntities.OptionsField;
-using Service = FoundOPS.API.Models.Service;
-using Column = FoundOPS.API.Models.Column;
-using ServiceType = FoundOPS.API.Models.ServiceType;
 using TextBoxField = FoundOps.Core.Models.CoreEntities.TextBoxField;
 
 namespace FoundOPS.API.Api
@@ -163,9 +164,8 @@ namespace FoundOPS.API.Api
                 (from serviceTemplate in
                      _coreEntitiesContainer.ServiceTemplates.Where(st => serviceTemplateIdToLoad == st.Id)
                  from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
-                 // from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty() //no reason to pass LocationField yet
-                 select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options }).ToArray();
-            //, locations };
+                 from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty() //no reason to pass LocationField yet
+                 select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations }).ToArray();
 
 
             //The set of services to convert then return
@@ -316,6 +316,7 @@ namespace FoundOPS.API.Api
                     var dateTimeField = existingField as DateTimeField;
                     var numericField = existingField as NumericField;
                     var textBoxField = existingField as TextBoxField;
+                    var locationField = existingField as LocationField;
                     var optionsField = existingField as OptionsField;
 
                     //If the field is a DateTimeField, update the value
@@ -329,6 +330,10 @@ namespace FoundOPS.API.Api
                     //If the field is a TextBoxField, update the value
                     if (textBoxField != null)
                         textBoxField.Value = ((Models.TextBoxField)field).Value;
+
+                    //If the field is a LocationField, update the value
+                    if (locationField != null)
+                        locationField.LocationId = ((Models.LocationField)field).LocationId;
 
                     //If the field is a OptionsField, update the Options
                     if (optionsField != null)

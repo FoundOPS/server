@@ -38,10 +38,9 @@ namespace FoundOPS.API.Models
             if (textBoxField != null)
                 field = TextBoxField.ConvertTextBoxFieldModel(textBoxField);
 
-            //TODO: not using location fields yet
-            ////If the field is a LocationField, convert the field to an API LocationField and return
-            //else if (locationField != null)
-            //    return LocationField.ConvertLocationFieldModel(locationField);
+            //If the field is a LocationField, convert the field to an API LocationField and return
+            else if (locationField != null)
+                field = LocationField.ConvertLocationFieldModel(locationField);
 
             //If the field is a NumericField, convert the field to an API NumericField and return
             else if (numericField != null)

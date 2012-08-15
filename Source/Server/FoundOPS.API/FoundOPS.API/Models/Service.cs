@@ -48,9 +48,7 @@ namespace FoundOPS.API.Models
 
             //Convert each field from the FoundOPS model to the API model
             //Add the newly converted field to the newly created service
-            foreach (var field in serviceModel.ServiceTemplate.Fields.OrderBy(f => f.Name)
-                //Do not serialize LocationFields for now
-                .Where(f => (f as FoundOps.Core.Models.CoreEntities.LocationField) == null))
+            foreach (var field in serviceModel.ServiceTemplate.Fields.OrderBy(f => f.Name))
                 service.Fields.Add(Field.ConvertModel(field));
 
             return service;
