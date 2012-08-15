@@ -54,12 +54,12 @@ namespace FoundOps.Core.Models.CoreEntities.Validation
 
         private static ValidationResult IsTimeValueValidHelper(DateTime? value, DateTime earliest, DateTime latest, DateTimeField dateTimeField)
         {
-            if (dateTimeField.Value.HasValue)
+            if (dateTimeField.DateTimeType == DateTimeType.TimeOnly && dateTimeField.Value.HasValue && value.HasValue)
             {
-                if (value < earliest)
+                if (value.Value.TimeOfDay < earliest.TimeOfDay)
                     return new ValidationResult(String.Format("The Value must be after the earliest ({0})", earliest.ToLongTimeString()), new[] { "Value", "Earliest" });
 
-                if (value > latest)
+                if (value.Value.TimeOfDay > latest.TimeOfDay)
                     return new ValidationResult(String.Format("The Value must be before the latest ({0})", latest.ToLongTimeString()), new[] { "Value", "Latest" });
             }
 
