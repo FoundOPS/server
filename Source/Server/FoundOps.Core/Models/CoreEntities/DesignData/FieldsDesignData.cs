@@ -77,7 +77,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             var designPercentageField = new NumericField
               {
                   Id = Guid.NewGuid(),
-                  Name = "% Full",
+                  Name = "Percent Full",
                   Required = false,
                   Tooltip = "How full is the barrel?",
                   Maximum = 100,
