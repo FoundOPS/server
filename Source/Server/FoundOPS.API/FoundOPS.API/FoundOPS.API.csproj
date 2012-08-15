@@ -230,6 +230,7 @@
   <ItemGroup>
     <Compile Include="Api\AuthController.cs" />
     <Compile Include="Api\ClientsController.cs" />
+    <Compile Include="Api\LocationsController.cs" />
     <Compile Include="Api\ErrorController.cs" />
     <Compile Include="Api\TaskStatusesController.cs" />
     <Compile Include="Controllers\HelperController.cs" />

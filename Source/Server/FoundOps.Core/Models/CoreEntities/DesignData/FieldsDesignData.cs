@@ -125,18 +125,17 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             designCheckListField.Options.Add(new Option { Name = "Assess Oil Quantity", IsChecked = true, Index = 1 });
             designCheckListField.Options.Add(new Option { Name = "Get Paperwork Signed", IsChecked = false, Index = 2 });
 
-            //Not used yet
-            //var designLocationField = new LocationField
-            //{
-            //    Id = Guid.NewGuid(),
-            //    Name = "Locations",
-            //    Required = false,
-            //    Tooltip = "Helpful Hint",
-            //    LocationFieldType = LocationFieldType.Destination
-            //};
+            var designLocationField = new LocationField
+            {
+                Id = Guid.NewGuid(),
+                Name = "Destination",
+                Required = false,
+                Tooltip = "Where to go",
+                LocationFieldType = LocationFieldType.Destination
+            };
 
             DesignFields = new List<Field> { designTextBoxSmallField, designTextBoxLargeField, designTimeField, designNumberField, designCurrencyField, designPercentageField, 
-                designCheckBoxField, designComboBoxField, designCheckListField}; //, designLocationField};
+                designCheckBoxField, designComboBoxField, designCheckListField, designLocationField};
         }
     }
 }
