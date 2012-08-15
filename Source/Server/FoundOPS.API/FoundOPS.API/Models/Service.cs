@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace FoundOPS.API.Models
@@ -13,6 +14,8 @@ namespace FoundOPS.API.Models
 
         //Associations
         public Guid ClientId { get; set; }
+        [ReadOnly(true)]
+        public Client Client { get; set; }
 
         public List<Field> Fields { get; set; }
 
@@ -38,6 +41,7 @@ namespace FoundOPS.API.Models
                 Name = serviceModel.ServiceTemplate.Name,
                 ServiceDate = serviceModel.ServiceDate,
                 ClientId = serviceModel.ClientId,
+                Client = Client.ConvertModel(serviceModel.Client),
                 ServiceProviderId = serviceModel.ServiceProviderId,
                 RecurringServiceId = serviceModel.RecurringServiceId
             };

@@ -229,6 +229,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\AuthController.cs" />
+    <Compile Include="Api\ClientsController.cs" />
     <Compile Include="Api\ErrorController.cs" />
     <Compile Include="Api\TaskStatusesController.cs" />
     <Compile Include="Controllers\HelperController.cs" />
@@ -237,6 +238,7 @@
     <Compile Include="Api\ToolsController.cs" />
     <Compile Include="Api\RoutesController.cs" />
     <Compile Include="Api\TrackPointController.cs" />
+    <Compile Include="CoreDomainContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
