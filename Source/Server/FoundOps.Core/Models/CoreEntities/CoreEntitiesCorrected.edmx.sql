@@ -3331,7 +3331,7 @@ GO
 
 USE [Core]
 GO
-/****** Object:  StoredProcedure [dbo].[GetServiceHolders]    Script Date: 7/3/2012 9:36:44 AM ******/
+/****** Object:  StoredProcedure [dbo].[GetServiceHolders]    Script Date: 8/10/2012 12:43:43 PM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3343,7 +3343,8 @@ CREATE PROCEDURE [dbo].[GetServiceHolders]
 	@clientIdContext UNIQUEIDENTIFIER, 
 	@recurringServiceIdContext UNIQUEIDENTIFIER, 
 	@firstDate DATE, 
-	@lastDate DATE
+	@lastDate DATE,
+	@serviceTypeContext NVARCHAR(MAX)
 	)
 AS
 BEGIN
@@ -3695,11 +3696,18 @@ BEGIN	--Combine the RecurringServices table with the ExistingServices table, rem
 	WHERE ServiceId IS NULL  
 END
 
-SELECT * from @CombinedNextServices
+IF @serviceTypeContext IS NOT NULL
+	BEGIN
+	SELECT * from @CombinedNextServices
+	WHERE ServiceName =  @serviceTypeContext
+	END
+ELSE
+	BEGIN
+	SELECT * from @CombinedNextServices
+	END
+
 RETURN
-
 END
-
 
 GO
 
@@ -3728,7 +3736,8 @@ CREATE PROCEDURE GetServiceHoldersWithFields
 	  @clientIdContext UNIQUEIDENTIFIER ,
 	  @recurringServiceIdContext UNIQUEIDENTIFIER ,
 	  @firstDate DATE ,
-	  @lastDate DATE
+	  @lastDate DATE ,
+	  @serviceTypeContext NVARCHAR(MAX)
 	)
 AS 
 	BEGIN
@@ -3749,7 +3758,8 @@ AS
 		INSERT	INTO #ServiceHolders (RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName)
 				EXEC [dbo].[GetServiceHolders] @serviceProviderIdContext,
 					@clientIdContext, @recurringServiceIdContext, @firstDate,
-					@lastDate
+					@lastDate, @serviceTypeContext
+		
 	
 		DECLARE @ServiceTemplateIds TABLE 
 		(
@@ -3907,11 +3917,12 @@ AS
 			
 			--Concatinates all Options that were checked as follows: op1, op2, op3,
 			UPDATE #OptionsFields
-			SET Value = (SELECT Name + ', ' AS 'data()'
+			SET Value = (SELECT Name + ', ' AS 'data()' 
 			FROM @CheckedOptions 
 			WHERE OptionsFieldId = [#OptionsFields].Id
+			ORDER BY Name
 			FOR XML PATH(''))
-
+			
 			--Removes the extra comma inserted at the end of the Value string because of concatination
 			UPDATE #OptionsFields
 			SET Value = LEFT(Value, LEN(Value) -1)

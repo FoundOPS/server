@@ -100,13 +100,11 @@ namespace FoundOPS.API.Api
         /// <param name="recurringServiceContext">The Id of the recurring service to filter by</param>
         /// <param name="startDate">The start date (in the user's time zone)</param>
         /// <param name="endDate">The end date (in the user's time zone)</param>
-        /// <param name="serviceType">The service type Id to filter by</param>
+        /// <param name="serviceType">The service type to filter by</param>
         /// <returns>A queryable of dictionaries that resemble record type javascript objects when serialized</returns>
         [AcceptVerbs("GET", "POST")]
-        public HttpResponseMessage GetServicesHoldersWithFields(Guid roleId, Guid? clientContext,
-                                                                                   Guid? recurringServiceContext,
-                                                                                   DateTime startDate, DateTime endDate,
-                                                                                   Guid serviceType)
+        public HttpResponseMessage GetServicesHoldersWithFields(Guid roleId, string serviceType, Guid? clientContext,
+            Guid? recurringServiceContext, DateTime startDate, DateTime endDate)
         {
             var currentBusinessAccount = _coreEntitiesContainer.Owner(roleId).FirstOrDefault();
             if (currentBusinessAccount == null)
@@ -116,6 +114,9 @@ namespace FoundOPS.API.Api
 
             var serviceProviderIdContext = command.Parameters.Add("@serviceProviderIdContext", SqlDbType.UniqueIdentifier);
             serviceProviderIdContext.Value = currentBusinessAccount.Id;
+
+            var serviceTypeContext = command.Parameters.Add("@serviceTypeContext", SqlDbType.NVarChar);
+            serviceTypeContext.Value = serviceType;
 
             var clientIdContext = command.Parameters.Add("@clientIdContext", SqlDbType.UniqueIdentifier);
             if (clientContext.HasValue)
@@ -128,6 +129,7 @@ namespace FoundOPS.API.Api
                 recurringServiceIdContext.Value = recurringServiceContext.Value;
             else
                 recurringServiceIdContext.Value = DBNull.Value;
+
 
             var firstDate = command.Parameters.Add("@firstDate", SqlDbType.Date);
             firstDate.Value = startDate;
