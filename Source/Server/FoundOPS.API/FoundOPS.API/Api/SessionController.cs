@@ -1,4 +1,4 @@
-﻿using FoundOPS.API.Models;
+using FoundOPS.API.Models;
 using FoundOps.Common.Tools;
 using FoundOps.Core.Models.Authentication;
 using FoundOps.Core.Models.Azure;
