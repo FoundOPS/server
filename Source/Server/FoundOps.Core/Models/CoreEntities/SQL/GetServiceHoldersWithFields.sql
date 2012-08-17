@@ -142,7 +142,6 @@ AS
 		END   
 	
 		BEGIN --Insert into all Fields Tables
-
 			INSERT INTO	#DateTimeFields (Earliest, Latest, TypeInt, Value, Id)
 			SELECT * FROM dbo.Fields_DateTimeField
 			WHERE Id IN 
@@ -273,6 +272,8 @@ AS
 			DECLARE @FieldType NVARCHAR(MAX)
 			DECLARE @cmd nvarchar(MAX)
 
+			DECLARE @dateTimeType INT
+
 			--DateTime Fields
 			SET @RowCount = (SELECT COUNT(*) FROM #DateTimeFields)
 			IF @RowCount > 0
@@ -281,8 +282,25 @@ AS
 				BEGIN
 				SET @FieldType = (SELECT Max(FieldType) FROM #DateTimeFields)
 
-				SET @cmd = 'ALTER TABLE #ServiceHolders ADD [' + @FieldType + '] DATETIME'
-				EXEC(@cmd)
+				SET @dateTimeType = (SELECT TOP 1 TypeInt FROM #DateTimeFields WHERE @FieldType = @FieldType)
+
+				IF @dateTimeType = 0
+				BEGIN
+					SET @cmd = 'ALTER TABLE #ServiceHolders ADD [' + @FieldType + '] DATETIME'
+					EXEC(@cmd)
+				END
+
+				IF @dateTimeType = 1
+				BEGIN
+					SET @cmd = 'ALTER TABLE #ServiceHolders ADD [' + @FieldType + '] TIME'
+					EXEC(@cmd)
+				END
+  
+				IF @dateTimeType = 2
+				BEGIN
+					SET @cmd = 'ALTER TABLE #ServiceHolders ADD [' + @FieldType + '] DATE'
+					EXEC(@cmd)
+				END              
 
 				SET @cmd = 
 				'UPDATE #ServiceHolders
@@ -330,6 +348,11 @@ AS
 			END
 		      
 			--Location Fields
+			DECLARE @addressLineOne NVARCHAR(Max)
+			DECLARE @addressLineTwo NVARCHAR(Max)
+			DECLARE @space NVARCHAR(10)
+			SET @space = ' '
+
 			SET @RowCount = (SELECT COUNT(*) FROM #LocationFields)
 			IF @RowCount > 0
 			BEGIN
@@ -342,7 +365,7 @@ AS
 
 				SET @cmd = 
 				'UPDATE #ServiceHolders
-				SET [' + @FieldType + '] = ( SELECT Name FROM dbo.Locations WHERE Id =
+				SET [' + @FieldType + '] = ( SELECT AddressLineOne + '' '' + AddressLineTwo FROM dbo.Locations WHERE Id =
 				(SELECT t1.LocationId
 				FROM [#LocationFields] t1
 				WHERE ([#ServiceHolders].ServiceId = t1.ServiceTemplateId OR ([#ServiceHolders].RecurringServiceId = t1.ServiceTemplateId AND [#ServiceHolders].ServiceId IS NULL))
