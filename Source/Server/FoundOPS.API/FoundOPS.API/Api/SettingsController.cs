@@ -65,7 +65,7 @@ namespace FoundOPS.API.Api
         #region Session
 
         [System.Web.Http.AcceptVerbs("GET", "POST")]
-        public JObject GetSession()
+        public JObject GetSession(bool isMobile = false)
         {
             var user = _coreEntitiesContainer.CurrentUserAccount().Include(ua => ua.RoleMembership)
                 .Include("RoleMembership.Blocks").Include("RoleMembership.OwnerBusinessAccount").First();
@@ -91,7 +91,15 @@ namespace FoundOPS.API.Api
             dynamic config = new JObject();
             config.name = user.FirstName + " " + user.LastName;
             config.settingsUrl = "#view/personalSettings.html";
-            config.logOutUrl = "../Account/LogOut";
+            if (isMobile)
+            {
+                config.logOutUrl = "../Account/LogOut";
+            }
+            else
+            {
+                config.logOutUrl = "#view/logout.html";
+            }
+
             config.avatarUrl = user.PartyImage != null
                                    ? partyImageUrls[user.PartyImage.Id]
                                    : "img/emptyPerson.png";

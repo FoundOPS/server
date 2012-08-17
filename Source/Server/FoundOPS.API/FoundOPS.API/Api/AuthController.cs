@@ -1,7 +1,7 @@
-﻿using System;
+﻿using FoundOps.Core.Models.Authentication;
+using System;
 using System.Net;
 using System.Net.Http;
-using FoundOps.Core.Models.Authentication;
 using System.Web.Http;
 
 namespace FoundOPS.API.Api
