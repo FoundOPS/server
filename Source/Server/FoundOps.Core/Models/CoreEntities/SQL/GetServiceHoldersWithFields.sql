@@ -17,7 +17,7 @@ GO
 -- Create date: 6/28/2012
 -- Description:	
 -- =============================================
-CREATE PROCEDURE GetServiceHoldersWithFields
+ALTER PROCEDURE GetServiceHoldersWithFields
 	(
 	  @serviceProviderIdContext UNIQUEIDENTIFIER ,
 	  @clientIdContext UNIQUEIDENTIFIER ,
@@ -266,6 +266,15 @@ AS
 			UPDATE #TextBoxFields
 			SET FieldType = Replace(FieldName, ' ', '_')
 		END
+  
+		BEGIN --Add a static RegionName Column
+			ALTER TABLE #ServiceHolders ADD RegionName NVARCHAR(MAX)
+
+			UPDATE #ServiceHolders
+			SET RegionName = (SELECT Name FROM dbo.Regions WHERE Id = (SELECT RegionId FROM dbo.Locations WHERE Id = (SELECT t1.LocationId
+				FROM [#LocationFields] t1
+				WHERE [#ServiceHolders].ServiceId = t1.ServiceTemplateId OR ([#ServiceHolders].RecurringServiceId = t1.ServiceTemplateId AND [#ServiceHolders].ServiceId IS NULL))))
+		END      
 
 		BEGIN --Add fields to the #ServiceHolders table in their own columns
 			DECLARE @RowCount INT
