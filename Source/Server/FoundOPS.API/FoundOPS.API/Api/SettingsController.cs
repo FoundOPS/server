@@ -1,4 +1,4 @@
-﻿using FoundOPS.API.Models;
+using FoundOPS.API.Models;
 using FoundOPS.API.Tools;
 using FoundOps.Common.NET;
 using FoundOps.Core.Models;
