@@ -15,7 +15,7 @@ namespace FoundOPS.API.Models
         /// </summary>
         public Guid RoleId { get; set; }
 
-        public List<Column> Columns { get; private set; }
+        public List<Column> Columns { get; set; }
 
         public ColumnConfiguration()
         {
