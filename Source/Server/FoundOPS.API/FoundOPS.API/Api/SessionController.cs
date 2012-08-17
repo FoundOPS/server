@@ -74,56 +74,11 @@ namespace FoundOPS.API.Api
         #region User Information
 
         /// <summary>
-        /// Get the column configurations of a user for a role.
+        /// Gets the session information for the user
         /// </summary>
-        /// <param name="roleId">The role</param>
-        public IEnumerable<ColumnConfiguration> GetColumnConfigurations(Guid roleId)
-        {
-            var userAccount = _coreEntitiesContainer.CurrentUserAccount().First();
-
-            List<ColumnConfiguration> columnConfigurations;
-
-            try
-            {
-                columnConfigurations = SerializationTools.Deserialize<List<ColumnConfiguration>>(userAccount.ServicesConfiguration);
-            }
-            catch
-            {
-                columnConfigurations = new List<ColumnConfiguration>();
-                userAccount.ServicesConfiguration = SerializationTools.Serialize(columnConfigurations);
-                _coreEntitiesContainer.SaveChanges();
-            }
-
-            return columnConfigurations.Where(c => c.RoleId == roleId);
-        }
-
-        /// <summary>
-        /// Update the column configurations for a user for a role.
-        /// </summary>
-        /// <param name="roleId">The role</param>
-        /// <param name="columnConfigurations">The new column configurations</param>
-        public HttpResponseMessage UpdateColumnConfigurations(Guid roleId, List<ColumnConfiguration> columnConfigurations)
-        {
-            var userAccount = _coreEntitiesContainer.CurrentUserAccount().First();
-
-            var configurations = new List<ColumnConfiguration>();
-            if (userAccount.ColumnConfigurations != null)
-                configurations = SerializationTools.Deserialize<List<ColumnConfiguration>>(userAccount.ColumnConfigurations);
-
-            //remove old configurations for this role
-            configurations.RemoveAll(c => c.RoleId == roleId);
-
-            //add the new ones
-            configurations.AddRange(columnConfigurations);
-
-            userAccount.ColumnConfigurations = SerializationTools.Serialize(configurations);
-            _coreEntitiesContainer.SaveChanges();
-
-            return Request.CreateResponse(HttpStatusCode.Accepted);
-        }
-
+        /// <param name="isMobile">Whether or not the user is on a mobile device. This affects urls.</param>
         [AcceptVerbs("GET", "POST")]
-        public JObject GetSession(bool isMobile = false)
+        public JObject Get(bool isMobile = false)
         {
             var user = _coreEntitiesContainer.CurrentUserAccount().Include(ua => ua.RoleMembership)
                 .Include("RoleMembership.Blocks").Include("RoleMembership.OwnerBusinessAccount").First();
@@ -210,6 +165,55 @@ namespace FoundOPS.API.Api
             config.sections = new JArray(jSections);
 
             return config;
+        }
+
+        /// <summary>
+        /// Get the column configurations of a user for a role.
+        /// </summary>
+        /// <param name="roleId">The role</param>
+        public IEnumerable<ColumnConfiguration> GetColumnConfigurations(Guid roleId)
+        {
+            var userAccount = _coreEntitiesContainer.CurrentUserAccount().First();
+
+            List<ColumnConfiguration> columnConfigurations;
+
+            try
+            {
+                columnConfigurations = SerializationTools.Deserialize<List<ColumnConfiguration>>(userAccount.ColumnConfigurations);
+            }
+            catch
+            {
+                columnConfigurations = new List<ColumnConfiguration>();
+                userAccount.ColumnConfigurations = SerializationTools.Serialize(columnConfigurations);
+                _coreEntitiesContainer.SaveChanges();
+            }
+
+            return columnConfigurations.Where(c => c.RoleId == roleId);
+        }
+
+        /// <summary>
+        /// Update the column configurations for a user for a role.
+        /// </summary>
+        /// <param name="roleId">The role</param>
+        /// <param name="columnConfigurations">The new column configurations</param>
+        public HttpResponseMessage UpdateColumnConfigurations(Guid roleId, List<ColumnConfiguration> columnConfigurations)
+        {
+            var userAccount = _coreEntitiesContainer.CurrentUserAccount().First();
+
+            var configurations = new List<ColumnConfiguration>();
+            if (userAccount.ColumnConfigurations != null)
+                configurations = SerializationTools.Deserialize<List<ColumnConfiguration>>(userAccount.ColumnConfigurations);
+
+            //remove old configurations for this role
+            configurations.RemoveAll(c => c.RoleId == roleId);
+
+            //add the new ones
+            configurations.AddRange(columnConfigurations);
+
+            userAccount.ColumnConfigurations = SerializationTools.Serialize(configurations);
+            _coreEntitiesContainer.SaveChanges();
+
+            return Request.CreateResponse(HttpStatusCode.Accepted);
         }
 
         #endregion

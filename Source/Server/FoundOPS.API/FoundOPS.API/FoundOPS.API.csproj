@@ -228,10 +228,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Api\AuthController.cs" />
     <Compile Include="Api\ClientsController.cs" />
     <Compile Include="Api\LocationsController.cs" />
     <Compile Include="Api\ErrorController.cs" />
+    <Compile Include="Api\SessionController.cs" />
     <Compile Include="Api\TaskStatusesController.cs" />
     <Compile Include="Controllers\HelperController.cs" />
     <Compile Include="Api\SettingsController.cs" />
@@ -244,6 +244,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Client.cs" />
+    <Compile Include="Models\ColumnConfiguration.cs" />
     <Compile Include="Models\ContactInfo.cs" />
     <Compile Include="Models\BusinessSettings.cs" />
     <Compile Include="Models\Column.cs" />
