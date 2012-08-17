@@ -731,7 +731,6 @@ GO
 
 -- Creating table 'Parties_BusinessAccount'
 CREATE TABLE [dbo].[Parties_BusinessAccount] (
-    [ServicesConfiguration] nvarchar(max)  NULL,
     [QuickBooksEnabled] bit  NOT NULL,
     [QuickBooksAccessToken] nvarchar(max)  NULL,
     [QuickBooksAccessTokenSecret] nvarchar(max)  NULL,
@@ -745,6 +744,7 @@ GO
 
 -- Creating table 'Parties_UserAccount'
 CREATE TABLE [dbo].[Parties_UserAccount] (
+    [ColumnConfigurations] nvarchar(max)  NULL,
     [PasswordHash] nvarchar(max)  NULL,
     [EmailAddress] nvarchar(max)  NOT NULL,
     [LastActivity] datetime  NULL,

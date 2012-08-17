@@ -1684,30 +1684,6 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.String _Name;
         partial void OnNameChanging(global::System.String value);
         partial void OnNameChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String ServicesConfiguration
-        {
-            get
-            {
-                return _ServicesConfiguration;
-            }
-            set
-            {
-                OnServicesConfigurationChanging(value);
-                ReportPropertyChanging("ServicesConfiguration");
-                _ServicesConfiguration = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("ServicesConfiguration");
-                OnServicesConfigurationChanged();
-            }
-        }
-        private global::System.String _ServicesConfiguration;
-        partial void OnServicesConfigurationChanging(global::System.String value);
-        partial void OnServicesConfigurationChanged();
 
         #endregion
 
@@ -10914,6 +10890,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.String _TimeZone;
         partial void OnTimeZoneChanging(global::System.String value);
         partial void OnTimeZoneChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String ColumnConfigurations
+        {
+            get
+            {
+                return _ColumnConfigurations;
+            }
+            set
+            {
+                OnColumnConfigurationsChanging(value);
+                ReportPropertyChanging("ColumnConfigurations");
+                _ColumnConfigurations = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("ColumnConfigurations");
+                OnColumnConfigurationsChanged();
+            }
+        }
+        private global::System.String _ColumnConfigurations;
+        partial void OnColumnConfigurationsChanging(global::System.String value);
+        partial void OnColumnConfigurationsChanged();
 
         #endregion
 

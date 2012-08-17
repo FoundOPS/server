@@ -12,7 +12,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using Column = FoundOPS.API.Models.Column;
 using Service = FoundOPS.API.Models.Service;
 using ServiceType = FoundOPS.API.Models.ServiceType;
 using DateTimeField = FoundOps.Core.Models.CoreEntities.DateTimeField;
@@ -46,50 +45,6 @@ namespace FoundOPS.API.Api
                 .Where(st => st.LevelInt == (int)ServiceTemplateLevel.ServiceProviderDefined);
 
             return serviceTemplates.Select(ServiceType.ConvertModel).AsQueryable().OrderBy(st => st.Name);
-        }
-
-        /// <summary>
-        /// A dictionary of service columns. The key is the ServiceType's Id
-        /// </summary>
-        /// <param name="roleId">The role</param>
-        public Dictionary<Guid, Column[]> GetServiceColumns(Guid roleId)
-        {
-            var businessAccount = _coreEntitiesContainer.Owner(roleId).First();
-
-            Dictionary<Guid, Column[]> servicesConfiguration;
-
-            try
-            {
-                servicesConfiguration = SerializationTools.Deserialize<Dictionary<Guid, Column[]>>(businessAccount.ServicesConfiguration);
-            }
-            catch
-            {
-                servicesConfiguration = new Dictionary<Guid, Column[]>();
-                businessAccount.ServicesConfiguration = SerializationTools.Serialize(servicesConfiguration);
-                _coreEntitiesContainer.SaveChanges();
-            }
-
-            return servicesConfiguration;
-        }
-
-
-        public HttpResponseMessage UpdateServiceColumns(Guid roleId, Guid serviceId, Column[] columns)
-        {
-            var businessAccount = _coreEntitiesContainer.Owner(roleId).First();
-
-            var servicesConfiguration = new Dictionary<Guid, Column[]>();
-            if (businessAccount.ServicesConfiguration != null)
-                servicesConfiguration = SerializationTools.Deserialize<Dictionary<Guid, Column[]>>(businessAccount.ServicesConfiguration);
-
-            if (servicesConfiguration.ContainsKey(serviceId))
-                servicesConfiguration[serviceId] = columns;
-            else
-                servicesConfiguration.Add(serviceId, columns);
-
-            businessAccount.ServicesConfiguration = SerializationTools.Serialize(servicesConfiguration);
-            _coreEntitiesContainer.SaveChanges();
-
-            return Request.CreateResponse(HttpStatusCode.Accepted);
         }
 
         /// <summary>
@@ -129,7 +84,6 @@ namespace FoundOPS.API.Api
                 recurringServiceIdContext.Value = recurringServiceContext.Value;
             else
                 recurringServiceIdContext.Value = DBNull.Value;
-
 
             var firstDate = command.Parameters.Add("@firstDate", SqlDbType.Date);
             firstDate.Value = startDate;

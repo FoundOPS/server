@@ -600,7 +600,6 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="ServicesConfiguration" Type="nvarchar(max)" />
           <Property Name="QuickBooksEnabled" Type="bit" Nullable="false" />
           <Property Name="QuickBooksAccessToken" Type="nvarchar(max)" />
           <Property Name="QuickBooksAccessTokenSecret" Type="nvarchar(max)" />
@@ -614,6 +613,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
+          <Property Name="ColumnConfigurations" Type="nvarchar(max)" />
           <Property Name="PasswordHash" Type="nvarchar(max)" />
           <Property Name="EmailAddress" Type="nvarchar(max)" Nullable="false" />
           <Property Name="LastActivity" Type="datetime" />
@@ -2519,7 +2519,6 @@
           <Property Type="String" Name="Name" Nullable="true" Unicode="true" MaxLength="Max" FixedLength="false" />
           <NavigationProperty Name="OwnedRoles" Relationship="CoreEntities.RoleBusinessAccount" FromRole="BusinessAccount" ToRole="Role" />
           <NavigationProperty Name="TaskStatuses" Relationship="CoreEntities.TaskStatusBusinessAccount" FromRole="BusinessAccount" ToRole="TaskStatus" />
-          <Property Type="String" Name="ServicesConfiguration" Nullable="true" />
         </EntityType>
         <Association Name="BusinessAccountService">
           <End Type="CoreEntities.BusinessAccount" Role="BusinessAccount" Multiplicity="1" />
@@ -2570,6 +2569,7 @@
           <Property Type="Int16" Name="GenderInt" Nullable="true" />
           <Property Type="DateTime" Name="DateOfBirth" Nullable="true" Precision="3" />
           <Property Type="String" Name="TimeZone" MaxLength="Max" FixedLength="false" Nullable="true" Unicode="true" />
+          <Property Type="String" Name="ColumnConfigurations" Nullable="true" />
         </EntityType>
         <Association Name="UserAccountUserAccountLogEntry">
           <End Type="CoreEntities.UserAccount" Role="UserAccount" Multiplicity="1" />
@@ -3338,7 +3338,6 @@
           <ScalarProperty Name="QuickBooksSessionXml" ColumnName="QuickBooksSessionXml" />
           <ScalarProperty Name="MaxRoutes" ColumnName="MaxRoutes" />
           <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="ServicesConfiguration" ColumnName="ServicesConfiguration" />
         </MappingFragment>
       </EntityTypeMapping>
       <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.UserAccount)">
@@ -3354,6 +3353,7 @@
           <ScalarProperty Name="GenderInt" ColumnName="GenderInt" />
           <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
           <ScalarProperty Name="TimeZone" ColumnName="TimeZone" />
+          <ScalarProperty Name="ColumnConfigurations" ColumnName="ColumnConfigurations" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
