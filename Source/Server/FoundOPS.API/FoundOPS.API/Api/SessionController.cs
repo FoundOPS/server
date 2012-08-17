@@ -207,6 +207,11 @@ namespace FoundOPS.API.Api
             //remove old configurations for this role
             configurations.RemoveAll(c => c.RoleId == roleId);
 
+            foreach(var config in columnConfigurations)
+            {
+                config.RoleId = roleId;
+            }
+
             //add the new ones
             configurations.AddRange(columnConfigurations);
 
