@@ -17,7 +17,7 @@ GO
 -- Create date: 6/28/2012
 -- Description:	
 -- =============================================
-ALTER PROCEDURE GetServiceHoldersWithFields
+CREATE PROCEDURE GetServiceHoldersWithFields
 	(
 	  @serviceProviderIdContext UNIQUEIDENTIFIER ,
 	  @clientIdContext UNIQUEIDENTIFIER ,
