@@ -422,7 +422,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             repeat.StartDate = repeat.StartDate.Date;
 
             if (repeat.EndDate != null)
-                repeat.StartDate = repeat.EndDate.Value.Date;
+                repeat.EndDate = repeat.EndDate.Value.Date;
 
             if ((repeat.EntityState != EntityState.Detached))
             {
