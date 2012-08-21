@@ -1,6 +1,4 @@
-﻿using FoundOPS.API.Models;
-using FoundOps.Common.NET;
-using FoundOps.Common.Tools;
+﻿using FoundOps.Common.NET;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
 using System;
@@ -94,13 +92,42 @@ namespace FoundOPS.API.Api
             var connectionString = ConfigWrapper.ConnectionString("CoreConnectionString");
             var result = DataReaderTools.GetDynamicSqlData(connectionString, command);
 
-            var list = result.Item2.OrderBy(d => (DateTime)d["OccurDate"]).ToList();
+            var list = result.OrderBy(d => (DateTime)d["OccurDate"]).ToList();
 
             if (list.Any())
             {
                 //Insert the first row to be a dictionary of the column's types
-                //TODO: Load the service type & fields. Then for DateTime fields with Date or Time only, change their type to Date and Time
-                var columnTypes = result.Item1.ToDictionary(kvp => kvp.Key, kvp => (Object)kvp.Value.ToString());
+
+                //load the service template with fields
+                var serviceTemplateWithFields = (from serviceTemplate in _coreEntitiesContainer.ServiceTemplates.Where(st => st.Name == serviceType && st.LevelInt == (int)ServiceTemplateLevel.ServiceProviderDefined)
+                                                 from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
+                                                 from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty()
+                                                 select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations }).ToArray()
+                                                 .Select(a => a.serviceTemplate).First();
+
+                var columnTypes = new Dictionary<string, object>();
+                var firstServiceHolder = list.First();
+                foreach (var key in firstServiceHolder.Keys)
+                {
+                    //certain values are not fields, hardcode those
+                    if (key == "OccurDate")
+                    {
+                        columnTypes.Add(key, "date");
+                        continue;
+                    }
+                    if (key == "RecurringServiceId" || key == "ServiceId")
+                    {
+                        columnTypes.Add(key, "guid");
+                        continue;
+                    }
+
+                    //find the Field Type
+                    var field = serviceTemplateWithFields.Fields.FirstOrDefault(f => f.Name == key);
+                    var type = Models.Field.GetJavascriptFormat(field);
+
+                    columnTypes.Add(key, type);
+                }
+
                 list.Insert(0, columnTypes);
             }
 

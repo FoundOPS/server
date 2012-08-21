@@ -17,7 +17,7 @@ GO
 -- Create date: 6/28/2012
 -- Description:	
 -- =============================================
-ALTER PROCEDURE GetServiceHoldersWithFields
+CREATE PROCEDURE GetServiceHoldersWithFields
 	(
 	  @serviceProviderIdContext UNIQUEIDENTIFIER ,
 	  @clientIdContext UNIQUEIDENTIFIER ,
@@ -281,8 +281,6 @@ AS
 			DECLARE @FieldType NVARCHAR(MAX)
 			DECLARE @cmd nvarchar(MAX)
 
-			DECLARE @dateTimeType INT
-
 			--DateTime Fields
 			SET @RowCount = (SELECT COUNT(*) FROM #DateTimeFields)
 			IF @RowCount > 0
@@ -291,25 +289,8 @@ AS
 				BEGIN
 				SET @FieldType = (SELECT Max(FieldType) FROM #DateTimeFields)
 
-				SET @dateTimeType = (SELECT TOP 1 TypeInt FROM #DateTimeFields WHERE @FieldType = @FieldType)
-
-				IF @dateTimeType = 0
-				BEGIN
-					SET @cmd = 'ALTER TABLE #ServiceHolders ADD [' + @FieldType + '] DATETIME'
-					EXEC(@cmd)
-				END
-
-				IF @dateTimeType = 1
-				BEGIN
-					SET @cmd = 'ALTER TABLE #ServiceHolders ADD [' + @FieldType + '] TIME'
-					EXEC(@cmd)
-				END
-  
-				IF @dateTimeType = 2
-				BEGIN
-					SET @cmd = 'ALTER TABLE #ServiceHolders ADD [' + @FieldType + '] DATE'
-					EXEC(@cmd)
-				END              
+				SET @cmd = 'ALTER TABLE #ServiceHolders ADD [' + @FieldType + '] DATETIME'
+				EXEC(@cmd) 
 
 				SET @cmd = 
 				'UPDATE #ServiceHolders

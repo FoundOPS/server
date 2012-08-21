@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using FoundOps.Core.Models.CoreEntities;
 
 namespace FoundOPS.API.Models
 {
@@ -34,25 +35,21 @@ namespace FoundOPS.API.Models
 
             Field field;
 
-            //If the field is a TextBoxField, convert the field to an API TextBoxField and return
             if (textBoxField != null)
                 field = TextBoxField.ConvertTextBoxFieldModel(textBoxField);
 
-            //If the field is a LocationField, convert the field to an API LocationField and return
             else if (locationField != null)
                 field = LocationField.ConvertLocationFieldModel(locationField);
 
-            //If the field is a NumericField, convert the field to an API NumericField and return
             else if (numericField != null)
-                field= NumericField.ConvertNumericFieldModel(numericField);
+                field = NumericField.ConvertNumericFieldModel(numericField);
 
             //If the field is a OptionsField, convert the field to an API OptionsField and it's Options to API Options, then return
             else if (optionsField != null)
-                field= OptionsField.ConvertOptionsFieldModel(optionsField);
+                field = OptionsField.ConvertOptionsFieldModel(optionsField);
 
-            //If the field is a DateTimeField, convert the field to an API DateTimeField and return
             else if (dateTimeField != null)
-                field= DateTimeField.ConvertDateTimeFieldModel(dateTimeField);
+                field = DateTimeField.ConvertDateTimeFieldModel(dateTimeField);
 
             else
                 throw new Exception("Field does not exist");
@@ -98,6 +95,35 @@ namespace FoundOPS.API.Models
                 return DateTimeField.ConvertBackDateTimeField(dateTimeField);
 
             throw new Exception("Field does not exist");
+        }
+
+        /// <summary>
+        /// Gets the type recognized by the javascript application that the field's value is.
+        /// </summary>
+        /// <param name="field"></param>
+        /// <returns></returns>
+        public static string GetJavascriptFormat(FoundOps.Core.Models.CoreEntities.Field field)
+        {
+            var numericField = field as FoundOps.Core.Models.CoreEntities.NumericField;
+            var dateTimeField = field as FoundOps.Core.Models.CoreEntities.DateTimeField;
+
+            if (numericField != null)
+                return "number";
+
+            if (dateTimeField != null)
+            {
+                switch (dateTimeField.DateTimeType)
+                {
+                    case DateTimeType.DateOnly:
+                        return "date";
+                    case DateTimeType.TimeOnly:
+                        return "time";
+                    case DateTimeType.DateTime:
+                        return "dateTime";
+                }
+            }
+
+            return "string";
         }
     }
 }

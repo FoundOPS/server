@@ -3855,7 +3855,6 @@ AS
 		END   
 	
 		BEGIN --Insert into all Fields Tables
-
 			INSERT INTO	#DateTimeFields (Earliest, Latest, TypeInt, Value, Id)
 			SELECT * FROM dbo.Fields_DateTimeField
 			WHERE Id IN 
@@ -3980,6 +3979,15 @@ AS
 			UPDATE #TextBoxFields
 			SET FieldType = Replace(FieldName, ' ', '_')
 		END
+  
+		BEGIN --Add a static RegionName Column
+			ALTER TABLE #ServiceHolders ADD RegionName NVARCHAR(MAX)
+
+			UPDATE #ServiceHolders
+			SET RegionName = (SELECT Name FROM dbo.Regions WHERE Id = (SELECT RegionId FROM dbo.Locations WHERE Id = (SELECT t1.LocationId
+				FROM [#LocationFields] t1
+				WHERE [#ServiceHolders].ServiceId = t1.ServiceTemplateId OR ([#ServiceHolders].RecurringServiceId = t1.ServiceTemplateId AND [#ServiceHolders].ServiceId IS NULL))))
+		END      
 
 		BEGIN --Add fields to the #ServiceHolders table in their own columns
 			DECLARE @RowCount INT
@@ -3995,7 +4003,7 @@ AS
 				SET @FieldType = (SELECT Max(FieldType) FROM #DateTimeFields)
 
 				SET @cmd = 'ALTER TABLE #ServiceHolders ADD [' + @FieldType + '] DATETIME'
-				EXEC(@cmd)
+				EXEC(@cmd) 
 
 				SET @cmd = 
 				'UPDATE #ServiceHolders
@@ -4043,6 +4051,11 @@ AS
 			END
 		      
 			--Location Fields
+			DECLARE @addressLineOne NVARCHAR(Max)
+			DECLARE @addressLineTwo NVARCHAR(Max)
+			DECLARE @space NVARCHAR(10)
+			SET @space = ' '
+
 			SET @RowCount = (SELECT COUNT(*) FROM #LocationFields)
 			IF @RowCount > 0
 			BEGIN
@@ -4055,7 +4068,7 @@ AS
 
 				SET @cmd = 
 				'UPDATE #ServiceHolders
-				SET [' + @FieldType + '] = ( SELECT Name FROM dbo.Locations WHERE Id =
+				SET [' + @FieldType + '] = ( SELECT AddressLineOne + '' '' + AddressLineTwo FROM dbo.Locations WHERE Id =
 				(SELECT t1.LocationId
 				FROM [#LocationFields] t1
 				WHERE ([#ServiceHolders].ServiceId = t1.ServiceTemplateId OR ([#ServiceHolders].RecurringServiceId = t1.ServiceTemplateId AND [#ServiceHolders].ServiceId IS NULL))

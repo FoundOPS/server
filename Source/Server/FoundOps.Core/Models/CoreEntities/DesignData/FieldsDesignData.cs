@@ -49,6 +49,18 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                  Value = nineAm.AddHours(1)
              };
 
+            var designDateField = new DateTimeField
+            {
+                Id = Guid.NewGuid(),
+                Name = "Scheduled",
+                Required = false,
+                Tooltip = "What time did you get to the location?",
+                Earliest = new DateTime(2010, 1, 1),
+                Latest = new DateTime(2013, 1, 1),
+                DateTimeType = DateTimeType.DateOnly,
+                Value = new DateTime(2012, 1, 1)
+            };
+
             var designNumberField = new NumericField
              {
                  Id = Guid.NewGuid(),
@@ -134,7 +146,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 LocationFieldType = LocationFieldType.Destination
             };
 
-            DesignFields = new List<Field> { designTextBoxSmallField, designTextBoxLargeField, designTimeField, designNumberField, designCurrencyField, designPercentageField, 
+            DesignFields = new List<Field> { designTextBoxSmallField, designTextBoxLargeField, designTimeField, designDateField, designNumberField, designCurrencyField, designPercentageField, 
                 designCheckBoxField, designComboBoxField, designCheckListField, designLocationField};
         }
     }
