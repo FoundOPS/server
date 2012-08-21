@@ -78,7 +78,7 @@ namespace FoundOPS.API.Api
         /// </summary>
         /// <param name="isMobile">Whether or not the user is on a mobile device. This affects urls.</param>
         [AcceptVerbs("GET", "POST")]
-        public JObject Get(bool isMobile = false)
+        public JObject Get(bool isMobile)
         {
             var user = _coreEntitiesContainer.CurrentUserAccount().Include(ua => ua.RoleMembership)
                 .Include("RoleMembership.Blocks").Include("RoleMembership.OwnerBusinessAccount").First();
@@ -106,11 +106,11 @@ namespace FoundOPS.API.Api
             config.settingsUrl = "#view/personalSettings.html";
             if (isMobile)
             {
-                config.logOutUrl = "../Account/LogOut";
+                config.logOutUrl = "#view/logout.html";                
             }
             else
             {
-                config.logOutUrl = "#view/logout.html";
+                config.logOutUrl = "../Account/LogOut";
             }
 
             config.avatarUrl = user.PartyImage != null
