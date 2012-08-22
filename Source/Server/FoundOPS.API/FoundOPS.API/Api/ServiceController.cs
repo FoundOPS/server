@@ -135,94 +135,78 @@ namespace FoundOPS.API.Api
         }
 
         /// <summary>
-        /// Gets the service and fields
+        /// Gets the service and fields.
+        /// Need to specify one of the following
+        /// a) the serviceId -> this will return the existing service and fields
+        /// b) the serviceDate and recurringServiceId -> this will generate a service based on the recurringServiceId
+        /// c) the serviceTemplateId -> this will generate a service based on the provider level service template
         /// </summary>
-        public HttpResponseMessage GetServiceDetails(Guid? serviceId, DateTime? serviceDate, Guid? recurringServiceId)
+        public HttpResponseMessage GetServiceDetails(Guid? serviceId, DateTime? serviceDate, Guid? recurringServiceId, Guid? serviceTemplateId)
         {
-            //A service's id and a recurring service's id are the same id's as its service template
-            var serviceTemplateIdToLoad = serviceId.HasValue ? serviceId.Value : recurringServiceId.Value;
+            Guid serviceTemplateIdToLoad;
+            FoundOps.Core.Models.CoreEntities.Service service = null;
+            Guid businessAccountId;
 
-            //Load the service templates and its details (fields)
-            var templatesWithDetails =
-                (from serviceTemplate in
-                     _coreEntitiesContainer.ServiceTemplates.Where(st => serviceTemplateIdToLoad == st.Id)
-                 from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
-                 from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty() //no reason to pass LocationField yet
-                 select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations }).ToArray();
+            //for generating a service
+            RecurringService recurringService = null;
 
-
-            //The set of services to convert then return
-            var modelServices = new List<FoundOps.Core.Models.CoreEntities.Service>();
-
-            //This is an ExistingService
+            //existing service
             if (serviceId.HasValue)
             {
-                var existingService =
-                    _coreEntitiesContainer.Services.Include(s => s.Client).First(s => s.Id == serviceId.Value);
-
-                //Check the current user has access to the business account
-                var businessAccount =
-                    _coreEntitiesContainer.BusinessAccount(existingService.ServiceProviderId).FirstOrDefault();
-                if (businessAccount == null)
-                    return Request.CreateResponse(HttpStatusCode.Unauthorized);
-
-                //Return the existing service
-                modelServices.Add(existingService);
+                serviceTemplateIdToLoad = serviceId.Value;
+                service = _coreEntitiesContainer.Services.Include(s => s.Client).First(s => s.Id == serviceId.Value);
+                businessAccountId = service.ServiceProviderId;
             }
-            //The service does not exist yet. Generate it from the recurring service, save it, return it
+            //generate it from the recurring service
+            else if (recurringServiceId.HasValue)
+            {
+                serviceTemplateIdToLoad = recurringServiceId.Value;
+                recurringService = _coreEntitiesContainer.RecurringServices.Include(rs => rs.Client).Include(rs => rs.ServiceTemplate)
+                    .First(rs => rs.Id == recurringServiceId.Value);
+                businessAccountId = recurringService.Client.BusinessAccountId.Value;
+            }
+            //generate it from the service provider service template
             else
             {
-                var recurringService = _coreEntitiesContainer.RecurringServices.Include(rs => rs.Client).Include(
-                    rs => rs.ServiceTemplate)
-                    .First(rs => rs.Id == recurringServiceId.Value);
-
-                //Check the current user has access to the business account
-                var businessAccount =
-                    _coreEntitiesContainer.BusinessAccount(recurringService.Client.BusinessAccountId.Value).
-                        FirstOrDefault();
-                if (businessAccount == null)
-                    return Request.CreateResponse(HttpStatusCode.Unauthorized);
-
-                //Generate the service from the recurring service
-                //no need to add it to the object context, because setting the association will automatically add it
-                var generatedService = GenerateServiceOnDate(serviceDate.Value, recurringService, businessAccount);
-                generatedService.ServiceTemplate =
-                    recurringService.ServiceTemplate.MakeChild(ServiceTemplateLevel.ServiceDefined);
-
-                //Return the generated service
-                modelServices.Add(generatedService);
+                serviceTemplateIdToLoad = serviceTemplateId.Value;
+                businessAccountId = _coreEntitiesContainer.ServiceTemplates.First(s => s.Id == serviceTemplateId.Value).OwnerServiceProviderId.Value;
             }
 
-            var apiServices = new List<Service>();
+            //check the current user has access to the business account
+            var businessAccount = _coreEntitiesContainer.BusinessAccount(businessAccountId, new[] { RoleType.Regular, RoleType.Administrator, RoleType.Mobile }).FirstOrDefault();
+            if (businessAccount == null)
+                return Request.CreateResponse(HttpStatusCode.Unauthorized);
 
-            //Convert the FoundOPS model Service to the API model Service
-            apiServices.AddRange(modelServices.Select(Service.ConvertModel));
+            //load the service templates and its details (fields)
+            var templateWithDetails = (from serviceTemplate in _coreEntitiesContainer.ServiceTemplates.Where(st => serviceTemplateIdToLoad == st.Id)
+                                       from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
+                                       from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty() //no reason to pass LocationField yet
+                                       select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations })
+                                       .ToArray().Select(a => a.serviceTemplate).First();
 
-            return Request.CreateResponse(HttpStatusCode.OK, apiServices.AsQueryable());
-        }
-
-        /// <summary>
-        /// Generates a Service based off this ServiceTemplate for the specified date.
-        /// NOTE: Make sure the fields are loaded.
-        /// </summary>
-        /// <param name="date">The date to generate a service for</param>
-        /// <param name="recurringService">The recurring service</param>
-        /// <param name="businessAccount">The business account</param>
-        private FoundOps.Core.Models.CoreEntities.Service GenerateServiceOnDate(DateTime date,
-                                                                                RecurringService recurringService,
-                                                                                BusinessAccount businessAccount)
-        {
-            var service = new FoundOps.Core.Models.CoreEntities.Service
+            //generate the service
+            if (!serviceId.HasValue)
+            {
+                service = new FoundOps.Core.Models.CoreEntities.Service
                 {
-                    ServiceDate = date,
-                    ClientId = recurringService.ClientId,
-                    Client = recurringService.Client,
-                    RecurringServiceParent = recurringService,
-                    ServiceProviderId = businessAccount.Id,
-                    ServiceProvider = businessAccount
+                    ServiceDate = serviceDate.Value,
+                    ServiceProviderId = businessAccountId
                 };
 
-            return service;
+                if (recurringService != null)
+                {
+                    service.RecurringServiceId = recurringService.Id;
+                    service.Client = recurringService.Client;
+                }
+
+                var template = templateWithDetails.MakeChild(ServiceTemplateLevel.ServiceDefined);
+                //TODO check if this is necessary
+                template.Id = service.Id;
+                service.ServiceTemplate = template;
+            }
+
+            var apiServices = new List<Service> { Service.ConvertModel(service) };
+            return Request.CreateResponse(HttpStatusCode.OK, apiServices.AsQueryable());
         }
 
         #endregion
@@ -238,55 +222,13 @@ namespace FoundOPS.API.Api
         {
             var existingService = _coreEntitiesContainer.Services.FirstOrDefault(s => s.Id == service.Id);
 
-            //The Service passed was generated on the Mobile device. Create a new FoundOPS Service and set appropriate field values
-            if (existingService == null)
+            //the service exists. load all field information  and update field values
+            if (existingService != null)
             {
-                var recurringService =
-                    _coreEntitiesContainer.RecurringServices.Include(rs => rs.Client).FirstOrDefault(
-                        rs => rs.Id == service.RecurringServiceId);
-                //Load recurring service template
-                var templatesWithDetails =
-                    (from serviceTemplate in
-                         _coreEntitiesContainer.ServiceTemplates.Where(st => recurringService.Id == st.Id)
-                     from options in
-                         serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
-                     //from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty() //LocationField not editable yet
-                     select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options }).ToArray
-                        (); //, locations };
-
-                var businessAccount =
-                    _coreEntitiesContainer.BusinessAccount(recurringService.Client.BusinessAccountId.Value).First();
-
-                var generatedService = GenerateServiceOnDate(service.ServiceDate, recurringService, businessAccount);
-                generatedService.ServiceTemplate = new ServiceTemplate
-                    {
-                        Id = service.Id,
-                        Name = recurringService.ServiceTemplate.Name,
-                        ParentServiceTemplate = recurringService.ServiceTemplate,
-                        ServiceTemplateLevel = ServiceTemplateLevel.ServiceDefined
-                    };
-
-                //Add all fields from the generated Service to the Service Template
-                foreach (var field in service.Fields)
-                {
-                    //Set the Service template for the field to the newly created Service Template
-                    field.ServiceTemplateId = generatedService.ServiceProviderId;
-
-                    //Add the field to the new Service Template
-                    generatedService.ServiceTemplate.Fields.Add(Models.Field.ConvertBack(field));
-                }
-            }
-            //The Service passed exists. Load all Field information update Field values
-            else
-            {
-                var templatesWithDetails =
-                    (from serviceTemplate in
-                         _coreEntitiesContainer.ServiceTemplates.Where(st => existingService.Id == st.Id)
-                     from options in
-                         serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
-                     //from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty() //LocationField not editable yet
-                     select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options }).ToArray
-                        (); //, locations };
+                (from serviceTemplate in _coreEntitiesContainer.ServiceTemplates.Where(st => existingService.Id == st.Id)
+                 from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
+                 from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty()
+                 select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations }).ToArray();
 
                 #region Update all Fields
 
@@ -339,6 +281,50 @@ namespace FoundOPS.API.Api
 
                 #endregion
             }
+            //the service was generated, insert a new Service and set the appropriate field values
+            else
+            {
+                if(service.RecurringServiceId.HasValue)
+                {
+                    var recurringService = _coreEntitiesContainer.RecurringServices.Include(rs => rs.Client).FirstOrDefault(rs => rs.Id == service.RecurringServiceId);
+
+                    //Load recurring service template
+                    (from serviceTemplate in _coreEntitiesContainer.ServiceTemplates.Where(st => recurringService.Id == st.Id)
+                     from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
+                     from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty()
+                     select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations }).ToArray();
+
+                    var businessAccount = _coreEntitiesContainer.BusinessAccount(recurringService.Client.BusinessAccountId.Value).First();
+
+                    var generatedService = new FoundOps.Core.Models.CoreEntities.Service
+                    {
+                        ServiceDate = service.ServiceDate,
+                        ServiceProviderId = businessAccount.Id,
+                        ClientId = recurringService.ClientId,
+                        RecurringServiceId = recurringService.Id
+                    };
+                    var template = recurringService.ServiceTemplate.MakeChild(ServiceTemplateLevel.ServiceDefined);
+                    //TODO check if this is necessary
+                    template.Id = service.Id;
+                    generatedService.ServiceTemplate = template;
+
+                    //Add all fields from the generated Service to the Service Template
+                    foreach (var field in service.Fields)
+                    {
+                        //Set the Service template for the field to the newly created Service Template
+                        field.ServiceTemplateId = generatedService.ServiceProviderId;
+
+                        //Add the field to the new Service Template
+                        generatedService.ServiceTemplate.Fields.Add(Models.Field.ConvertBack(field));
+                    }
+                }
+                else
+                {
+                    //TODO
+                }
+          
+            }
+
             //Save any changes that were made
             _coreEntitiesContainer.SaveChanges();
 

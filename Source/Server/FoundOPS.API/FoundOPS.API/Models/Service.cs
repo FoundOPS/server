@@ -41,10 +41,14 @@ namespace FoundOPS.API.Models
                 Name = serviceModel.ServiceTemplate.Name,
                 ServiceDate = serviceModel.ServiceDate,
                 ClientId = serviceModel.ClientId,
-                Client = Client.ConvertModel(serviceModel.Client),
                 ServiceProviderId = serviceModel.ServiceProviderId,
                 RecurringServiceId = serviceModel.RecurringServiceId
             };
+
+            if(serviceModel.Client!=null)
+            {
+                service.Client = Client.ConvertModel(serviceModel.Client);
+            }
 
             //Convert each field from the FoundOPS model to the API model
             //Add the newly converted field to the newly created service
