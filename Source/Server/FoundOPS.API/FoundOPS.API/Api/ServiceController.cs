@@ -154,7 +154,7 @@ namespace FoundOPS.API.Api
             if (serviceId.HasValue)
             {
                 serviceTemplateIdToLoad = serviceId.Value;
-                service = _coreEntitiesContainer.Services.Include(s => s.Client).First(s => s.Id == serviceId.Value);
+                service = _coreEntitiesContainer.Services.Include(s => s.Client).FirstOrDefault(s => s.Id == serviceId.Value);
                 businessAccountId = service.ServiceProviderId;
             }
             //generate it from the recurring service
@@ -220,6 +220,10 @@ namespace FoundOPS.API.Api
         [AcceptVerbs("POST")]
         public HttpResponseMessage UpdateService(Service service)
         {
+            var businessAccount = _coreEntitiesContainer.BusinessAccount(service.ServiceProviderId, new[] { RoleType.Regular, RoleType.Administrator, RoleType.Mobile }).FirstOrDefault();
+            if (businessAccount == null)
+                return Request.CreateResponse(HttpStatusCode.Unauthorized);
+
             var existingService = _coreEntitiesContainer.Services.FirstOrDefault(s => s.Id == service.Id);
 
             //the service exists. load all field information  and update field values
@@ -284,56 +288,29 @@ namespace FoundOPS.API.Api
             //the service was generated, insert a new Service and set the appropriate field values
             else
             {
-                if(service.RecurringServiceId.HasValue)
+                var generatedService = new FoundOps.Core.Models.CoreEntities.Service
                 {
-                    var recurringService = _coreEntitiesContainer.RecurringServices.Include(rs => rs.Client).FirstOrDefault(rs => rs.Id == service.RecurringServiceId);
+                    Id = service.Id,
+                    ServiceDate = service.ServiceDate,
+                    ServiceProviderId = service.ServiceProviderId,
+                    ClientId = service.ClientId,
+                    RecurringServiceId = service.RecurringServiceId,
+                    ServiceTemplate = new ServiceTemplate { Id = service.Id, ServiceTemplateLevel = ServiceTemplateLevel.ServiceDefined }
+                };
 
-                    //Load recurring service template
-                    (from serviceTemplate in _coreEntitiesContainer.ServiceTemplates.Where(st => recurringService.Id == st.Id)
-                     from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
-                     from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty()
-                     select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations }).ToArray();
-
-                    var businessAccount = _coreEntitiesContainer.BusinessAccount(recurringService.Client.BusinessAccountId.Value).First();
-
-                    var generatedService = new FoundOps.Core.Models.CoreEntities.Service
-                    {
-                        ServiceDate = service.ServiceDate,
-                        ServiceProviderId = businessAccount.Id,
-                        ClientId = recurringService.ClientId,
-                        RecurringServiceId = recurringService.Id
-                    };
-                    var template = recurringService.ServiceTemplate.MakeChild(ServiceTemplateLevel.ServiceDefined);
-                    //TODO check if this is necessary
-                    template.Id = service.Id;
-                    generatedService.ServiceTemplate = template;
-
-                    //Add all fields from the generated Service to the Service Template
-                    foreach (var field in service.Fields)
-                    {
-                        //Set the Service template for the field to the newly created Service Template
-                        field.ServiceTemplateId = generatedService.ServiceProviderId;
-
-                        //Add the field to the new Service Template
-                        generatedService.ServiceTemplate.Fields.Add(Models.Field.ConvertBack(field));
-                    }
-                }
-                else
+                //Add all fields from the generated Service to the Service Template
+                foreach (var field in service.Fields)
                 {
-                    //TODO
+                    generatedService.ServiceTemplate.Fields.Add(Models.Field.ConvertBack(field));
                 }
-          
+
+                _coreEntitiesContainer.Services.AddObject(generatedService);
             }
 
             //Save any changes that were made
             _coreEntitiesContainer.SaveChanges();
 
-            //Create the Http response 
-            var response = Request.CreateResponse(HttpStatusCode.Accepted);
-            response.Headers.Location = new Uri(Request.RequestUri, "/api/service/" + service.Id.ToString());
-
-            //Return the response
-            return response;
+            return Request.CreateResponse(HttpStatusCode.Accepted);
         }
 
         [AcceptVerbs("POST")]
