@@ -104,14 +104,7 @@ namespace FoundOPS.API.Api
             dynamic config = new JObject();
             config.name = user.FirstName + " " + user.LastName;
             config.settingsUrl = "#view/personalSettings.html";
-            if (isMobile)
-            {
-                config.logOutUrl = "#view/logout.html";                
-            }
-            else
-            {
-                config.logOutUrl = "../Account/LogOut";
-            }
+            config.logOutUrl = isMobile ? "#view/logout.html" : "../Account/LogOut";
 
             config.avatarUrl = user.PartyImage != null
                                    ? partyImageUrls[user.PartyImage.Id]

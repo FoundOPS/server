@@ -122,7 +122,7 @@ namespace FoundOPS.API.Api
                     }
 
                     //find the Field Type
-                    var field = serviceTemplateWithFields.Fields.FirstOrDefault(f => f.Name == key);
+                    var field = serviceTemplateWithFields.Fields.FirstOrDefault(f => f.Name == key.Replace("_", " "));
                     var type = Models.Field.GetJavascriptFormat(field);
 
                     columnTypes.Add(key, type);
