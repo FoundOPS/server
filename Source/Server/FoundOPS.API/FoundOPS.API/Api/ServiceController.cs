@@ -54,10 +54,11 @@ namespace FoundOPS.API.Api
         /// <param name="startDate">The start date (in the user's time zone)</param>
         /// <param name="endDate">The end date (in the user's time zone)</param>
         /// <param name="serviceType">The service type to filter by</param>
+        /// <param name="single">Only return the types</param>
         /// <returns>A queryable of dictionaries that resemble record type javascript objects when serialized</returns>
         [AcceptVerbs("GET", "POST")]
         public HttpResponseMessage GetServicesHoldersWithFields(Guid roleId, string serviceType, Guid? clientContext,
-            Guid? recurringServiceContext, DateTime startDate, DateTime endDate)
+            Guid? recurringServiceContext, DateTime startDate, DateTime endDate, bool single = false)
         {
             var currentBusinessAccount = _coreEntitiesContainer.Owner(roleId).FirstOrDefault();
             if (currentBusinessAccount == null)
@@ -128,11 +129,17 @@ namespace FoundOPS.API.Api
                     columnTypes.Add(key, type);
                 }
 
+                if (single) //just return the types
+                {
+                    return Request.CreateResponse(HttpStatusCode.OK, new List<Dictionary<string, object>> { columnTypes }.AsQueryable());
+                }
+
                 list.Insert(0, columnTypes);
             }
 
             return Request.CreateResponse(HttpStatusCode.OK, list.AsQueryable());
         }
+
 
         /// <summary>
         /// Gets the service and fields.
