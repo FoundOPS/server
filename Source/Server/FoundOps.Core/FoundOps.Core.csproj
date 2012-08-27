@@ -219,11 +219,6 @@
   <ItemGroup>
     <Content Include="Models\CoreEntities\ClearCoreEntities.edmx.sql" />
     <Content Include="Models\CoreEntities\CoreEntities.edmx.sql" />
-    <Content Include="Models\CoreEntities\CoreEntitiesCorrected.edmx.sql">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CoreEntitiesCorrected.tt</DependentUpon>
-    </Content>
     <Content Include="Models\CoreEntities\CoreEntitiesCorrected1.edmx.sql">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
