@@ -7,7 +7,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 --CREATE PROCEDURE [dbo].[GetServiceHolders]
-ALTER PROCEDURE [dbo].[GetServiceHolders]
+CREATE PROCEDURE [dbo].[GetServiceHolders]
 	(
 	@serviceProviderIdContext UNIQUEIDENTIFIER, 
 	@clientIdContext UNIQUEIDENTIFIER, 

@@ -224,6 +224,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>CoreEntitiesCorrected.tt</DependentUpon>
     </Content>
+    <Content Include="Models\CoreEntities\CoreEntitiesCorrected1.edmx.sql">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CoreEntitiesCorrected.tt</DependentUpon>
+    </Content>
     <Content Include="Models\CoreEntities\ManualEDMXChanges.txt" />
     <Content Include="Models\CoreEntities\SQL Tests\ProagateNameChangeTest.sql" />
     <Content Include="Models\CoreEntities\SQL Tests\ProagateNewServiceTemplatesToClientTest.sql" />
@@ -266,7 +271,7 @@
     </None>
     <None Include="Models\CoreEntities\CoreEntitiesCorrected.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>CoreEntitiesCorrected.edmx.sql</LastGenOutput>
+      <LastGenOutput>CoreEntitiesCorrected1.edmx.sql</LastGenOutput>
     </None>
     <None Include="Models\CoreEntities\M2M4RiaEntities.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
