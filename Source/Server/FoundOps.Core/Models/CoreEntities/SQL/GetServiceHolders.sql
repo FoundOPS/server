@@ -6,7 +6,8 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE PROCEDURE [dbo].[GetServiceHolders]
+--CREATE PROCEDURE [dbo].[GetServiceHolders]
+ALTER PROCEDURE [dbo].[GetServiceHolders]
 	(
 	@serviceProviderIdContext UNIQUEIDENTIFIER, 
 	@clientIdContext UNIQUEIDENTIFIER, 
@@ -203,9 +204,9 @@ BEGIN	--Cycle through all of the RecurringServices until we get all from @firstD
 
 	WHILE	@RowCountForTempGenServiceTable <> 0
 	BEGIN
+		SET		@minVal = (SELECT MIN(NextDate) FROM @NextGenServices)
 		SET		@NextDay = DATEADD(day, 1, @minVal)
 		SET		@maxVal = (SELECT MAX(NextDate) FROM @NextGenServices)
-		SET		@minVal = (SELECT MIN(NextDate) FROM @NextGenServices)
 
 		--Checks to be sure that there are still rows to look at in @NextGenServices
 		IF NOT	@RowCountForTempGenServiceTable > 0
@@ -233,7 +234,6 @@ BEGIN	--Cycle through all of the RecurringServices until we get all from @firstD
 				OccurDate date,
 				ServiceName nvarchar(max)
 		)
---select * from @RecurringServicesWithExcludedDatesSplit
 
 		--Inserts all Services that need to be removed to @NextServicesToRemove
 		INSERT INTO @NextServicesToRemove
@@ -275,9 +275,6 @@ BEGIN	--Cycle through all of the RecurringServices until we get all from @firstD
 		DELETE FROM @TempNextRecurringServiceOccurrenceTable
 
 		SET		@RowCountForTempGenServiceTable = (SELECT COUNT(*) FROM @NextGenServices)
-
---SELECT @RowCountForTempGenServiceTable as 'RC'
-
 	END
 
 END
@@ -354,6 +351,7 @@ BEGIN	--Combine the RecurringServices table with the ExistingServices table, rem
 	(
 		SELECT RecurringServiceId
 		FROM @NextExistingServiceTable
+		WHERE OccurDate = [@CombinedNextServices].OccurDate
 	)
 
 	UPDATE @CombinedNextServices
@@ -369,10 +367,12 @@ IF @serviceTypeContext IS NOT NULL
 	BEGIN
 	SELECT * from @CombinedNextServices
 	WHERE ServiceName =  @serviceTypeContext
+	ORDER BY OccurDate
 	END
 ELSE
 	BEGIN
-	SELECT * from @CombinedNextServices
+	SELECT * from @CombinedNextServices 
+	ORDER BY OccurDate
 	END
 
 RETURN
