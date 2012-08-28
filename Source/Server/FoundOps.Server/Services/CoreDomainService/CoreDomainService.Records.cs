@@ -402,13 +402,6 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void InsertLocation(Location location)
         {
-            var existingLocation =
-                ObjectContext.Locations.FirstOrDefault(
-                    l => l.AddressLineOne == location.AddressLineOne && l.AddressLineTwo == location.AddressLineTwo && l.BusinessAccountId == location.BusinessAccountId);
-
-            if(existingLocation != null)
-                throw new DomainException("A location at that address already exists.");
-
             if ((location.EntityState != EntityState.Detached))
             {
                 this.ObjectContext.ObjectStateManager.ChangeObjectState(location, EntityState.Added);
@@ -421,6 +414,14 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void UpdateLocation(Location currentLocation)
         {
+            var existingLocation =
+                ObjectContext.Locations.FirstOrDefault(
+                    l => l.AddressLineOne == currentLocation.AddressLineOne && l.AddressLineTwo == currentLocation.AddressLineTwo
+                        && l.City == currentLocation.City && l.State == currentLocation.State && l.BusinessAccountId == currentLocation.BusinessAccountId);
+
+            if (existingLocation != null)
+                throw new DomainException("Location Error");
+
             this.ObjectContext.Locations.AttachAsModified(currentLocation);
         }
 
