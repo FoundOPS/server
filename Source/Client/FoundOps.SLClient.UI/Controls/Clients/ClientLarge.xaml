@@ -86,9 +86,9 @@
                             </Grid.ColumnDefinitions>
                             <TextBlock TextWrapping="Wrap" Text="{Binding SelectedEntity.Locations.Count, Converter={StaticResource LocationTitleConverter}}" 
                                        Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource LocationBrush}" />
-                            <AddEditDelete:AddToDeleteFrom Grid.Column="1" AddMode="AddNewExisting" DeleteMode="RemoveOrDeletePrompt" Label="Locations"
+                            <AddEditDelete:AddToDeleteFrom Grid.Column="1" AddMode="Add" DeleteMode="Delete" Label="Locations"
                                                            SourceType="{MarkupExtensions:Static MemberType=CoreEntities:Location}"
-                                                           ItemToRemoveDisplayMember="{Binding SelectedEntity.Name, Source={Tools1:GetVM Type=ViewModels:LocationsVM}}" ItemToRemoveFromDisplayMember="{Binding SelectedEntity.Name}"
+                                                           ItemToRemoveDisplayMember="{Binding SelectedEntity.AddressLineOne, Source={Tools1:GetVM Type=ViewModels:LocationsVM}}" ItemToRemoveFromDisplayMember="{Binding SelectedEntity.AddressLineOne}"
                                                            Source="{Tools1:GetVM Type=ViewModels:LocationsVM}" Destination="{Binding}"
                                                            DestinationItemsSource="{Binding LocationsDestinationItemsSource}" />
                         </Grid>

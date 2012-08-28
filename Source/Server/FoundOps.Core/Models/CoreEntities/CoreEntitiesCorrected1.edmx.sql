@@ -3340,15 +3340,16 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
---CREATE PROCEDURE [dbo].[GetServiceHolders]
 CREATE PROCEDURE [dbo].[GetServiceHolders]
+--ALTER PROCEDURE [dbo].[GetServiceHolders]
 	(
 	@serviceProviderIdContext UNIQUEIDENTIFIER, 
 	@clientIdContext UNIQUEIDENTIFIER, 
 	@recurringServiceIdContext UNIQUEIDENTIFIER, 
 	@firstDate DATE, 
 	@lastDate DATE,
-	@serviceTypeContext NVARCHAR(MAX)
+	@serviceTypeContext NVARCHAR(MAX),
+	@withFields BIT
 	)
 AS
 BEGIN
@@ -3697,7 +3698,15 @@ BEGIN	--Combine the RecurringServices table with the ExistingServices table, rem
 	WHERE ServiceId IS NULL  
 END
 
-IF @serviceTypeContext IS NOT NULL
+IF @withFields = 0
+	BEGIN
+		SELECT RecurringServiceId ,
+				ServiceId ,
+				OccurDate ,
+				ServiceName FROM @CombinedNextServices
+		ORDER BY OccurDate
+	END
+ELSE IF @serviceTypeContext IS NOT NULL
 	BEGIN
 	SELECT * from @CombinedNextServices
 	WHERE ServiceName =  @serviceTypeContext
@@ -3761,7 +3770,7 @@ AS
 		INSERT	INTO #ServiceHolders (RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName)
 				EXEC [dbo].[GetServiceHolders] @serviceProviderIdContext,
 					@clientIdContext, @recurringServiceIdContext, @firstDate,
-					@lastDate, @serviceTypeContext
+					@lastDate, @serviceTypeContext, 1
 		
 	
 		DECLARE @ServiceTemplateIds TABLE 

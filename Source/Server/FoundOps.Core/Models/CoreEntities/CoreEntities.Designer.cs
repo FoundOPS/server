@@ -1126,14 +1126,33 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        /// <param name="serviceProviderId">No Metadata Documentation available.</param>
+        public ObjectResult<ResourceWithLastPoint> GetResourcesWithLastPoint(Nullable<global::System.Guid> serviceProviderId)
+        {
+            ObjectParameter serviceProviderIdParameter;
+            if (serviceProviderId.HasValue)
+            {
+                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", serviceProviderId);
+            }
+            else
+            {
+                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction<ResourceWithLastPoint>("GetResourcesWithLastPoint", serviceProviderIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         /// <param name="serviceProviderIdContext">No Metadata Documentation available.</param>
         /// <param name="clientIdContext">No Metadata Documentation available.</param>
         /// <param name="recurringServiceIdContext">No Metadata Documentation available.</param>
-        /// <param name="seedDate">No Metadata Documentation available.</param>
-        /// <param name="frontBackMinimum">No Metadata Documentation available.</param>
-        /// <param name="getPrevious">No Metadata Documentation available.</param>
-        /// <param name="getNext">No Metadata Documentation available.</param>
-        public ObjectResult<ServiceHolder> GetServiceHolders(Nullable<global::System.Guid> serviceProviderIdContext, Nullable<global::System.Guid> clientIdContext, Nullable<global::System.Guid> recurringServiceIdContext, Nullable<global::System.DateTime> seedDate, Nullable<global::System.Int32> frontBackMinimum, Nullable<global::System.Boolean> getPrevious, Nullable<global::System.Boolean> getNext)
+        /// <param name="firstDate">No Metadata Documentation available.</param>
+        /// <param name="lastDate">No Metadata Documentation available.</param>
+        /// <param name="serviceTypeContext">No Metadata Documentation available.</param>
+        /// <param name="withFields">No Metadata Documentation available.</param>
+        public ObjectResult<ServiceHolder> GetServiceHolders(Nullable<global::System.Guid> serviceProviderIdContext, Nullable<global::System.Guid> clientIdContext, Nullable<global::System.Guid> recurringServiceIdContext, Nullable<global::System.DateTime> firstDate, Nullable<global::System.DateTime> lastDate, global::System.String serviceTypeContext, Nullable<global::System.Boolean> withFields)
         {
             ObjectParameter serviceProviderIdContextParameter;
             if (serviceProviderIdContext.HasValue)
@@ -1165,66 +1184,47 @@ namespace FoundOps.Core.Models.CoreEntities
                 recurringServiceIdContextParameter = new ObjectParameter("recurringServiceIdContext", typeof(global::System.Guid));
             }
     
-            ObjectParameter seedDateParameter;
-            if (seedDate.HasValue)
+            ObjectParameter firstDateParameter;
+            if (firstDate.HasValue)
             {
-                seedDateParameter = new ObjectParameter("seedDate", seedDate);
+                firstDateParameter = new ObjectParameter("firstDate", firstDate);
             }
             else
             {
-                seedDateParameter = new ObjectParameter("seedDate", typeof(global::System.DateTime));
+                firstDateParameter = new ObjectParameter("firstDate", typeof(global::System.DateTime));
             }
     
-            ObjectParameter frontBackMinimumParameter;
-            if (frontBackMinimum.HasValue)
+            ObjectParameter lastDateParameter;
+            if (lastDate.HasValue)
             {
-                frontBackMinimumParameter = new ObjectParameter("frontBackMinimum", frontBackMinimum);
+                lastDateParameter = new ObjectParameter("lastDate", lastDate);
             }
             else
             {
-                frontBackMinimumParameter = new ObjectParameter("frontBackMinimum", typeof(global::System.Int32));
+                lastDateParameter = new ObjectParameter("lastDate", typeof(global::System.DateTime));
             }
     
-            ObjectParameter getPreviousParameter;
-            if (getPrevious.HasValue)
+            ObjectParameter serviceTypeContextParameter;
+            if (serviceTypeContext != null)
             {
-                getPreviousParameter = new ObjectParameter("getPrevious", getPrevious);
+                serviceTypeContextParameter = new ObjectParameter("serviceTypeContext", serviceTypeContext);
             }
             else
             {
-                getPreviousParameter = new ObjectParameter("getPrevious", typeof(global::System.Boolean));
+                serviceTypeContextParameter = new ObjectParameter("serviceTypeContext", typeof(global::System.String));
             }
     
-            ObjectParameter getNextParameter;
-            if (getNext.HasValue)
+            ObjectParameter withFieldsParameter;
+            if (withFields.HasValue)
             {
-                getNextParameter = new ObjectParameter("getNext", getNext);
+                withFieldsParameter = new ObjectParameter("withFields", withFields);
             }
             else
             {
-                getNextParameter = new ObjectParameter("getNext", typeof(global::System.Boolean));
+                withFieldsParameter = new ObjectParameter("withFields", typeof(global::System.Boolean));
             }
     
-            return base.ExecuteFunction<ServiceHolder>("GetServiceHolders", serviceProviderIdContextParameter, clientIdContextParameter, recurringServiceIdContextParameter, seedDateParameter, frontBackMinimumParameter, getPreviousParameter, getNextParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        /// <param name="serviceProviderId">No Metadata Documentation available.</param>
-        public ObjectResult<ResourceWithLastPoint> GetResourcesWithLastPoint(Nullable<global::System.Guid> serviceProviderId)
-        {
-            ObjectParameter serviceProviderIdParameter;
-            if (serviceProviderId.HasValue)
-            {
-                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", serviceProviderId);
-            }
-            else
-            {
-                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", typeof(global::System.Guid));
-            }
-    
-            return base.ExecuteFunction<ResourceWithLastPoint>("GetResourcesWithLastPoint", serviceProviderIdParameter);
+            return base.ExecuteFunction<ServiceHolder>("GetServiceHolders", serviceProviderIdContextParameter, clientIdContextParameter, recurringServiceIdContextParameter, firstDateParameter, lastDateParameter, serviceTypeContextParameter, withFieldsParameter);
         }
 
         #endregion
@@ -12139,6 +12139,116 @@ namespace FoundOps.Core.Models.CoreEntities
     #endregion
 
     #region ComplexTypes
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmComplexTypeAttribute(NamespaceName="CoreEntities", Name="GetServiceHolders_Result")]
+    [DataContractAttribute(IsReference=true)]
+    [Serializable()]
+    public partial class GetServiceHolders_Result : ComplexObject
+    {
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> RecurringServiceId
+        {
+            get
+            {
+                return _RecurringServiceId;
+            }
+            set
+            {
+                OnRecurringServiceIdChanging(value);
+                ReportPropertyChanging("RecurringServiceId");
+                _RecurringServiceId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("RecurringServiceId");
+                OnRecurringServiceIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _RecurringServiceId;
+        partial void OnRecurringServiceIdChanging(Nullable<global::System.Guid> value);
+        partial void OnRecurringServiceIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> ServiceId
+        {
+            get
+            {
+                return _ServiceId;
+            }
+            set
+            {
+                OnServiceIdChanging(value);
+                ReportPropertyChanging("ServiceId");
+                _ServiceId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ServiceId");
+                OnServiceIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _ServiceId;
+        partial void OnServiceIdChanging(Nullable<global::System.Guid> value);
+        partial void OnServiceIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> OccurDate
+        {
+            get
+            {
+                return _OccurDate;
+            }
+            set
+            {
+                OnOccurDateChanging(value);
+                ReportPropertyChanging("OccurDate");
+                _OccurDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("OccurDate");
+                OnOccurDateChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _OccurDate;
+        partial void OnOccurDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnOccurDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String ServiceName
+        {
+            get
+            {
+                return _ServiceName;
+            }
+            set
+            {
+                OnServiceNameChanging(value);
+                ReportPropertyChanging("ServiceName");
+                _ServiceName = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("ServiceName");
+                OnServiceNameChanged();
+            }
+        }
+        private global::System.String _ServiceName;
+        partial void OnServiceNameChanging(global::System.String value);
+        partial void OnServiceNameChanged();
+
+        #endregion
+
+    }
     
     /// <summary>
     /// No Metadata Documentation available.

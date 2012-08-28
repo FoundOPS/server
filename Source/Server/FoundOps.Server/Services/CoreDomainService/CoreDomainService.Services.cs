@@ -235,10 +235,19 @@ namespace FoundOps.Server.Services.CoreDomainService
                 serviceProviderContextId = businessAccount.Id;
             }
 
+            var user = ObjectContext.CurrentUserAccount().FirstOrDefault();
+
+            if(user == null)
+                throw new Exception("No User logged in");
+
+            var firstDate = user.AdjustTimeForUserTimeZone(DateTime.UtcNow).AddDays(-7);
+
+            var lastDate = user.AdjustTimeForUserTimeZone(DateTime.UtcNow).AddDays(7);
+
             //Order by OccurDate and Service Name for UI
             //Order by ServiceId and RecurringServiceId to ensure they are always returned in the same order
             return ObjectContext.GetServiceHolders(serviceProviderContextId, clientContextId, recurringServiceContextId,
-                seedDate, numberOfOccurrences, getPrevious, getNext)
+                firstDate, lastDate, null, false)
                 .OrderBy(sh => sh.OccurDate).ThenBy(sh => sh.ServiceName).ThenBy(sh => sh.ServiceId).ThenBy(sh => sh.RecurringServiceId)
                 .AsQueryable();
         }
