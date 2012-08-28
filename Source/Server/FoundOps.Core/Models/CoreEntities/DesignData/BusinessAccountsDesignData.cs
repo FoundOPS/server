@@ -75,7 +75,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 //Add depot
                 serviceProvider.Depots.Add(new Location
                 {
-                    Name = "Depot",
                     AddressLineOne = "1305 Cumberland Ave",
                     City = "West Lafayette",
                     State = "IN",

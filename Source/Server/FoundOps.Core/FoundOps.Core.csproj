@@ -219,7 +219,7 @@
   <ItemGroup>
     <Content Include="Models\CoreEntities\ClearCoreEntities.edmx.sql" />
     <Content Include="Models\CoreEntities\CoreEntities.edmx.sql" />
-    <Content Include="Models\CoreEntities\CoreEntitiesCorrected1.edmx.sql">
+    <Content Include="Models\CoreEntities\CoreEntitiesCorrected.edmx.sql">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>CoreEntitiesCorrected.tt</DependentUpon>
@@ -246,6 +246,9 @@
     <Content Include="Models\CoreEntities\SQL\GetUnroutedServicesForDate.sql" />
     <Content Include="Models\CoreEntities\SQL Tests\TestFunctionForRecurringServices.sql" />
     <Content Include="Models\CoreEntities\SQL Tests\SchedulerTests.sql" />
+    <Content Include="Models\CoreEntities\SQL\PropagateFieldChanges.sql" />
+    <Content Include="Models\CoreEntities\SQL\PropagateNameChange.sql" />
+    <Content Include="Models\CoreEntities\SQL\PropagateNewServiceTemplateToClients.sql" />
     <Content Include="Models\CoreEntities\SQL\SchedulerSubFunctions.sql" />
     <Content Include="Models\CoreEntities\SQL\DeleteUserAccountBasedOnId.sql" />
     <Content Include="Models\CoreEntities\SQL\GetServiceHolders.sql" />
@@ -266,7 +269,7 @@
     </None>
     <None Include="Models\CoreEntities\CoreEntitiesCorrected.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>CoreEntitiesCorrected1.edmx.sql</LastGenOutput>
+      <LastGenOutput>CoreEntitiesCorrected.edmx.sql</LastGenOutput>
     </None>
     <None Include="Models\CoreEntities\M2M4RiaEntities.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 07/26/2012 15:27:22
+-- Date Created: 08/28/2012 15:11:46
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -428,7 +428,6 @@ GO
 -- Creating table 'Locations'
 CREATE TABLE [dbo].[Locations] (
     [Id] uniqueidentifier  NOT NULL,
-    [Name] nvarchar(max)  NULL,
     [AddressLineOne] nvarchar(max)  NULL,
     [Longitude] decimal(11,8)  NULL,
     [ZipCode] nvarchar(max)  NULL,
@@ -744,7 +743,6 @@ GO
 
 -- Creating table 'Parties_UserAccount'
 CREATE TABLE [dbo].[Parties_UserAccount] (
-    [ColumnConfigurations] nvarchar(max)  NULL,
     [PasswordHash] nvarchar(max)  NULL,
     [EmailAddress] nvarchar(max)  NOT NULL,
     [LastActivity] datetime  NULL,
@@ -755,6 +753,7 @@ CREATE TABLE [dbo].[Parties_UserAccount] (
     [GenderInt] smallint  NULL,
     [DateOfBirth] datetime  NULL,
     [TimeZone] nvarchar(max)  NULL,
+    [ColumnConfigurations] nvarchar(max)  NULL,
     [Id] uniqueidentifier  NOT NULL
 );
 GO

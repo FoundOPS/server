@@ -66,7 +66,6 @@ namespace FoundOPS.API.Models
             var location = new Location
             {
                 Id = locationModel.Id,
-                Name = locationModel.Name,
                 AddressLineOne = locationModel.AddressLineOne,
                 AddressLineTwo = locationModel.AddressLineTwo,
                 Longitude = locationModel.Longitude.ToString(),

@@ -3,7 +3,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 07/26/2012 15:27:22
+-- Date Created: 08/28/2012 15:11:46
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -427,7 +427,6 @@ GO
 -- Creating table 'Locations'
 CREATE TABLE [dbo].[Locations] (
     [Id] uniqueidentifier  NOT NULL,
-    [Name] nvarchar(max)  NULL,
     [AddressLineOne] nvarchar(max)  NULL,
     [Longitude] decimal(11,8)  NULL,
     [ZipCode] nvarchar(max)  NULL,
@@ -743,7 +742,6 @@ GO
 
 -- Creating table 'Parties_UserAccount'
 CREATE TABLE [dbo].[Parties_UserAccount] (
-    [ColumnConfigurations] nvarchar(max)  NULL,
     [PasswordHash] nvarchar(max)  NULL,
     [EmailAddress] nvarchar(max)  NOT NULL,
     [LastActivity] datetime  NULL,
@@ -754,6 +752,7 @@ CREATE TABLE [dbo].[Parties_UserAccount] (
     [GenderInt] smallint  NULL,
     [DateOfBirth] datetime  NULL,
     [TimeZone] nvarchar(max)  NULL,
+    [ColumnConfigurations] nvarchar(max)  NULL,
     [Id] uniqueidentifier  NOT NULL
 );
 GO
@@ -3340,15 +3339,16 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
---CREATE PROCEDURE [dbo].[GetServiceHolders]
 CREATE PROCEDURE [dbo].[GetServiceHolders]
+--ALTER PROCEDURE [dbo].[GetServiceHolders]
 	(
 	@serviceProviderIdContext UNIQUEIDENTIFIER, 
 	@clientIdContext UNIQUEIDENTIFIER, 
 	@recurringServiceIdContext UNIQUEIDENTIFIER, 
 	@firstDate DATE, 
 	@lastDate DATE,
-	@serviceTypeContext NVARCHAR(MAX)
+	@serviceTypeContext NVARCHAR(MAX),
+	@withFields BIT
 	)
 AS
 BEGIN
@@ -3697,7 +3697,15 @@ BEGIN	--Combine the RecurringServices table with the ExistingServices table, rem
 	WHERE ServiceId IS NULL  
 END
 
-IF @serviceTypeContext IS NOT NULL
+IF @withFields = 0
+	BEGIN
+		SELECT RecurringServiceId ,
+				ServiceId ,
+				OccurDate ,
+				ServiceName FROM @CombinedNextServices
+		ORDER BY OccurDate
+	END
+ELSE IF @serviceTypeContext IS NOT NULL
 	BEGIN
 	SELECT * from @CombinedNextServices
 	WHERE ServiceName =  @serviceTypeContext
@@ -3761,7 +3769,7 @@ AS
 		INSERT	INTO #ServiceHolders (RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName)
 				EXEC [dbo].[GetServiceHolders] @serviceProviderIdContext,
 					@clientIdContext, @recurringServiceIdContext, @firstDate,
-					@lastDate, @serviceTypeContext
+					@lastDate, @serviceTypeContext, 1
 		
 	
 		DECLARE @ServiceTemplateIds TABLE 
@@ -4414,7 +4422,6 @@ BEGIN
 
 	UPDATE	@UnroutedOrUncompletedServices
 	SET		AddressLine = t1.AddressLineOne, 
-			LocationName = t1.Name,
 			LocationId = t1.Id,
 			Latitude = t1.Latitude, 
 			Longitude = t1.Longitude
@@ -4597,27 +4604,6 @@ BEGIN
 
 	UPDATE #ServicesTableToReturn
 	SET Id = NEWID()
-
-	--CREATE TABLE #Return
-	--(
-	--Id UNIQUEIDENTIFIER PRIMARY KEY,
-	--RecurringServiceId uniqueidentifier,
-	--ServiceId uniqueidentifier,
-	--OccurDate date,
-	--ServiceName nvarchar(max),
-	--ClientName nvarchar(max),
-	--ClientId uniqueidentifier,
-	--RegionName nvarchar(max),
-	--LocationName nvarchar(max),
-	--LocationId uniqueidentifier,
-	--AddressLine nvarchar(max),
-	--Latitude decimal(18,8),
-	--Longitude decimal(18,8),
-	--StatusName nvarchar(max)
-	--)
-
-	--INSERT INTO #Return
-	--SELECT * FROM #ServicesTableToReturn
 
 	CREATE TABLE #RouteTasks
 			( Id UNIQUEIDENTIFIER,

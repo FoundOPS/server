@@ -252,7 +252,6 @@ BEGIN
 
 	UPDATE	@UnroutedOrUncompletedServices
 	SET		AddressLine = t1.AddressLineOne, 
-			LocationName = t1.Name,
 			LocationId = t1.Id,
 			Latitude = t1.Latitude, 
 			Longitude = t1.Longitude
@@ -435,27 +434,6 @@ BEGIN
 
 	UPDATE #ServicesTableToReturn
 	SET Id = NEWID()
-
-	--CREATE TABLE #Return
-	--(
-	--Id UNIQUEIDENTIFIER PRIMARY KEY,
-	--RecurringServiceId uniqueidentifier,
-	--ServiceId uniqueidentifier,
-	--OccurDate date,
-	--ServiceName nvarchar(max),
-	--ClientName nvarchar(max),
-	--ClientId uniqueidentifier,
-	--RegionName nvarchar(max),
-	--LocationName nvarchar(max),
-	--LocationId uniqueidentifier,
-	--AddressLine nvarchar(max),
-	--Latitude decimal(18,8),
-	--Longitude decimal(18,8),
-	--StatusName nvarchar(max)
-	--)
-
-	--INSERT INTO #Return
-	--SELECT * FROM #ServicesTableToReturn
 
 	CREATE TABLE #RouteTasks
 			( Id UNIQUEIDENTIFIER,

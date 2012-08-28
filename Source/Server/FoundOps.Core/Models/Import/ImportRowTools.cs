@@ -57,7 +57,7 @@ namespace FoundOps.Core.Models.Import
 
             #region Location
 
-            PropertyCategories.Add(new PropertyCategory<Location>(DataCategory.LocationName, (location, val) => location.Name = val));
+            //PropertyCategories.Add(new PropertyCategory<Location>(DataCategory.LocationName, (location, val) => location.Name = val));
 
             PropertyCategories.Add(new PropertyCategory<Location>(DataCategory.LocationAddressLineOne, (location, val) => location.AddressLineOne = val));
             PropertyCategories.Add(new PropertyCategory<Location>(DataCategory.LocationAddressLineTwo, (location, val) => location.AddressLineTwo = val));

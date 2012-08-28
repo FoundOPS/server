@@ -118,15 +118,26 @@ namespace FoundOps.SLClient.Data.Services
                         DomainContext.RejectChanges();
                         _rejectChangesDueToErrorSubject.OnNext(true);
 
-                        //Setup the ErrorWindow prompt
-                        var errorWindow = new ErrorWindow();
+                        var error = submitOperationCallback.Error.Message;
 
+                        if(error == "Location Error")
+                        {
+                            var window = new LocationErrorWindow();
+
+                            window.Show();
+                        }
+                        else
+                        {
+                            //Setup the ErrorWindow prompt
+                            var errorWindow = new ErrorWindow();
+
+                            //The ErrorWindow is now setup, show it to the user
+                            errorWindow.Show();
+                        }
+                        
                         //track error with analytics
                         Analytics.Track(Event.ServerError);
-
-                        //The ErrorWindow is now setup, show it to the user
-                        errorWindow.Show();
-
+                        
                         return;
                     }
 

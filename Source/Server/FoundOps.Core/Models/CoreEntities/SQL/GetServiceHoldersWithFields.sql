@@ -45,7 +45,7 @@ AS
 		INSERT	INTO #ServiceHolders (RecurringServiceId, ServiceId, OccurDate, ServiceName, ClientName)
 				EXEC [dbo].[GetServiceHolders] @serviceProviderIdContext,
 					@clientIdContext, @recurringServiceIdContext, @firstDate,
-					@lastDate, @serviceTypeContext
+					@lastDate, @serviceTypeContext, 1
 		
 	
 		DECLARE @ServiceTemplateIds TABLE 

@@ -8,7 +8,7 @@
             RowIndicatorVisibility="Collapsed" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}"
             ItemsSource="{Binding QueryableCollectionView}">
         <telerik:RadGridView.Columns>
-            <telerik:GridViewDataColumn Header="Name" DataMemberBinding="{Binding Name}" Width="*"/>
+            <telerik:GridViewDataColumn Header="Address" DataMemberBinding="{Binding AddressCity}" Width="*"/>
         </telerik:RadGridView.Columns>
     </telerik:RadGridView>
 </UserControl>

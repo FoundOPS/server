@@ -42,7 +42,7 @@ namespace FoundOps.SLClient.Data.Converters
             var location = (Location)value;
             return location == null
                        ? ""
-                       : String.Format("{0}, {1}, {2} {3}, {4}", location.Name, location.AddressLineOne, location.City,
+                       : String.Format("{0}, {1}, {2} {3}", location.AddressLineOne, location.City,
                                        location.State, location.ZipCode);
         }
 

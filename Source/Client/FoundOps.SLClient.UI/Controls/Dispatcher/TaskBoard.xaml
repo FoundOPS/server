@@ -20,7 +20,7 @@
                     </Style>
                 </telerik:RadGridView.RowStyle>
                 <telerik:RadGridView.Columns>
-                    <telerik:GridViewDataColumn Header="Name" DataMemberBinding="{Binding Name}"> <!-- IsReadOnlyBinding="{Binding ServiceId, Converter={StaticResource ExistsBoolConverter}}"-->
+                    <telerik:GridViewDataColumn Header="Service Type" DataMemberBinding="{Binding Name}">
                         <telerik:GridViewDataColumn.CellTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding Name}"/>
@@ -33,13 +33,11 @@
                         </telerik:GridViewDataColumn.CellEditTemplate>
                     </telerik:GridViewDataColumn>
                     <!--<telerik:GridViewDataColumn Header="Region"/>-->
-                    <!--Location Name-->
-                    <telerik:GridViewDataColumn Header="Location" DataMemberBinding="{Binding Location.Name}" />
                     <!--Region Name-->
-                    <telerik:GridViewDataColumn Header="Region" DataMemberBinding="{Binding Location.Region.Name}" />
-                    <!--Location Address-->
-                    <telerik:GridViewDataColumn Header="Address" DataMemberBinding="{Binding Location.AddressLineOne}"/>
                     <telerik:GridViewDataColumn Header="Client" DataMemberBinding="{Binding Client.Name}" />
+                    <!--Location Address-->
+                    <telerik:GridViewDataColumn Header="Address" DataMemberBinding="{Binding Location.AddressCity}"/>
+                    <telerik:GridViewDataColumn Header="Region" DataMemberBinding="{Binding Location.Region.Name}" />
                     <telerik:GridViewDataColumn Header="Scheduled Date" DataMemberBinding="{Binding Date}" DataFormatString="{} {0:MMM dd, yyyy}"/>
                     <telerik:GridViewDataColumn Header="Status" DataMemberBinding="{Binding TaskStatus.Name}"/>
                 </telerik:RadGridView.Columns>
