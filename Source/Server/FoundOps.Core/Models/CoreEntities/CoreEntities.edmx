@@ -331,6 +331,15 @@
             <End Role="Vehicles" EntitySet="Vehicles" />
           </AssociationSet>
         </EntityContainer>
+      <Function Name="GetResourcesWithLastPoint" IsComposable="false">
+        <CommandText>
+          SELECT EmployeeId, VehicleId, EntityName, Heading, Latitude, Longitude, CollectedTimeStamp, Speed, Source, RouteId, Accuracy
+          FROM dbo.GetResourcesWithLatestPoint (@serviceProviderId)
+        </CommandText>
+        <Parameter Name="serviceProviderId"
+               Mode="In"
+               Type="uniqueidentifier"/>
+      </Function>
         <EntityType Name="Blocks">
           <Key>
             <PropertyRef Name="Id" />
@@ -523,7 +532,6 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Name" Type="nvarchar(max)" />
           <Property Name="AddressLineOne" Type="nvarchar(max)" />
           <Property Name="Longitude" Type="decimal" Precision="11" Scale="8" />
           <Property Name="ZipCode" Type="nvarchar(max)" />
@@ -577,7 +585,6 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="ColumnConfigurations" Type="nvarchar(max)" />
           <Property Name="PasswordHash" Type="nvarchar(max)" />
           <Property Name="EmailAddress" Type="nvarchar(max)" Nullable="false" />
           <Property Name="LastActivity" Type="datetime" />
@@ -588,6 +595,7 @@
           <Property Name="GenderInt" Type="smallint" />
           <Property Name="DateOfBirth" Type="datetime" />
           <Property Name="TimeZone" Type="nvarchar(max)" />
+          <Property Name="ColumnConfigurations" Type="nvarchar(max)" />
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="PartyRole">
@@ -1739,6 +1747,14 @@
           <Parameter Name="serviceTypeContext" Type="nvarchar(max)" Mode="In" />
           <Parameter Name="withFields" Type="bit" Mode="In" />
         </Function>
+        <Function Name="GetServiceHoldersWithFields" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="serviceProviderIdContext" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="clientIdContext" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="recurringServiceIdContext" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="firstDate" Type="date" Mode="In" />
+          <Parameter Name="lastDate" Type="date" Mode="In" />
+          <Parameter Name="serviceTypeContext" Type="nvarchar(max)" Mode="In" />
+        </Function>
         <Function Name="PropagateNameChange" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="serviceTemplateId" Type="uniqueidentifier" Mode="In" />
         </Function>
@@ -2052,9 +2068,6 @@
             <Parameter Name="serviceProviderIdContext" Mode="In" Type="Guid" />
             <Parameter Name="serviceDate" Mode="In" Type="DateTime" />
           </FunctionImport>
-          <FunctionImport Name="GetResourcesWithLastPoint" ReturnType="Collection(CoreEntities.ResourceWithLastPoint)">
-            <Parameter Name="serviceProviderId" Mode="In" Type="Guid" />
-          </FunctionImport>
           <FunctionImport Name="GetServiceHolders" ReturnType="Collection(CoreEntities.ServiceHolder)">
             <Parameter Name="serviceProviderIdContext" Mode="In" Type="Guid" />
             <Parameter Name="clientIdContext" Mode="In" Type="Guid" />
@@ -2063,6 +2076,9 @@
             <Parameter Name="lastDate" Mode="In" Type="DateTime" />
             <Parameter Name="serviceTypeContext" Mode="In" Type="String" />
             <Parameter Name="withFields" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="GetResourcesWithLastPoint" ReturnType="Collection(CoreEntities.ResourceWithLastPoint)">
+            <Parameter Name="serviceProviderId" Mode="In" Type="Guid" />
           </FunctionImport>
           </EntityContainer>
         <EntityType Name="Block">
@@ -2143,7 +2159,6 @@
           </Key>
           <NavigationProperty Name="ContactInfoSet" Relationship="CoreEntities.LocationContactInfo" FromRole="Location" ToRole="ContactInfo" />
           <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
-          <Property Type="String" Name="Name" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="String" Name="AddressLineOne" Nullable="true" DefaultValue="" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="Decimal" Name="Longitude" Nullable="true" Precision="11" Scale="8" />
           <Property Type="String" Name="ZipCode" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
@@ -3264,12 +3279,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <ComplexType Name="GetServiceHolders_Result">
-          <Property Type="Guid" Name="RecurringServiceId" Nullable="true" />
-          <Property Type="Guid" Name="ServiceId" Nullable="true" />
-          <Property Type="DateTime" Name="OccurDate" Nullable="true" />
-          <Property Type="String" Name="ServiceName" Nullable="true" />
-        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3416,7 +3425,6 @@
       <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Location)">
         <MappingFragment StoreEntitySet="Locations">
           <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="AddressLineOne" ColumnName="AddressLineOne" />
           <ScalarProperty Name="Longitude" ColumnName="Longitude" />
           <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
@@ -3802,6 +3810,23 @@
                 <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
                 <ScalarProperty Name="OccurDate" ColumnName="OccurDate" />
                 <ScalarProperty Name="ServiceName" ColumnName="ServiceName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetResourcesWithLastPoint" FunctionName="CoreEntities.Store.GetResourcesWithLastPoint">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CoreEntities.ResourceWithLastPoint">
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
+                <ScalarProperty Name="EntityName" ColumnName="EntityName" />
+                <ScalarProperty Name="Heading" ColumnName="Heading" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="CollectedTimeStamp" ColumnName="CollectedTimeStamp" />
+                <ScalarProperty Name="Speed" ColumnName="Speed" />
+                <ScalarProperty Name="Source" ColumnName="Source" />
+                <ScalarProperty Name="RouteId" ColumnName="RouteId" />
+                <ScalarProperty Name="Accuracy" ColumnName="Accuracy" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

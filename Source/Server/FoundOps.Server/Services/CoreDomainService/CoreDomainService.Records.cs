@@ -278,7 +278,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             var businessAccount = ObjectContext.Owner(roleId).First();
 
-            var locations = ObjectContext.Locations.Where(loc => loc.BusinessAccountId == businessAccount.Id && !loc.BusinessAccountIdIfDepot.HasValue).OrderBy(l => l.Name);
+            var locations = ObjectContext.Locations.Where(loc => loc.BusinessAccountId == businessAccount.Id && !loc.BusinessAccountIdIfDepot.HasValue).OrderBy(l => l.AddressLineOne);
             return locations;
         }
 
@@ -317,8 +317,8 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             var locations = GetLocationsToAdministerForRole(roleId);
 
-            if (!String.IsNullOrEmpty(searchText))
-                locations = locations.Where(l => l.Name.StartsWith(searchText)).OrderBy(l => l.Name);
+            //if (!String.IsNullOrEmpty(searchText))
+            //    locations = locations.Where(l => l.Name.StartsWith(searchText)).OrderBy(l => l.Name);
 
             return locations;
         }
@@ -372,10 +372,9 @@ namespace FoundOps.Server.Services.CoreDomainService
                           //Get the Clients names
                           join c in ObjectContext.Clients
                               on loc.Client.Id equals c.Id
-                          orderby loc.Name
+                          orderby loc.AddressLineOne
                           select new
                           {
-                              loc.Name,
                               RegionName = loc.Region.Name,
                               ClientName = c.Name,
                               loc.AddressLineOne,
@@ -388,7 +387,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                           };
 
             foreach (var record in records.ToArray())
-                csvWriter.WriteDataRecord(record.Name, record.RegionName, record.ClientName,
+                csvWriter.WriteDataRecord(record.RegionName, record.ClientName,
                                        record.AddressLineOne, record.AddressLineTwo, record.City, record.State, record.ZipCode,
                                        record.Latitude, record.Longitude);
 

@@ -349,11 +349,9 @@ namespace FoundOps.Server.Services.CoreDomainService
             {
                 //Get destination information from LocationField
                 var destination = record.RecurringService.ServiceTemplate.GetDestination();
-                var locationName = "";
                 var address = "";
                 if (destination != null)
                 {
-                    locationName = destination.Name;
                     address = destination.AddressLineOne;
                 }
 
@@ -426,7 +424,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
                 //Convert frequency detail to:  day or date
                 //"Service Type", "Client", "Location", "Address", "Frequency"
-                csvWriter.WriteDataRecord(record.ServiceType, record.ClientName, locationName, address, frequency.ToString(),
+                csvWriter.WriteDataRecord(record.ServiceType, record.ClientName, address, frequency.ToString(),
                     //"Start Date", "End Date", "Repeat Every", "Repeat On"
                    repeat.StartDate.ToShortDateString(), endDate, repeat.RepeatEveryTimes.ToString(), repeatOn);
             }

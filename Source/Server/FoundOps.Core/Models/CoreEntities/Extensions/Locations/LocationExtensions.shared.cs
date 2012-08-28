@@ -24,7 +24,6 @@ namespace FoundOps.Core.Models.CoreEntities
         public void OnCreate()
         {
             this.Id = Guid.NewGuid();
-            this.Name = "";
             //To prevent random HasChanges
             this.AddressLineOne = "";
             this.AddressLineTwo = "";

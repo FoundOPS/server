@@ -1126,25 +1126,6 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        /// <param name="serviceProviderId">No Metadata Documentation available.</param>
-        public ObjectResult<ResourceWithLastPoint> GetResourcesWithLastPoint(Nullable<global::System.Guid> serviceProviderId)
-        {
-            ObjectParameter serviceProviderIdParameter;
-            if (serviceProviderId.HasValue)
-            {
-                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", serviceProviderId);
-            }
-            else
-            {
-                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", typeof(global::System.Guid));
-            }
-    
-            return base.ExecuteFunction<ResourceWithLastPoint>("GetResourcesWithLastPoint", serviceProviderIdParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         /// <param name="serviceProviderIdContext">No Metadata Documentation available.</param>
         /// <param name="clientIdContext">No Metadata Documentation available.</param>
         /// <param name="recurringServiceIdContext">No Metadata Documentation available.</param>
@@ -1225,6 +1206,25 @@ namespace FoundOps.Core.Models.CoreEntities
             }
     
             return base.ExecuteFunction<ServiceHolder>("GetServiceHolders", serviceProviderIdContextParameter, clientIdContextParameter, recurringServiceIdContextParameter, firstDateParameter, lastDateParameter, serviceTypeContextParameter, withFieldsParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="serviceProviderId">No Metadata Documentation available.</param>
+        public ObjectResult<ResourceWithLastPoint> GetResourcesWithLastPoint(Nullable<global::System.Guid> serviceProviderId)
+        {
+            ObjectParameter serviceProviderIdParameter;
+            if (serviceProviderId.HasValue)
+            {
+                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", serviceProviderId);
+            }
+            else
+            {
+                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction<ResourceWithLastPoint>("GetResourcesWithLastPoint", serviceProviderIdParameter);
         }
 
         #endregion
@@ -5244,30 +5244,6 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.Guid _Id;
         partial void OnIdChanging(global::System.Guid value);
         partial void OnIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String Name
-        {
-            get
-            {
-                return _Name;
-            }
-            set
-            {
-                OnNameChanging(value);
-                ReportPropertyChanging("Name");
-                _Name = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("Name");
-                OnNameChanged();
-            }
-        }
-        private global::System.String _Name;
-        partial void OnNameChanging(global::System.String value);
-        partial void OnNameChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -12139,116 +12115,6 @@ namespace FoundOps.Core.Models.CoreEntities
     #endregion
 
     #region ComplexTypes
-    
-    /// <summary>
-    /// No Metadata Documentation available.
-    /// </summary>
-    [EdmComplexTypeAttribute(NamespaceName="CoreEntities", Name="GetServiceHolders_Result")]
-    [DataContractAttribute(IsReference=true)]
-    [Serializable()]
-    public partial class GetServiceHolders_Result : ComplexObject
-    {
-        #region Primitive Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.Guid> RecurringServiceId
-        {
-            get
-            {
-                return _RecurringServiceId;
-            }
-            set
-            {
-                OnRecurringServiceIdChanging(value);
-                ReportPropertyChanging("RecurringServiceId");
-                _RecurringServiceId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("RecurringServiceId");
-                OnRecurringServiceIdChanged();
-            }
-        }
-        private Nullable<global::System.Guid> _RecurringServiceId;
-        partial void OnRecurringServiceIdChanging(Nullable<global::System.Guid> value);
-        partial void OnRecurringServiceIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.Guid> ServiceId
-        {
-            get
-            {
-                return _ServiceId;
-            }
-            set
-            {
-                OnServiceIdChanging(value);
-                ReportPropertyChanging("ServiceId");
-                _ServiceId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("ServiceId");
-                OnServiceIdChanged();
-            }
-        }
-        private Nullable<global::System.Guid> _ServiceId;
-        partial void OnServiceIdChanging(Nullable<global::System.Guid> value);
-        partial void OnServiceIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> OccurDate
-        {
-            get
-            {
-                return _OccurDate;
-            }
-            set
-            {
-                OnOccurDateChanging(value);
-                ReportPropertyChanging("OccurDate");
-                _OccurDate = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("OccurDate");
-                OnOccurDateChanged();
-            }
-        }
-        private Nullable<global::System.DateTime> _OccurDate;
-        partial void OnOccurDateChanging(Nullable<global::System.DateTime> value);
-        partial void OnOccurDateChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String ServiceName
-        {
-            get
-            {
-                return _ServiceName;
-            }
-            set
-            {
-                OnServiceNameChanging(value);
-                ReportPropertyChanging("ServiceName");
-                _ServiceName = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("ServiceName");
-                OnServiceNameChanged();
-            }
-        }
-        private global::System.String _ServiceName;
-        partial void OnServiceNameChanging(global::System.String value);
-        partial void OnServiceNameChanged();
-
-        #endregion
-
-    }
     
     /// <summary>
     /// No Metadata Documentation available.

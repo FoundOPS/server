@@ -57,7 +57,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
         {
             _designLocations.Add(new Location
             {
-                Name = "Adelino's Old World Kitchen",
                 AddressLineOne = "112 N 3rd St",
                 City = "Lafayette",
                 State = "IN",
@@ -69,7 +68,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             _designLocations.Add(new Location
             {
-                Name = "Apollo Lounge",
                 AddressLineOne = "1758 N Lancer St",
                 City = "Peru",
                 State = "IN",
@@ -82,7 +80,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             _designLocations.Add(new Location
             {
-                Name = "Arctic White Soft Serve Ice",
                 AddressLineOne = "1108 E Markland Ave",
                 City = "Kokomo",
                 State = "IN",
@@ -94,7 +91,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             _designLocations.Add(new Location
             {
-                Name = "Akropolis Restaraunt",
                 AddressLineOne = "3311 South St",
                 City = "Lafayette",
                 State = "IN",
@@ -106,7 +102,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             _designLocations.Add(new Location
             {
-                Name = "Arby's",
                 AddressLineOne = "2219 Sagamore Pky S",
                 City = "Lafayette",
                 State = "IN",
@@ -118,7 +113,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             _designLocations.Add(new Location
             {
-                Name = "Applebee's Neighborhood Grill",
                 AddressLineOne = "2432 E Wabash St",
                 City = "Frankfort",
                 State = "IN",
@@ -130,7 +124,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             _designLocations.Add(new Location
             {
-                Name = "Black Sparrow",
                 AddressLineOne = "223 Main St",
                 City = "Lafayette",
                 State = "IN",
@@ -142,7 +135,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             _designLocations.Add(new Location
             {
-                Name = "Artie's Tenderloin",
                 AddressLineOne = "922 S Main St",
                 City = "Kokomo",
                 State = "IN",
@@ -154,7 +146,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             _designLocations.Add(new Location
             {
-                Name = "Bistro 501",
                 AddressLineOne = "501 Main St",
                 City = "Lafayette",
                 State = "IN",
@@ -166,7 +157,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             _designLocations.Add(new Location
             {
-                Name = "Blue Fin Bistro Sushi Lafayette",
                 AddressLineOne = "2 S 4th St",
                 City = "Lafayette",
                 State = "IN",
@@ -178,7 +168,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             _designLocations.Add(new Location
             {
-                Name = "Arthur's",
                 AddressLineOne = "111 E Main St",
                 AddressLineTwo = "Crawfordsville",
                 City = "Lafayette",
@@ -191,7 +180,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             _designLocations.Add(new Location
             {
-                Name = "Barcelona Tapas",
                 AddressLineOne = "201 N Delaware St",
                 City = "Indianapolis",
                 State = "IN",
@@ -203,7 +191,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             _designLocations.Add(new Location
             {
-                Name = "Bruno's Pizza and Big O's Sports Room",
                 AddressLineOne = "212 Brown St",
                 City = "West Lafayette",
                 State = "IN",
@@ -214,20 +201,18 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             });
 
             _designLocations.Add(new Location
-                                      {
-                                          Name = "Bob Evans Restaurant",
-                                          AddressLineOne = "4300 State Road 26 E",
-                                          City = "Lafayette",
-                                          State = "IN",
-                                          ZipCode = "47905-4819",
-                                          Latitude = (decimal?)40.417733,
-                                          Longitude = (decimal?)-86.824187,
-                                          BusinessAccountId = businessAccountId
-                                      });
+            {
+                AddressLineOne = "4300 State Road 26 E",
+                City = "Lafayette",
+                State = "IN",
+                ZipCode = "47905-4819",
+                Latitude = (decimal?)40.417733,
+                Longitude = (decimal?)-86.824187,
+                BusinessAccountId = businessAccountId
+            });
 
             _designLocations.Add(new Location
             {
-                Name = "Burger King",
                 AddressLineOne = "2338 Teal Rd",
                 City = "Lafayette",
                 State = "IN",
@@ -239,7 +224,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             _designLocations.Add(new Location
             {
-                Name = "Buffalo Wild Wings Grill & Bar",
                 AddressLineOne = "2715 S Creasy Ln",
                 City = "Lafayette",
                 State = "IN",
@@ -251,7 +235,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             _designLocations.Add(new Location
             {
-                Name = "Campbell's On Main Street",
                 AddressLineOne = "101 E Main St",
                 City = "Crawfordsville",
                 State = "IN",
@@ -263,7 +246,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             _designLocations.Add(new Location
             {
-                Name = "Buca di Beppo - Downtown Indianapolis",
                 AddressLineOne = "35 N Illinois St",
                 City = "Indianapolis",
                 State = "IN",
@@ -275,7 +257,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             _designLocations.Add(new Location
             {
-                Name = "Covered Bridge Restaurant",
                 AddressLineOne = "5787 N Main St",
                 City = "Cayuga",
                 State = "IN",
@@ -287,7 +268,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             _designLocations.Add(new Location
             {
-                Name = "El Rodeo",
                 AddressLineOne = "140 Howard Ave",
                 City = "West Lafayette",
                 State = "IN",
@@ -299,7 +279,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             _designLocations.Add(new Location
             {
-                Name = "Dairy Queen",
                 AddressLineOne = "3949 State Road 38 E",
                 City = "Lafayette",
                 State = "IN",
@@ -311,7 +290,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             _designLocations.Add(new Location
             {
-                Name = "Diamond Coffee Company",
                 AddressLineOne = "3107 Builder Dr",
                 City = "Lafayette",
                 State = "IN",
@@ -323,7 +301,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             _designLocations.Add(new Location
             {
-                Name = "Crawfordsville Forum Family",
                 AddressLineOne = "1410 Darlington Ave",
                 City = "Crawfordsville",
                 State = "IN",
@@ -335,7 +312,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             _designLocations.Add(new Location
             {
-                Name = "Culver's",
                 AddressLineOne = "1855 S Us-231",
                 City = "Crawfordsville",
                 State = "IN",

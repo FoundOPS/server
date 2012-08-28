@@ -7,7 +7,7 @@
     <telerik:RadGridView x:Name="LocationsRadGridView" AutoGenerateColumns="False" IsReadOnly="True" ShowGroupPanel="False" IsFilteringAllowed="True"
             RowIndicatorVisibility="Collapsed" SelectedItem="{Binding SelectedEntity, Mode=TwoWay}" ItemsSource="{Binding QueryableCollectionView}">
         <telerik:RadGridView.Columns>
-            <telerik:GridViewDataColumn Header="Name" DataMemberBinding="{Binding Name}" />
+            <telerik:GridViewDataColumn Header="Address" DataMemberBinding="{Binding AddressCity}" />
             <!--Causing crashing bug-->
             <!--<telerik:GridViewDataColumn Header="Billing Location">
               <telerik:GridViewDataColumn.CellTemplate>

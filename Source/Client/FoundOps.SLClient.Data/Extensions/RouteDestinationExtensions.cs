@@ -51,7 +51,7 @@ namespace FoundOps.Core.Models.CoreEntities
                         return routeTaskName;
                 }
 
-                return Location != null ? this.Location.Name : "**********************";
+                return Location != null ? this.Location.AddressLineOne : "**********************";
             }
         }
 
