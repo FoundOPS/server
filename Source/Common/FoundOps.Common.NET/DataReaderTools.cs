@@ -14,9 +14,9 @@ namespace FoundOps.Common.NET
         /// <returns>
         /// List of each row as a Dictionary with the Name as the Key, and Value as the Value
         /// </returns>
-        public static List<Dictionary<string, object>> GetDynamicSqlData(string connectionstring, SqlCommand comm)
+        public static Tuple<Dictionary<string, Type>, List<Dictionary<string, object>>> GetDynamicSqlData(string connectionstring, SqlCommand comm)
         {
-            List<Dictionary<string, object>> result;
+            Tuple<Dictionary<string, Type>, List<Dictionary<string, object>>> result;
 
             using (var conn = new SqlConnection(connectionstring))
             {
@@ -25,11 +25,19 @@ namespace FoundOps.Common.NET
                 {
                     conn.Open();
 
+                    var columnHeaders = new Dictionary<string, Type>();
+
                     using (var reader = comm.ExecuteReader())
                     {
-                        result = reader.Cast<DbDataRecord>().AsParallel()
+                        var rows = reader.Cast<DbDataRecord>().AsParallel()
                             //In parallel convert to dictionaries, force iterate with ToList so the connection/reader can be disposed
                              .Select(RecordToDictionary).ToList();
+
+                        //Add the FieldTypes
+                        for (int i = 0; i < reader.FieldCount; i++)
+                            columnHeaders.Add(reader.GetName(i), reader.GetFieldType(i));
+
+                        result = new Tuple<Dictionary<string, Type>, List<Dictionary<string, object>>>(columnHeaders, rows);
                     }
                     conn.Close();
                 }
