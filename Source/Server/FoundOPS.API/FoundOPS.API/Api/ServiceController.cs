@@ -93,53 +93,48 @@ namespace FoundOPS.API.Api
             var connectionString = ConfigWrapper.ConnectionString("CoreConnectionString");
             var result = DataReaderTools.GetDynamicSqlData(connectionString, command);
 
-            var list = result.OrderBy(d => (DateTime)d["OccurDate"]).ToList();
+            var list = result.Item2.OrderBy(d => (DateTime)d["OccurDate"]).ToList();
 
-            if (list.Any())
+            //Insert the first row to be a dictionary of the column's types
+
+            //load the service template with fields
+            var serviceTemplateWithFields = (from serviceTemplate in _coreEntitiesContainer.ServiceTemplates.Where(st => st.Name == serviceType && st.LevelInt == (int)ServiceTemplateLevel.ServiceProviderDefined)
+                                             from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
+                                             from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty()
+                                             select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations }).ToArray()
+                                             .Select(a => a.serviceTemplate).First();
+
+            var columnTypes = new Dictionary<string, object>();
+            foreach (var key in result.Item1.Keys)
             {
-                //Insert the first row to be a dictionary of the column's types
-
-                //load the service template with fields
-                var serviceTemplateWithFields = (from serviceTemplate in _coreEntitiesContainer.ServiceTemplates.Where(st => st.Name == serviceType && st.LevelInt == (int)ServiceTemplateLevel.ServiceProviderDefined)
-                                                 from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
-                                                 from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty()
-                                                 select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations }).ToArray()
-                                                 .Select(a => a.serviceTemplate).First();
-
-                var columnTypes = new Dictionary<string, object>();
-                var firstServiceHolder = list.First();
-                foreach (var key in firstServiceHolder.Keys)
+                //certain values are not fields, hardcode those
+                if (key == "OccurDate")
                 {
-                    //certain values are not fields, hardcode those
-                    if (key == "OccurDate")
-                    {
-                        columnTypes.Add(key, "date");
-                        continue;
-                    }
-                    if (key == "RecurringServiceId" || key == "ServiceId")
-                    {
-                        columnTypes.Add(key, "guid");
-                        continue;
-                    }
-
-                    //find the Field Type
-                    var field = serviceTemplateWithFields.Fields.FirstOrDefault(f => f.Name == key.Replace("_", " "));
-                    var type = Models.Field.GetJavascriptFormat(field);
-
-                    columnTypes.Add(key, type);
+                    columnTypes.Add(key, "date");
+                    continue;
+                }
+                if (key == "RecurringServiceId" || key == "ServiceId")
+                {
+                    columnTypes.Add(key, "guid");
+                    continue;
                 }
 
-                if (single) //just return the types
-                {
-                    return Request.CreateResponse(HttpStatusCode.OK, new List<Dictionary<string, object>> { columnTypes }.AsQueryable());
-                }
+                //find the Field Type
+                var field = serviceTemplateWithFields.Fields.FirstOrDefault(f => f.Name == key.Replace("_", " "));
+                var type = Models.Field.GetJavascriptFormat(field);
 
-                list.Insert(0, columnTypes);
+                columnTypes.Add(key, type);
             }
+
+            if (single) //just return the types
+            {
+                return Request.CreateResponse(HttpStatusCode.OK, new List<Dictionary<string, object>> { columnTypes }.AsQueryable());
+            }
+
+            list.Insert(0, columnTypes);
 
             return Request.CreateResponse(HttpStatusCode.OK, list.AsQueryable());
         }
-
 
         /// <summary>
         /// Gets the service and fields.
@@ -230,6 +225,9 @@ namespace FoundOPS.API.Api
             var businessAccount = _coreEntitiesContainer.BusinessAccount(service.ServiceProviderId, new[] { RoleType.Regular, RoleType.Administrator, RoleType.Mobile }).FirstOrDefault();
             if (businessAccount == null)
                 return Request.CreateResponse(HttpStatusCode.Unauthorized);
+
+            if (service.ClientId == Guid.Empty)
+                return Request.CreateResponse(HttpStatusCode.BadRequest, "No client selected");
 
             var existingService = _coreEntitiesContainer.Services.FirstOrDefault(s => s.Id == service.Id);
 
