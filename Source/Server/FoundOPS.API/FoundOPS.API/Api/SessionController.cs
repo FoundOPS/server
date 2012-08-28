@@ -83,6 +83,8 @@ namespace FoundOPS.API.Api
             var user = _coreEntitiesContainer.CurrentUserAccount().Include(ua => ua.RoleMembership)
                 .Include("RoleMembership.Blocks").Include("RoleMembership.OwnerBusinessAccount").First();
 
+            //apply timezone
+
             //Load all of the party images for the owner's of roles, and the current user account
             var partyIds = user.RoleMembership.Select(r => r.OwnerBusinessAccountId).Distinct()
                 .Union(new[] { new Guid?(user.Id) }).ToArray();
@@ -109,6 +111,9 @@ namespace FoundOPS.API.Api
             config.avatarUrl = user.PartyImage != null
                                    ? partyImageUrls[user.PartyImage.Id]
                                    : "img/emptyPerson.png";
+
+            config.userTimeZoneOffset = user.UserTimeZoneOffset.ToString(@"hh\:mm");
+            config.userTimeZoneOffset = user.UserTimeZoneOffset.TotalHours > 0 ? "+" + config.userTimeZoneOffset : "-" + config.userTimeZoneOffset;
 
             var jRoles = new List<JObject>();
             //Go through each of the user's roles
@@ -200,7 +205,7 @@ namespace FoundOPS.API.Api
             //remove old configurations for this role
             configurations.RemoveAll(c => c.RoleId == roleId);
 
-            foreach(var config in columnConfigurations)
+            foreach (var config in columnConfigurations)
             {
                 config.RoleId = roleId;
             }

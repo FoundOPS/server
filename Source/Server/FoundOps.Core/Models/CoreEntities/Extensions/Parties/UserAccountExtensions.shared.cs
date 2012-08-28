@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Linq;
-using System.Runtime.Serialization;
 using FoundOps.Common.Composite.Entities;
 
 namespace FoundOps.Core.Models.CoreEntities
@@ -74,6 +73,21 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 this.GenderInt = Convert.ToInt16(value);
             }
+        }
+
+        partial void OnTimeZoneChanged()
+        {
+#if! SILVERLIGHT
+            if (this.TimeZone == null)
+            {
+                this.UserTimeZoneOffset = new TimeSpan(0, 0, 0, 0);
+            }
+            else
+            {
+                var tst = TimeZoneInfo.FindSystemTimeZoneById(this.TimeZone);
+                this.UserTimeZoneOffset = tst.BaseUtcOffset;
+            }
+#endif
         }
 
         partial void OnGenderIntChanged()

@@ -44,7 +44,6 @@ namespace FoundOps.Core.Models.CoreEntities
         [DataMember]
         public string TemporaryPassword { get; set; }
 
-
         /// <summary>
         /// The user's timezone offset (depends on their TimeZone settings)
         /// It's not shared so that it doesn't get generated twice on the client.
