@@ -21,6 +21,8 @@ namespace FoundOps.Common.NET
             using (var conn = new SqlConnection(connectionstring))
             {
                 comm.Connection = conn;
+                //3 minutes
+                comm.CommandTimeout = 180;
                 using (comm)
                 {
                     conn.Open();

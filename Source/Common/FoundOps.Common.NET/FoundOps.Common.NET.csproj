@@ -73,6 +73,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Server\FoundOPS.API\packages\EntityFramework.5.0.0-rc\lib\net40\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="Kent.Boogaart.KBCsv">
+      <HintPath>..\..\Server\FoundOPS.API\FoundOPS.API\bin\Kent.Boogaart.KBCsv.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
@@ -124,6 +127,7 @@
       <Link>Silverlight\StreamHelpers.cs</Link>
     </Compile>
     <Compile Include="BingLocationServices.cs" />
+    <Compile Include="CSVTools.cs" />
     <Compile Include="DataReaderTools.cs" />
     <Compile Include="EncryptionTools.cs" />
     <Compile Include="EntityCloneTools.cs" />
