@@ -143,6 +143,21 @@ namespace FoundOps.Core.Models.CoreEntities
         }
     }
 
+    [MetadataTypeAttribute(typeof(FieldMetadata))]
+    public partial class Field
+    {
+        internal sealed class FieldMetadata
+        {
+            private FieldMetadata()
+            {
+            }
+
+            //This will only allow alphanumeric characters and spaces
+            [RegularExpression(@"^([a-zA-Z0-9\s]*)$", ErrorMessage = "Special characters are not allowed")]
+            public string Name { get; set; }
+        }
+    }
+
     [MetadataTypeAttribute(typeof(InvoiceMetadata))]
     public partial class Invoice
     {
