@@ -104,23 +104,11 @@ namespace FoundOPS.API.Api
                                              select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations }).ToArray()
                                              .Select(a => a.serviceTemplate).First();
 
-            var columnTypes = new Dictionary<string, object>();
-            foreach (var key in result.Item1.Keys)
+            //certain values are not fields, hardcode those
+            var columnTypes = new Dictionary<string, object> { { "OccurDate", "date" }, { "RecurringServiceId", "guid" }, { "ServiceId", "guid" }, { "ClientName", "string" } };
+            foreach (var field in serviceTemplateWithFields.Fields)
             {
-                //certain values are not fields, hardcode those
-                if (key == "OccurDate")
-                {
-                    columnTypes.Add(key, "date");
-                    continue;
-                }
-                if (key == "RecurringServiceId" || key == "ServiceId")
-                {
-                    columnTypes.Add(key, "guid");
-                    continue;
-                }
-
-                //find the Field Type
-                var field = serviceTemplateWithFields.Fields.FirstOrDefault(f => f.Name == key.Replace("_", " "));
+                var key = field.Name.Replace(" ", "_");
                 var type = Models.Field.GetJavascriptFormat(field);
 
                 columnTypes.Add(key, type);
