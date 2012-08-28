@@ -480,30 +480,11 @@ namespace FoundOps.Server.Services.CoreDomainService
         #region User Accounts
 
         /// <summary>
-        /// Gets the current user account, includes PartyImage.
+        /// Gets the current user account
         /// </summary>
         public UserAccount CurrentUserAccount()
         {
-            var currentUserAccount = ObjectContext.CurrentUserAccount().FirstOrDefault();
-
-            if (currentUserAccount != null)
-            {
-                currentUserAccount.PartyImageReference.Load();
-
-                if (currentUserAccount.TimeZone == null)
-                {
-                    currentUserAccount.UserTimeZoneOffset = new TimeSpan(0, 0, 0, 0);
-                }
-                else
-                {
-                    var tst = TimeZoneInfo.FindSystemTimeZoneById(currentUserAccount.TimeZone);
-                    currentUserAccount.UserTimeZoneOffset = tst.BaseUtcOffset;
-                }
-
-                return currentUserAccount;
-            }
-
-            throw new Exception("Something went very, very wrong...");
+            return ObjectContext.CurrentUserAccount().First();
         }
 
         /// <summary>

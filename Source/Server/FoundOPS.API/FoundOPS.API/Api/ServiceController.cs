@@ -260,8 +260,7 @@ namespace FoundOPS.API.Api
                     //If the field is a OptionsField, update the Options
                     if (optionsField != null)
                     {
-                        var foundOpsOptions =
-                            _coreEntitiesContainer.Options.Where(o => o.OptionsFieldId == optionsField.Id).ToArray();
+                        var foundOpsOptions = _coreEntitiesContainer.Options.Where(o => o.OptionsFieldId == optionsField.Id).ToArray();
 
                         if (!foundOpsOptions.Any())
                             continue;
@@ -288,7 +287,7 @@ namespace FoundOPS.API.Api
                     ServiceProviderId = service.ServiceProviderId,
                     ClientId = service.ClientId,
                     RecurringServiceId = service.RecurringServiceId,
-                    ServiceTemplate = new ServiceTemplate { Id = service.Id, ServiceTemplateLevel = ServiceTemplateLevel.ServiceDefined }
+                    ServiceTemplate = new ServiceTemplate { Id = service.Id, Name = service.Name, ServiceTemplateLevel = ServiceTemplateLevel.ServiceDefined }
                 };
 
                 //Add all fields from the generated Service to the Service Template
