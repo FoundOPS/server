@@ -1,4 +1,5 @@
-﻿using FoundOps.Common.Tools;
+﻿using System.Windows.Browser;
+using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.UI.Tools;
@@ -59,8 +60,12 @@ namespace FoundOps.SLClient.UI.Controls.Services
             ServicesRadGridView.AddHandler(GridViewCellBase.CellDoubleClickEvent,
                 new EventHandler<RadRoutedEventArgs>((s, args) =>
                 {
-                    if (!IsMainGrid)
-                        VM.Services.MoveToDetailsView.Execute(null);
+                    var clientName = VM.Clients.SelectedEntity.Name;
+
+                    var hashCode = "view/services.html?ClientName=eq$" + clientName;
+
+                    HtmlPage.Window.Eval("silverlight.setSection({isSilverlight:false});");
+                    HtmlPage.Window.Eval("window.location.hash='" + hashCode + "';");
                 }), true);
 
             //Scroll the SelectedEntity to the middle
