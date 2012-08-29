@@ -65,33 +65,6 @@ with
 
 Add after </EntityContainer> (the one after FK association sets)
 
-      <Function Name="GetServiceHolders" IsComposable="false">
-        <CommandText>
-          SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName
-          FROM dbo.GetServiceHolders(@serviceProviderIdContext, @clientIdContext, @recurringServiceIdContext, @seedDate, @frontBackMinimum, @getPrevious, @getNext)
-        </CommandText>
-        <Parameter Name="serviceProviderIdContext"
-                   Mode="In"
-                   Type="uniqueidentifier"/>
-        <Parameter Name="clientIdContext"
-                   Mode="In"
-                   Type="uniqueidentifier"/>
-        <Parameter Name="recurringServiceIdContext"
-                   Mode="In"
-                   Type="uniqueidentifier"/>
-        <Parameter Name="seedDate"
-                   Mode="In"
-                   Type="datetime"/>
-        <Parameter Name="frontBackMinimum"
-                   Mode="In"
-                   Type="int"/>
-        <Parameter Name="getPrevious"
-                   Mode="In"
-                   Type="bit"/>
-        <Parameter Name="getNext"
-                   Mode="In"
-                   Type="bit"/>
-      </Function>
       <Function Name="GetResourcesWithLastPoint" IsComposable="false">
         <CommandText>
           SELECT EmployeeId, VehicleId, EntityName, Heading, Latitude, Longitude, CollectedTimeStamp, Speed, Source, RouteId, Accuracy

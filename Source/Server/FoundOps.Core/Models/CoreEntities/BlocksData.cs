@@ -152,9 +152,9 @@ namespace FoundOps.Core.Models.CoreEntities
                 Id = BlockConstants.RoutesBlockId,
                 Color = "green",
                 Name = "Routes",
-                HideFromNavigation = true,
                 IconUrl = "img/routes.png",
-                HoverIconUrl = "img/routesColor.png"
+                HoverIconUrl = "img/routesColor.png",
+                Url = "#view/routes.html"
             };
 
             //RoutesBlock is hidden for now
@@ -277,7 +277,8 @@ namespace FoundOps.Core.Models.CoreEntities
                 Color = "orange",
                 IconUrl = "img/locations.png",
                 HoverIconUrl = "img/locationsColor.png",
-                IsSilverlight = true
+                IsSilverlight = true,
+                HideFromNavigation = true
             };
 
             RegionsBlock = new Block

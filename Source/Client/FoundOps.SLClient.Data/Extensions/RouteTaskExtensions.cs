@@ -80,9 +80,9 @@ namespace FoundOps.Core.Models.CoreEntities
             get
             {
                 if (Location != null)
-                    return Location.Name;
+                    return Location.AddressCity;
 
-                return Location != null ? Location.Name : "";
+                return Location != null ? Location.AddressCity : "";
             }
         }
 

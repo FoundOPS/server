@@ -1,3 +1,4 @@
+using System.Data.Objects;
 using FoundOps.Core.Models;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.DesignData;
@@ -118,8 +119,15 @@ namespace FoundOps.Core.Tools
             var currentUsersEmail = HttpContext.Current.User.Identity.Name;
 
 #if DEBUG
-            if (ServerConstants.AutomaticLoginFoundOPSAdmin)
-                currentUsersEmail = "jperl@foundops.com";
+            switch (ServerConstants.LoginMode)
+            {
+                case ServerConstants.AutoLogin.Admin:
+                    currentUsersEmail = "jperl@foundops.com";
+                    break;
+                case ServerConstants.AutoLogin.Mobile:
+                    currentUsersEmail = "oshatken@foundops.com";
+                    break;
+            }
 #endif
             currentUsersEmail = currentUsersEmail.Trim();
             return coreEntitiesContainer.Parties.OfType<UserAccount>().Where(userAccount => userAccount.EmailAddress == currentUsersEmail);

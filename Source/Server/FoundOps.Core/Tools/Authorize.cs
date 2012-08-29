@@ -1,5 +1,6 @@
 ﻿using System.Web;
 using System.Web.Security;
+using FoundOps.Core.Models;
 
 namespace FoundOps.Core.Tools
 {
@@ -12,11 +13,17 @@ namespace FoundOps.Core.Tools
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
 #if DEBUG
-            if (Core.Models.ServerConstants.AutomaticLoginFoundOPSAdmin)
+
+            switch (ServerConstants.LoginMode)
             {
-                FormsAuthentication.SignOut();
-                FormsAuthentication.SetAuthCookie("jperl@foundops.com", false);
-                return true;
+                case ServerConstants.AutoLogin.Admin:
+                    FormsAuthentication.SignOut();
+                    FormsAuthentication.SetAuthCookie("jperl@foundops.com", false);
+                    return true;
+                case ServerConstants.AutoLogin.Mobile:
+                    FormsAuthentication.SignOut();
+                    FormsAuthentication.SetAuthCookie("oshatken@foundops.com", false);
+                    return true;
             }
 #endif
 

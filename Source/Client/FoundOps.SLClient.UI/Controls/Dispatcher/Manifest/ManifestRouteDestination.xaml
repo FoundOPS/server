@@ -48,7 +48,7 @@
                                 </local:MultiBindings>
                             </local:BindingUtil.MultiBindings>
                         </TextBlock>
-                        <TextBlock Text="{Binding Location.Name}">
+                        <TextBlock Text="{Binding Client.Name}">
                             <local:BindingUtil.MultiBindings>
                                 <local:MultiBindings>
                                     <local:MultiBinding TargetProperty="Visibility" Converter="{StaticResource LocationNameVisibilityConverter}">

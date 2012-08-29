@@ -1,8 +1,4 @@
-﻿using System.ComponentModel;
-using System.Windows.Controls.Primitives;
-using System.Windows.Input;
-using System.Windows.Shapes;
-using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
+﻿using System.Windows.Browser;
 using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Services;
@@ -11,6 +7,7 @@ using FoundOps.SLClient.Data.Tools;
 using Telerik.Windows.Data;
 using ItemsControlExtensions = FoundOps.Common.Silverlight.Tools.ItemsControlExtensions;
 using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Windows.Controls;
@@ -63,8 +60,12 @@ namespace FoundOps.SLClient.UI.Controls.Services
             ServicesRadGridView.AddHandler(GridViewCellBase.CellDoubleClickEvent,
                 new EventHandler<RadRoutedEventArgs>((s, args) =>
                 {
-                    if (!IsMainGrid)
-                        VM.Services.MoveToDetailsView.Execute(null);
+                    var clientName = VM.Clients.SelectedEntity.Name;
+
+                    var hashCode = "view/services.html?ClientName=eq$" + clientName;
+
+                    HtmlPage.Window.Eval("silverlight.setSection({isSilverlight:false});");
+                    HtmlPage.Window.Eval("window.location.hash='" + hashCode + "';");
                 }), true);
 
             //Scroll the SelectedEntity to the middle
@@ -114,37 +115,6 @@ namespace FoundOps.SLClient.UI.Controls.Services
             }
         }
 
-        /// <summary>
-        /// Fixes scroll stuck bug.
-        /// </summary>
-        private void ClearScrollBarFocus()
-        {
-            var thumbs = ServicesRadGridViewScrollViewer.ChildrenOfType<Thumb>();
-            foreach (var thumb in thumbs)
-                thumb.CancelDrag();
-        }
-
-        /// <summary>
-        /// The scroll bar position of the ServicesGrid.
-        /// </summary>
-        private ScrollBarPosition ScrollBarPosition
-        {
-            get
-            {
-                //If it is within the top 5% of the scrollbar consider it to be at the top
-                if (Math.Abs(ServicesRadGridViewScrollViewer.VerticalOffset - 0)
-                    < (ServicesRadGridViewScrollViewer.ScrollableHeight * .05))
-                    return ScrollBarPosition.Top;
-
-                //If it is within the bottom 5% of the scrollbar consider it to be at the bottom
-                if (Math.Abs(ServicesRadGridViewScrollViewer.VerticalOffset - ServicesRadGridViewScrollViewer.ScrollableHeight)
-                    < (ServicesRadGridViewScrollViewer.ScrollableHeight * .05))
-                    return ScrollBarPosition.Bottom;
-
-                return ScrollBarPosition.Middle;
-            }
-        }
-
         //Prevent hooking up to ScrollChanged more than once
         private bool _setupScrollChanged;
         /// <summary>
@@ -157,56 +127,11 @@ namespace FoundOps.SLClient.UI.Controls.Services
                 return;
 
             _setupScrollChanged = true;
-            ServicesRadGridViewScrollViewer.ScrollChanged += (s, args) =>
-            {
-                //Only allow push forward or back if all of the conditions are satisfied
-                //a) this control is not automatically scrolling an item to the middle
-                //b) the ServicesVM is not loading
-                //c) the last load was 1 second ago (allow time for the RadGridView to update)
-                if (_forceScrolling || VM.Services.IsLoading || DateTime.UtcNow - VM.Services.LastLoad < TimeSpan.FromSeconds(1))
-                    return;
-
-                //Scrolled to the top
-                if (args.VerticalChange < 0 && ScrollBarPosition == ScrollBarPosition.Top)
-                {
-                    //If the scroll viewer is still at the top in .5 second PushBackGeneratedServices
-                    Rxx3.RunDelayed(TimeSpan.FromMilliseconds(500), () =>
-                    {
-                        if (ScrollBarPosition != ScrollBarPosition.Top) return;
-
-                        //Clear the scroll focus (to prevent getting stuck) and push back services
-                        ClearScrollBarFocus();
-
-                        VM.Services.PushBackServices();
-                        //Debug.WriteLine("Scroll to Top");
-                    });
-                }
-
-                //Scrolled to the bottom
-                if (args.VerticalChange > 0 && ScrollBarPosition == ScrollBarPosition.Bottom)
-                {
-                    //If the scroll viewer is still at the bottom in .5 seconds PushForwardGeneratedServices
-                    Rxx3.RunDelayed(TimeSpan.FromMilliseconds(500), () =>
-                    {
-                        if (ScrollBarPosition != ScrollBarPosition.Bottom) return;
-
-                        //Clear the scroll focus (to prevent getting stuck) and push forward services
-                        ClearScrollBarFocus();
-
-                        VM.Services.PushForwardServices();
-                        //Debug.WriteLine("Scroll to Bottom");
-                    });
-                }
-            };
         }
 
-        //Keep track of when this control is force scrolling an item into the middle
-        //to prevent triggering PushBackServices & PushForwardServices
-        private bool _forceScrolling;
         private void ScrollToMiddle(object item)
         {
             if (item == null) return;
-            _forceScrolling = true;
 
             //ScrollIntoViewAsync to scroll the selected item to the top
             ServicesRadGridView.ScrollIntoViewAsync(item, r =>
@@ -215,7 +140,6 @@ namespace FoundOps.SLClient.UI.Controls.Services
                 var container = ServicesRadGridView.ItemContainerGenerator.ContainerFromItem(item) as UIElement;
                 if (container == null)
                 {
-                    _forceScrolling = false;
                     return;
                 }
                 //Now find the middle, and scroll to it
@@ -223,7 +147,6 @@ namespace FoundOps.SLClient.UI.Controls.Services
                 Size size = container.RenderSize;
                 if (Math.Abs(size.Width - 0) < 1 && Math.Abs(size.Height - 0) < 1)
                 {
-                    _forceScrolling = false;
                     return;
                 }
                 Point center = container.TransformToVisual(ServicesRadGridViewScrollViewer).Transform(new Point(size.Width / 2, size.Height / 2));
@@ -239,8 +162,6 @@ namespace FoundOps.SLClient.UI.Controls.Services
                     row.IsCurrent = true;
                     row.Focus();
                 }
-
-                _forceScrolling = false;
             });
         }
 

@@ -38,3 +38,4 @@ Source/Server/FoundOps.Server/Resources/Developer.config
 Source/Server/FoundOPS.API/FoundOPS.API.Azure/csx/
 Source/Server/FoundOps.Azure/csx
 Source/Server/FoundOps.Server/app
+Source/Server/FoundOps.Server/Web.config

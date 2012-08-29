@@ -25,7 +25,7 @@ namespace FoundOps.Core.Models.Azure
         /// <summary>
         /// The default expiration of a shared access key. Cannot be more than 1 hour without a signed identifier.
         /// </summary>
-        public static TimeSpan DefaultExpiration = TimeSpan.FromHours(1);
+        public static TimeSpan DefaultExpiration = TimeSpan.FromMinutes(59);
 
         /// <summary>
         /// The default timeout.
@@ -62,12 +62,7 @@ namespace FoundOps.Core.Models.Azure
             if (blob == null)
                 return null;
 
-            var url = blob.GetSharedAccessSignature(new SharedAccessPolicy { Permissions = SharedAccessPermissions.Read, SharedAccessExpiryTime = DateTime.UtcNow + DefaultExpiration });
-
-#if DEBUG
-            //Need to wait a little while debugging or else the shared access key wont be ready by the time it is accessed
-            System.Threading.Thread.Sleep(TimeSpan.FromSeconds(1));
-#endif
+            var url = blob.GetSharedAccessSignature(new SharedAccessPolicy { SharedAccessStartTime = DateTime.UtcNow.AddMinutes(-1), Permissions = SharedAccessPermissions.Read, SharedAccessExpiryTime = DateTime.UtcNow + DefaultExpiration });
 
             return url;
         }

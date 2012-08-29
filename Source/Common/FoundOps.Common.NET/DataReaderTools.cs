@@ -12,36 +12,40 @@ namespace FoundOps.Common.NET
         /// Execute a SqlCommand and return it's data.
         /// </summary>
         /// <returns>
-        /// Item1 = The field types. A Dictionary of each column name and it's Type
-        /// Item2 = List of each row as a Dictionary with the Name as the Key, and Value as the Value 
+        /// List of each row as a Dictionary with the Name as the Key, and Value as the Value
         /// </returns>
         public static Tuple<Dictionary<string, Type>, List<Dictionary<string, object>>> GetDynamicSqlData(string connectionstring, SqlCommand comm)
         {
-            List<Dictionary<string, object>> result;
-            var types = new Dictionary<string, Type>();
+            Tuple<Dictionary<string, Type>, List<Dictionary<string, object>>> result;
 
             using (var conn = new SqlConnection(connectionstring))
             {
                 comm.Connection = conn;
+                //3 minutes
+                comm.CommandTimeout = 180;
                 using (comm)
                 {
                     conn.Open();
 
+                    var columnHeaders = new Dictionary<string, Type>();
+
                     using (var reader = comm.ExecuteReader())
                     {
-                        result = reader.Cast<DbDataRecord>().AsParallel()
+                        var rows = reader.Cast<DbDataRecord>().AsParallel()
                             //In parallel convert to dictionaries, force iterate with ToList so the connection/reader can be disposed
                              .Select(RecordToDictionary).ToList();
 
                         //Add the FieldTypes
                         for (int i = 0; i < reader.FieldCount; i++)
-                            types.Add(reader.GetName(i), reader.GetFieldType(i));
+                            columnHeaders.Add(reader.GetName(i), reader.GetFieldType(i));
+
+                        result = new Tuple<Dictionary<string, Type>, List<Dictionary<string, object>>>(columnHeaders, rows);
                     }
                     conn.Close();
                 }
             }
 
-            return new Tuple<Dictionary<string, Type>, List<Dictionary<string, object>>>(types, result);
+            return result;
         }
 
         private static Dictionary<string, object> RecordToDictionary(DbDataRecord record)

@@ -9,7 +9,6 @@ using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.UI.ViewModels;
 using FoundOps.Core.Models.CoreEntities;
 using Telerik.Windows.Controls.GridView;
-using PropertyMetadata = System.Windows.PropertyMetadata;
 using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
 
 namespace FoundOps.SLClient.UI.Controls.Clients

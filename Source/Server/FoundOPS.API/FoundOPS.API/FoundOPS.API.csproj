@@ -228,8 +228,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Api\AuthController.cs" />
+    <Compile Include="Api\ClientsController.cs" />
+    <Compile Include="Api\LocationsController.cs" />
     <Compile Include="Api\ErrorController.cs" />
+    <Compile Include="Api\SessionController.cs" />
     <Compile Include="Api\TaskStatusesController.cs" />
     <Compile Include="Controllers\HelperController.cs" />
     <Compile Include="Api\SettingsController.cs" />
@@ -237,12 +239,17 @@
     <Compile Include="Api\ToolsController.cs" />
     <Compile Include="Api\RoutesController.cs" />
     <Compile Include="Api\TrackPointController.cs" />
+    <Compile Include="Controllers\ServiceController.cs" />
+    <Compile Include="CoreDomainContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Client.cs" />
+    <Compile Include="Models\ColumnConfiguration.cs" />
     <Compile Include="Models\ContactInfo.cs" />
     <Compile Include="Models\BusinessSettings.cs" />
+    <Compile Include="Models\Column.cs" />
+    <Compile Include="Models\ServiceType.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\RouteTask.cs" />
     <Compile Include="Models\LocationField.cs" />
@@ -311,14 +318,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="disableTimeout.cmd">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </None>
     <Content Include="Web.base.TestRelease.config">
       <DependentUpon>Web.base.config</DependentUpon>
     </Content>
     <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="disableTimeout.cmd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

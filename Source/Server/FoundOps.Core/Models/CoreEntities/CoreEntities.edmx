@@ -331,33 +331,6 @@
             <End Role="Vehicles" EntitySet="Vehicles" />
           </AssociationSet>
         </EntityContainer>
-      <Function Name="GetServiceHolders" IsComposable="false">
-        <CommandText>
-          SELECT RecurringServiceId, ServiceId, OccurDate, ServiceName
-          FROM dbo.GetServiceHolders(@serviceProviderIdContext, @clientIdContext, @recurringServiceIdContext, @seedDate, @frontBackMinimum, @getPrevious, @getNext)
-        </CommandText>
-        <Parameter Name="serviceProviderIdContext"
-                   Mode="In"
-                   Type="uniqueidentifier"/>
-        <Parameter Name="clientIdContext"
-                   Mode="In"
-                   Type="uniqueidentifier"/>
-        <Parameter Name="recurringServiceIdContext"
-                   Mode="In"
-                   Type="uniqueidentifier"/>
-        <Parameter Name="seedDate"
-                   Mode="In"
-                   Type="datetime"/>
-        <Parameter Name="frontBackMinimum"
-                   Mode="In"
-                   Type="int"/>
-        <Parameter Name="getPrevious"
-                   Mode="In"
-                   Type="bit"/>
-        <Parameter Name="getNext"
-                   Mode="In"
-                   Type="bit"/>
-      </Function>
       <Function Name="GetResourcesWithLastPoint" IsComposable="false">
         <CommandText>
           SELECT EmployeeId, VehicleId, EntityName, Heading, Latitude, Longitude, CollectedTimeStamp, Speed, Source, RouteId, Accuracy
@@ -559,7 +532,6 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Name" Type="nvarchar(max)" />
           <Property Name="AddressLineOne" Type="nvarchar(max)" />
           <Property Name="Longitude" Type="decimal" Precision="11" Scale="8" />
           <Property Name="ZipCode" Type="nvarchar(max)" />
@@ -623,6 +595,7 @@
           <Property Name="GenderInt" Type="smallint" />
           <Property Name="DateOfBirth" Type="datetime" />
           <Property Name="TimeZone" Type="nvarchar(max)" />
+          <Property Name="ColumnConfigurations" Type="nvarchar(max)" />
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="PartyRole">
@@ -1765,6 +1738,23 @@
         <Function Name="DeleteUserAccountBasedOnId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="providerId" Type="uniqueidentifier" Mode="In" />
         </Function>
+        <Function Name="GetServiceHolders" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="serviceProviderIdContext" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="clientIdContext" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="recurringServiceIdContext" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="firstDate" Type="date" Mode="In" />
+          <Parameter Name="lastDate" Type="date" Mode="In" />
+          <Parameter Name="serviceTypeContext" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="withFields" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="GetServiceHoldersWithFields" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="serviceProviderIdContext" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="clientIdContext" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="recurringServiceIdContext" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="firstDate" Type="date" Mode="In" />
+          <Parameter Name="lastDate" Type="date" Mode="In" />
+          <Parameter Name="serviceTypeContext" Type="nvarchar(max)" Mode="In" />
+        </Function>
         <Function Name="PropagateNameChange" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="serviceTemplateId" Type="uniqueidentifier" Mode="In" />
         </Function>
@@ -2038,41 +2028,41 @@
             <End Role="RouteTask" EntitySet="RouteTasks" />
           </AssociationSet>
           <FunctionImport Name="DeleteBasicPartyBasedOnId">
-            <Parameter Name="providerId" Mode="In" Type="Guid" />
+          <Parameter Name="providerId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteBusinessAccountBasedOnId">
-            <Parameter Name="providerId" Mode="In" Type="Guid" />
+          <Parameter Name="providerId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteClientBasedOnId">
-            <Parameter Name="clientId" Mode="In" Type="Guid" />
+          <Parameter Name="clientId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteFieldAndChildrenBasedOnFieldId">
-            <Parameter Name="parentFieldId" Mode="In" Type="Guid" />
+          <Parameter Name="parentFieldId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteLocationBasedOnId">
-            <Parameter Name="locationId" Mode="In" Type="Guid" />
+          <Parameter Name="locationId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteRecurringService">
-            <Parameter Name="recurringServiceId" Mode="In" Type="Guid" />
+          <Parameter Name="recurringServiceId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId">
-            <Parameter Name="parentTemplateId" Mode="In" Type="Guid" />
+          <Parameter Name="parentTemplateId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteServiceTemplatesAndChildrenBasedOnContextId">
             <Parameter Name="serviceProviderId" Mode="In" Type="Guid" />
             <Parameter Name="ownerClientId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteUserAccountBasedOnId">
-            <Parameter Name="providerId" Mode="In" Type="Guid" />
+          <Parameter Name="providerId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="PropagateNameChange">
-            <Parameter Name="serviceTemplateId" Mode="In" Type="Guid" />
+          <Parameter Name="serviceTemplateId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="PropagateNewFields">
-            <Parameter Name="FieldId" Mode="In" Type="Guid" />
+          <Parameter Name="FieldId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="PropagateNewServiceTemplateToClients">
-            <Parameter Name="serviceTemplateId" Mode="In" Type="Guid" />
+          <Parameter Name="serviceTemplateId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="sp_GetUnroutedServicesForDate">
             <Parameter Name="serviceProviderIdContext" Mode="In" Type="Guid" />
@@ -2082,10 +2072,10 @@
             <Parameter Name="serviceProviderIdContext" Mode="In" Type="Guid" />
             <Parameter Name="clientIdContext" Mode="In" Type="Guid" />
             <Parameter Name="recurringServiceIdContext" Mode="In" Type="Guid" />
-            <Parameter Name="seedDate" Mode="In" Type="DateTime" />
-            <Parameter Name="frontBackMinimum" Mode="In" Type="Int32" />
-            <Parameter Name="getPrevious" Mode="In" Type="Boolean" />
-            <Parameter Name="getNext" Mode="In" Type="Boolean" />
+            <Parameter Name="firstDate" Mode="In" Type="DateTime" />
+            <Parameter Name="lastDate" Mode="In" Type="DateTime" />
+            <Parameter Name="serviceTypeContext" Mode="In" Type="String" />
+            <Parameter Name="withFields" Mode="In" Type="Boolean" />
           </FunctionImport>
           <FunctionImport Name="GetResourcesWithLastPoint" ReturnType="Collection(CoreEntities.ResourceWithLastPoint)">
             <Parameter Name="serviceProviderId" Mode="In" Type="Guid" />
@@ -2169,7 +2159,6 @@
           </Key>
           <NavigationProperty Name="ContactInfoSet" Relationship="CoreEntities.LocationContactInfo" FromRole="Location" ToRole="ContactInfo" />
           <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
-          <Property Type="String" Name="Name" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="String" Name="AddressLineOne" Nullable="true" DefaultValue="" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="Decimal" Name="Longitude" Nullable="true" Precision="11" Scale="8" />
           <Property Type="String" Name="ZipCode" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
@@ -2568,6 +2557,7 @@
           <Property Type="Int16" Name="GenderInt" Nullable="true" />
           <Property Type="DateTime" Name="DateOfBirth" Nullable="true" Precision="3" />
           <Property Type="String" Name="TimeZone" MaxLength="Max" FixedLength="false" Nullable="true" Unicode="true" />
+          <Property Type="String" Name="ColumnConfigurations" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
         </EntityType>
         <Association Name="UserAccountUserAccountLogEntry">
           <End Type="CoreEntities.UserAccount" Role="UserAccount" Multiplicity="1" />
@@ -3351,6 +3341,7 @@
           <ScalarProperty Name="GenderInt" ColumnName="GenderInt" />
           <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
           <ScalarProperty Name="TimeZone" ColumnName="TimeZone" />
+          <ScalarProperty Name="ColumnConfigurations" ColumnName="ColumnConfigurations" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -3434,7 +3425,6 @@
       <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Location)">
         <MappingFragment StoreEntitySet="Locations">
           <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="AddressLineOne" ColumnName="AddressLineOne" />
           <ScalarProperty Name="Longitude" ColumnName="Longitude" />
           <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />

@@ -256,7 +256,8 @@ namespace FoundOps.Server.Services.CoreDomainService
                 var latString = importRow.FirstOrDefault(cv => cv.DataCategory == DataCategory.LocationLatitude);
                 if (latString == null || string.IsNullOrEmpty(latString.Value))
                     return null;
-                return (decimal?)Convert.ToDecimal(latString.Value);
+                //set precision to 6 decimal places (< 1 meter precision)
+                return (decimal?)Math.Truncate(1000000 * Convert.ToDecimal(latString.Value)) / 1000000;
             }).Distinct().Where(cn => cn != null).ToArray();
 
             var lngsToLoad = importRows.Select(cvs =>
@@ -264,13 +265,16 @@ namespace FoundOps.Server.Services.CoreDomainService
                 var lngString = cvs.FirstOrDefault(cv => cv.DataCategory == DataCategory.LocationLongitude);
                 if (lngString == null || string.IsNullOrEmpty(lngString.Value))
                     return null;
-                return (decimal?)Convert.ToDecimal(lngString.Value);
+                //set precision to 6 decimal places (< 1 meter precision)
+                return (decimal?)Math.Truncate(1000000 * Convert.ToDecimal(lngString.Value)) / 1000000;
             }).Distinct().Where(cn => cn != null).ToArray();
 
             var associatedLocations =
-                (from location in GetLocationsToAdministerForRole(roleId)
-                 where latsToLoad.Contains(location.Latitude)
-                 where lngsToLoad.Contains(location.Longitude)
+                (from location in GetLocationsToAdministerForRole(roleId).Where(l => l.Latitude.HasValue && l.Longitude.HasValue)
+                 let latitude = System.Data.Objects.EntityFunctions.Truncate(location.Latitude.Value, 6)
+                 let longitude = System.Data.Objects.EntityFunctions.Truncate(location.Longitude.Value, 6)
+                 where latsToLoad.Contains(latitude)
+                 where lngsToLoad.Contains(longitude)
                  select location).ToArray();
 
             return associatedLocations.ToArray();

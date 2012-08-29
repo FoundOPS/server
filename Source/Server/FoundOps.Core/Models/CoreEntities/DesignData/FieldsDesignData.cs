@@ -19,9 +19,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Id = Guid.NewGuid(),
                 Name = "Lock Info",
                 Required = false,
-                Tooltip = "Helpful Hint",
+                Tooltip = "The lock combination",
                 IsMultiline = false,
-                Value = "Small"
+                Value = "124-1515-15155"
             };
 
             var designTextBoxLargeField = new TextBoxField
@@ -29,42 +29,57 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Id = Guid.NewGuid(),
                 Name = "Notes",
                 Required = false,
-                Tooltip = "Helpful Hint",
+                Tooltip = "Any miscellaneous service information",
                 IsMultiline = true,
-                Value = "Large"
+                Value = "Be careful, there is a large scary dog"
             };
+
+            var nineAm = DateTime.Now.Date.AddHours(9);
+            var sevenPm = DateTime.Now.Date.AddHours(19);
 
             var designTimeField = new DateTimeField
              {
                  Id = Guid.NewGuid(),
-                 Name = "Start and End Times",
+                 Name = "Arrival",
                  Required = false,
-                 Tooltip = "Helpful Hint",
-                 Earliest = DateTime.UtcNow,
-                 Latest = DateTime.UtcNow.AddHours(2),
+                 Tooltip = "What time did you get to the location?",
+                 Earliest = nineAm,
+                 Latest = sevenPm,
                  DateTimeType = DateTimeType.TimeOnly,
-                 Value = DateTime.UtcNow
+                 Value = nineAm.AddHours(1)
              };
+
+            var designDateField = new DateTimeField
+            {
+                Id = Guid.NewGuid(),
+                Name = "Scheduled",
+                Required = false,
+                Tooltip = "What time did you get to the location?",
+                Earliest = new DateTime(2010, 1, 1),
+                Latest = new DateTime(2013, 1, 1),
+                DateTimeType = DateTimeType.DateOnly,
+                Value = new DateTime(2012, 1, 1)
+            };
 
             var designNumberField = new NumericField
              {
                  Id = Guid.NewGuid(),
-                 Name = "Number of Hours",
+                 Name = "Oil Collected",
                  Required = false,
-                 Tooltip = "Helpful Hint",
+                 Tooltip = "in gallons",
                  Mask = "g",
-                 Maximum = 8,
+                 Maximum = 1000,
                  Minimum = 1,
-                 DecimalPlaces = 3,
-                 Value = 1
+                 DecimalPlaces = 0,
+                 Value = 125
              };
 
             var designCurrencyField = new NumericField
              {
                  Id = Guid.NewGuid(),
-                 Name = "Price",
+                 Name = "Cash Recieved",
                  Required = false,
-                 Tooltip = "Helpful Hint",
+                 Tooltip = "How much cash was given on arrival",
                  Mask = "c",
                  Maximum = 1000,
                  Minimum = 0,
@@ -74,21 +89,21 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             var designPercentageField = new NumericField
               {
                   Id = Guid.NewGuid(),
-                  Name = "Percentage",
+                  Name = "Percent Full",
                   Required = false,
-                  Tooltip = "Helpful Hint",
-                  Maximum = 1,
+                  Tooltip = "How full is the barrel?",
+                  Maximum = 100,
                   Minimum = 0,
                   Mask = "p",
-                  Value = (decimal?).54
+                  Value = 25
               };
 
             var designCheckBoxField = new OptionsField
               {
                   Id = Guid.NewGuid(),
-                  Name = "CheckBox Options",
+                  Name = "Paid",
                   Required = false,
-                  Tooltip = "Helpful Hint",
+                  Tooltip = "Has the client paid?",
                   AllowMultipleSelection = false,
                   OptionsType = OptionsType.Checkbox
               };
@@ -97,40 +112,41 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             var designComboBoxField = new OptionsField
              {
                  Id = Guid.NewGuid(),
-                 Name = "ComboBox Options",
+                 Name = "Barrel Type",
                  Required = false,
-                 Tooltip = "Helpful Hint",
+                 Tooltip = "The type of barrel",
                  AllowMultipleSelection = false,
                  OptionsType = OptionsType.Combobox
              };
-            designComboBoxField.Options.Add(new Option { Name = "Yes", IsChecked = false, Index = 0 });
-            designComboBoxField.Options.Add(new Option { Name = "No", IsChecked = false, Index = 1 });
-            designComboBoxField.Options.Add(new Option { Name = "Maybe", IsChecked = true, Index = 2 });
+            designComboBoxField.Options.Add(new Option { Name = "Small", IsChecked = false, Index = 0 });
+            designComboBoxField.Options.Add(new Option { Name = "Medium", IsChecked = false, Index = 1 });
+            designComboBoxField.Options.Add(new Option { Name = "Large", IsChecked = true, Index = 2 });
 
             var designCheckListField = new OptionsField
               {
                   Id = Guid.NewGuid(),
-                  Name = "CheckList Options",
+                  Name = "Tasks",
                   Required = false,
                   Tooltip = "Helpful Hint",
                   AllowMultipleSelection = true,
                   OptionsType = OptionsType.Checklist
               };
 
+
+            designCheckListField.Options.Add(new Option { Name = "Empty Barrels", IsChecked = true, Index = 0 });
+            designCheckListField.Options.Add(new Option { Name = "Assess Oil Quantity", IsChecked = true, Index = 1 });
+            designCheckListField.Options.Add(new Option { Name = "Get Paperwork Signed", IsChecked = false, Index = 2 });
+
             var designLocationField = new LocationField
             {
                 Id = Guid.NewGuid(),
-                Name = "Locations",
+                Name = "Destination",
                 Required = false,
-                Tooltip = "Helpful Hint",
+                Tooltip = "Where to go",
                 LocationFieldType = LocationFieldType.Destination
             };
 
-            designCheckListField.Options.Add(new Option { Name = "Op 1", IsChecked = true, Index = 0 });
-            designCheckListField.Options.Add(new Option { Name = "Op 2", IsChecked = false, Index = 1 });
-            designCheckListField.Options.Add(new Option { Name = "Op 3", IsChecked = true, Index = 2 });
-
-            DesignFields = new List<Field> { designTextBoxSmallField, designTextBoxLargeField, designTimeField, designNumberField, designCurrencyField, designPercentageField, 
+            DesignFields = new List<Field> { designTextBoxSmallField, designTextBoxLargeField, designTimeField, designDateField, designNumberField, designCurrencyField, designPercentageField, 
                 designCheckBoxField, designComboBoxField, designCheckListField, designLocationField};
         }
     }

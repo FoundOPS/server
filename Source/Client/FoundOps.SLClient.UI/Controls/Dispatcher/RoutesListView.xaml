@@ -74,7 +74,7 @@
                                             </SLMultiBinding:MultiBinding>
                                         </SLMultiBinding:MultiBindings>
                                     </SLMultiBinding:BindingUtil.MultiBindings>-->
-                                    <TextBlock Text="{Binding Name}" Width="165"/>
+                                    <TextBlock Text="{Binding Client.Name}" Width="165"/>
                                 </Grid>
                             </Controls1:HierarchicalDataTemplate>
                         </Controls2:RadTreeView.ItemTemplate>

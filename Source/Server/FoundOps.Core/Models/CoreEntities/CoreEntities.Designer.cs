@@ -1129,11 +1129,11 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <param name="serviceProviderIdContext">No Metadata Documentation available.</param>
         /// <param name="clientIdContext">No Metadata Documentation available.</param>
         /// <param name="recurringServiceIdContext">No Metadata Documentation available.</param>
-        /// <param name="seedDate">No Metadata Documentation available.</param>
-        /// <param name="frontBackMinimum">No Metadata Documentation available.</param>
-        /// <param name="getPrevious">No Metadata Documentation available.</param>
-        /// <param name="getNext">No Metadata Documentation available.</param>
-        public ObjectResult<ServiceHolder> GetServiceHolders(Nullable<global::System.Guid> serviceProviderIdContext, Nullable<global::System.Guid> clientIdContext, Nullable<global::System.Guid> recurringServiceIdContext, Nullable<global::System.DateTime> seedDate, Nullable<global::System.Int32> frontBackMinimum, Nullable<global::System.Boolean> getPrevious, Nullable<global::System.Boolean> getNext)
+        /// <param name="firstDate">No Metadata Documentation available.</param>
+        /// <param name="lastDate">No Metadata Documentation available.</param>
+        /// <param name="serviceTypeContext">No Metadata Documentation available.</param>
+        /// <param name="withFields">No Metadata Documentation available.</param>
+        public ObjectResult<ServiceHolder> GetServiceHolders(Nullable<global::System.Guid> serviceProviderIdContext, Nullable<global::System.Guid> clientIdContext, Nullable<global::System.Guid> recurringServiceIdContext, Nullable<global::System.DateTime> firstDate, Nullable<global::System.DateTime> lastDate, global::System.String serviceTypeContext, Nullable<global::System.Boolean> withFields)
         {
             ObjectParameter serviceProviderIdContextParameter;
             if (serviceProviderIdContext.HasValue)
@@ -1165,47 +1165,47 @@ namespace FoundOps.Core.Models.CoreEntities
                 recurringServiceIdContextParameter = new ObjectParameter("recurringServiceIdContext", typeof(global::System.Guid));
             }
     
-            ObjectParameter seedDateParameter;
-            if (seedDate.HasValue)
+            ObjectParameter firstDateParameter;
+            if (firstDate.HasValue)
             {
-                seedDateParameter = new ObjectParameter("seedDate", seedDate);
+                firstDateParameter = new ObjectParameter("firstDate", firstDate);
             }
             else
             {
-                seedDateParameter = new ObjectParameter("seedDate", typeof(global::System.DateTime));
+                firstDateParameter = new ObjectParameter("firstDate", typeof(global::System.DateTime));
             }
     
-            ObjectParameter frontBackMinimumParameter;
-            if (frontBackMinimum.HasValue)
+            ObjectParameter lastDateParameter;
+            if (lastDate.HasValue)
             {
-                frontBackMinimumParameter = new ObjectParameter("frontBackMinimum", frontBackMinimum);
+                lastDateParameter = new ObjectParameter("lastDate", lastDate);
             }
             else
             {
-                frontBackMinimumParameter = new ObjectParameter("frontBackMinimum", typeof(global::System.Int32));
+                lastDateParameter = new ObjectParameter("lastDate", typeof(global::System.DateTime));
             }
     
-            ObjectParameter getPreviousParameter;
-            if (getPrevious.HasValue)
+            ObjectParameter serviceTypeContextParameter;
+            if (serviceTypeContext != null)
             {
-                getPreviousParameter = new ObjectParameter("getPrevious", getPrevious);
+                serviceTypeContextParameter = new ObjectParameter("serviceTypeContext", serviceTypeContext);
             }
             else
             {
-                getPreviousParameter = new ObjectParameter("getPrevious", typeof(global::System.Boolean));
+                serviceTypeContextParameter = new ObjectParameter("serviceTypeContext", typeof(global::System.String));
             }
     
-            ObjectParameter getNextParameter;
-            if (getNext.HasValue)
+            ObjectParameter withFieldsParameter;
+            if (withFields.HasValue)
             {
-                getNextParameter = new ObjectParameter("getNext", getNext);
+                withFieldsParameter = new ObjectParameter("withFields", withFields);
             }
             else
             {
-                getNextParameter = new ObjectParameter("getNext", typeof(global::System.Boolean));
+                withFieldsParameter = new ObjectParameter("withFields", typeof(global::System.Boolean));
             }
     
-            return base.ExecuteFunction<ServiceHolder>("GetServiceHolders", serviceProviderIdContextParameter, clientIdContextParameter, recurringServiceIdContextParameter, seedDateParameter, frontBackMinimumParameter, getPreviousParameter, getNextParameter);
+            return base.ExecuteFunction<ServiceHolder>("GetServiceHolders", serviceProviderIdContextParameter, clientIdContextParameter, recurringServiceIdContextParameter, firstDateParameter, lastDateParameter, serviceTypeContextParameter, withFieldsParameter);
         }
     
         /// <summary>
@@ -5244,30 +5244,6 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.Guid _Id;
         partial void OnIdChanging(global::System.Guid value);
         partial void OnIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String Name
-        {
-            get
-            {
-                return _Name;
-            }
-            set
-            {
-                OnNameChanging(value);
-                ReportPropertyChanging("Name");
-                _Name = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("Name");
-                OnNameChanged();
-            }
-        }
-        private global::System.String _Name;
-        partial void OnNameChanging(global::System.String value);
-        partial void OnNameChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -10890,6 +10866,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.String _TimeZone;
         partial void OnTimeZoneChanging(global::System.String value);
         partial void OnTimeZoneChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String ColumnConfigurations
+        {
+            get
+            {
+                return _ColumnConfigurations;
+            }
+            set
+            {
+                OnColumnConfigurationsChanging(value);
+                ReportPropertyChanging("ColumnConfigurations");
+                _ColumnConfigurations = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("ColumnConfigurations");
+                OnColumnConfigurationsChanged();
+            }
+        }
+        private global::System.String _ColumnConfigurations;
+        partial void OnColumnConfigurationsChanging(global::System.String value);
+        partial void OnColumnConfigurationsChanged();
 
         #endregion
 

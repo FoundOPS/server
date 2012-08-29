@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace FoundOPS.API.Models
@@ -13,6 +14,8 @@ namespace FoundOPS.API.Models
 
         //Associations
         public Guid ClientId { get; set; }
+        [ReadOnly(true)]
+        public Client Client { get; set; }
 
         public List<Field> Fields { get; set; }
 
@@ -42,11 +45,14 @@ namespace FoundOPS.API.Models
                 RecurringServiceId = serviceModel.RecurringServiceId
             };
 
+            if(serviceModel.Client!=null)
+            {
+                service.Client = Client.ConvertModel(serviceModel.Client);
+            }
+
             //Convert each field from the FoundOPS model to the API model
             //Add the newly converted field to the newly created service
-            foreach (var field in serviceModel.ServiceTemplate.Fields.OrderBy(f => f.Name)
-                //Do not serialize LocationFields for now
-                .Where(f => (f as FoundOps.Core.Models.CoreEntities.LocationField) == null))
+            foreach (var field in serviceModel.ServiceTemplate.Fields.OrderBy(f => f.Name))
                 service.Fields.Add(Field.ConvertModel(field));
 
             return service;

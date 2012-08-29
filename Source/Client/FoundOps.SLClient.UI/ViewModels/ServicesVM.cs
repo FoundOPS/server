@@ -319,38 +319,6 @@ namespace FoundOps.SLClient.UI.ViewModels
             LoadServiceHolders(ServiceHoldersLoad.InitialLoad);
         }
 
-        /// <summary>
-        /// A method to load the previous day of services.
-        /// </summary>
-        internal void PushBackServices()
-        {
-            //Return if this cannot move backwards or if this is loading ServiceHolders
-            if (!CanMoveBackward || IsLoading)
-                return;
-
-            //Do not move back or forward if the SelectedEntity has changes 
-            if (SelectedEntity != null && SelectedEntity.HasChanges)
-                return;
-
-            LoadServiceHolders(ServiceHoldersLoad.Backwards);
-        }
-
-        /// <summary>
-        /// A method to load the next day of services.
-        /// </summary>
-        internal void PushForwardServices()
-        {
-            //Return if this cannot move forwards or if this is loading ServiceHolders
-            if (!CanMoveForward || IsLoading)
-                return;
-
-            //Do not move back or forward if the SelectedEntity has changes 
-            if (SelectedEntity != null && SelectedEntity.HasChanges)
-                return;
-
-            LoadServiceHolders(ServiceHoldersLoad.Forwards);
-        }
-
         #endregion
 
         #endregion

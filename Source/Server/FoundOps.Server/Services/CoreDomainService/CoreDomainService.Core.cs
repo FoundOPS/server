@@ -422,7 +422,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             repeat.StartDate = repeat.StartDate.Date;
 
             if (repeat.EndDate != null)
-                repeat.StartDate = repeat.EndDate.Value.Date;
+                repeat.EndDate = repeat.EndDate.Value.Date;
 
             if ((repeat.EntityState != EntityState.Detached))
             {
@@ -480,20 +480,11 @@ namespace FoundOps.Server.Services.CoreDomainService
         #region User Accounts
 
         /// <summary>
-        /// Gets the current user account, includes PartyImage.
+        /// Gets the current user account
         /// </summary>
         public UserAccount CurrentUserAccount()
         {
-            var currentUserAccount = ObjectContext.CurrentUserAccount().FirstOrDefault();
-
-            if (currentUserAccount != null)
-            {
-                currentUserAccount.PartyImageReference.Load();
-
-                return currentUserAccount;
-            }
-
-            throw new Exception("Something went very, very wrong...");
+            return ObjectContext.CurrentUserAccount().First();
         }
 
         /// <summary>

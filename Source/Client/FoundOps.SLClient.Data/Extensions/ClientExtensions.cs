@@ -99,18 +99,18 @@ namespace FoundOps.Core.Models.CoreEntities
 
             //Keep the location name synchronized if there is only one location
             //and it had the same name as the Client
-            var lastName = this.Name;
-            Observable2.FromPropertyChangedPattern(this, x => x.Name).ObserveOnDispatcher()
-                .Subscribe(name =>
-                {
-                    var defaultLocation = this.Locations.Count == 1 ? this.Locations.First() : null;
-                    if (defaultLocation == null) return;
+            //var lastName = this.Name;
+            //Observable2.FromPropertyChangedPattern(this, x => x.Name).ObserveOnDispatcher()
+            //    .Subscribe(name =>
+            //    {
+            //        var defaultLocation = this.Locations.Count == 1 ? this.Locations.First() : null;
+            //        if (defaultLocation == null) return;
 
-                    if (lastName == defaultLocation.Name)
-                        defaultLocation.Name = name;
+            //        if (lastName == defaultLocation.Name)
+            //            defaultLocation.Name = name;
 
-                    lastName = name;
-                });
+            //        lastName = name;
+            //    });
 
             _initialized = true;
         }
