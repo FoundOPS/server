@@ -203,6 +203,7 @@
   <ItemGroup>
     <Content Include="app\img\2select2.png" />
     <Content Include="app\img\addUser.png" />
+    <Content Include="app\img\android-sprite.png" />
     <Content Include="app\img\android.png" />
     <Content Include="app\img\apple.png" />
     <Content Include="app\img\arrow.png" />
@@ -236,7 +237,10 @@
     <Content Include="app\img\Icon-48x48.png" />
     <Content Include="app\img\Icon-72x72.png" />
     <Content Include="app\img\Icon-96x96.png" />
+    <Content Include="app\img\iconmasks.svg" />
+    <Content Include="app\img\icons.png" />
     <Content Include="app\img\imgTags.png" />
+    <Content Include="app\img\ios-sprite.png" />
     <Content Include="app\img\jcrop.gif" />
     <Content Include="app\img\loading-image.gif" />
     <Content Include="app\img\locations.png" />
@@ -246,6 +250,8 @@
     <Content Include="app\img\logout.png" />
     <Content Include="app\img\logoutColor.png" />
     <Content Include="app\img\LogoWhiteText%28TransparentBg%29.png" />
+    <Content Include="app\img\marker-shadow.png" />
+    <Content Include="app\img\marker.png" />
     <Content Include="app\img\Notify.png" />
     <Content Include="app\img\outerCircle.png" />
     <Content Include="app\img\popupArrow.png" />
@@ -278,6 +284,8 @@
     <Content Include="app\img\vehiclesColor.png" />
     <Content Include="app\img\x.png" />
     <Content Include="app\img\x2.png" />
+    <Content Include="app\img\zoom-in.png" />
+    <Content Include="app\img\zoom-out.png" />
     <Content Include="app\lib\cordova-2.0.0.js" />
     <Content Include="app\lib\crossroads.js" />
     <Content Include="app\lib\Default\editor.png" />
@@ -290,14 +298,6 @@
     <Content Include="app\lib\filereader.swf" />
     <Content Include="app\lib\hasher.js" />
     <Content Include="app\lib\helper.js" />
-    <Content Include="app\lib\images\android-sprite.png" />
-    <Content Include="app\lib\images\iconmasks.svg" />
-    <Content Include="app\lib\images\icons.png" />
-    <Content Include="app\lib\images\ios-sprite.png" />
-    <Content Include="app\lib\images\marker-shadow.png" />
-    <Content Include="app\lib\images\marker.png" />
-    <Content Include="app\lib\images\zoom-in.png" />
-    <Content Include="app\lib\images\zoom-out.png" />
     <Content Include="app\lib\jcrop.js" />
     <Content Include="app\lib\jquery-ui-1.8.21.core.min.js" />
     <Content Include="app\lib\jquery.autosize.js" />

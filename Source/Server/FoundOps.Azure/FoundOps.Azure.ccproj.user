@@ -19,7 +19,7 @@
     </WebRoleSkipLaunchInBrowser>
     <WebRoleHttpsSkipLaunchInBrowser>
     </WebRoleHttpsSkipLaunchInBrowser>
-    <ActivePublishProfile>FoundOpsTest</ActivePublishProfile>
+    <ActivePublishProfile>FoundOpsProduction</ActivePublishProfile>
     <DeploymentPromptBeforeUpgrading>False</DeploymentPromptBeforeUpgrading>
     <LocalProfile>Default</LocalProfile>
     <PackageProfile>Default</PackageProfile>

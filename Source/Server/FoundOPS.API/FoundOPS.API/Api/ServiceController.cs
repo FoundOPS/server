@@ -64,6 +64,30 @@ namespace FoundOPS.API.Api
             if (currentBusinessAccount == null)
                 throw new Exception("Bad Request");
 
+            //Insert the first row to be a dictionary of the column's types
+
+            //load the service template with fields
+            var serviceTemplateWithFields = (from serviceTemplate in _coreEntitiesContainer.ServiceTemplates.Where(st => st.Name == serviceType && st.LevelInt == (int)ServiceTemplateLevel.ServiceProviderDefined)
+                                             from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
+                                             from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty()
+                                             select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations }).ToArray()
+                                             .Select(a => a.serviceTemplate).First();
+
+            //certain values are not fields, hardcode those
+            var columnTypes = new Dictionary<string, object> { { "OccurDate", "date" }, { "RecurringServiceId", "guid" }, { "ServiceId", "guid" }, { "ClientName", "string" } };
+            foreach (var field in serviceTemplateWithFields.Fields)
+            {
+                var key = field.Name.Replace(" ", "_");
+                var type = Models.Field.GetJavascriptFormat(field);
+
+                columnTypes.Add(key, type);
+            }
+
+            if (single) //just return the types
+            {
+                return new List<Dictionary<string, object>> { columnTypes }.AsQueryable();
+            }
+
             var command = new SqlCommand("GetServiceHoldersWithFields") { CommandType = CommandType.StoredProcedure };
 
             var serviceProviderIdContext = command.Parameters.Add("@serviceProviderIdContext", SqlDbType.UniqueIdentifier);
@@ -94,31 +118,6 @@ namespace FoundOPS.API.Api
             var result = DataReaderTools.GetDynamicSqlData(connectionString, command);
 
             var list = result.Item2.OrderBy(d => (DateTime)d["OccurDate"]).ToList();
-
-            //Insert the first row to be a dictionary of the column's types
-
-            //load the service template with fields
-            var serviceTemplateWithFields = (from serviceTemplate in _coreEntitiesContainer.ServiceTemplates.Where(st => st.Name == serviceType && st.LevelInt == (int)ServiceTemplateLevel.ServiceProviderDefined)
-                                             from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
-                                             from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty()
-                                             select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations }).ToArray()
-                                             .Select(a => a.serviceTemplate).First();
-
-            //certain values are not fields, hardcode those
-            var columnTypes = new Dictionary<string, object> { { "OccurDate", "date" }, { "RecurringServiceId", "guid" }, { "ServiceId", "guid" }, { "ClientName", "string" } };
-            foreach (var field in serviceTemplateWithFields.Fields)
-            {
-                var key = field.Name.Replace(" ", "_");
-                var type = Models.Field.GetJavascriptFormat(field);
-
-                columnTypes.Add(key, type);
-            }
-
-            if (single) //just return the types
-            {
-                return new List<Dictionary<string, object>> { columnTypes }.AsQueryable();
-            }
-
             list.Insert(0, columnTypes);
 
             return list.AsQueryable();
