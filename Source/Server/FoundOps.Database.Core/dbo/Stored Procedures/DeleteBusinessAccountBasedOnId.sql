@@ -32,6 +32,9 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 
 	DELETE FROM RouteTasks
 	WHERE BusinessAccountId = @providerId
+	
+	DELETE FROM dbo.TaskStatuses
+	WHERE BusinessAccountId = @providerId
 
 	DELETE FROM Services
 	WHERE ServiceProviderId = @providerId
