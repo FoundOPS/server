@@ -201,11 +201,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\img\2select2.png" />
     <Content Include="app\img\addUser.png" />
     <Content Include="app\img\android.png" />
     <Content Include="app\img\apple.png" />
     <Content Include="app\img\arrow.png" />
     <Content Include="app\img\back.png" />
+    <Content Include="app\img\backArrow.png" />
+    <Content Include="app\img\btnSprite.png" />
     <Content Include="app\img\BusinessAccounts.png" />
     <Content Include="app\img\BusinessAccountsColor.png" />
     <Content Include="app\img\clients.png" />
@@ -213,18 +216,13 @@
     <Content Include="app\img\Collapse.png" />
     <Content Include="app\img\colorpicker_overlay.png" />
     <Content Include="app\img\colorpicker_select.gif" />
-    <Content Include="app\img\crop.jpg" />
     <Content Include="app\img\custom_background.png" />
     <Content Include="app\img\custom_indic.gif" />
     <Content Include="app\img\custom_submit.png" />
     <Content Include="app\img\david.png" />
-    <Content Include="app\img\deleteBtn.png" />
-    <Content Include="app\img\deleteBtnHover.png" />
     <Content Include="app\img\depot.png" />
     <Content Include="app\img\dispatcher.png" />
     <Content Include="app\img\dispatcherColor.png" />
-    <Content Include="app\img\editBtn.png" />
-    <Content Include="app\img\editBtnHover.png" />
     <Content Include="app\img\employees.png" />
     <Content Include="app\img\employeesColor.png" />
     <Content Include="app\img\emptyPerson.png" />
@@ -247,6 +245,7 @@
     <Content Include="app\img\LogoCharcoal.png" />
     <Content Include="app\img\logout.png" />
     <Content Include="app\img\logoutColor.png" />
+    <Content Include="app\img\LogoWhiteText%28TransparentBg%29.png" />
     <Content Include="app\img\Notify.png" />
     <Content Include="app\img\outerCircle.png" />
     <Content Include="app\img\popupArrow.png" />
@@ -267,8 +266,10 @@
     <Content Include="app\img\settingsColor.png" />
     <Content Include="app\img\slider.png" />
     <Content Include="app\img\spanBgTags.png" />
+    <Content Include="app\img\spinner.gif" />
     <Content Include="app\img\SplashPNG.png" />
     <Content Include="app\img\sprite.png" />
+    <Content Include="app\img\TileBg.png" />
     <Content Include="app\img\transparent-black.png" />
     <Content Include="app\img\truck.png" />
     <Content Include="app\img\uservoice.png" />
@@ -277,17 +278,89 @@
     <Content Include="app\img\vehiclesColor.png" />
     <Content Include="app\img\x.png" />
     <Content Include="app\img\x2.png" />
+    <Content Include="app\lib\cordova-2.0.0.js" />
+    <Content Include="app\lib\crossroads.js" />
+    <Content Include="app\lib\Default\editor.png" />
+    <Content Include="app\lib\Default\imagebrowser.png" />
+    <Content Include="app\lib\Default\loading-image.gif" />
+    <Content Include="app\lib\Default\loading.gif" />
+    <Content Include="app\lib\Default\slider-h.gif" />
+    <Content Include="app\lib\Default\slider-v.gif" />
+    <Content Include="app\lib\Default\sprite.png" />
     <Content Include="app\lib\filereader.swf" />
+    <Content Include="app\lib\hasher.js" />
+    <Content Include="app\lib\helper.js" />
+    <Content Include="app\lib\images\android-sprite.png" />
+    <Content Include="app\lib\images\iconmasks.svg" />
+    <Content Include="app\lib\images\icons.png" />
+    <Content Include="app\lib\images\ios-sprite.png" />
+    <Content Include="app\lib\images\marker-shadow.png" />
+    <Content Include="app\lib\images\marker.png" />
+    <Content Include="app\lib\images\zoom-in.png" />
+    <Content Include="app\lib\images\zoom-out.png" />
+    <Content Include="app\lib\jcrop.js" />
+    <Content Include="app\lib\jquery-ui-1.8.21.core.min.js" />
+    <Content Include="app\lib\jquery.autosize.js" />
+    <Content Include="app\lib\jquery.FileReader.js" />
+    <Content Include="app\lib\jquery.form.js" />
+    <Content Include="app\lib\jquery.js" />
+    <Content Include="app\lib\jquery.jScrollPane.js" />
+    <Content Include="app\lib\jquery.maskMoney.js" />
+    <Content Include="app\lib\jquery.min.js">
+      <DependentUpon>jquery.js</DependentUpon>
+    </Content>
+    <Content Include="app\lib\jquery.mousewheel.js" />
+    <Content Include="app\lib\jquery.qrcode.js" />
+    <Content Include="app\lib\jquery.qrcode.min.js">
+      <DependentUpon>jquery.qrcode.js</DependentUpon>
+    </Content>
+    <Content Include="app\lib\jquery.tooltip.min.js" />
+    <Content Include="app\lib\kendo.all.js" />
+    <Content Include="app\lib\kendo.all.min.js">
+      <DependentUpon>kendo.all.js</DependentUpon>
+    </Content>
+    <Content Include="app\lib\kendo.mobile.min.js" />
+    <Content Include="app\lib\kendo.web.min.js" />
+    <Content Include="app\lib\leaflet.js" />
+    <Content Include="app\lib\less-1.3.0.min.js" />
+    <Content Include="app\lib\less.min.js" />
+    <Content Include="app\lib\live.js" />
+    <Content Include="app\lib\Metro\editor.png" />
+    <Content Include="app\lib\Metro\imagebrowser.png" />
+    <Content Include="app\lib\Metro\loading-image.gif" />
+    <Content Include="app\lib\Metro\loading.gif" />
+    <Content Include="app\lib\Metro\slider-h.gif" />
+    <Content Include="app\lib\Metro\slider-v.gif" />
+    <Content Include="app\lib\Metro\sprite.png" />
+    <Content Include="app\lib\modernizr-2.0.6.min.js" />
+    <Content Include="app\lib\moment.js" />
+    <Content Include="app\lib\mwheelIntent.js" />
+    <Content Include="app\lib\noty.js" />
+    <Content Include="app\lib\pubsub.js" />
+    <Content Include="app\lib\qrcode.js" />
+    <Content Include="app\lib\require-jquery.js" />
+    <Content Include="app\lib\select2.js" />
+    <Content Include="app\lib\signals.js" />
+    <Content Include="app\lib\swfobject.js" />
+    <Content Include="app\lib\testr.js" />
+    <Content Include="app\lib\text.js" />
+    <Content Include="app\lib\textures\glass.png" />
+    <Content Include="app\lib\textures\highlight.png" />
+    <Content Include="app\lib\underscore.js" />
+    <Content Include="app\lib\userVoice.js" />
     <Content Include="app\view\businessSettings.html" />
     <Content Include="app\view\changePassword.html" />
     <Content Include="app\view\clearhist.html" />
     <Content Include="app\view\createPassword.html" />
     <Content Include="app\view\dispatcherSettings.html" />
     <Content Include="app\view\importer.html" />
+    <Content Include="app\view\logout.html" />
     <Content Include="app\view\personalSettings.html" />
     <Content Include="app\view\routeDestinationDetails.html" />
     <Content Include="app\view\routeDetails.html" />
-    <Content Include="app\view\routeList.html" />
+    <Content Include="app\view\routes.html" />
+    <Content Include="app\view\routeTask.html" />
+    <Content Include="app\view\services.html" />
     <Content Include="app\view\testContent.html" />
     <Content Include="app\view\updates.html" />
     <Content Include="app\view\usersSettings.html" />
@@ -428,6 +501,7 @@
     <Content Include="Web.base.config" />
     <Content Include="Web.base.Debug.config">
       <DependentUpon>Web.base.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Web.base.DebugNode.config">
       <DependentUpon>Web.base.config</DependentUpon>
@@ -437,6 +511,7 @@
     </Content>
     <Content Include="Web.base.Release.config">
       <DependentUpon>Web.base.config</DependentUpon>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="Web.config">
       <SubType>Designer</SubType>

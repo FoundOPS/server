@@ -48,8 +48,8 @@
                          style="border-style: none"/>
                 </a>
             </object>
-            <iframe id="_sl_historyFrame" style="visibility: hidden; height: 0px; width: 0px; z-index: -1;
-            border: 0px"></iframe>
+            <iframe id="_sl_historyFrame" style="visibility: hidden; height: 0; width: 0; z-index: -1;
+            border: 0"></iframe>
         </div>
     </div>
 </div>
@@ -59,14 +59,18 @@
     var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
     document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
 </script>
-
-<link rel="stylesheet" type="text/css" href="@Model["BlobRoot"]main.css">
+<link rel="stylesheet" type="text/css" href="@Model["BlobRoot"]main-built.css">
 <script data-main="@Model["BlobRoot"]main-built.js" src="@Model["BlobRoot"]require-jquery.js"></script>
 
+<script id="backButtonTemplate" type="text/x-kendo-template">
+    <div id="backButtonContainer">
+        <a onclick="main.onBack()"><img id="backArrow" src="img/backArrow.png"/></a>
+    </div>
+</script>
 <script id="navTemplate" type="text/x-kendo-template">
     <div id='navContainer'>
         <div id='navSearch' class='navElement'><input name='search' type='text' placeholder='Search...'/>
-            <a><img src='img/search.png'/></a>
+            <a><img src='img/Search.png'/></a>
         </div>
         <div id='navClient' class='navElement last'>
             <a><img class='navIcon profile' src='#= data[0] #'/><img id='clientLogo' src='#= data[1] #'/></a>
@@ -85,6 +89,7 @@
     </div>
 </script>
 <script id="sideBarElementTemplate" type="text/x-kendo-template">
+    <!-- href - Weird KendoUI Binding. Maybe fix in the future but works fine as is for now.!-->
     <a #= href # class='sideBarElement' data-color='#= color #' data-iconUrl='#= iconUrl #' data-hoverIconUrl='#=
     hoverIconUrl #'>
     <span class='icon' style="background: url('#= iconUrl #') #= bgX # #= bgY # no-repeat"></span>

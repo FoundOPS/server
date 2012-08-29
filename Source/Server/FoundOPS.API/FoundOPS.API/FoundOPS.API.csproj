@@ -318,14 +318,15 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="disableTimeout.cmd">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
-    </None>
     <Content Include="Web.base.TestRelease.config">
       <DependentUpon>Web.base.config</DependentUpon>
     </Content>
     <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="disableTimeout.cmd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
