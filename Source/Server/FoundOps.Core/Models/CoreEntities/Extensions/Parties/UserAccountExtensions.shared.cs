@@ -75,21 +75,6 @@ namespace FoundOps.Core.Models.CoreEntities
             }
         }
 
-        partial void OnTimeZoneChanged()
-        {
-#if! SILVERLIGHT
-            if (this.TimeZone == null)
-            {
-                this.UserTimeZoneOffset = new TimeSpan(0, 0, 0, 0);
-            }
-            else
-            {
-                var tst = TimeZoneInfo.FindSystemTimeZoneById(this.TimeZone);
-                this.UserTimeZoneOffset = tst.BaseUtcOffset;
-            }
-#endif
-        }
-
         partial void OnGenderIntChanged()
         {
 #if SILVERLIGHT
