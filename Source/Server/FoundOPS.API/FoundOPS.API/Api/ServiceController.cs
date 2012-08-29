@@ -57,12 +57,12 @@ namespace FoundOPS.API.Api
         /// <param name="single">Only return the types</param>
         /// <returns>A queryable of dictionaries that resemble record type javascript objects when serialized</returns>
         [AcceptVerbs("GET", "POST")]
-        public HttpResponseMessage GetServicesHoldersWithFields(Guid roleId, string serviceType, Guid? clientContext,
+        public IQueryable<Dictionary<string, Object>> GetServicesHoldersWithFields(Guid roleId, string serviceType, Guid? clientContext,
             Guid? recurringServiceContext, DateTime startDate, DateTime endDate, bool single = false)
         {
             var currentBusinessAccount = _coreEntitiesContainer.Owner(roleId).FirstOrDefault();
             if (currentBusinessAccount == null)
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                throw new Exception("Bad Request");
 
             var command = new SqlCommand("GetServiceHoldersWithFields") { CommandType = CommandType.StoredProcedure };
 
@@ -116,12 +116,12 @@ namespace FoundOPS.API.Api
 
             if (single) //just return the types
             {
-                return Request.CreateResponse(HttpStatusCode.OK, new List<Dictionary<string, object>> { columnTypes }.AsQueryable());
+                return new List<Dictionary<string, object>> { columnTypes }.AsQueryable();
             }
 
             list.Insert(0, columnTypes);
 
-            return Request.CreateResponse(HttpStatusCode.OK, list.AsQueryable());
+            return list.AsQueryable();
         }
 
         /// <summary>

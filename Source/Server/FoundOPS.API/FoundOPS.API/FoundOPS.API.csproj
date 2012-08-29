@@ -239,6 +239,7 @@
     <Compile Include="Api\ToolsController.cs" />
     <Compile Include="Api\RoutesController.cs" />
     <Compile Include="Api\TrackPointController.cs" />
+    <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="CoreDomainContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
