@@ -70,14 +70,20 @@ namespace FoundOps.Core.Models.Import
             {
                 decimal parsedDecimal;
                 if (Decimal.TryParse(val, out parsedDecimal))
-                    location.Latitude = parsedDecimal;
+                {
+                    //Truncate to 7 decimals
+                    location.Latitude = Math.Truncate(parsedDecimal * 10000000) / 10000000;
+                }
             }));
 
             PropertyCategories.Add(new PropertyCategory<Location>(DataCategory.LocationLongitude, (location, val) =>
             {
                 decimal parsedDecimal;
                 if (Decimal.TryParse(val, out parsedDecimal))
-                    location.Longitude = parsedDecimal;
+                {
+                    //Truncate to 7 decimals
+                    location.Longitude = Math.Truncate(parsedDecimal * 10000000) / 10000000;
+                }
             }));
 
             #endregion
@@ -392,7 +398,7 @@ namespace FoundOps.Core.Models.Import
             var columnIndex = 0;
             foreach (var value in record.Values)
             {
-                categoryValues.Add(new ImportCell(categories.ElementAt(columnIndex), value, rowIndex, columnIndex));
+                categoryValues.Add(new ImportCell(categories.ElementAt(columnIndex), value));
                 columnIndex++;
             }
 
@@ -461,7 +467,7 @@ namespace FoundOps.Core.Models.Import
         public DataCategory DataCategory { get; set; }
         public string Value { get; set; }
 
-        public ImportCell(DataCategory dataCategory, string value, int rowIndex, int columnIndex)
+        public ImportCell(DataCategory dataCategory, string value)
         {
             this.DataCategory = dataCategory;
             this.Value = value;

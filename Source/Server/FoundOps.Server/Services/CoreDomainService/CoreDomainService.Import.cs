@@ -181,10 +181,11 @@ namespace FoundOps.Server.Services.CoreDomainService
                 throw ImportRowTools.Exception("Longitude not set", importRow);
 
             associatedLocation =
+                //compare first 6 decimals
                 locationAssociations.FirstOrDefault(
-                    c =>
-                    c.Latitude == Convert.ToDecimal(locationLatitude.Value) &&
-                    c.Longitude == Convert.ToDecimal(locationLongitude.Value));
+                    c => 
+                        ToSixDecimals(c.Latitude.ToString()) == ToSixDecimals(locationLatitude.Value) &&
+                        ToSixDecimals(c.Longitude.ToString()) == ToSixDecimals(locationLongitude.Value));
 
             if (associatedLocation == null)
                 throw ImportRowTools.Exception(
@@ -257,7 +258,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                 if (latString == null || string.IsNullOrEmpty(latString.Value))
                     return null;
                 //set precision to 6 decimal places (< 1 meter precision)
-                return (decimal?)Math.Truncate(1000000 * Convert.ToDecimal(latString.Value)) / 1000000;
+                return (decimal?)ToSixDecimals(latString.Value);
             }).Distinct().Where(cn => cn != null).ToArray();
 
             var lngsToLoad = importRows.Select(cvs =>
@@ -265,8 +266,8 @@ namespace FoundOps.Server.Services.CoreDomainService
                 var lngString = cvs.FirstOrDefault(cv => cv.DataCategory == DataCategory.LocationLongitude);
                 if (lngString == null || string.IsNullOrEmpty(lngString.Value))
                     return null;
-                //set precision to 6 decimal places (< 1 meter precision)
-                return (decimal?)Math.Truncate(1000000 * Convert.ToDecimal(lngString.Value)) / 1000000;
+                //set precision to 6 decimal places
+                return (decimal?)ToSixDecimals(lngString.Value);
             }).Distinct().Where(cn => cn != null).ToArray();
 
             var associatedLocations =
@@ -308,6 +309,14 @@ namespace FoundOps.Server.Services.CoreDomainService
                 new Region { Id = Guid.NewGuid(), BusinessAccount = serviceProvider, Name = newRegionName });
 
             return loadedRegionsFromName.Union(newRegions).ToArray();
+        }
+
+        /// <summary>
+        /// Converts a string to a decimal, and truncates it to 6 places.
+        /// </summary>
+        public static decimal ToSixDecimals(string value)
+        {
+            return Math.Truncate(1000000 * Convert.ToDecimal(value)) / 1000000;
         }
     }
 }

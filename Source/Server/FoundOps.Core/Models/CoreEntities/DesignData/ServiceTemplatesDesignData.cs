@@ -63,7 +63,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             SmallGreaseTrapServiceTemplate = new ServiceTemplate
             {
                 Id = new Guid("{B1B4C515-EBBC-4D16-AC11-94C6D1B7EF8D}"),
-                Name = "Small Grease Trap, 20-500 gallons",
+                Name = "Grease Trap Service",
                 ServiceTemplateLevel = ServiceTemplateLevel.FoundOpsDefined,
                 OwnerServiceProvider = BusinessAccountsDesignData.FoundOps,
                 Invoice = new InvoicesDesignData().DesignInvoiceTwo
