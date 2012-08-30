@@ -34,7 +34,7 @@
         <div id="silverlightControlHost">
             <object id="silverlightPlugin" data="data:application/x-silverlight-2," type="application/x-silverlight-2"
                     style="height: 1px; width: 1px">
-                <param name="onSourceDownloadProgressChanged" value="onSourceDownloadProgressChanged" />
+                <param name="onSourceDownloadProgressChanged" value="onSourceDownloadProgressChanged"/>
                 <param name="splashscreensource" value="http://localhost:31820/ClientBin/SplashScreen.xaml"/>
                 <param name="source" value="http://localhost:31820/ClientBin/FoundOps.SLClient.Navigator.xap?rev=1"/>
                 <param name="onError" value="onSilverlightError"/>
@@ -48,8 +48,8 @@
                          style="border-style: none"/>
                 </a>
             </object>
-            <iframe id="_sl_historyFrame" style="visibility: hidden; height: 0px; width: 0px; z-index: -1;
-            border: 0px"></iframe>
+            <iframe id="_sl_historyFrame" style="visibility: hidden; height: 0; width: 0; z-index: -1;
+            border: 0"></iframe>
         </div>
     </div>
 </div>
@@ -59,15 +59,21 @@
     var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
     document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
 </script>
-
+<script src="lib/cordova-2.0.0.js" type="application/javascript"></script>
 <link rel="stylesheet/less" type="text/less" href="styles/main.less">
 <script type="text/javascript" src="lib/less.min.js"></script>
 <script data-main="js/main.js" src="lib/require-jquery.js"></script>
 
+<script id="backButtonTemplate" type="text/x-kendo-template">
+    <div id="backButtonContainer">
+        <a onclick="main.onBack()"><img id="backArrow" src="img/backArrow.png"/></a>
+    </div>
+</script>
 <script id="navTemplate" type="text/x-kendo-template">
     <div id='navContainer'>
-        <div id='navSearch' class='navElement'><input name='search' type='text' placeholder='Search...'/>
-            <a><img src='img/search.png'/></a>
+        <div id='navSearch' class='navElement'>
+            <input name='search' type='text' placeholder='Search...'/>
+            <a><img src='img/Search.png'/></a>
         </div>
         <div id='navClient' class='navElement last'>
             <a><img class='navIcon profile' src='#= data[0] #'/><img id='clientLogo' src='#= data[1] #'/></a>
@@ -86,10 +92,11 @@
     </div>
 </script>
 <script id="sideBarElementTemplate" type="text/x-kendo-template">
+    <!-- href - Weird KendoUI Binding. Maybe fix in the future but works fine as is for now.!-->
     <a #= href # class='sideBarElement' data-color='#= color #' data-iconUrl='#= iconUrl #' data-hoverIconUrl='#=
     hoverIconUrl #'>
-    <span class='icon' style="background: url('#= iconUrl #') #= bgX # #= bgY # no-repeat"></span>
-    <span class='sectionName'>#= name #</span>
+        <span class='icon' style="background: url('#= iconUrl #') #= bgX # #= bgY # no-repeat"></span>
+        <span class='sectionName'>#= name #</span>
     </a>
 </script>
 </html>
