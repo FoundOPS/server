@@ -99,12 +99,13 @@ namespace FoundOps.Server.Services.CoreDomainService
                 return null;
 
             var businessAccountQueryable = this.ObjectContext.Parties.OfType<BusinessAccount>().Where(ba => ba.Id == businessAccountId)
-                                    .Include(ba => ba.TaskStatuses).Include(ba => ba.ServiceTemplates).Include(ba => ba.OwnedRoles).Include("OwnedRoles.MemberParties");
+                                    .Include(ba => ba.TaskStatuses).Include(ba => ba.OwnedRoles).Include("OwnedRoles.MemberParties");
 
             var a =
                 (from businessAccount in businessAccountQueryable
                  //Force load the details
-                 from serviceTemplate in businessAccount.ServiceTemplates
+                 from serviceTemplate in ObjectContext.ServiceTemplates.Where(st=>st.OwnerServiceProviderId == businessForRole.Id
+                     && st.LevelInt == (int) ServiceTemplateLevel.ServiceProviderDefined)
                  from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
                  from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty()
                  select new { businessAccount, serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations }).ToArray();
