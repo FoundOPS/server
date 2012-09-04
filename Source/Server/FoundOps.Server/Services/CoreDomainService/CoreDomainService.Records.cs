@@ -354,9 +354,8 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             var csvWriter = new CsvWriter(memoryStream);
 
-            csvWriter.WriteHeaderRecord("Name", "Region", "Client",
-                                        "Address 1", "Address 2", "City", "State", "Zip Code",
-                                        "Latitude", "Longitude");
+            csvWriter.WriteHeaderRecord("Client", "Address 1", "Address 2", "City", "State", "Zip Code",
+                                        "Region", "Latitude", "Longitude");
 
             var locations = ObjectContext.Locations.Where(loc => loc.BusinessAccountId == businessAccount.Id && !loc.BusinessAccountIdIfDepot.HasValue);
 
@@ -375,20 +374,19 @@ namespace FoundOps.Server.Services.CoreDomainService
                           orderby loc.AddressLineOne
                           select new
                           {
-                              RegionName = loc.Region.Name,
                               ClientName = c.Name,
                               loc.AddressLineOne,
                               loc.AddressLineTwo,
                               loc.City,
                               loc.State,
                               loc.ZipCode,
+                              RegionName = loc.Region.Name,
                               loc.Latitude,
                               loc.Longitude
                           };
 
             foreach (var record in records.ToArray())
-                csvWriter.WriteDataRecord(record.RegionName, record.ClientName,
-                                       record.AddressLineOne, record.AddressLineTwo, record.City, record.State, record.ZipCode,
+                csvWriter.WriteDataRecord(record.ClientName, record.AddressLineOne, record.AddressLineTwo, record.City, record.State, record.ZipCode, record.RegionName,
                                        record.Latitude, record.Longitude);
 
             csvWriter.Close();

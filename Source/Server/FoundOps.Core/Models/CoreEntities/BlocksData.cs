@@ -278,7 +278,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 IconUrl = "img/locations.png",
                 HoverIconUrl = "img/locationsColor.png",
                 IsSilverlight = true,
-                HideFromNavigation = true
+                HideFromNavigation = false
             };
 
             RegionsBlock = new Block
