@@ -1,4 +1,5 @@
-﻿using System.Windows.Browser;
+﻿using System.Text;
+using System.Windows.Browser;
 using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Services;
@@ -59,14 +60,15 @@ namespace FoundOps.SLClient.UI.Controls.Services
             //On double click move the infinite accordion to the Services details view
             ServicesRadGridView.AddHandler(GridViewCellBase.CellDoubleClickEvent,
                 new EventHandler<RadRoutedEventArgs>((s, args) =>
-                {
-                    var clientName = VM.Clients.SelectedEntity.Name;
+                    {
+                        HtmlPage.Window.Eval("silverlight.setSection({isSilverlight:false});");
 
-                    var hashCode = "view/services.html?ClientName=eq$" + clientName;
-
-                    HtmlPage.Window.Eval("silverlight.setSection({isSilverlight:false});");
-                    HtmlPage.Window.Eval("window.location.hash='" + hashCode + "';");
-                }), true);
+                        var serviceName = VM.Services.SelectedEntity.ServiceName;
+                        var clientName = VM.Clients.SelectedEntity.Name;
+                        var hashCode = string.Format("view/services.html?ServiceName=eq${0}&1ClientName=eq${1}", serviceName, clientName);
+                        var silverlightScriptObject = (ScriptObject)HtmlPage.Window.GetProperty("silverlight");
+                        silverlightScriptObject.Invoke("setHash", hashCode);
+                    }), true);
 
             //Scroll the SelectedEntity to the middle
             //a) after the ServicesRadGridView's data is loaded

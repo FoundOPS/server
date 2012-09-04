@@ -30,6 +30,7 @@ namespace FoundOPS.API.Api
 
             _coreEntitiesContainer.Errors.AddObject(new Error
                 {
+                    Id = Guid.NewGuid(),
                     Date = DateTime.UtcNow,
                     ErrorText = error,
                     UserEmail = currentUser.EmailAddress,
