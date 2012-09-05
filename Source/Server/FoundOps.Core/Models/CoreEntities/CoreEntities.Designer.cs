@@ -1226,6 +1226,36 @@ namespace FoundOps.Core.Models.CoreEntities
     
             return base.ExecuteFunction<ResourceWithLastPoint>("GetResourcesWithLastPoint", serviceProviderIdParameter);
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="businessAccountId">No Metadata Documentation available.</param>
+        /// <param name="serviceType">No Metadata Documentation available.</param>
+        public ObjectResult<FieldJavaScript> GetFieldsInJavaScriptFormat(Nullable<global::System.Guid> businessAccountId, global::System.String serviceType)
+        {
+            ObjectParameter businessAccountIdParameter;
+            if (businessAccountId.HasValue)
+            {
+                businessAccountIdParameter = new ObjectParameter("businessAccountId", businessAccountId);
+            }
+            else
+            {
+                businessAccountIdParameter = new ObjectParameter("businessAccountId", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter serviceTypeParameter;
+            if (serviceType != null)
+            {
+                serviceTypeParameter = new ObjectParameter("serviceType", serviceType);
+            }
+            else
+            {
+                serviceTypeParameter = new ObjectParameter("serviceType", typeof(global::System.String));
+            }
+    
+            return base.ExecuteFunction<FieldJavaScript>("GetFieldsInJavaScriptFormat", businessAccountIdParameter, serviceTypeParameter);
+        }
 
         #endregion
 
@@ -12115,6 +12145,68 @@ namespace FoundOps.Core.Models.CoreEntities
     #endregion
 
     #region ComplexTypes
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmComplexTypeAttribute(NamespaceName="CoreEntities", Name="FieldJavaScript")]
+    [DataContractAttribute(IsReference=true)]
+    [Serializable()]
+    public partial class FieldJavaScript : ComplexObject
+    {
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                OnNameChanging(value);
+                ReportPropertyChanging("Name");
+                _Name = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Name");
+                OnNameChanged();
+            }
+        }
+        private global::System.String _Name;
+        partial void OnNameChanging(global::System.String value);
+        partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Type
+        {
+            get
+            {
+                return _Type;
+            }
+            set
+            {
+                OnTypeChanging(value);
+                ReportPropertyChanging("Type");
+                _Type = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Type");
+                OnTypeChanged();
+            }
+        }
+        private global::System.String _Type;
+        partial void OnTypeChanging(global::System.String value);
+        partial void OnTypeChanged();
+
+        #endregion
+
+    }
     
     /// <summary>
     /// No Metadata Documentation available.

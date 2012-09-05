@@ -331,15 +331,6 @@
             <End Role="Vehicles" EntitySet="Vehicles" />
           </AssociationSet>
         </EntityContainer>
-      <Function Name="GetResourcesWithLastPoint" IsComposable="false">
-        <CommandText>
-          SELECT EmployeeId, VehicleId, EntityName, Heading, Latitude, Longitude, CollectedTimeStamp, Speed, Source, RouteId, Accuracy
-          FROM dbo.GetResourcesWithLatestPoint (@serviceProviderId)
-        </CommandText>
-        <Parameter Name="serviceProviderId"
-               Mode="In"
-               Type="uniqueidentifier"/>
-      </Function>
         <EntityType Name="Blocks">
           <Key>
             <PropertyRef Name="Id" />
@@ -1738,6 +1729,10 @@
         <Function Name="DeleteUserAccountBasedOnId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="providerId" Type="uniqueidentifier" Mode="In" />
         </Function>
+        <Function Name="GetFieldsInJavaScriptFormat" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="businessAccountId" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="serviceType" Type="nvarchar(max)" Mode="In" />
+        </Function>
         <Function Name="GetServiceHolders" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="serviceProviderIdContext" Type="uniqueidentifier" Mode="In" />
           <Parameter Name="clientIdContext" Type="uniqueidentifier" Mode="In" />
@@ -2079,6 +2074,10 @@
           </FunctionImport>
           <FunctionImport Name="GetResourcesWithLastPoint" ReturnType="Collection(CoreEntities.ResourceWithLastPoint)">
             <Parameter Name="serviceProviderId" Mode="In" Type="Guid" />
+          </FunctionImport>
+          <FunctionImport Name="GetFieldsInJavaScriptFormat" ReturnType="Collection(CoreEntities.FieldJavaScript)">
+            <Parameter Name="businessAccountId" Mode="In" Type="Guid" />
+            <Parameter Name="serviceType" Mode="In" Type="String" />
           </FunctionImport>
           </EntityContainer>
         <EntityType Name="Block">
@@ -3279,6 +3278,10 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <ComplexType Name="FieldJavaScript">
+          <Property Type="String" Name="Name" Nullable="true" />
+          <Property Type="String" Name="Type" Nullable="true" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3813,20 +3816,11 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetResourcesWithLastPoint" FunctionName="CoreEntities.Store.GetResourcesWithLastPoint">
+          <FunctionImportMapping FunctionImportName="GetFieldsInJavaScriptFormat" FunctionName="CoreEntities.Store.GetFieldsInJavaScriptFormat">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="CoreEntities.ResourceWithLastPoint">
-                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
-                <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
-                <ScalarProperty Name="EntityName" ColumnName="EntityName" />
-                <ScalarProperty Name="Heading" ColumnName="Heading" />
-                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
-                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
-                <ScalarProperty Name="CollectedTimeStamp" ColumnName="CollectedTimeStamp" />
-                <ScalarProperty Name="Speed" ColumnName="Speed" />
-                <ScalarProperty Name="Source" ColumnName="Source" />
-                <ScalarProperty Name="RouteId" ColumnName="RouteId" />
-                <ScalarProperty Name="Accuracy" ColumnName="Accuracy" />
+              <ComplexTypeMapping TypeName="CoreEntities.FieldJavaScript">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
