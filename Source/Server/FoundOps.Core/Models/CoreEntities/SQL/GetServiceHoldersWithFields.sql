@@ -17,7 +17,7 @@ GO
 -- Create date: 6/28/2012
 -- Description:	
 -- =============================================
-CREATE PROCEDURE GetServiceHoldersWithFields
+alter PROCEDURE GetServiceHoldersWithFields
 	(
 	  @serviceProviderIdContext UNIQUEIDENTIFIER ,
 	  @clientIdContext UNIQUEIDENTIFIER ,
@@ -28,7 +28,8 @@ CREATE PROCEDURE GetServiceHoldersWithFields
 	)
 AS 
 	BEGIN
-  
+DECLARE @a DATETIME, @b DATETIME
+SET @a = CURRENT_TIMESTAMP  
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
 		SET NOCOUNT ON;
@@ -140,8 +141,9 @@ AS
 				)  
 			
 		END   
-	
+
 		BEGIN --Insert into all Fields Tables
+
 			INSERT INTO	#DateTimeFields (Earliest, Latest, TypeInt, Value, Id)
 			SELECT * FROM dbo.Fields_DateTimeField
 			WHERE Id IN 
@@ -266,7 +268,7 @@ AS
 			UPDATE #TextBoxFields
 			SET FieldType = Replace(FieldName, ' ', '_')
 		END
-  
+
 		BEGIN --Add a static RegionName Column
 			ALTER TABLE #ServiceHolders ADD RegionName NVARCHAR(MAX)
 
@@ -280,9 +282,8 @@ AS
 			DECLARE @RowCount INT
 			DECLARE @FieldType NVARCHAR(MAX)
 			DECLARE @cmd nvarchar(MAX)
-
 			--DateTime Fields
-			SET @RowCount = (SELECT COUNT(*) FROM #DateTimeFields)
+			SET @RowCount = (SELECT COUNT(DISTINCT FieldType) FROM #DateTimeFields)
 			IF @RowCount > 0
 			BEGIN
 				WHILE @RowCount > 0
@@ -305,12 +306,12 @@ AS
 				DELETE FROM #DateTimeFields
 				WHERE @FieldType = FieldType 
 		
-				SET @RowCount = (SELECT COUNT(*) FROM #DateTimeFields)
+				SET @RowCount = (SELECT COUNT(DISTINCT FieldType) FROM #DateTimeFields)
 				END            
 			END
-        
+			    
 			--Numeric Fields
-			SET @RowCount = (SELECT COUNT(*) FROM #NumericFields)
+			SET @RowCount = (SELECT COUNT(DISTINCT FieldType) FROM #NumericFields)
 			IF @RowCount > 0
 			BEGIN
 				WHILE @RowCount > 0
@@ -322,28 +323,28 @@ AS
 
 				SET @cmd = 
 				'UPDATE #ServiceHolders
-				SET [' + @FieldType + '] = (
+				SET ' + @FieldType + ' = (
 				SELECT t1.Value
 				FROM [#NumericFields] t1
 				WHERE ([#ServiceHolders].ServiceId = t1.ServiceTemplateId OR ([#ServiceHolders].RecurringServiceId = t1.ServiceTemplateId AND [#ServiceHolders].ServiceId IS NULL))
 				AND @FieldType = t1.FieldType)'
 
-				EXECUTE sp_executesql @cmd , N'@FieldType NVARCHAR(MAX)', @FieldType
+				EXECUTE sp_executesql @cmd , N'@FieldType NVARCHAR(MAX)', @FieldType	 
 
 				DELETE FROM #NumericFields
 				WHERE @FieldType = FieldType 
 		
-				SET @RowCount = (SELECT COUNT(*) FROM #NumericFields)
+				SET @RowCount = (SELECT COUNT(DISTINCT FieldType) FROM #NumericFields)
 				END            
 			END
-		      
+
 			--Location Fields
 			DECLARE @addressLineOne NVARCHAR(Max)
 			DECLARE @addressLineTwo NVARCHAR(Max)
 			DECLARE @space NVARCHAR(10)
 			SET @space = ' '
 
-			SET @RowCount = (SELECT COUNT(*) FROM #LocationFields)
+			SET @RowCount = (SELECT COUNT(DISTINCT FieldType) FROM #LocationFields)
 			IF @RowCount > 0
 			BEGIN
 				WHILE @RowCount > 0
@@ -366,13 +367,12 @@ AS
 				DELETE FROM #LocationFields
 				WHERE @FieldType = FieldType 
 		
-				SET @RowCount = (SELECT COUNT(*) FROM #LocationFields)
+				SET @RowCount = (SELECT COUNT(DISTINCT FieldType) FROM #LocationFields)
 				END            
 			END
 
 			--Options Fields
-
-			SET @RowCount = (SELECT COUNT(*) FROM #OptionsFields)
+			SET @RowCount = (SELECT COUNT(DISTINCT FieldType) FROM #OptionsFields)
 			IF @RowCount > 0
 			BEGIN
 				WHILE @RowCount > 0
@@ -396,12 +396,12 @@ AS
 				DELETE FROM #OptionsFields
 				WHERE FieldType = @FieldType 
 		
-				SET @RowCount = (SELECT COUNT(*) FROM #OptionsFields)
+				SET @RowCount = (SELECT COUNT(DISTINCT FieldType) FROM #OptionsFields)
 				END            
 			END      
 
 			--TextBox Fields
-			SET @RowCount = (SELECT COUNT(*) FROM #TextBoxFields)
+			SET @RowCount = (SELECT COUNT(DISTINCT FieldType) FROM #TextBoxFields)
 			IF @RowCount > 0
 			BEGIN
 				WHILE @RowCount > 0
@@ -424,7 +424,7 @@ AS
 				DELETE FROM #TextBoxFields
 				WHERE @FieldType = FieldType 
 		
-				SET @RowCount = (SELECT COUNT(*) FROM #TextBoxFields)
+				SET @RowCount = (SELECT COUNT(DISTINCT FieldType) FROM #TextBoxFields)
 				END            
 			END    
 		END
