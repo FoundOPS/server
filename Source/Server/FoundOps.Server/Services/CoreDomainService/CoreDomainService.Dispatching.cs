@@ -86,7 +86,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             var serviceTemplates = new List<ServiceTemplate>();
 
             foreach (var serviceTemplateId in serviceTemplateIds)
-                serviceTemplates.Add(HardCodedLoaders.LoadServiceTemplateWithDetails(this.ObjectContext, serviceTemplateId, null, null, null));
+                serviceTemplates.Add(HardCodedLoaders.LoadServiceTemplateWithDetails(this.ObjectContext, serviceTemplateId, null, null, null).First());
 
             return serviceTemplates.AsQueryable().OrderBy(st => st.Name);
         }

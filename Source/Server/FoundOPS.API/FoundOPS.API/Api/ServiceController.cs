@@ -1,9 +1,11 @@
 ﻿using System.Data.EntityClient;
 using System.Data.Objects;
+using System.Threading.Tasks;
 using Dapper;
 using FoundOps.Common.NET;
 using FoundOps.Core.Models;
 using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Core.Models.CoreEntities.ServiceEntites;
 using FoundOps.Core.Tools;
 using System;
 using System.Collections.Generic;
@@ -76,13 +78,15 @@ namespace FoundOPS.API.Api
             parameters.Add("@businessAccountId", currentBusinessAccount.Id);
             parameters.Add("@serviceType", serviceType);
 
+            FieldJavaScript[] javaScriptFields;
+
             using (var conn = new SqlConnection(ServerConstants.SqlConnectionString))
             {
                 conn.Open();
 
-                var data = conn.Query<FieldJavaScript>("GetFieldsInJavaScriptFormat", parameters, commandType: CommandType.StoredProcedure).ToArray();
+                javaScriptFields = conn.Query<FieldJavaScript>("GetFieldsInJavaScriptFormat", parameters, commandType: CommandType.StoredProcedure).ToArray();
 
-                foreach (var field in data)
+                foreach (var field in javaScriptFields)
                 {
                     columnTypes.Add(field.Name, field.Type);
                 }
@@ -93,6 +97,112 @@ namespace FoundOPS.API.Api
             if (single) //just return the types
             {
                 return new List<Dictionary<string, object>> { columnTypes }.AsQueryable();
+            }
+
+            ServiceTemplateWithDate[] serviceTemplates;
+            ILookup<Guid, ISimpleField> simpleDateFields;
+            ILookup<Guid, ISimpleField> simpleNumericFields;
+            ILookup<Guid, ISimpleField> simpleTextFields;
+            ILookup<Guid, ISimpleField> simpleOptionsFields;
+            ILookup<Guid, ISimpleField> simpleLocationFields;
+
+            using (var db = new DbContext(ServerConstants.SqlConnectionString))
+            {
+                db.Database.Connection.Open();
+
+                var loadServiceTemplate = db.Database.Connection.CreateCommand();
+                loadServiceTemplate.CommandText = "GetServiceTemplatesWithDateAndDetails";
+                loadServiceTemplate.CommandType = CommandType.StoredProcedure;
+
+                #region Add Parameters
+
+                var parameter = new SqlParameter
+                {
+                    ParameterName = "serviceProviderIdContext",
+                    DbType = DbType.Guid,
+                    Direction = ParameterDirection.Input,
+                    Value = currentBusinessAccount.Id
+                };
+
+                loadServiceTemplate.Parameters.Add(parameter);
+
+                parameter = new SqlParameter
+                {
+                    ParameterName = "clientIdContext",
+                    DbType = DbType.Guid,
+                    Direction = ParameterDirection.Input,
+                    Value = clientContext ?? (object)DBNull.Value
+                };
+
+                loadServiceTemplate.Parameters.Add(parameter);
+
+                parameter = new SqlParameter
+                {
+                    ParameterName = "recurringServiceIdContext",
+                    DbType = DbType.Guid,
+                    Direction = ParameterDirection.Input,
+                    Value = recurringServiceContext ?? (object)DBNull.Value
+                };
+
+                loadServiceTemplate.Parameters.Add(parameter);
+
+                parameter = new SqlParameter
+                {
+                    ParameterName = "firstDate",
+                    DbType = DbType.DateTime,
+                    Direction = ParameterDirection.Input,
+                    Value = startDate
+                };
+
+                loadServiceTemplate.Parameters.Add(parameter);
+
+                parameter = new SqlParameter
+                {
+                    ParameterName = "lastDate",
+                    DbType = DbType.DateTime,
+                    Direction = ParameterDirection.Input,
+                    Value = endDate
+                };
+
+                loadServiceTemplate.Parameters.Add(parameter);
+
+                parameter = new SqlParameter
+                {
+                    ParameterName = "serviceTypeContext",
+                    DbType = DbType.String,
+                    Direction = ParameterDirection.Input,
+                    Value = serviceType ?? (object)DBNull.Value
+                };
+
+                loadServiceTemplate.Parameters.Add(parameter);
+
+                #endregion
+
+                var reader = loadServiceTemplate.ExecuteReader();
+
+                serviceTemplates = _coreEntitiesContainer.Translate<ServiceTemplateWithDate>(reader).ToArray();
+
+                reader.NextResult();
+
+                simpleDateFields = _coreEntitiesContainer.Translate<SimpleDateField>(reader).AsParallel().ToLookup(f => f.ServiceTemplateId, f => (ISimpleField)f);
+
+                reader.NextResult();
+
+                simpleNumericFields = _coreEntitiesContainer.Translate<SimpleNumericField>(reader).AsParallel().ToLookup(f => f.ServiceTemplateId, f => (ISimpleField)f);
+
+                reader.NextResult();
+
+                simpleTextFields = _coreEntitiesContainer.Translate<SimpleTextField>(reader).AsParallel().ToLookup(f => f.ServiceTemplateId, f => (ISimpleField)f);
+
+                reader.NextResult();
+
+                simpleOptionsFields = _coreEntitiesContainer.Translate<SimpleTextField>(reader).AsParallel().ToLookup(f => f.ServiceTemplateId, f => (ISimpleField)f);
+
+                reader.NextResult();
+
+                simpleLocationFields = _coreEntitiesContainer.Translate<SimpleTextField>(reader).AsParallel().ToLookup(f => f.ServiceTemplateId, f => (ISimpleField)f);
+
+                db.Database.Connection.Close();
             }
 
             var command = new SqlCommand("GetServiceHoldersWithFields") { CommandType = CommandType.StoredProcedure };
@@ -121,13 +231,30 @@ namespace FoundOPS.API.Api
             var lastDate = command.Parameters.Add("@lastDate", SqlDbType.Date);
             lastDate.Value = endDate;
 
-            var connectionString = ConfigWrapper.ConnectionString("CoreConnectionString");
-            var result = DataReaderTools.GetDynamicSqlData(connectionString, command);
+            var result = serviceTemplates.AsParallel().Select(st =>
+                {
+                    var dictionary = new Dictionary<string, Object>
+                        {
+                            {"OccurDate", st.OccurDate},
+                            {"RecurringServiceId", st.RecurringServiceId},
+                            {"ServiceId", st.ServiceId},
+                            {"ClientName", st.ClientName}
+                        };
 
-            var list = result.Item2.OrderBy(d => (DateTime)d["OccurDate"]).ToList();
-            list.Insert(0, columnTypes);
+                    var id = st.ServiceId.HasValue ? st.ServiceId.Value : st.RecurringServiceId.Value;
 
-            return list.AsQueryable();
+                    var fields = simpleDateFields[id].Union(simpleNumericFields[id]).Union(simpleTextFields[id]).Union(
+                            simpleOptionsFields[id]).Union(simpleLocationFields[id]).ToDictionary(f => f.Name);
+
+                    foreach (var name in javaScriptFields.Select(f => f.Name.Replace("_", " ")))
+                        dictionary.Add(name, fields.ContainsKey(name) ? fields[name].ObjectValue : null);
+
+                    return dictionary;
+                }).ToList();
+
+            result.Insert(0, columnTypes);
+
+            return result.AsQueryable();
         }
 
         /// <summary>

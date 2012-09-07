@@ -2,7 +2,7 @@
 <edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
   <edmx:Designer>
     <edmx:Diagrams>
-      <edmx:Diagram Name="CoreEntities" ZoomLevel="70">
+      <edmx:Diagram Name="CoreEntities" ZoomLevel="135">
         <edmx:EntityTypeShape EntityType="CoreEntities.Block" Width="1.5" PointX="23.625" PointY="22.875" Height="2.5571907552083353" />
         <edmx:EntityTypeShape EntityType="CoreEntities.Role" Width="1.5" PointX="21.375" PointY="23.125" Height="2.5571907552083246" />
         <edmx:EntityTypeShape EntityType="CoreEntities.Party" Width="1.875" PointX="18.75" PointY="22.875" Height="2.7494921875000102" />
