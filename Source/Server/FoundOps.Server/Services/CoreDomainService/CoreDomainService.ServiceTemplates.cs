@@ -54,15 +54,9 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="searchText">The search text.</param>
         public IQueryable<Field> SearchFieldsForServiceProvider(Guid roleId, Guid serviceTemplateId, string searchText)
         {
-            //get the service template and it's parent FoundOPS service template w details
-            var serviceTemplateTuples =
-                from serviceTemplate in GetServiceTemplatesForServiceProvider(roleId, null).Include(st => st.ChildrenServiceTemplates)
-                    .Where(st => st.ChildrenServiceTemplates.Any(cst => cst.Id == serviceTemplateId))
-                from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
-                from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty()
-                select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations };
+            //Gets all fields from the specified service template
+            var fields = HardCodedLoaders.LoadServiceTemplateWithDetails(this.ObjectContext, serviceTemplateId, null, null, null).SelectMany(st => st.Fields);
 
-            IEnumerable<Field> fields = serviceTemplateTuples.First().Fields;
             if (!String.IsNullOrEmpty(searchText))
                 fields = fields.Where(f => f.Name.StartsWith(searchText));
 
@@ -222,26 +216,13 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             var businessAccount = ObjectContext.Owner(roleId).First();
 
-            IQueryable<ServiceTemplate> serviceProviderTemplates;
+            //If FoundOPS account => Filter only FoundOPS templates
+            //Else => Filter by the service templates for the service provider (Vendor)
+            var serviceProviderTemplates = businessAccount.Id == BusinessAccountsConstants.FoundOpsId 
+                ? HardCodedLoaders.LoadServiceTemplateWithDetails(this.ObjectContext, null, null, businessAccount.Id, (int)ServiceTemplateLevel.FoundOpsDefined).AsQueryable() 
+                : HardCodedLoaders.LoadServiceTemplateWithDetails(this.ObjectContext, null, null, businessAccount.Id, (int)ServiceTemplateLevel.ServiceProviderDefined).AsQueryable();
 
-            //Filter only FoundOPS templates if the current business is FoundOPS
-            if (businessAccount.Id == BusinessAccountsConstants.FoundOpsId)
-                serviceProviderTemplates = this.ObjectContext.ServiceTemplates.Where(st => st.LevelInt == (int)ServiceTemplateLevel.FoundOpsDefined);
-            else //Filter by the service templates for the service provider (Vendor)
-                serviceProviderTemplates = (from serviceTemplate in this.ObjectContext.ServiceTemplates.Where(st => st.LevelInt == (int)ServiceTemplateLevel.ServiceProviderDefined)
-                                            join stv in ObjectContext.ServiceTemplateWithVendorIds
-                                                on serviceTemplate.Id equals stv.ServiceTemplateId
-                                            where stv.BusinessAccountId == businessAccount.Id
-                                            select serviceTemplate).Distinct();
-
-            //Force load the details
-            var templatesWithDetails =
-                (from serviceTemplate in serviceProviderTemplates
-                 from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
-                 from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty()
-                 select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations }).ToArray();
-
-            return templatesWithDetails.Select(t => t.serviceTemplate).Distinct().OrderBy(st => st.Name);
+            return serviceProviderTemplates.OrderBy(st => st.Name);
         }
 
         /// <summary>
@@ -254,20 +235,9 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             //Filter by the service templates for the Client
             //also filter be service provider (Vendor) for security
-            var serviceProviderTemplates = (from serviceTemplate in this.ObjectContext.ServiceTemplates.Where(st => st.OwnerClientId == clientId)
-                                            join stv in ObjectContext.ServiceTemplateWithVendorIds
-                                                on serviceTemplate.Id equals stv.ServiceTemplateId
-                                            where stv.BusinessAccountId == vendorId
-                                            select serviceTemplate).Distinct();
+            var serviceTemplates = HardCodedLoaders.LoadServiceTemplateWithDetails(this.ObjectContext, null, clientId, null, null).Where(st => st.OwnerServiceProviderId == vendorId);
 
-            //Force load the details
-            var templatesWithDetails =
-                (from serviceTemplate in serviceProviderTemplates
-                 from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
-                 from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty()
-                 select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations }).ToArray();
-
-            return templatesWithDetails.Select(t => t.serviceTemplate).Distinct().OrderBy(st => st.Name);
+            return serviceTemplates.OrderBy(st => st.Name);
         }
 
         /// <summary>
@@ -301,7 +271,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="serviceTemplateId">The ServiceTemplate id.</param>
         public ServiceTemplate GetServiceTemplateDetailsForRole(Guid roleId, Guid serviceTemplateId)
         {
-            return HardCodedLoaders.LoadServiceTemplateWithDetails(this.ObjectContext, serviceTemplateId, null, null, null);
+            return HardCodedLoaders.LoadServiceTemplateWithDetails(this.ObjectContext, serviceTemplateId, null, null, null).First();
 
             //TODO w QuickBooks
             ////Force load Invoices

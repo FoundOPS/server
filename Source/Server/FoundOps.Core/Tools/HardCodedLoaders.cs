@@ -11,7 +11,7 @@ namespace FoundOps.Core.Tools
 {
     public static class HardCodedLoaders
     {
-        public static ServiceTemplate LoadServiceTemplateWithDetails(CoreEntitiesContainer container, Guid? serviceTemplateId, Guid? clientId, Guid? serviceProviderId, int? levelInt)
+        public static ServiceTemplate[] LoadServiceTemplateWithDetails(CoreEntitiesContainer container, Guid? serviceTemplateId, Guid? clientId, Guid? serviceProviderId, int? levelInt)
         {
             using (var db = new DbContext(ServerConstants.SqlConnectionString))
             {
@@ -69,7 +69,7 @@ namespace FoundOps.Core.Tools
 
                 var reader = loadServiceTemplate.ExecuteReader();
 
-                var serviceTemplate = container.Translate<ServiceTemplate>(reader, "ServiceTemplates", MergeOption.AppendOnly).First();
+                var serviceTemplates = container.Translate<ServiceTemplate>(reader, "ServiceTemplates", MergeOption.AppendOnly).ToArray();
 
                 reader.NextResult();
 
@@ -105,7 +105,7 @@ namespace FoundOps.Core.Tools
 
                 db.Database.Connection.Close();
 
-                return serviceTemplate;
+                return serviceTemplates;
             }
         }
     }

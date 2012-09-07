@@ -173,7 +173,7 @@ namespace FoundOPS.API.Api
             if (businessAccount == null)
                 return Request.CreateResponse(HttpStatusCode.Unauthorized);
 
-            var serviceTemplate = HardCodedLoaders.LoadServiceTemplateWithDetails(_coreEntitiesContainer, serviceTemplateIdToLoad, null, null, null);
+            var serviceTemplate = HardCodedLoaders.LoadServiceTemplateWithDetails(_coreEntitiesContainer, serviceTemplateIdToLoad, null, null, null).First();
 
             //generate the service
             if (!serviceId.HasValue)
@@ -223,7 +223,7 @@ namespace FoundOPS.API.Api
             //the service exists. load all field information  and update field values
             if (existingService != null)
             {
-                var serviceTemplate = HardCodedLoaders.LoadServiceTemplateWithDetails(_coreEntitiesContainer, existingService.Id, null, null, null);
+                var serviceTemplate = HardCodedLoaders.LoadServiceTemplateWithDetails(_coreEntitiesContainer, existingService.Id, null, null, null).First();
 
 
                 #region Update all Fields
