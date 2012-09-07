@@ -104,7 +104,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             if (businessAccount == null)
                 return null;
 
-            HardCodedLoaders.LoadServiceTemplateWithDetails(this.ObjectContext, null, null, businessAccount.Id, (int) ServiceTemplateLevel.ServiceProviderDefined);
+            HardCodedLoaders.LoadServiceTemplateWithDetails(this.ObjectContext, null, null, businessAccount.Id, (int)ServiceTemplateLevel.ServiceProviderDefined);
 
             //Force load PartyImage
             businessAccount.PartyImageReference.Load();
@@ -138,13 +138,13 @@ namespace FoundOps.Server.Services.CoreDomainService
             var taskStatuses = new List<TaskStatus> { };
 
             var taskStatus = new TaskStatus
-                                 {
-                                     Id = Guid.NewGuid(),
-                                     Name = "Created",
-                                     Color = "FFFF00",
-                                     DefaultTypeInt = ((int)StatusDetail.CreatedDefault),
-                                     RouteRequired = false
-                                 };
+            {
+                Id = Guid.NewGuid(),
+                Name = "Created",
+                Color = "FFFFFF",
+                DefaultTypeInt = ((int)StatusDetail.CreatedDefault),
+                RouteRequired = false
+            };
 
             taskStatuses.Add(taskStatus);
 
@@ -152,7 +152,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             {
                 Id = Guid.NewGuid(),
                 Name = "Routed",
-                Color = "FFFFFF",
+                Color = "0D9EFF",
                 DefaultTypeInt = ((int)StatusDetail.RoutedDefault),
                 RouteRequired = true
             };

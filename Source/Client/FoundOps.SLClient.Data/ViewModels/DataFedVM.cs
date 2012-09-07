@@ -10,7 +10,6 @@ using System.Reactive.Linq;
 using FoundOps.Common.Models;
 using System.Reactive.Subjects;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 
 namespace FoundOps.SLClient.Data.ViewModels
 {

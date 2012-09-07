@@ -109,7 +109,7 @@ namespace FoundOps.SLClient.UI.Tools
             {
                 Id = Guid.NewGuid(),
                 LocationId =  routeTask.LocationId,
-                ClientId = routeTask.Location.Client.Id
+                ClientId = routeTask.ClientId
             };
 
             //Add the tasks to the destination

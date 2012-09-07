@@ -104,17 +104,26 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         public bool ManifestOpen { get { return _manifestOpenHelper.Value; } set { _manifestOpenSubject.OnNext(value); } }
 
-        private readonly ObservableAsPropertyHelper<DateTime> _selectedDateHelper;
         private readonly BehaviorSubject<DateTime> _selectedDateSubject = new BehaviorSubject<DateTime>(DateTime.UtcNow.Date);
         /// <summary>
         /// An Observable of the SelectedDate.
         /// </summary>
         public IObservable<DateTime> SelectedDateObservable { get { return _selectedDateSubject.AsObservable(); } }
 
+        private DateTime _selectedDate;
         /// <summary>
         /// The SelectedDate.
         /// </summary>
-        public DateTime SelectedDate { get { return _selectedDateHelper.Value; } set { _selectedDateSubject.OnNext(value); } }
+        public DateTime SelectedDate
+        {
+            get { return _selectedDate; }
+            set
+            {
+                _selectedDate = value;
+                _selectedDateSubject.OnNext(value);
+                this.RaisePropertyChanged("SelectedDate");
+            }
+        }
 
         /// <summary>
         /// For backwards compatibility
@@ -235,7 +244,6 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             //Setup ObservableAsPropertyHelpers
             _manifestOpenHelper = _manifestOpenSubject.ToProperty(this, x => x.ManifestOpen);
-            _selectedDateHelper = this.ObservableToProperty(_selectedDateSubject, x => x.SelectedDate);
             //throttle because when selecting multiple route destinations in route list, it will cycle through and select each one
             _selectedRouteDestinationHelper = _selectedRouteDestinationSubject.Throttle(TimeSpan.FromMilliseconds(300)).ToProperty(this, x => x.SelectedRouteDestination);
             _selectedRouteTaskHelper = _selectedRouteTaskSubject.ToProperty(this, x => x.SelectedRouteTask);
@@ -307,7 +315,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 _cancelLastRoutesLoad.OnNext(true);
 
                 //if the current section is not the dispatcher or the date is not set, return
-                if (VM.Navigation.CurrentSectionObservable.First() != "Dispatcher" || SelectedDate == new DateTime())
+                if (VM.Navigation.CurrentSection != "Dispatcher" || SelectedDate == new DateTime())
                     return;
 
                 //Notify the RoutesVM is loading Routes

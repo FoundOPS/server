@@ -168,7 +168,7 @@ namespace FoundOPS.API.Api
 
         #region User Settings
 
-        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        [AcceptVerbs("GET", "POST")]
         public IQueryable<UserSettings> GetAllUserSettings(Guid? roleId)
         {
             //If there is no RoleId passed, we can assume that the user is not authorized to see all the User Settings
@@ -215,13 +215,16 @@ namespace FoundOPS.API.Api
             var userAccountsQueryable = (from user in userAccounts
                                          let role = _coreEntitiesContainer.Roles.FirstOrDefault(r => r.OwnerBusinessAccountId == businessAccount.Id && r.MemberParties.Any(p => p.Id == user.Id))
                                          let account = _coreEntitiesContainer.Parties.OfType<UserAccount>().Where(ua => ua.Id == user.Id).Include(ua => ua.LinkedEmployees).First()
-                                         select UserSettings.ConvertModel(account, role)).ToList();
+                                         select UserSettings.ConvertModel(account, role)).ToList().AsQueryable();
 
-            //do not return FoundOPS accounts
-            return userAccountsQueryable.Where(ua => !ua.EmailAddress.Contains("foundops.com")).AsQueryable();
+            //if the user is not a foundops user, do not return FoundOPS accounts
+            if (!_coreEntitiesContainer.CanAdministerFoundOPS())
+                userAccountsQueryable = userAccountsQueryable.Where(ua => !ua.EmailAddress.Contains("foundops.com"));
+
+            return userAccountsQueryable;
         }
 
-        [System.Web.Http.AcceptVerbs("POST")]
+        [AcceptVerbs("POST")]
         public HttpResponseMessage InsertUserSettings(UserSettings settings, Guid? roleId)
         {
             //Check for admin abilities

@@ -28,6 +28,19 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         public IObservable<string> CurrentSectionObservable { get { return _currentSectionObservable.AsObservable(); } }
 
+        /// <summary>
+        /// The current section
+        /// </summary>
+        public string CurrentSection
+        {
+            get { return _currentSection; }
+            set
+            {
+                _currentSection = value;
+                _currentSectionObservable.OnNext(_currentSection);
+            }
+        }
+
         #region Implementation of INotifyPropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -68,6 +81,8 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         private bool _firstBlockChosen;
         private UserControl _selectedView;
+        private string _currentSection;
+
         #endregion
 
         public NavigationVM()
@@ -85,7 +100,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             if (string.IsNullOrEmpty(name))
                 return;
-            
+
             //if this is an infiniteAccordionSection
             //a) load the Infinite Accordion View (instead of the view with this name)
             //b) set the IInfiniteAccordionPage.SelectedObjectType to the section's type
@@ -99,7 +114,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             SelectedView = view;
 
-            _currentSectionObservable.OnNext(name);
+            CurrentSection = name;
 
             TrackChosenSection(name);
         }

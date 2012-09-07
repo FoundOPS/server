@@ -14,11 +14,11 @@
             <TextBlock Text=":" />
         </StackPanel>
         <!--Disable the Location combobox if it is a generated service. TODO: Change this if LocationField has other types than just Destination-->
-        <sdk:AutoCompleteBox x:Name="LocationsAutoCompleteBox" Grid.Column="2" MinWidth="100" ValueMemberPath="Name"
+        <sdk:AutoCompleteBox x:Name="LocationsAutoCompleteBox" Grid.Column="2" MinWidth="100" ValueMemberPath="AddressCity"
                                  SelectedItem="{Binding LocationField.Value, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=Clients:LocationFieldEdit}}">
             <sdk:AutoCompleteBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock Text="{Binding Name}"/>
+                    <TextBlock Text="{Binding AddressCity}"/>
                 </DataTemplate>
             </sdk:AutoCompleteBox.ItemTemplate>
         </sdk:AutoCompleteBox>

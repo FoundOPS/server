@@ -89,7 +89,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             //c) the SelectedDate changes
             //d) RejectChanges is called due to an error
             VM.Navigation.CurrentSectionObservable.Where(section => section == "Dispatcher").AsGeneric()
-            .Merge(ContextManager.OwnerAccountObservable.Where(o => VM.Navigation.CurrentSectionObservable.First() == "Dispatcher").AsGeneric())
+            .Merge(ContextManager.OwnerAccountObservable.Where(o => VM.Navigation.CurrentSection == "Dispatcher").AsGeneric())
             .Merge(VM.Routes.SelectedDateObservable.AsGeneric())
             .Merge(DataManager.RejectChangesDueToError)
             .Merge(_reloadTasks)

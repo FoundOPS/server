@@ -97,7 +97,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Load the regions whenever the Dispatcher is entered, or 
             //the current role changed while the dispatcher was open
             VM.Navigation.CurrentSectionObservable.Where(section => section == "Dispatcher").AsGeneric()
-            .Merge(Manager.Context.OwnerAccountObservable.Where(o => VM.Navigation.CurrentSectionObservable.First() == "Dispatcher").AsGeneric())
+            .Merge(Manager.Context.OwnerAccountObservable.Where(o => VM.Navigation.CurrentSection == "Dispatcher").AsGeneric())
             .ObserveOnDispatcher().Subscribe(_ =>
             {
                 _cancelLastFilterRegionsLoad.OnNext(true);
