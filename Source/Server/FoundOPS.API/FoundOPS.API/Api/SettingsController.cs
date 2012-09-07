@@ -292,9 +292,10 @@ namespace FoundOPS.API.Api
 
             //Create the link that will login the new user and then redirect them to the
             //settings page where they can change their password
-            //ex: http://localhost:9711/api/auth/Login?email=jperl@foundops.com&pass=seltzer&redirectUrl=http://localhost:8000/navigator.html%23view/createPassword.html
-            var redirect = ServerConstants.RootApplicationUrl + "/navigator.html%23view/createPassword.html";
-            var link = ServerConstants.RootApiUrl + "/api/auth/Login?email=" + user.EmailAddress + "&pass=" + temporaryPassword + "&redirectUrl=" + redirect;
+            //ex: http://api.foundops.com/api/session/Login?email=bright.zach@gmail.com&pass=HJ15MG3G&redirectUrl=http://app.foundops.com/App/Index#view/createPassword.html
+            var redirect = ServerConstants.RootApplicationUrl + "/App/Index.html%23view/createPassword.html";
+
+            var link = ServerConstants.RootApiUrl + "/api/session/Login?email=" + user.EmailAddress + "&pass=" + temporaryPassword + "&redirectUrl=" + redirect;
 
             //Construct the email
             var subject = "Your FoundOPS invite from " + sender;
