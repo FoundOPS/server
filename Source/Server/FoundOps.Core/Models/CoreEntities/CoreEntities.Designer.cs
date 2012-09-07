@@ -1256,6 +1256,132 @@ namespace FoundOps.Core.Models.CoreEntities
     
             return base.ExecuteFunction<FieldJavaScript>("GetFieldsInJavaScriptFormat", businessAccountIdParameter, serviceTypeParameter);
         }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="serviceProviderIdContext">No Metadata Documentation available.</param>
+        /// <param name="clientIdContext">No Metadata Documentation available.</param>
+        /// <param name="recurringServiceIdContext">No Metadata Documentation available.</param>
+        /// <param name="firstDate">No Metadata Documentation available.</param>
+        /// <param name="lastDate">No Metadata Documentation available.</param>
+        /// <param name="serviceTypeContext">No Metadata Documentation available.</param>
+        public int GetServiceHoldersWithFields(Nullable<global::System.Guid> serviceProviderIdContext, Nullable<global::System.Guid> clientIdContext, Nullable<global::System.Guid> recurringServiceIdContext, Nullable<global::System.DateTime> firstDate, Nullable<global::System.DateTime> lastDate, global::System.String serviceTypeContext)
+        {
+            ObjectParameter serviceProviderIdContextParameter;
+            if (serviceProviderIdContext.HasValue)
+            {
+                serviceProviderIdContextParameter = new ObjectParameter("serviceProviderIdContext", serviceProviderIdContext);
+            }
+            else
+            {
+                serviceProviderIdContextParameter = new ObjectParameter("serviceProviderIdContext", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter clientIdContextParameter;
+            if (clientIdContext.HasValue)
+            {
+                clientIdContextParameter = new ObjectParameter("clientIdContext", clientIdContext);
+            }
+            else
+            {
+                clientIdContextParameter = new ObjectParameter("clientIdContext", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter recurringServiceIdContextParameter;
+            if (recurringServiceIdContext.HasValue)
+            {
+                recurringServiceIdContextParameter = new ObjectParameter("recurringServiceIdContext", recurringServiceIdContext);
+            }
+            else
+            {
+                recurringServiceIdContextParameter = new ObjectParameter("recurringServiceIdContext", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter firstDateParameter;
+            if (firstDate.HasValue)
+            {
+                firstDateParameter = new ObjectParameter("firstDate", firstDate);
+            }
+            else
+            {
+                firstDateParameter = new ObjectParameter("firstDate", typeof(global::System.DateTime));
+            }
+    
+            ObjectParameter lastDateParameter;
+            if (lastDate.HasValue)
+            {
+                lastDateParameter = new ObjectParameter("lastDate", lastDate);
+            }
+            else
+            {
+                lastDateParameter = new ObjectParameter("lastDate", typeof(global::System.DateTime));
+            }
+    
+            ObjectParameter serviceTypeContextParameter;
+            if (serviceTypeContext != null)
+            {
+                serviceTypeContextParameter = new ObjectParameter("serviceTypeContext", serviceTypeContext);
+            }
+            else
+            {
+                serviceTypeContextParameter = new ObjectParameter("serviceTypeContext", typeof(global::System.String));
+            }
+    
+            return base.ExecuteFunction("GetServiceHoldersWithFields", serviceProviderIdContextParameter, clientIdContextParameter, recurringServiceIdContextParameter, firstDateParameter, lastDateParameter, serviceTypeContextParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="serviceProviderContextId">No Metadata Documentation available.</param>
+        /// <param name="clientContextId">No Metadata Documentation available.</param>
+        /// <param name="serviceTemplateContextId">No Metadata Documentation available.</param>
+        /// <param name="levelInt">No Metadata Documentation available.</param>
+        public ObjectResult<GetServiceTemplatesAndFields_Result1> GetServiceTemplatesAndFields(Nullable<global::System.Guid> serviceProviderContextId, Nullable<global::System.Guid> clientContextId, Nullable<global::System.Guid> serviceTemplateContextId, Nullable<global::System.Int32> levelInt)
+        {
+            ObjectParameter serviceProviderContextIdParameter;
+            if (serviceProviderContextId.HasValue)
+            {
+                serviceProviderContextIdParameter = new ObjectParameter("serviceProviderContextId", serviceProviderContextId);
+            }
+            else
+            {
+                serviceProviderContextIdParameter = new ObjectParameter("serviceProviderContextId", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter clientContextIdParameter;
+            if (clientContextId.HasValue)
+            {
+                clientContextIdParameter = new ObjectParameter("clientContextId", clientContextId);
+            }
+            else
+            {
+                clientContextIdParameter = new ObjectParameter("clientContextId", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter serviceTemplateContextIdParameter;
+            if (serviceTemplateContextId.HasValue)
+            {
+                serviceTemplateContextIdParameter = new ObjectParameter("serviceTemplateContextId", serviceTemplateContextId);
+            }
+            else
+            {
+                serviceTemplateContextIdParameter = new ObjectParameter("serviceTemplateContextId", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter levelIntParameter;
+            if (levelInt.HasValue)
+            {
+                levelIntParameter = new ObjectParameter("levelInt", levelInt);
+            }
+            else
+            {
+                levelIntParameter = new ObjectParameter("levelInt", typeof(global::System.Int32));
+            }
+    
+            return base.ExecuteFunction<GetServiceTemplatesAndFields_Result1>("GetServiceTemplatesAndFields", serviceProviderContextIdParameter, clientContextIdParameter, serviceTemplateContextIdParameter, levelIntParameter);
+        }
 
         #endregion
 
@@ -12203,6 +12329,356 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.String _Type;
         partial void OnTypeChanging(global::System.String value);
         partial void OnTypeChanged();
+
+        #endregion
+
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmComplexTypeAttribute(NamespaceName="CoreEntities", Name="GetServiceTemplatesAndFields_Result")]
+    [DataContractAttribute(IsReference=true)]
+    [Serializable()]
+    public partial class GetServiceTemplatesAndFields_Result : ComplexObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new GetServiceTemplatesAndFields_Result object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="levelInt">Initial value of the LevelInt property.</param>
+        public static GetServiceTemplatesAndFields_Result CreateGetServiceTemplatesAndFields_Result(global::System.Guid id, global::System.Int16 levelInt)
+        {
+            GetServiceTemplatesAndFields_Result getServiceTemplatesAndFields_Result = new GetServiceTemplatesAndFields_Result();
+            getServiceTemplatesAndFields_Result.Id = id;
+            getServiceTemplatesAndFields_Result.LevelInt = levelInt;
+            return getServiceTemplatesAndFields_Result;
+        }
+
+        #endregion
+
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                OnIdChanging(value);
+                ReportPropertyChanging("Id");
+                _Id = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Id");
+                OnIdChanged();
+            }
+        }
+        private global::System.Guid _Id;
+        partial void OnIdChanging(global::System.Guid value);
+        partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> OwnerServiceProviderId
+        {
+            get
+            {
+                return _OwnerServiceProviderId;
+            }
+            set
+            {
+                OnOwnerServiceProviderIdChanging(value);
+                ReportPropertyChanging("OwnerServiceProviderId");
+                _OwnerServiceProviderId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("OwnerServiceProviderId");
+                OnOwnerServiceProviderIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _OwnerServiceProviderId;
+        partial void OnOwnerServiceProviderIdChanging(Nullable<global::System.Guid> value);
+        partial void OnOwnerServiceProviderIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> OwnerClientId
+        {
+            get
+            {
+                return _OwnerClientId;
+            }
+            set
+            {
+                OnOwnerClientIdChanging(value);
+                ReportPropertyChanging("OwnerClientId");
+                _OwnerClientId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("OwnerClientId");
+                OnOwnerClientIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _OwnerClientId;
+        partial void OnOwnerClientIdChanging(Nullable<global::System.Guid> value);
+        partial void OnOwnerClientIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> OwnerServiceTemplateId
+        {
+            get
+            {
+                return _OwnerServiceTemplateId;
+            }
+            set
+            {
+                OnOwnerServiceTemplateIdChanging(value);
+                ReportPropertyChanging("OwnerServiceTemplateId");
+                _OwnerServiceTemplateId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("OwnerServiceTemplateId");
+                OnOwnerServiceTemplateIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _OwnerServiceTemplateId;
+        partial void OnOwnerServiceTemplateIdChanging(Nullable<global::System.Guid> value);
+        partial void OnOwnerServiceTemplateIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int16 LevelInt
+        {
+            get
+            {
+                return _LevelInt;
+            }
+            set
+            {
+                OnLevelIntChanging(value);
+                ReportPropertyChanging("LevelInt");
+                _LevelInt = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("LevelInt");
+                OnLevelIntChanged();
+            }
+        }
+        private global::System.Int16 _LevelInt;
+        partial void OnLevelIntChanging(global::System.Int16 value);
+        partial void OnLevelIntChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                OnNameChanging(value);
+                ReportPropertyChanging("Name");
+                _Name = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Name");
+                OnNameChanged();
+            }
+        }
+        private global::System.String _Name;
+        partial void OnNameChanging(global::System.String value);
+        partial void OnNameChanged();
+
+        #endregion
+
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmComplexTypeAttribute(NamespaceName="CoreEntities", Name="GetServiceTemplatesAndFields_Result1")]
+    [DataContractAttribute(IsReference=true)]
+    [Serializable()]
+    public partial class GetServiceTemplatesAndFields_Result1 : ComplexObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new GetServiceTemplatesAndFields_Result1 object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="levelInt">Initial value of the LevelInt property.</param>
+        public static GetServiceTemplatesAndFields_Result1 CreateGetServiceTemplatesAndFields_Result1(global::System.Guid id, global::System.Int16 levelInt)
+        {
+            GetServiceTemplatesAndFields_Result1 getServiceTemplatesAndFields_Result1 = new GetServiceTemplatesAndFields_Result1();
+            getServiceTemplatesAndFields_Result1.Id = id;
+            getServiceTemplatesAndFields_Result1.LevelInt = levelInt;
+            return getServiceTemplatesAndFields_Result1;
+        }
+
+        #endregion
+
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid Id
+        {
+            get
+            {
+                return _Id;
+            }
+            set
+            {
+                OnIdChanging(value);
+                ReportPropertyChanging("Id");
+                _Id = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Id");
+                OnIdChanged();
+            }
+        }
+        private global::System.Guid _Id;
+        partial void OnIdChanging(global::System.Guid value);
+        partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> OwnerServiceProviderId
+        {
+            get
+            {
+                return _OwnerServiceProviderId;
+            }
+            set
+            {
+                OnOwnerServiceProviderIdChanging(value);
+                ReportPropertyChanging("OwnerServiceProviderId");
+                _OwnerServiceProviderId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("OwnerServiceProviderId");
+                OnOwnerServiceProviderIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _OwnerServiceProviderId;
+        partial void OnOwnerServiceProviderIdChanging(Nullable<global::System.Guid> value);
+        partial void OnOwnerServiceProviderIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> OwnerClientId
+        {
+            get
+            {
+                return _OwnerClientId;
+            }
+            set
+            {
+                OnOwnerClientIdChanging(value);
+                ReportPropertyChanging("OwnerClientId");
+                _OwnerClientId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("OwnerClientId");
+                OnOwnerClientIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _OwnerClientId;
+        partial void OnOwnerClientIdChanging(Nullable<global::System.Guid> value);
+        partial void OnOwnerClientIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> OwnerServiceTemplateId
+        {
+            get
+            {
+                return _OwnerServiceTemplateId;
+            }
+            set
+            {
+                OnOwnerServiceTemplateIdChanging(value);
+                ReportPropertyChanging("OwnerServiceTemplateId");
+                _OwnerServiceTemplateId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("OwnerServiceTemplateId");
+                OnOwnerServiceTemplateIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _OwnerServiceTemplateId;
+        partial void OnOwnerServiceTemplateIdChanging(Nullable<global::System.Guid> value);
+        partial void OnOwnerServiceTemplateIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int16 LevelInt
+        {
+            get
+            {
+                return _LevelInt;
+            }
+            set
+            {
+                OnLevelIntChanging(value);
+                ReportPropertyChanging("LevelInt");
+                _LevelInt = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("LevelInt");
+                OnLevelIntChanged();
+            }
+        }
+        private global::System.Int16 _LevelInt;
+        partial void OnLevelIntChanging(global::System.Int16 value);
+        partial void OnLevelIntChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                OnNameChanging(value);
+                ReportPropertyChanging("Name");
+                _Name = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Name");
+                OnNameChanged();
+            }
+        }
+        private global::System.String _Name;
+        partial void OnNameChanging(global::System.String value);
+        partial void OnNameChanged();
 
         #endregion
 

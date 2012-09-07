@@ -79,7 +79,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             {
                 this.ObjectContext.Fields.AddObject(field);
             }
-            
+
             var serviceTemplate = ObjectContext.ServiceTemplates.FirstOrDefault(st => st.Id == field.OwnerServiceTemplate.Id);
 
             //When adding a FoundOPS level service template to a service provider propogate the template/fields to all the Clients
@@ -301,14 +301,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="serviceTemplateId">The ServiceTemplate id.</param>
         public ServiceTemplate GetServiceTemplateDetailsForRole(Guid roleId, Guid serviceTemplateId)
         {
-            var serviceTemplateTuples =
-                from serviceTemplate in GetServiceTemplatesForServiceProvider(roleId, null).Where(st => st.Id == serviceTemplateId)
-                from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
-                from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty()
-                select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations };
-
-            var serviceTemplateTuple = serviceTemplateTuples.FirstOrDefault();
-            return serviceTemplateTuple == null ? null : serviceTemplateTuple.serviceTemplate;
+            return HardCodedLoaders.LoadServiceTemplateWithDetails(this.ObjectContext, serviceTemplateId, null, null, null);
 
             //TODO w QuickBooks
             ////Force load Invoices
@@ -327,24 +320,6 @@ namespace FoundOps.Server.Services.CoreDomainService
             //Then it will delete all of them
             //Cascades will take care of all associations
             ObjectContext.DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId(serviceTemplate.Id);
-        }
-
-        private IEnumerable<ServiceTemplate> GetDescendants(ServiceTemplate serviceTemplate)
-        {
-            serviceTemplate.ChildrenServiceTemplates.Load();
-
-            if (!serviceTemplate.ChildrenServiceTemplates.Any())
-                return new List<ServiceTemplate>();
-
-            var descendants = new List<ServiceTemplate>();
-
-            foreach (var child in serviceTemplate.ChildrenServiceTemplates)
-            {
-                descendants.Add(child);
-                GetDescendants(child);
-            }
-
-            return descendants;
         }
 
         /// <summary>

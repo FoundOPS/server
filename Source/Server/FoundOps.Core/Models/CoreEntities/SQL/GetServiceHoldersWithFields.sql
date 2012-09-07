@@ -17,7 +17,7 @@ GO
 -- Create date: 6/28/2012
 -- Description:	
 -- =============================================
-alter PROCEDURE GetServiceHoldersWithFields
+CREATE PROCEDURE GetServiceHoldersWithFields
 	(
 	  @serviceProviderIdContext UNIQUEIDENTIFIER ,
 	  @clientIdContext UNIQUEIDENTIFIER ,
@@ -119,16 +119,6 @@ SET @a = CURRENT_TIMESTAMP
 				  FieldName NVARCHAR(MAX),
 				  [Value] NVARCHAR(MAX)
 				)    
-		
-			DECLARE	@Options TABLE
-				(
-				  Id UNIQUEIDENTIFIER ,
-				  Name NVARCHAR(MAX) ,
-				  IsChecked BIT ,
-				  OptionsFieldId UNIQUEIDENTIFIER ,
-				  [Index] INT ,
-				  Tooltip NVARCHAR(MAX)
-				)
 
 			CREATE TABLE #TextBoxFields
 				(
@@ -339,11 +329,6 @@ SET @a = CURRENT_TIMESTAMP
 			END
 
 			--Location Fields
-			DECLARE @addressLineOne NVARCHAR(Max)
-			DECLARE @addressLineTwo NVARCHAR(Max)
-			DECLARE @space NVARCHAR(10)
-			SET @space = ' '
-
 			SET @RowCount = (SELECT COUNT(DISTINCT FieldType) FROM #LocationFields)
 			IF @RowCount > 0
 			BEGIN

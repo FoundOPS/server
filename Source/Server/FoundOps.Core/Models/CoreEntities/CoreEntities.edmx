@@ -1701,6 +1701,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="CheckServiceTemplateForChildren" ReturnType="int" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="serviceTemplateId" Type="uniqueidentifier" Mode="In" />
+        </Function>
         <Function Name="DeleteBasicPartyBasedOnId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="providerId" Type="uniqueidentifier" Mode="In" />
         </Function>
@@ -1749,6 +1752,12 @@
           <Parameter Name="firstDate" Type="date" Mode="In" />
           <Parameter Name="lastDate" Type="date" Mode="In" />
           <Parameter Name="serviceTypeContext" Type="nvarchar(max)" Mode="In" />
+        </Function>
+        <Function Name="GetServiceTemplatesAndFields" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="serviceProviderContextId" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="clientContextId" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="serviceTemplateContextId" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="levelInt" Type="int" Mode="In" />
         </Function>
         <Function Name="PropagateNameChange" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="serviceTemplateId" Type="uniqueidentifier" Mode="In" />
@@ -2078,6 +2087,20 @@
           <FunctionImport Name="GetFieldsInJavaScriptFormat" ReturnType="Collection(CoreEntities.FieldJavaScript)">
             <Parameter Name="businessAccountId" Mode="In" Type="Guid" />
             <Parameter Name="serviceType" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetServiceHoldersWithFields">
+            <Parameter Name="serviceProviderIdContext" Mode="In" Type="Guid" />
+            <Parameter Name="clientIdContext" Mode="In" Type="Guid" />
+            <Parameter Name="recurringServiceIdContext" Mode="In" Type="Guid" />
+            <Parameter Name="firstDate" Mode="In" Type="DateTime" />
+            <Parameter Name="lastDate" Mode="In" Type="DateTime" />
+            <Parameter Name="serviceTypeContext" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetServiceTemplatesAndFields" ReturnType="Collection(CoreEntities.GetServiceTemplatesAndFields_Result1)">
+            <Parameter Name="serviceProviderContextId" Mode="In" Type="Guid" />
+            <Parameter Name="clientContextId" Mode="In" Type="Guid" />
+            <Parameter Name="serviceTemplateContextId" Mode="In" Type="Guid" />
+            <Parameter Name="levelInt" Mode="In" Type="Int32" />
           </FunctionImport>
           </EntityContainer>
         <EntityType Name="Block">
@@ -3282,6 +3305,22 @@
           <Property Type="String" Name="Name" Nullable="true" />
           <Property Type="String" Name="Type" Nullable="true" />
         </ComplexType>
+        <ComplexType Name="GetServiceTemplatesAndFields_Result">
+          <Property Type="Guid" Name="Id" Nullable="false" />
+          <Property Type="Guid" Name="OwnerServiceProviderId" Nullable="true" />
+          <Property Type="Guid" Name="OwnerClientId" Nullable="true" />
+          <Property Type="Guid" Name="OwnerServiceTemplateId" Nullable="true" />
+          <Property Type="Int16" Name="LevelInt" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetServiceTemplatesAndFields_Result1">
+          <Property Type="Guid" Name="Id" Nullable="false" />
+          <Property Type="Guid" Name="OwnerServiceProviderId" Nullable="true" />
+          <Property Type="Guid" Name="OwnerClientId" Nullable="true" />
+          <Property Type="Guid" Name="OwnerServiceTemplateId" Nullable="true" />
+          <Property Type="Int16" Name="LevelInt" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="true" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3821,6 +3860,19 @@
               <ComplexTypeMapping TypeName="CoreEntities.FieldJavaScript">
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetServiceHoldersWithFields" FunctionName="CoreEntities.Store.GetServiceHoldersWithFields" />
+          <FunctionImportMapping FunctionImportName="GetServiceTemplatesAndFields" FunctionName="CoreEntities.Store.GetServiceTemplatesAndFields">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CoreEntities.GetServiceTemplatesAndFields_Result1">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="OwnerServiceProviderId" ColumnName="OwnerServiceProviderId" />
+                <ScalarProperty Name="OwnerClientId" ColumnName="OwnerClientId" />
+                <ScalarProperty Name="OwnerServiceTemplateId" ColumnName="OwnerServiceTemplateId" />
+                <ScalarProperty Name="LevelInt" ColumnName="LevelInt" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

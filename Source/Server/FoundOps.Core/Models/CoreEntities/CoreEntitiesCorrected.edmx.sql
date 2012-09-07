@@ -2748,7 +2748,7 @@ BEGIN
 	SET @serviceTemplateId = (SELECT Id FROM dbo.ServiceTemplates WHERE OwnerServiceProviderId = @businessAccountId AND Name = @serviceType AND LevelInt = 1)
 
 	INSERT INTO @fields (Id, Name)
-	SELECT Id, REPLACE(Name, ' ', '') FROM dbo.Fields WHERE ServiceTemplateId = @serviceTemplateId
+	SELECT Id, REPLACE(Name, ' ', '_') FROM dbo.Fields WHERE ServiceTemplateId = @serviceTemplateId
 
 	UPDATE @fields
 	SET [Type] = 'string'
@@ -3807,7 +3807,8 @@ CREATE PROCEDURE GetServiceHoldersWithFields
 	)
 AS 
 	BEGIN
-  
+DECLARE @a DATETIME, @b DATETIME
+SET @a = CURRENT_TIMESTAMP  
 	-- SET NOCOUNT ON added to prevent extra result sets from
 	-- interfering with SELECT statements.
 		SET NOCOUNT ON;
@@ -3897,16 +3898,6 @@ AS
 				  FieldName NVARCHAR(MAX),
 				  [Value] NVARCHAR(MAX)
 				)    
-		
-			DECLARE	@Options TABLE
-				(
-				  Id UNIQUEIDENTIFIER ,
-				  Name NVARCHAR(MAX) ,
-				  IsChecked BIT ,
-				  OptionsFieldId UNIQUEIDENTIFIER ,
-				  [Index] INT ,
-				  Tooltip NVARCHAR(MAX)
-				)
 
 			CREATE TABLE #TextBoxFields
 				(
@@ -3919,8 +3910,9 @@ AS
 				)  
 			
 		END   
-	
+
 		BEGIN --Insert into all Fields Tables
+
 			INSERT INTO	#DateTimeFields (Earliest, Latest, TypeInt, Value, Id)
 			SELECT * FROM dbo.Fields_DateTimeField
 			WHERE Id IN 
@@ -4045,7 +4037,7 @@ AS
 			UPDATE #TextBoxFields
 			SET FieldType = Replace(FieldName, ' ', '_')
 		END
-  
+
 		BEGIN --Add a static RegionName Column
 			ALTER TABLE #ServiceHolders ADD RegionName NVARCHAR(MAX)
 
@@ -4059,9 +4051,8 @@ AS
 			DECLARE @RowCount INT
 			DECLARE @FieldType NVARCHAR(MAX)
 			DECLARE @cmd nvarchar(MAX)
-
 			--DateTime Fields
-			SET @RowCount = (SELECT COUNT(*) FROM #DateTimeFields)
+			SET @RowCount = (SELECT COUNT(DISTINCT FieldType) FROM #DateTimeFields)
 			IF @RowCount > 0
 			BEGIN
 				WHILE @RowCount > 0
@@ -4084,12 +4075,12 @@ AS
 				DELETE FROM #DateTimeFields
 				WHERE @FieldType = FieldType 
 		
-				SET @RowCount = (SELECT COUNT(*) FROM #DateTimeFields)
+				SET @RowCount = (SELECT COUNT(DISTINCT FieldType) FROM #DateTimeFields)
 				END            
 			END
-        
+			    
 			--Numeric Fields
-			SET @RowCount = (SELECT COUNT(*) FROM #NumericFields)
+			SET @RowCount = (SELECT COUNT(DISTINCT FieldType) FROM #NumericFields)
 			IF @RowCount > 0
 			BEGIN
 				WHILE @RowCount > 0
@@ -4101,28 +4092,23 @@ AS
 
 				SET @cmd = 
 				'UPDATE #ServiceHolders
-				SET [' + @FieldType + '] = (
+				SET ' + @FieldType + ' = (
 				SELECT t1.Value
 				FROM [#NumericFields] t1
 				WHERE ([#ServiceHolders].ServiceId = t1.ServiceTemplateId OR ([#ServiceHolders].RecurringServiceId = t1.ServiceTemplateId AND [#ServiceHolders].ServiceId IS NULL))
 				AND @FieldType = t1.FieldType)'
 
-				EXECUTE sp_executesql @cmd , N'@FieldType NVARCHAR(MAX)', @FieldType
+				EXECUTE sp_executesql @cmd , N'@FieldType NVARCHAR(MAX)', @FieldType	 
 
 				DELETE FROM #NumericFields
 				WHERE @FieldType = FieldType 
 		
-				SET @RowCount = (SELECT COUNT(*) FROM #NumericFields)
+				SET @RowCount = (SELECT COUNT(DISTINCT FieldType) FROM #NumericFields)
 				END            
 			END
-		      
-			--Location Fields
-			DECLARE @addressLineOne NVARCHAR(Max)
-			DECLARE @addressLineTwo NVARCHAR(Max)
-			DECLARE @space NVARCHAR(10)
-			SET @space = ' '
 
-			SET @RowCount = (SELECT COUNT(*) FROM #LocationFields)
+			--Location Fields
+			SET @RowCount = (SELECT COUNT(DISTINCT FieldType) FROM #LocationFields)
 			IF @RowCount > 0
 			BEGIN
 				WHILE @RowCount > 0
@@ -4145,13 +4131,12 @@ AS
 				DELETE FROM #LocationFields
 				WHERE @FieldType = FieldType 
 		
-				SET @RowCount = (SELECT COUNT(*) FROM #LocationFields)
+				SET @RowCount = (SELECT COUNT(DISTINCT FieldType) FROM #LocationFields)
 				END            
 			END
 
 			--Options Fields
-
-			SET @RowCount = (SELECT COUNT(*) FROM #OptionsFields)
+			SET @RowCount = (SELECT COUNT(DISTINCT FieldType) FROM #OptionsFields)
 			IF @RowCount > 0
 			BEGIN
 				WHILE @RowCount > 0
@@ -4175,12 +4160,12 @@ AS
 				DELETE FROM #OptionsFields
 				WHERE FieldType = @FieldType 
 		
-				SET @RowCount = (SELECT COUNT(*) FROM #OptionsFields)
+				SET @RowCount = (SELECT COUNT(DISTINCT FieldType) FROM #OptionsFields)
 				END            
 			END      
 
 			--TextBox Fields
-			SET @RowCount = (SELECT COUNT(*) FROM #TextBoxFields)
+			SET @RowCount = (SELECT COUNT(DISTINCT FieldType) FROM #TextBoxFields)
 			IF @RowCount > 0
 			BEGIN
 				WHILE @RowCount > 0
@@ -4203,7 +4188,7 @@ AS
 				DELETE FROM #TextBoxFields
 				WHERE @FieldType = FieldType 
 		
-				SET @RowCount = (SELECT COUNT(*) FROM #TextBoxFields)
+				SET @RowCount = (SELECT COUNT(DISTINCT FieldType) FROM #TextBoxFields)
 				END            
 			END    
 		END
@@ -4220,6 +4205,138 @@ AS
         
 	END
 GO
+
+GO
+
+USE Core 
+GO
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[GetServiceTemplatesAndFields]
+(
+	@serviceProviderContextId UNIQUEIDENTIFIER,
+	@clientContextId UNIQUEIDENTIFIER,
+	@serviceTemplateContextId UNIQUEIDENTIFIER,
+	@levelInt INT
+)
+AS
+BEGIN
+	
+	DECLARE @fieldIds TABLE 
+	(
+		Id UNIQUEIDENTIFIER
+	)
+
+	IF @serviceProviderContextId IS NOT NULL
+	BEGIN
+
+		IF @levelInt IS NOT NULL
+		BEGIN
+			SELECT * FROM dbo.ServiceTemplates WHERE OwnerServiceProviderId = @serviceProviderContextId AND LevelInt = @levelInt	
+
+			INSERT INTO @fieldIds
+			SELECT Id FROM dbo.Fields 
+			WHERE ServiceTemplateId IN (SELECT Id 
+										FROM dbo.ServiceTemplates 
+										WHERE OwnerServiceProviderId = @serviceProviderContextId
+										AND LevelInt = @levelInt)
+		END
+		ELSE
+		BEGIN
+			SELECT * FROM dbo.ServiceTemplates WHERE OwnerServiceProviderId = @serviceProviderContextId	
+		
+			INSERT INTO @fieldIds
+			SELECT Id FROM dbo.Fields 
+			WHERE ServiceTemplateId IN (SELECT Id 
+										FROM dbo.ServiceTemplates 
+										WHERE OwnerServiceProviderId = @serviceProviderContextId)	
+		END  
+	END
+  
+	IF @clientContextId IS NOT NULL
+	BEGIN
+  		
+		IF @levelInt IS NOT NULL
+		BEGIN
+			SELECT * FROM dbo.ServiceTemplates WHERE OwnerClientId = @clientContextId AND LevelInt = @levelInt
+		
+			INSERT INTO @fieldIds
+			SELECT Id FROM dbo.Fields 
+			WHERE ServiceTemplateId IN (SELECT Id 
+										FROM dbo.ServiceTemplates 
+										WHERE OwnerClientId = @clientContextId
+										AND LevelInt = @levelInt)		
+		END
+		ELSE
+		BEGIN
+			SELECT * FROM dbo.ServiceTemplates WHERE OwnerClientId = @clientContextId	
+		
+			INSERT INTO @fieldIds
+			SELECT Id FROM dbo.Fields 
+			WHERE ServiceTemplateId IN (SELECT Id 
+										FROM dbo.ServiceTemplates 
+										WHERE OwnerClientId = @clientContextId)	
+		END 
+	END
+  
+	IF @serviceTemplateContextId IS NOT NULL
+	BEGIN
+
+		IF @levelInt IS NOT NULL
+		BEGIN
+			SELECT * FROM dbo.ServiceTemplates WHERE Id = @serviceTemplateContextId AND LevelInt = @levelInt	
+
+			INSERT INTO @fieldIds
+			SELECT Id FROM dbo.Fields WHERE ServiceTemplateId IN (	SELECT Id 
+																	FROM dbo.ServiceTemplates 
+																	WHERE Id = @serviceTemplateContextId
+																	AND LevelInt = @levelInt)	
+		END
+		ELSE
+		BEGIN
+			SELECT * FROM dbo.ServiceTemplates WHERE Id = @serviceTemplateContextId	
+			
+			INSERT INTO @fieldIds
+			SELECT Id FROM dbo.Fields WHERE ServiceTemplateId IN (	SELECT Id 
+																	FROM dbo.ServiceTemplates 
+																	WHERE Id = @serviceTemplateContextId)	
+		END 
+
+		
+
+	END  
+
+	SELECT * FROM dbo.Fields WHERE Id IN (SELECT Id FROM @fieldIds)
+
+  	SELECT t1.*, t2.* FROM dbo.Fields t1 
+	JOIN dbo.Fields_DateTimeField t2 
+	ON t1.Id = t2.Id and t1.Id IN (SELECT Id FROM @fieldIds)
+
+	SELECT t1.*, t2.* FROM dbo.Fields t1 
+	JOIN dbo.Fields_NumericField t2 
+	ON t1.Id = t2.Id and t1.Id IN (SELECT Id FROM @fieldIds)
+
+	SELECT t1.*, t2.* FROM dbo.Fields t1 
+	JOIN dbo.Fields_TextBoxField t2 
+	ON t1.Id = t2.Id and t1.Id IN (SELECT Id FROM @fieldIds)
+
+	SELECT t1.*, t2.* FROM dbo.Fields t1 
+	JOIN dbo.Fields_OptionsField t2 
+	ON t1.Id = t2.Id and t1.Id IN (SELECT Id FROM @fieldIds)
+
+	SELECT * FROM dbo.Options WHERE OptionsFieldId IN (SELECT Id FROM dbo.Fields_OptionsField WHERE Id IN (SELECT Id FROM @fieldIds))
+
+	SELECT t1.*, t2.* FROM dbo.Fields t1 
+	JOIN dbo.Fields_LocationField t2 
+	ON t1.Id = t2.Id and t1.Id IN (SELECT Id FROM @fieldIds)
+
+	SELECT * FROM dbo.Locations WHERE Id IN (SELECT LocationId FROM dbo.Fields_LocationField WHERE Id IN (SELECT Id FROM @fieldIds))
+
+RETURN  
+END
 
 GO
 

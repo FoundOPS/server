@@ -1,4 +1,6 @@
-﻿using Dapper;
+﻿using System.Data.EntityClient;
+using System.Data.Objects;
+using Dapper;
 using FoundOps.Common.NET;
 using FoundOps.Core.Models;
 using FoundOps.Core.Models.CoreEntities;
@@ -171,12 +173,7 @@ namespace FoundOPS.API.Api
             if (businessAccount == null)
                 return Request.CreateResponse(HttpStatusCode.Unauthorized);
 
-            //load the service templates and its details (fields)
-            var templateWithDetails = (from serviceTemplate in _coreEntitiesContainer.ServiceTemplates.Where(st => serviceTemplateIdToLoad == st.Id)
-                                       from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
-                                       from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty() //no reason to pass LocationField yet
-                                       select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations })
-                                       .ToArray().Select(a => a.serviceTemplate).First();
+            var serviceTemplate = HardCodedLoaders.LoadServiceTemplateWithDetails(_coreEntitiesContainer, serviceTemplateIdToLoad, null, null, null);
 
             //generate the service
             if (!serviceId.HasValue)
@@ -193,7 +190,7 @@ namespace FoundOPS.API.Api
                     service.Client = recurringService.Client;
                 }
 
-                var template = templateWithDetails.MakeChild(ServiceTemplateLevel.ServiceDefined);
+                var template = serviceTemplate.MakeChild(ServiceTemplateLevel.ServiceDefined);
                 //TODO check if this is necessary
                 template.Id = service.Id;
                 service.ServiceTemplate = template;
@@ -226,10 +223,8 @@ namespace FoundOPS.API.Api
             //the service exists. load all field information  and update field values
             if (existingService != null)
             {
-                (from serviceTemplate in _coreEntitiesContainer.ServiceTemplates.Where(st => existingService.Id == st.Id)
-                 from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
-                 from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty()
-                 select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations }).ToArray();
+                var serviceTemplate = HardCodedLoaders.LoadServiceTemplateWithDetails(_coreEntitiesContainer, existingService.Id, null, null, null);
+
 
                 #region Update all Fields
 

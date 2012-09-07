@@ -83,12 +83,12 @@ namespace FoundOps.Server.Services.CoreDomainService
             var serviceTemplateIds = this.ObjectContext.Routes.Where(r => r.OwnerBusinessAccountId == businessAccount.Id && r.Id == routeId).Include("RouteDestinations.RouteTasks")
                                      .SelectMany(r => r.RouteDestinations.SelectMany(rd => rd.RouteTasks.Select(rt => rt.ServiceId))).Where(sid => sid != null).Select(sid => sid.Value).ToArray();
 
-            var templatesWithDetails = from serviceTemplate in GetServiceTemplatesForServiceProvider(roleId, (int)ServiceTemplateLevel.ServiceDefined).Where(st => serviceTemplateIds.Contains(st.Id))
-                                       from options in serviceTemplate.Fields.OfType<OptionsField>().Select(of => of.Options).DefaultIfEmpty()
-                                       from locations in serviceTemplate.Fields.OfType<LocationField>().Select(lf => lf.Value).DefaultIfEmpty()
-                                       select new { serviceTemplate, serviceTemplate.OwnerClient, serviceTemplate.Fields, options, locations };
+            var serviceTemplates = new List<ServiceTemplate>();
 
-            return templatesWithDetails.Select(t => t.serviceTemplate).Distinct().OrderBy(st => st.Name);
+            foreach (var serviceTemplateId in serviceTemplateIds)
+                serviceTemplates.Add(HardCodedLoaders.LoadServiceTemplateWithDetails(this.ObjectContext, serviceTemplateId, null, null, null));
+
+            return serviceTemplates.AsQueryable().OrderBy(st => st.Name);
         }
 
         /// <summary>
