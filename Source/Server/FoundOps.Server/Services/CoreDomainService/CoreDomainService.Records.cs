@@ -408,14 +408,6 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void UpdateLocation(Location currentLocation)
         {
-            var existingLocation =
-                ObjectContext.Locations.FirstOrDefault(
-                    l => l.AddressLineOne == currentLocation.AddressLineOne && l.AddressLineTwo == currentLocation.AddressLineTwo
-                        && l.City == currentLocation.City && l.State == currentLocation.State && l.BusinessAccountId == currentLocation.BusinessAccountId);
-
-            if (existingLocation != null)
-                throw new DomainException("Location Error");
-
             this.ObjectContext.Locations.AttachAsModified(currentLocation);
         }
 
