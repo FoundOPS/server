@@ -45,6 +45,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 EmailAddress = "apohl@foundops.com",
                 FirstName = "Andrew",
                 LastName = "Pohl",
+                 PasswordSalt = new byte[]{65, 0, 65}
             };
 
             Jon = new UserAccount
@@ -52,7 +53,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Id = new Guid("14565d04-fe81-41ac-b169-489166f07cb9"),
                 EmailAddress = "jperl@foundops.com",
                 FirstName = "Jonathan",
-                LastName = "Perl"
+                LastName = "Perl",
+                PasswordSalt = new byte[] { 65, 0, 65 }
             };
 
             Oren = new UserAccount
@@ -60,7 +62,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Id = new Guid("a523b148-032c-4ff2-a4d5-cc1864346502"),
                 EmailAddress = "oshatken@foundops.com",
                 FirstName = "Oren",
-                LastName = "Shatken"
+                LastName = "Shatken",
+                PasswordSalt = new byte[] { 65, 0, 65 }
             };
 
             Zach = new UserAccount
@@ -68,7 +71,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Id = new Guid("0b6d1d29-57e8-44ca-8447-dcd8db0a73bf"),
                 EmailAddress = "zbright@foundops.com",
                 FirstName = "Zach",
-                LastName = "Bright"
+                LastName = "Bright",
+                PasswordSalt = new byte[] { 65, 0, 65 }
             };
 
             #endregion
@@ -80,7 +84,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                  Id = new Guid("8314b786-4aa4-4250-9760-22b6ac632d01"),
                  EmailAddress = "david@gotgrease.net",
                  FirstName = "David",
-                 LastName = "Levenson"
+                 LastName = "Levenson",
+                 PasswordSalt = new byte[] { 65, 0, 65 }
              };
 
             Linda = new UserAccount
@@ -88,7 +93,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Id = new Guid("8f3b6e77-4cfb-47de-876a-f4f0a18d6ab4"),
                 EmailAddress = "linda@gotgrease.net",
                 FirstName = "Linda",
-                LastName = "Levenson"
+                LastName = "Levenson",
+                PasswordSalt = new byte[] { 65, 0, 65 }
             };
 
             Terri = new UserAccount
@@ -96,7 +102,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Id = new Guid("{E6655B6E-597B-4D1B-BA62-1BA1565E4CBD}"),
                 EmailAddress = "terri@gotgrease.net",
                 FirstName = "Terri",
-                LastName = "Last"
+                LastName = "Last",
+                PasswordSalt = new byte[] { 65, 0, 65 }
             };
 
             #endregion
@@ -108,7 +115,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Id = new Guid("22BC442B-982B-4EE6-B72D-DCA25512B0CA"),
                 EmailAddress = "alanmcclure93@gmail.com",
                 FirstName = "Alan",
-                LastName = "McClure"
+                LastName = "McClure",
+                PasswordSalt = new byte[] { 65, 0, 65 }
             };
 
             #endregion

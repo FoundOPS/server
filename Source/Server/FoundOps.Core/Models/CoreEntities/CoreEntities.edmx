@@ -331,6 +331,15 @@
             <End Role="Vehicles" EntitySet="Vehicles" />
           </AssociationSet>
         </EntityContainer>
+      <Function Name="GetResourcesWithLastPoint" IsComposable="false">
+        <CommandText>
+          SELECT EmployeeId, VehicleId, EntityName, Heading, Latitude, Longitude, CollectedTimeStamp, Speed, Source, RouteId, Accuracy
+          FROM dbo.GetResourcesWithLatestPoint (@serviceProviderId)
+        </CommandText>
+        <Parameter Name="serviceProviderId"
+               Mode="In"
+               Type="uniqueidentifier"/>
+      </Function>
         <EntityType Name="Blocks">
           <Key>
             <PropertyRef Name="Id" />
@@ -587,6 +596,7 @@
           <Property Name="DateOfBirth" Type="datetime" />
           <Property Name="TimeZone" Type="nvarchar(max)" />
           <Property Name="ColumnConfigurations" Type="nvarchar(max)" />
+          <Property Name="PasswordSalt" Type="varbinary(max)" Nullable="false" />
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="PartyRole">
@@ -1701,9 +1711,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Function Name="CheckServiceTemplateForChildren" ReturnType="int" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="serviceTemplateId" Type="uniqueidentifier" Mode="In" />
-        </Function>
         <Function Name="DeleteBasicPartyBasedOnId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="providerId" Type="uniqueidentifier" Mode="In" />
         </Function>
@@ -1758,6 +1765,14 @@
           <Parameter Name="clientContextId" Type="uniqueidentifier" Mode="In" />
           <Parameter Name="serviceTemplateContextId" Type="uniqueidentifier" Mode="In" />
           <Parameter Name="levelInt" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetServiceTemplatesWithDateAndDetails" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="serviceProviderIdContext" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="clientIdContext" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="recurringServiceIdContext" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="firstDate" Type="date" Mode="In" />
+          <Parameter Name="lastDate" Type="date" Mode="In" />
+          <Parameter Name="serviceTypeContext" Type="nvarchar(max)" Mode="In" />
         </Function>
         <Function Name="PropagateNameChange" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="serviceTemplateId" Type="uniqueidentifier" Mode="In" />
@@ -2032,45 +2047,36 @@
             <End Role="RouteTask" EntitySet="RouteTasks" />
           </AssociationSet>
           <FunctionImport Name="DeleteBasicPartyBasedOnId">
-          <Parameter Name="providerId" Mode="In" Type="Guid" />
+            <Parameter Name="providerId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteBusinessAccountBasedOnId">
-          <Parameter Name="providerId" Mode="In" Type="Guid" />
+            <Parameter Name="providerId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteClientBasedOnId">
-          <Parameter Name="clientId" Mode="In" Type="Guid" />
+            <Parameter Name="clientId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteFieldAndChildrenBasedOnFieldId">
-          <Parameter Name="parentFieldId" Mode="In" Type="Guid" />
+            <Parameter Name="parentFieldId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteLocationBasedOnId">
-          <Parameter Name="locationId" Mode="In" Type="Guid" />
+            <Parameter Name="locationId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteRecurringService">
-          <Parameter Name="recurringServiceId" Mode="In" Type="Guid" />
+            <Parameter Name="recurringServiceId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId">
-          <Parameter Name="parentTemplateId" Mode="In" Type="Guid" />
+            <Parameter Name="parentTemplateId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteServiceTemplatesAndChildrenBasedOnContextId">
             <Parameter Name="serviceProviderId" Mode="In" Type="Guid" />
             <Parameter Name="ownerClientId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteUserAccountBasedOnId">
-          <Parameter Name="providerId" Mode="In" Type="Guid" />
+            <Parameter Name="providerId" Mode="In" Type="Guid" />
           </FunctionImport>
-          <FunctionImport Name="PropagateNameChange">
-          <Parameter Name="serviceTemplateId" Mode="In" Type="Guid" />
-          </FunctionImport>
-          <FunctionImport Name="PropagateNewFields">
-          <Parameter Name="FieldId" Mode="In" Type="Guid" />
-          </FunctionImport>
-          <FunctionImport Name="PropagateNewServiceTemplateToClients">
-          <Parameter Name="serviceTemplateId" Mode="In" Type="Guid" />
-          </FunctionImport>
-          <FunctionImport Name="sp_GetUnroutedServicesForDate">
-            <Parameter Name="serviceProviderIdContext" Mode="In" Type="Guid" />
-            <Parameter Name="serviceDate" Mode="In" Type="DateTime" />
+          <FunctionImport Name="GetFieldsInJavaScriptFormat" ReturnType="Collection(CoreEntities.FieldJavaScript)">
+            <Parameter Name="businessAccountId" Mode="In" Type="Guid" />
+            <Parameter Name="serviceType" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="GetServiceHolders" ReturnType="Collection(CoreEntities.ServiceHolder)">
             <Parameter Name="serviceProviderIdContext" Mode="In" Type="Guid" />
@@ -2081,13 +2087,6 @@
             <Parameter Name="serviceTypeContext" Mode="In" Type="String" />
             <Parameter Name="withFields" Mode="In" Type="Boolean" />
           </FunctionImport>
-          <FunctionImport Name="GetResourcesWithLastPoint" ReturnType="Collection(CoreEntities.ResourceWithLastPoint)">
-            <Parameter Name="serviceProviderId" Mode="In" Type="Guid" />
-          </FunctionImport>
-          <FunctionImport Name="GetFieldsInJavaScriptFormat" ReturnType="Collection(CoreEntities.FieldJavaScript)">
-            <Parameter Name="businessAccountId" Mode="In" Type="Guid" />
-            <Parameter Name="serviceType" Mode="In" Type="String" />
-          </FunctionImport>
           <FunctionImport Name="GetServiceHoldersWithFields">
             <Parameter Name="serviceProviderIdContext" Mode="In" Type="Guid" />
             <Parameter Name="clientIdContext" Mode="In" Type="Guid" />
@@ -2096,11 +2095,35 @@
             <Parameter Name="lastDate" Mode="In" Type="DateTime" />
             <Parameter Name="serviceTypeContext" Mode="In" Type="String" />
           </FunctionImport>
-          <FunctionImport Name="GetServiceTemplatesAndFields" ReturnType="Collection(CoreEntities.GetServiceTemplatesAndFields_Result1)">
+          <FunctionImport Name="GetServiceTemplatesAndFields">
             <Parameter Name="serviceProviderContextId" Mode="In" Type="Guid" />
             <Parameter Name="clientContextId" Mode="In" Type="Guid" />
             <Parameter Name="serviceTemplateContextId" Mode="In" Type="Guid" />
             <Parameter Name="levelInt" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetServiceTemplatesWithDateAndDetails">
+            <Parameter Name="serviceProviderIdContext" Mode="In" Type="Guid" />
+            <Parameter Name="clientIdContext" Mode="In" Type="Guid" />
+            <Parameter Name="recurringServiceIdContext" Mode="In" Type="Guid" />
+            <Parameter Name="firstDate" Mode="In" Type="DateTime" />
+            <Parameter Name="lastDate" Mode="In" Type="DateTime" />
+            <Parameter Name="serviceTypeContext" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="PropagateNameChange">
+            <Parameter Name="serviceTemplateId" Mode="In" Type="Guid" />
+          </FunctionImport>
+          <FunctionImport Name="PropagateNewFields">
+            <Parameter Name="FieldId" Mode="In" Type="Guid" />
+          </FunctionImport>
+          <FunctionImport Name="PropagateNewServiceTemplateToClients">
+            <Parameter Name="serviceTemplateId" Mode="In" Type="Guid" />
+          </FunctionImport>
+          <FunctionImport Name="sp_GetUnroutedServicesForDate">
+            <Parameter Name="serviceProviderIdContext" Mode="In" Type="Guid" />
+            <Parameter Name="serviceDate" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="GetResourcesWithLastPoint" ReturnType="Collection(CoreEntities.ResourceWithLastPoint)">
+            <Parameter Name="serviceProviderId" Mode="In" Type="Guid" />
           </FunctionImport>
           </EntityContainer>
         <EntityType Name="Block">
@@ -2580,6 +2603,7 @@
           <Property Type="DateTime" Name="DateOfBirth" Nullable="true" Precision="3" />
           <Property Type="String" Name="TimeZone" MaxLength="Max" FixedLength="false" Nullable="true" Unicode="true" />
           <Property Type="String" Name="ColumnConfigurations" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Type="Binary" Name="PasswordSalt" Nullable="false" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <Association Name="UserAccountUserAccountLogEntry">
           <End Type="CoreEntities.UserAccount" Role="UserAccount" Multiplicity="1" />
@@ -3305,22 +3329,6 @@
           <Property Type="String" Name="Name" Nullable="true" />
           <Property Type="String" Name="Type" Nullable="true" />
         </ComplexType>
-        <ComplexType Name="GetServiceTemplatesAndFields_Result">
-          <Property Type="Guid" Name="Id" Nullable="false" />
-          <Property Type="Guid" Name="OwnerServiceProviderId" Nullable="true" />
-          <Property Type="Guid" Name="OwnerClientId" Nullable="true" />
-          <Property Type="Guid" Name="OwnerServiceTemplateId" Nullable="true" />
-          <Property Type="Int16" Name="LevelInt" Nullable="false" />
-          <Property Type="String" Name="Name" Nullable="true" />
-        </ComplexType>
-        <ComplexType Name="GetServiceTemplatesAndFields_Result1">
-          <Property Type="Guid" Name="Id" Nullable="false" />
-          <Property Type="Guid" Name="OwnerServiceProviderId" Nullable="true" />
-          <Property Type="Guid" Name="OwnerClientId" Nullable="true" />
-          <Property Type="Guid" Name="OwnerServiceTemplateId" Nullable="true" />
-          <Property Type="Int16" Name="LevelInt" Nullable="false" />
-          <Property Type="String" Name="Name" Nullable="true" />
-        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -3384,6 +3392,7 @@
           <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
           <ScalarProperty Name="TimeZone" ColumnName="TimeZone" />
           <ScalarProperty Name="ColumnConfigurations" ColumnName="ColumnConfigurations" />
+          <ScalarProperty Name="PasswordSalt" ColumnName="PasswordSalt" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -3841,10 +3850,14 @@
           <FunctionImportMapping FunctionImportName="DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId" FunctionName="CoreEntities.Store.DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId" />
           <FunctionImportMapping FunctionImportName="DeleteServiceTemplatesAndChildrenBasedOnContextId" FunctionName="CoreEntities.Store.DeleteServiceTemplatesAndChildrenBasedOnContextId" />
           <FunctionImportMapping FunctionImportName="DeleteUserAccountBasedOnId" FunctionName="CoreEntities.Store.DeleteUserAccountBasedOnId" />
-          <FunctionImportMapping FunctionImportName="PropagateNameChange" FunctionName="CoreEntities.Store.PropagateNameChange" />
-          <FunctionImportMapping FunctionImportName="PropagateNewFields" FunctionName="CoreEntities.Store.PropagateNewFields" />
-          <FunctionImportMapping FunctionImportName="PropagateNewServiceTemplateToClients" FunctionName="CoreEntities.Store.PropagateNewServiceTemplateToClients" />
-          <FunctionImportMapping FunctionImportName="sp_GetUnroutedServicesForDate" FunctionName="CoreEntities.Store.sp_GetUnroutedServicesForDate" />
+          <FunctionImportMapping FunctionImportName="GetFieldsInJavaScriptFormat" FunctionName="CoreEntities.Store.GetFieldsInJavaScriptFormat">
+          <ResultMapping>
+              <ComplexTypeMapping TypeName="CoreEntities.FieldJavaScript">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GetServiceHolders" FunctionName="CoreEntities.Store.GetServiceHolders">
             <ResultMapping>
               <ComplexTypeMapping TypeName="CoreEntities.ServiceHolder">
@@ -3855,24 +3868,28 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetFieldsInJavaScriptFormat" FunctionName="CoreEntities.Store.GetFieldsInJavaScriptFormat">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="CoreEntities.FieldJavaScript">
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Type" ColumnName="Type" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GetServiceHoldersWithFields" FunctionName="CoreEntities.Store.GetServiceHoldersWithFields" />
           <FunctionImportMapping FunctionImportName="GetServiceTemplatesAndFields" FunctionName="CoreEntities.Store.GetServiceTemplatesAndFields">
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetServiceTemplatesWithDateAndDetails" FunctionName="CoreEntities.Store.GetServiceTemplatesWithDateAndDetails" />
+          <FunctionImportMapping FunctionImportName="PropagateNameChange" FunctionName="CoreEntities.Store.PropagateNameChange" />
+          <FunctionImportMapping FunctionImportName="PropagateNewFields" FunctionName="CoreEntities.Store.PropagateNewFields" />
+          <FunctionImportMapping FunctionImportName="PropagateNewServiceTemplateToClients" FunctionName="CoreEntities.Store.PropagateNewServiceTemplateToClients" />
+          <FunctionImportMapping FunctionImportName="sp_GetUnroutedServicesForDate" FunctionName="CoreEntities.Store.sp_GetUnroutedServicesForDate" />
+          <FunctionImportMapping FunctionImportName="GetResourcesWithLastPoint" FunctionName="CoreEntities.Store.GetResourcesWithLastPoint">
             <ResultMapping>
-              <ComplexTypeMapping TypeName="CoreEntities.GetServiceTemplatesAndFields_Result1">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="OwnerServiceProviderId" ColumnName="OwnerServiceProviderId" />
-                <ScalarProperty Name="OwnerClientId" ColumnName="OwnerClientId" />
-                <ScalarProperty Name="OwnerServiceTemplateId" ColumnName="OwnerServiceTemplateId" />
-                <ScalarProperty Name="LevelInt" ColumnName="LevelInt" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
+              <ComplexTypeMapping TypeName="CoreEntities.ResourceWithLastPoint">
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
+                <ScalarProperty Name="EntityName" ColumnName="EntityName" />
+                <ScalarProperty Name="Heading" ColumnName="Heading" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="CollectedTimeStamp" ColumnName="CollectedTimeStamp" />
+                <ScalarProperty Name="Speed" ColumnName="Speed" />
+                <ScalarProperty Name="Source" ColumnName="Source" />
+                <ScalarProperty Name="RouteId" ColumnName="RouteId" />
+                <ScalarProperty Name="Accuracy" ColumnName="Accuracy" />
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>

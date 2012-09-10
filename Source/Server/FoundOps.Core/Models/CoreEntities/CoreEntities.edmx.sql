@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 08/28/2012 15:11:46
+-- Date Created: 09/10/2012 15:31:46
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -754,6 +754,7 @@ CREATE TABLE [dbo].[Parties_UserAccount] (
     [DateOfBirth] datetime  NULL,
     [TimeZone] nvarchar(max)  NULL,
     [ColumnConfigurations] nvarchar(max)  NULL,
+    [PasswordSalt] varbinary(max)  NOT NULL,
     [Id] uniqueidentifier  NOT NULL
 );
 GO
