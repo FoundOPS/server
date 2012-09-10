@@ -1,4 +1,4 @@
-﻿namespace FoundOPS.API.Models
+namespace FoundOPS.API.Models
 {
     public class ContactInfo
     {
@@ -19,7 +19,16 @@
 
         public static ContactInfo Convert(FoundOps.Core.Models.CoreEntities.ContactInfo contactInfoModel)
         {
-            return new ContactInfo { Type = contactInfoModel.Type, Label = contactInfoModel.Label, Data = contactInfoModel.Data };
+            var contactInfo = new ContactInfo { Type = contactInfoModel.Type, Label = contactInfoModel.Label, Data = contactInfoModel.Data };
+            //TODO Generalize this everywhere
+            if (string.IsNullOrEmpty(contactInfo.Type))
+                contactInfo.Type = "";
+            if (string.IsNullOrEmpty(contactInfo.Label))
+                contactInfo.Label = "";
+            if (string.IsNullOrEmpty(contactInfo.Data))
+                contactInfo.Data = "";
+
+            return contactInfo;
         }
     }
 }
