@@ -25,7 +25,8 @@ namespace FoundOps.Core.Models.Authentication
             if (!ValidateUser(username, oldPassword) || user == null)
                 return false;
 
-            user.PasswordHash = EncryptionTools.Hash(newPassword);
+            user.PasswordSalt = EncryptionTools.GenerateSalt();
+            user.PasswordHash = EncryptionTools.Hash(newPassword, user.PasswordSalt);
             user.UserAccountLog.Add(new UserAccountLogEntry
             {
                 UserAccountLogType = UserAccountLogType.PasswordChange,
@@ -39,7 +40,9 @@ namespace FoundOps.Core.Models.Authentication
         public void ChangePassword(string username, string temporaryPassword)
         {
             var user = _coreEntitiesContainer.GetUserAccount(username);
-            user.PasswordHash = EncryptionTools.Hash(temporaryPassword);
+            user.PasswordSalt = EncryptionTools.GenerateSalt();
+
+            user.PasswordHash = EncryptionTools.Hash(temporaryPassword, user.PasswordSalt);
             user.UserAccountLog.Add(new UserAccountLogEntry
             {
                 UserAccountLogType = UserAccountLogType.PasswordChange,
@@ -60,7 +63,7 @@ namespace FoundOps.Core.Models.Authentication
                 return false;
 
             var actualHash = userParty.PasswordHash;
-            var enteredHash = EncryptionTools.Hash(password);
+            var enteredHash = EncryptionTools.Hash(password, userParty.PasswordSalt);
             var hashesMatch = actualHash.SequenceEqual(enteredHash);
 
             return hashesMatch;

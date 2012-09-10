@@ -242,6 +242,7 @@ namespace FoundOPS.API.Api
                 return UserExistsResponse();
 
             var temporaryPassword = EmailPasswordTools.GeneratePassword();
+            var salt = EncryptionTools.GenerateSalt();
 
             var user = new UserAccount
             {
@@ -249,7 +250,8 @@ namespace FoundOPS.API.Api
                 Id = Guid.NewGuid(),
                 FirstName = settings.FirstName,
                 LastName = settings.LastName,
-                PasswordHash = EncryptionTools.Hash(temporaryPassword),
+                PasswordHash = EncryptionTools.Hash(temporaryPassword,salt),
+                PasswordSalt = salt,
                 TimeZone = settings.TimeZoneInfo.TimeZoneId
             };
 

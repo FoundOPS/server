@@ -22,9 +22,9 @@ namespace FoundOps.Common.NET
             return saltBytes;
         }
 
-        public static string Hash(string valueToHash) //, byte[] salt
+        public static string Hash(string valueToHash, byte[] salt)
         {
-            return SimpleHash.ComputeHash(valueToHash, "SHA512", new byte[] { });//salt);
+            return SimpleHash.ComputeHash(valueToHash, "SHA512", salt);
 
             //Encoding.ASCII.GetBytes("mmm@SaLT3Y")
         }

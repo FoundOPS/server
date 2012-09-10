@@ -69,14 +69,14 @@ namespace FoundOps.Core.Models.CoreEntities
             var userAccountsDesignData = new UserAccountsDesignData
                                              {
                                                  //Set Passwords
-                                                 Andrew = { PasswordHash = EncryptionTools.Hash("f00sballchamp"), TimeZone = "Eastern Standard Time" },
-                                                 Jon = { PasswordHash = EncryptionTools.Hash("seltzer"), TimeZone = "Eastern Standard Time" },
-                                                 Oren = { PasswordHash = EncryptionTools.Hash("nachoman"), TimeZone = "Eastern Standard Time" },
-                                                 Zach = { PasswordHash = EncryptionTools.Hash("curlyhair"), TimeZone = "Eastern Standard Time" },
-                                                 David = { PasswordHash = EncryptionTools.Hash("starofdavid"), TimeZone = "Eastern Standard Time" },
-                                                 Linda = { PasswordHash = EncryptionTools.Hash("auntie"), TimeZone = "Eastern Standard Time" },
-                                                 Terri = { PasswordHash = EncryptionTools.Hash("iam1randompassword"), TimeZone = "Eastern Standard Time" },
-                                                 AlanMcClure = { PasswordHash = EncryptionTools.Hash("youngster"), TimeZone = "Eastern Standard Time" }
+                                                 Andrew = { PasswordHash = EncryptionTools.Hash("f00sballchamp", new byte[] { 65, 0, 65 }), TimeZone = "Eastern Standard Time" },
+                                                 Jon = { PasswordHash = EncryptionTools.Hash("seltzer", new byte[] { 65, 0, 65 }), TimeZone = "Eastern Standard Time" },
+                                                 Oren = { PasswordHash = EncryptionTools.Hash("nachoman", new byte[] { 65, 0, 65 }), TimeZone = "Eastern Standard Time" },
+                                                 Zach = { PasswordHash = EncryptionTools.Hash("curlyhair", new byte[] { 65, 0, 65 }), TimeZone = "Eastern Standard Time" },
+                                                 David = { PasswordHash = EncryptionTools.Hash("starofdavid", new byte[] { 65, 0, 65 }), TimeZone = "Eastern Standard Time" },
+                                                 Linda = { PasswordHash = EncryptionTools.Hash("auntie", new byte[] { 65, 0, 65 }), TimeZone = "Eastern Standard Time" },
+                                                 Terri = { PasswordHash = EncryptionTools.Hash("iam1randompassword", new byte[] { 65, 0, 65 }), TimeZone = "Eastern Standard Time" },
+                                                 AlanMcClure = { PasswordHash = EncryptionTools.Hash("youngster", new byte[] { 65, 0, 65 }), TimeZone = "Eastern Standard Time" }
                                              };
 
 

@@ -560,7 +560,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                 this.ObjectContext.Parties.AddObject(userAccount);
 
             //Set the password to the temporary password
-            userAccount.PasswordHash = EncryptionTools.Hash(userAccount.TemporaryPassword);
+            userAccount.PasswordHash = EncryptionTools.Hash(userAccount.TemporaryPassword, userAccount.PasswordSalt);
 
             //Trim unwanted spaces from the email address
             userAccount.EmailAddress = userAccount.EmailAddress.Trim();
@@ -574,7 +574,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             //Check if there is a temporary password
             if (!string.IsNullOrEmpty(currentUserAccount.TemporaryPassword))
-                currentUserAccount.PasswordHash = EncryptionTools.Hash(currentUserAccount.TemporaryPassword);
+                currentUserAccount.PasswordHash = EncryptionTools.Hash(currentUserAccount.TemporaryPassword, currentUserAccount.PasswordSalt);
 
             //Trim unwanted spaces from the email address
             currentUserAccount.EmailAddress = currentUserAccount.EmailAddress.Trim();
