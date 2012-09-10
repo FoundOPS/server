@@ -4,4 +4,7 @@
     <StartupScript>(Blank)</StartupScript>
     <StartAction>StartNone</StartAction>
   </PropertyGroup>
+  <PropertyGroup>
+    <TargetDatabase>FoundOps.Database.Core_1</TargetDatabase>
+  </PropertyGroup>
 </Project>

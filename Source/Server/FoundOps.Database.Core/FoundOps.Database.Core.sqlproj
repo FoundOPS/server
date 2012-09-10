@@ -76,6 +76,7 @@
     <DatabaseAccess>MULTI_USER</DatabaseAccess>
     <Recovery>FULL</Recovery>
     <EnableFullTextSearch>False</EnableFullTextSearch>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <OutputPath>bin\Release\</OutputPath>

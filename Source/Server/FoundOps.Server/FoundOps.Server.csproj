@@ -334,7 +334,6 @@
     <Content Include="app\lib\moment.js" />
     <Content Include="app\lib\mwheelIntent.js" />
     <Content Include="app\lib\noty.js" />
-    <Content Include="app\lib\pubsub.js" />
     <Content Include="app\lib\qrcode.js" />
     <Content Include="app\lib\require-jquery.js" />
     <Content Include="app\lib\select2.js" />
