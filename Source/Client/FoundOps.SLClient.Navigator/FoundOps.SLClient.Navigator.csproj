@@ -345,6 +345,10 @@
       <Project>{43D5B3DA-7DCD-454A-BA3D-667901D304CE}</Project>
       <Name>FoundOps.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\FoundOps.SLClient.Algorithm\FoundOps.SLClient.Algorithm.csproj">
+      <Project>{e900bdca-451f-4433-a98a-287bd326bd29}</Project>
+      <Name>FoundOps.SLClient.Algorithm</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FoundOps.SLClient.UI\FoundOps.SLClient.UI.csproj">
       <Project>{F3DE1685-C531-41A6-A9CB-896B502386E8}</Project>
       <Name>FoundOps.SLClient.UI</Name>
