@@ -35,7 +35,8 @@ namespace FoundOps.Common.NET
             {
                 var values = (from kvp in record
                               where !ignore.Contains(kvp.Key)
-                              select kvp.Value.ToString()).ToArray();
+                              select  kvp.Value == null? "":
+                              kvp.Value.ToString()).ToArray();
 
                 csvWriter.WriteDataRecord(values);
             }
