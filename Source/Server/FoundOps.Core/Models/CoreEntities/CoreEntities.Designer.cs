@@ -1039,36 +1039,6 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        /// <param name="businessAccountId">No Metadata Documentation available.</param>
-        /// <param name="serviceType">No Metadata Documentation available.</param>
-        public ObjectResult<FieldJavaScript> GetFieldsInJavaScriptFormat(Nullable<global::System.Guid> businessAccountId, global::System.String serviceType)
-        {
-            ObjectParameter businessAccountIdParameter;
-            if (businessAccountId.HasValue)
-            {
-                businessAccountIdParameter = new ObjectParameter("businessAccountId", businessAccountId);
-            }
-            else
-            {
-                businessAccountIdParameter = new ObjectParameter("businessAccountId", typeof(global::System.Guid));
-            }
-    
-            ObjectParameter serviceTypeParameter;
-            if (serviceType != null)
-            {
-                serviceTypeParameter = new ObjectParameter("serviceType", serviceType);
-            }
-            else
-            {
-                serviceTypeParameter = new ObjectParameter("serviceType", typeof(global::System.String));
-            }
-    
-            return base.ExecuteFunction<FieldJavaScript>("GetFieldsInJavaScriptFormat", businessAccountIdParameter, serviceTypeParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         /// <param name="serviceProviderIdContext">No Metadata Documentation available.</param>
         /// <param name="clientIdContext">No Metadata Documentation available.</param>
         /// <param name="recurringServiceIdContext">No Metadata Documentation available.</param>
@@ -1436,6 +1406,36 @@ namespace FoundOps.Core.Models.CoreEntities
             }
     
             return base.ExecuteFunction("sp_GetUnroutedServicesForDate", serviceProviderIdContextParameter, serviceDateParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="businessAccountId">No Metadata Documentation available.</param>
+        /// <param name="serviceType">No Metadata Documentation available.</param>
+        public ObjectResult<FieldJavaScript> GetFieldsInJavaScriptFormat(Nullable<global::System.Guid> businessAccountId, global::System.String serviceType)
+        {
+            ObjectParameter businessAccountIdParameter;
+            if (businessAccountId.HasValue)
+            {
+                businessAccountIdParameter = new ObjectParameter("businessAccountId", businessAccountId);
+            }
+            else
+            {
+                businessAccountIdParameter = new ObjectParameter("businessAccountId", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter serviceTypeParameter;
+            if (serviceType != null)
+            {
+                serviceTypeParameter = new ObjectParameter("serviceType", serviceType);
+            }
+            else
+            {
+                serviceTypeParameter = new ObjectParameter("serviceType", typeof(global::System.String));
+            }
+    
+            return base.ExecuteFunction<FieldJavaScript>("GetFieldsInJavaScriptFormat", businessAccountIdParameter, serviceTypeParameter);
         }
     
         /// <summary>
@@ -11146,6 +11146,54 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.Byte[] _PasswordSalt;
         partial void OnPasswordSaltChanging(global::System.Byte[] value);
         partial void OnPasswordSaltChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String TempResetToken
+        {
+            get
+            {
+                return _TempResetToken;
+            }
+            set
+            {
+                OnTempResetTokenChanging(value);
+                ReportPropertyChanging("TempResetToken");
+                _TempResetToken = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("TempResetToken");
+                OnTempResetTokenChanged();
+            }
+        }
+        private global::System.String _TempResetToken;
+        partial void OnTempResetTokenChanging(global::System.String value);
+        partial void OnTempResetTokenChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> TempTokenExpireTime
+        {
+            get
+            {
+                return _TempTokenExpireTime;
+            }
+            set
+            {
+                OnTempTokenExpireTimeChanging(value);
+                ReportPropertyChanging("TempTokenExpireTime");
+                _TempTokenExpireTime = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("TempTokenExpireTime");
+                OnTempTokenExpireTimeChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _TempTokenExpireTime;
+        partial void OnTempTokenExpireTimeChanging(Nullable<global::System.DateTime> value);
+        partial void OnTempTokenExpireTimeChanged();
 
         #endregion
 

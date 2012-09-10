@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Text;
 using System.Web.Security;
 using FoundOps.Common.NET;
 using FoundOps.Core.Models.CoreEntities;
@@ -10,6 +11,59 @@ namespace FoundOps.Core.Models.Authentication
     public class CoreEntitiesMembershipProvider : MembershipProvider
     {
         readonly CoreEntitiesContainer _coreEntitiesContainer = new CoreEntitiesContainer();
+
+        private static string GenerateRandomResetToken()
+        {
+            var builder = new StringBuilder();
+
+            var random = new Random((int)DateTime.UtcNow.Ticks);
+
+            for (var i = 0; i < 16; i++)
+            {
+                var ch = Convert.ToChar(Convert.ToInt32(Math.Floor(26 * random.NextDouble() + 65)));
+                builder.Append(ch);
+            }
+
+            var randomString = builder.ToString();
+            return randomString;
+        }
+
+        /// <summary>
+        /// Set a one time reset code on the user account.
+        /// </summary>
+        /// <param name="account">The account</param>
+        /// <param name="expires">When to expire</param>
+        public void ResetAccount(UserAccount account, TimeSpan expires)
+        {
+            var expireTime = DateTime.UtcNow.Add(expires);
+
+            var token = GenerateRandomResetToken();
+
+            account.TempTokenExpireTime = expireTime;
+            account.TempResetToken = token;
+
+            _coreEntitiesContainer.SaveChanges();
+        }
+
+        /// <summary>
+        /// Set the password using a (one-time) reset code.
+        /// </summary>
+        /// <param name="account"></param>
+        /// <param name="resetCode"></param>
+        /// <param name="newPassword"></param>
+        /// <returns>True if succesful, or false if it failed</returns>
+        public bool SetPassword(UserAccount account, string resetCode, string newPassword)
+        {
+            if (resetCode != account.TempResetToken || DateTime.UtcNow > account.TempTokenExpireTime)
+                return false;
+
+            account.PasswordSalt = EncryptionTools.GenerateSalt();
+            account.PasswordHash = EncryptionTools.Hash(newPassword, account.PasswordSalt);
+
+            _coreEntitiesContainer.SaveChanges();
+
+            return true;
+        }
 
         #region Overrides of MembershipProvider
 
@@ -71,7 +125,7 @@ namespace FoundOps.Core.Models.Authentication
 
         public override MembershipUser GetUser(object providerUserKey, bool userIsOnline)
         {
-            throw new NotImplementedException(); 
+            throw new NotImplementedException();
         }
 
         public override MembershipUser GetUser(string username, bool userIsOnline)

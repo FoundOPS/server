@@ -1,3 +1,4 @@
+using System.Text;
 using FoundOPS.API.Models;
 using FoundOPS.API.Tools;
 using FoundOps.Common.NET;
@@ -119,27 +120,27 @@ namespace FoundOPS.API.Api
         }
 
         [System.Web.Http.AcceptVerbs("POST")]
-        public HttpResponseMessage CreatePassword(string newPass, string confirmPass)
+        public HttpResponseMessage UpdatePassword(string newPass, string oldPass = null, string resetCode = null)
         {
             if (MembershipService == null) { MembershipService = new PartyMembershipService(); }
 
             var user = _coreEntitiesContainer.CurrentUserAccount().First();
 
-            return Request.CreateResponse(MembershipService.ChangePassword(user.EmailAddress, user.TemporaryPassword, newPass)
+            if (oldPass != null)
+            {
+                return Request.CreateResponse(MembershipService.ChangePassword(user.EmailAddress, oldPass, newPass)
                                            ? HttpStatusCode.Accepted
                                            : HttpStatusCode.NotAcceptable);
-        }
+            }
+            if (resetCode == null || resetCode != user.TempResetToken || DateTime.UtcNow > user.TempTokenExpireTime)
+                return Request.CreateResponse(HttpStatusCode.NotAcceptable);
 
-        [System.Web.Http.AcceptVerbs("POST")]
-        public HttpResponseMessage UpdatePassword(string oldPass, string newPass, string confirmPass)
-        {
-            if (MembershipService == null) { MembershipService = new PartyMembershipService(); }
+            user.PasswordSalt = EncryptionTools.GenerateSalt();
+            user.PasswordHash = EncryptionTools.Hash(newPass, user.PasswordSalt);
 
-            var user = _coreEntitiesContainer.CurrentUserAccount().First();
+            _coreEntitiesContainer.SaveChanges();
 
-            return Request.CreateResponse(MembershipService.ChangePassword(user.EmailAddress, oldPass, newPass)
-                                           ? HttpStatusCode.Accepted
-                                           : HttpStatusCode.NotAcceptable);
+            return Request.CreateResponse(HttpStatusCode.Accepted);
         }
 
         /// <summary>
@@ -250,7 +251,7 @@ namespace FoundOPS.API.Api
                 Id = Guid.NewGuid(),
                 FirstName = settings.FirstName,
                 LastName = settings.LastName,
-                PasswordHash = EncryptionTools.Hash(temporaryPassword,salt),
+                PasswordHash = EncryptionTools.Hash(temporaryPassword, salt),
                 PasswordSalt = salt,
                 TimeZone = settings.TimeZoneInfo.TimeZoneId
             };
