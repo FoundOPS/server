@@ -159,7 +159,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                 //Jump to this details view
                 NavigateToThis();
 
-                var newUserAccount = new UserAccount { TemporaryPassword = PasswordTools.GeneratePassword(), DisplayName = name };
+                //Use Temp salt
+                var newUserAccount = new UserAccount { TemporaryPassword = PasswordTools.GeneratePassword(), PasswordSalt = new byte[]{65, 0 ,65}, DisplayName = name };
 
                 newUserAccount.CreationDate = Manager.Context.UserAccount.AdjustTimeForUserTimeZone(DateTime.UtcNow);
 
