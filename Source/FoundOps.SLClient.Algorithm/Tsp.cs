@@ -68,6 +68,9 @@ namespace FoundOps.SLClient.Algorithm
 
             var swapped = new List<IGeoLocation>(cities);
 
+            if (count < 3)
+                return swapped;
+
             var first = rng.Next(count - 3);
             var city1 = swapped[first];
             var city2 = swapped[first + 1];
