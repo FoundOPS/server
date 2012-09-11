@@ -1,16 +1,28 @@
+using System.Net;
+using System.Net.Mail;
+using FoundOps.Common.NET;
+using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Core.Tools;
 using System;
 using System.Linq;
 using System.Text;
 using System.Web.Security;
-using FoundOps.Common.NET;
-using FoundOps.Core.Models.CoreEntities;
-using FoundOps.Core.Tools;
 
 namespace FoundOps.Core.Models.Authentication
 {
     public class CoreEntitiesMembershipProvider : MembershipProvider
     {
-        readonly CoreEntitiesContainer _coreEntitiesContainer = new CoreEntitiesContainer();
+        private readonly CoreEntitiesContainer _coreEntitiesContainer;
+
+        public CoreEntitiesMembershipProvider()
+        {
+            _coreEntitiesContainer = new CoreEntitiesContainer();
+        }
+
+        public CoreEntitiesMembershipProvider(CoreEntitiesContainer coreEntitiesContainer)
+        {
+            _coreEntitiesContainer = coreEntitiesContainer;
+        }
 
         private static string GenerateRandomResetToken()
         {
@@ -31,29 +43,60 @@ namespace FoundOps.Core.Models.Authentication
         /// <summary>
         /// Set a one time reset code on the user account.
         /// </summary>
-        /// <param name="account">The account</param>
-        /// <param name="expires">When to expire</param>
-        public void ResetAccount(UserAccount account, TimeSpan expires)
+        /// <param name="emailAddress">The account's email address</param>
+        /// <param name="expires">When to expire. Defaults to an hour</param>
+        /// <returns>True if succesful, or false if it failed</returns>
+        public bool ResetAccount(string emailAddress, TimeSpan? expires = null)
         {
-            var expireTime = DateTime.UtcNow.Add(expires);
+            var account = _coreEntitiesContainer.Parties.OfType<UserAccount>().FirstOrDefault(ua => ua.EmailAddress == emailAddress);
 
+            if (account == null)
+                return false;
+
+            if (!expires.HasValue)
+                expires = TimeSpan.FromHours(1);
+
+            var expireTime = DateTime.UtcNow.Add(expires.Value);
             var token = GenerateRandomResetToken();
 
             account.TempTokenExpireTime = expireTime;
             account.TempResetToken = token;
 
             _coreEntitiesContainer.SaveChanges();
+
+            //Send email
+            var ss = new SmtpClient("smtp.gmail.com", 587)
+            {
+                EnableSsl = true,
+                Timeout = 10000,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential("info@foundops.com", "6Neoy1KRjSVQV6sCk6ax")
+            };
+
+            var to = emailAddress;
+            const string from = "info@foundops.com";
+            const string subject = "FoundOPS Password Reset";
+            //TODO
+            var body = "You can reset your password here: app.foundops.com/Account/ResetPassword?resetCode=" + token;
+            var mm = new MailMessage(from, to, subject, body)
+            {
+                BodyEncoding = Encoding.UTF8,
+                DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure
+            };
+            ss.Send(mm);
+
+            return true;
         }
 
         /// <summary>
         /// Set the password using a (one-time) reset code.
         /// </summary>
-        /// <param name="account"></param>
-        /// <param name="resetCode"></param>
-        /// <param name="newPassword"></param>
         /// <returns>True if succesful, or false if it failed</returns>
-        public bool SetPassword(UserAccount account, string resetCode, string newPassword)
+        public bool SetPassword(string resetCode, string newPassword)
         {
+            var account = _coreEntitiesContainer.Parties.OfType<UserAccount>().First(ua => ua.TempResetToken == resetCode);
+
             if (resetCode != account.TempResetToken || DateTime.UtcNow > account.TempTokenExpireTime)
                 return false;
 
@@ -200,7 +243,6 @@ namespace FoundOps.Core.Models.Authentication
             get { return @"(?=.{6,})(?=(.*\d){1,})(?=(.*\W){1,})"; }
         }
 
-
         #region NotImplemented
 
         public override MembershipUserCollection GetAllUsers(int pageIndex, int pageSize, out int totalRecords)
@@ -257,5 +299,100 @@ namespace FoundOps.Core.Models.Authentication
         #endregion
 
         #endregion
+
+        //public interface IMembershipService
+        //{
+        //    int MinPasswordLength { get; }
+        //    bool ValidateReset(string resetCode);
+        //    bool ValidateUser(string email, string password);
+        //    MembershipCreateStatus CreateUser(string email, string password, string linkCode);
+        //    bool ChangePassword(string email, string oldPassword, string newPassword);
+        //    int MaxInvalidPasswordAttempts { get; set; }
+        //}
+
+        //public class PartyMembershipService : IMembershipService
+        //{
+        //    private readonly MembershipProvider _provider;
+
+        //    public PartyMembershipService()
+        //        : this(null)
+        //    {
+        //    }
+
+        //    public PartyMembershipService(MembershipProvider provider)
+        //    {
+        //        _provider = provider ?? Membership.Provider;
+        //    }
+
+        //    public int MinPasswordLength
+        //    {
+        //        get
+        //        {
+        //            return _provider.MinRequiredPasswordLength;
+        //        }
+        //    }
+
+        //    public int MaxInvalidPasswordAttempts
+        //    {
+        //        get
+        //        {
+        //            return _provider.MaxInvalidPasswordAttempts;
+        //        }
+        //        set { }
+        //    }
+
+        //    public bool ValidateReset(string resetCode)
+        //    {
+
+
+        //        if (String.IsNullOrEmpty(email)) throw new ArgumentException("  Value cannot be null or empty.", "email");
+        //        return _provider.GetUser(email, false) != null;
+        //    }
+
+        //    public bool ValidateUser(string email, string password)
+        //    {
+        //        if (String.IsNullOrEmpty(email)) throw new ArgumentException("  Value cannot be null or empty.", "email");
+        //        if (String.IsNullOrEmpty(password)) throw new ArgumentException("  Value cannot be null or empty.", "password");
+        //        return _provider.ValidateUser(email, password);
+        //    }
+
+        //    public MembershipCreateStatus CreateUser(string email, string password, string temporaryPassword)
+        //    {
+        //        if (_provider.GetUser(email, false) == null)
+        //            return MembershipCreateStatus.InvalidEmail;
+
+        //        if (!_provider.ValidateUser(email, temporaryPassword))
+        //            return MembershipCreateStatus.InvalidPassword;
+
+        //        ChangePassword(email, temporaryPassword, password);
+
+        //        return MembershipCreateStatus.Success;
+        //    }
+
+        //    public bool ChangePassword(string userName, string oldPassword, string newPassword)
+        //    {
+        //        if (String.IsNullOrEmpty(userName)) throw new ArgumentException("Value cannot be null or empty.", "userName");
+        //        if (String.IsNullOrEmpty(oldPassword)) throw new ArgumentException("Value cannot be null or empty.", "oldPassword");
+        //        if (String.IsNullOrEmpty(newPassword)) throw new ArgumentException("Value cannot be null or empty.", "newPassword");
+
+        //        // The underlying ChangePassword() will throw an exception rather
+        //        // than return false in certain failure scenarios.
+        //        try
+        //        {
+        //            MembershipUser currentUser = _provider.GetUser(userName, true /* userIsOnline */);
+        //            var worked = currentUser.ChangePassword(oldPassword, newPassword);
+
+        //            return worked;
+        //        }
+        //        catch (ArgumentException)
+        //        {
+        //            return false;
+        //        }
+        //        catch (MembershipPasswordException)
+        //        {
+        //            return false;
+        //        }
+        //    }
+        //}
     }
 }

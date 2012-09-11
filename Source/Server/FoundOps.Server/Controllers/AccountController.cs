@@ -17,12 +17,10 @@ namespace FoundOps.Server.Controllers
     {
         #region Helper Methods
 
-        private IFormsAuthenticationService FormsService { get; set; }
-        private IMembershipService MembershipService { get; set; }
+        private CoreEntitiesMembershipProvider _coreEntitiesMembershipProvider;
         protected override void Initialize(RequestContext requestContext)
         {
-            if (FormsService == null) { FormsService = new FormsAuthenticationService(); }
-            if (MembershipService == null) { MembershipService = new PartyMembershipService(); }
+            if (_coreEntitiesMembershipProvider == null) { _coreEntitiesMembershipProvider = new CoreEntitiesMembershipProvider(); }
 
             base.Initialize(requestContext);
         }
@@ -35,11 +33,11 @@ namespace FoundOps.Server.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    if (MembershipService.ValidateUser(model.EmailAddress, model.Password))
+                    if (_coreEntitiesMembershipProvider.ValidateUser(model.EmailAddress, model.Password))
                     {
                         //Also authenticate API
                         ClearLoginAttempts();
-                        FormsService.SignIn(model.EmailAddress, model.RememberMe);
+                        FormsAuthentication.SetAuthCookie(model.EmailAddress, true);
 
                         if (!String.IsNullOrEmpty(returnUrl))
                             return Redirect(returnUrl);
@@ -145,7 +143,7 @@ namespace FoundOps.Server.Controllers
 
         public ActionResult LogOut()
         {
-            FormsService.SignOut();
+            FormsAuthentication.SignOut();
 
             return Redirect(ServerConstants.RootFrontSiteUrl);
         }
@@ -154,33 +152,9 @@ namespace FoundOps.Server.Controllers
 
         #region Password Actions
 
-        [FoundOps.Core.Tools.Authorize]
-        public ActionResult ChangePassword()
-        {
-            ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
-            return View();
-        }
-
-        [FoundOps.Core.Tools.Authorize]
-        [HttpPost]
-        public ActionResult ChangePassword(ChangePasswordModel model)
-        {
-            if (MembershipService.ChangePassword(User.Identity.Name, model.OldPassword, model.NewPassword))
-            {
-                return RedirectToAction("ChangePasswordSuccess", "Account");
-            }
-            ModelState.AddModelError("", "The current password is incorrect or the new password is invalid.");
-
-            // If we got this far, something failed, redisplay form
-            ViewData["PasswordLength"] = MembershipService.MinPasswordLength;
-            return View(model);
-        }
-
-        public ActionResult ChangePasswordSuccess()
-        {
-            return View();
-        }
-
+        /// <summary>
+        /// A captcha page for forgetting password
+        /// </summary>
         public ActionResult ForgotPassword()
         {
             //Setup ViewData when returning Login View
@@ -192,54 +166,68 @@ namespace FoundOps.Server.Controllers
             return View();
         }
 
-        public ActionResult ForgotPasswordSuccess()
-        {
-            return View();
-        }
-
+        /// <summary>
+        /// Checks the captcha. TODO Then sends an email with a reset password link.
+        /// </summary>
         [HttpPost]
-        public ActionResult ResetPassword(EmailAddressModel model)
+        public ActionResult ForgotPassword(ForgotPasswordModel model)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && PerformRecaptcha())
             {
-                if (MembershipService.ValidateReset(model.EmailAddress) && PerformRecaptcha()) //Ensure the EmailAddress is valid
+                if (_coreEntitiesMembershipProvider.ResetAccount(model.EmailAddress))
                 {
-                    //Set new temporary password
-                    var temporaryPassword = PasswordTools.GeneratePassword();
-
-                    //Change Password
-                    ((CoreEntitiesMembershipProvider)Membership.Provider).ChangePassword(model.EmailAddress, temporaryPassword);
-
-                    //Send email
-                    var ss = new SmtpClient("smtp.gmail.com", 587)
-                    {
-                        EnableSsl = true,
-                        Timeout = 10000,
-                        DeliveryMethod = SmtpDeliveryMethod.Network,
-                        UseDefaultCredentials = false,
-                        Credentials = new NetworkCredential("info@foundops.com", "6Neoy1KRjSVQV6sCk6ax")
-                    };
-
-                    var to = model.EmailAddress;
-                    const string from = "info@foundops.com";
-                    const string subject = "FoundOPS Password Reset";
-                    var body = "Your new password is: " + temporaryPassword;
-                    var mm = new MailMessage(from, to, subject, body)
-                    {
-                        BodyEncoding = Encoding.UTF8,
-                        DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure
-                    };
-                    ss.Send(mm);
-          
                     return RedirectToAction("ForgotPasswordSuccess", "Account");
                 }
             }
+
             // If we got this far, something failed, redisplay form
             ModelState.AddModelError("", "");
 
             //Store the ViewData so that you can maintain validation errors on LoginPage
             TempData["ViewData"] = ViewData;
-            return RedirectToAction("ForgotPassword", "Account", model);
+            return RedirectToAction("ResetPassword", "Account", model);
+        }
+
+        /// <summary>
+        /// A captcha page for resetting a password
+        /// </summary>
+        public ActionResult ResetPassword(string resetCode)
+        {
+            //Setup ViewData when returning Login View
+            var viewData = TempData["ViewData"];
+
+            if (viewData != null)  //Save ViewData if passed from TempData
+                ViewData = (ViewDataDictionary)viewData;
+
+            return View();
+        }
+
+        /// <summary>
+        /// Will send an email with a reset password link
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="resetCode"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult ResetPassword(ResetPasswordModel model, string resetCode)
+        {
+            if (ModelState.IsValid && PerformRecaptcha())
+            {
+                if (_coreEntitiesMembershipProvider.SetPassword(resetCode, model.NewPassword))
+                    return RedirectToAction("ResetPasswordSuccess", "Account");
+            }
+
+            // If we got this far, something failed, redisplay form
+            ModelState.AddModelError("", "");
+
+            //Store the ViewData so that you can maintain validation errors on LoginPage
+            TempData["ViewData"] = ViewData;
+            return RedirectToAction("ResetPassword", "Account", model);
+        }
+
+        public ActionResult ResetPasswordSuccess()
+        {
+            return View();
         }
 
         #endregion

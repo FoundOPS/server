@@ -26,12 +26,13 @@ namespace FoundOPS.API.Api
     public class SettingsController : ApiController
     {
         private readonly CoreEntitiesContainer _coreEntitiesContainer;
-        private IMembershipService MembershipService { get; set; }
+        private readonly CoreEntitiesMembershipProvider _coreEntitiesMembershipProvider;
 
         public SettingsController()
         {
             _coreEntitiesContainer = new CoreEntitiesContainer();
             _coreEntitiesContainer.ContextOptions.LazyLoadingEnabled = false;
+            _coreEntitiesMembershipProvider = new CoreEntitiesMembershipProvider(_coreEntitiesContainer);
         }
 
         #region Conflicts and Responses
@@ -119,28 +120,14 @@ namespace FoundOPS.API.Api
             return Request.CreateResponse(HttpStatusCode.Accepted);
         }
 
-        [System.Web.Http.AcceptVerbs("POST")]
-        public HttpResponseMessage UpdatePassword(string newPass, string oldPass = null, string resetCode = null)
+        [AcceptVerbs("POST")]
+        public HttpResponseMessage UpdatePassword(string newPass, string oldPass)
         {
-            if (MembershipService == null) { MembershipService = new PartyMembershipService(); }
-
             var user = _coreEntitiesContainer.CurrentUserAccount().First();
 
-            if (oldPass != null)
-            {
-                return Request.CreateResponse(MembershipService.ChangePassword(user.EmailAddress, oldPass, newPass)
-                                           ? HttpStatusCode.Accepted
-                                           : HttpStatusCode.NotAcceptable);
-            }
-            if (resetCode == null || resetCode != user.TempResetToken || DateTime.UtcNow > user.TempTokenExpireTime)
-                return Request.CreateResponse(HttpStatusCode.NotAcceptable);
-
-            user.PasswordSalt = EncryptionTools.GenerateSalt();
-            user.PasswordHash = EncryptionTools.Hash(newPass, user.PasswordSalt);
-
-            _coreEntitiesContainer.SaveChanges();
-
-            return Request.CreateResponse(HttpStatusCode.Accepted);
+            return Request.CreateResponse(_coreEntitiesMembershipProvider.ChangePassword(user.EmailAddress, oldPass, newPass)
+                                       ? HttpStatusCode.Accepted
+                                       : HttpStatusCode.NotAcceptable);
         }
 
         /// <summary>

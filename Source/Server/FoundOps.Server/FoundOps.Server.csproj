@@ -480,8 +480,6 @@
     </None>
     <Content Include="packages.config" />
     <Content Include="Views\Account\Captcha.cshtml" />
-    <Content Include="Views\Account\ChangePassword.cshtml" />
-    <Content Include="Views\Account\ChangePasswordSuccess.cshtml" />
     <Content Include="Views\Account\ForgotPassword.cshtml" />
     <Content Include="Views\Account\ForgotPasswordSuccess.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
@@ -516,6 +514,8 @@
     </Content>
     <Content Include="Views\App\IndexFullSource.cshtml" />
     <Content Include="Views\App\IndexBuilt.cshtml" />
+    <Content Include="Views\Account\ResetPassword.cshtml" />
+    <Content Include="Views\Account\ResetPasswordSuccess.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
