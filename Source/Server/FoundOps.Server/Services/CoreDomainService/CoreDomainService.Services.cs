@@ -1,4 +1,7 @@
+using System.Data.SqlClient;
+using Dapper;
 using FoundOps.Common.NET;
+using FoundOps.Core.Models;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.Extensions.Services;
 using FoundOps.Core.Tools;
@@ -240,16 +243,50 @@ namespace FoundOps.Server.Services.CoreDomainService
             if(user == null)
                 throw new Exception("No User logged in");
 
-            var firstDate = user.AdjustTimeForUserTimeZone(DateTime.UtcNow).AddDays(-7);
+            DateTime firstDate;
+            DateTime lastDate;
 
-            var lastDate = user.AdjustTimeForUserTimeZone(DateTime.UtcNow).AddDays(7);
+            using (var conn = new SqlConnection(ServerConstants.SqlConnectionString))
+            {
+                conn.Open();
 
-            //Order by OccurDate and Service Name for UI
-            //Order by ServiceId and RecurringServiceId to ensure they are always returned in the same order
-            return ObjectContext.GetServiceHolders(serviceProviderContextId, clientContextId, recurringServiceContextId,
-                firstDate, lastDate, null, false)
-                .OrderBy(sh => sh.OccurDate).ThenBy(sh => sh.ServiceName).ThenBy(sh => sh.ServiceId).ThenBy(sh => sh.RecurringServiceId)
-                .AsQueryable();
+                var parameters = new DynamicParameters();
+                parameters.Add("@serviceProviderIdContext", serviceProviderContextId);
+                parameters.Add("@clientIdContext", clientContextId);
+                parameters.Add("@recurringServiceIdContext", recurringServiceContextId);
+                parameters.Add("@seedDate", user.AdjustTimeForUserTimeZone(DateTime.UtcNow));
+                parameters.Add("@frontBackMinimum", 50);
+                parameters.Add("@getPrevious", 1);
+                parameters.Add("@getNext", 1);
+                parameters.Add("@serviceTypeContext", null);
+
+                //Calls a stored procedure that will find any Services scheduled for today and create a routetask for them if one doesnt exist
+                //Then it will return all RouteTasks that are not in a route joined with their Locations, Location.Regions and Clients
+                //Dapper will then map the output table to RouteTasks, RouteTasks.Location, RouteTasks.Location.Region and RouteTasks.Client
+                //While that is being mapped we also attach the Client, Location and Region to the objectContext
+                var data = conn.QueryMultiple("GetDateRangeForServices", parameters, commandType: CommandType.StoredProcedure);
+
+                firstDate = data.Read<DateTime>().Single();
+                lastDate = data.Read<DateTime>().Single();
+                
+                //Reset parameters
+                parameters = new DynamicParameters();
+                parameters.Add("@serviceProviderIdContext", serviceProviderContextId);
+                parameters.Add("@clientIdContext", clientContextId);
+                parameters.Add("@recurringServiceIdContext", recurringServiceContextId);
+                parameters.Add("@firstDate", firstDate);
+                parameters.Add("@lastDate", lastDate);
+                parameters.Add("@serviceTypeContext", null);
+                parameters.Add("@withFields", false);
+
+                var serviceHolders = conn.Query<ServiceHolder>("GetServiceHolders", parameters, commandType: CommandType.StoredProcedure);
+
+                conn.Close();
+
+                //Order by OccurDate and Service Name for UI
+                //Order by ServiceId and RecurringServiceId to ensure they are always returned in the same order
+                return serviceHolders.OrderBy(sh => sh.OccurDate).ThenBy(sh => sh.ServiceName).ThenBy(sh => sh.ServiceId).ThenBy(sh => sh.RecurringServiceId).AsQueryable();
+            }
         }
 
         /// <summary>

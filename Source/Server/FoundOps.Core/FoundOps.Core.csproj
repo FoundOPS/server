@@ -235,6 +235,7 @@
     <Content Include="Models\CoreEntities\SQL Tests\ProagateNameChangeTest.sql" />
     <Content Include="Models\CoreEntities\SQL Tests\ProagateNewServiceTemplatesToClientTest.sql" />
     <Content Include="Models\CoreEntities\SQL\CheckServiceTemplateForChildren.sql" />
+    <Content Include="Models\CoreEntities\SQL\GetDateRangeForServices.sql" />
     <Content Include="Models\CoreEntities\SQL\GetFieldsInJavaScriptFormat.sql" />
     <Content Include="Models\CoreEntities\SQL\GetServiceHoldersWithFields.sql" />
     <Content Include="Models\CoreEntities\SQL\DeleteFieldAndChildrenBasedOnFieldId.sql" />
@@ -250,7 +251,8 @@
     <Content Include="Models\CoreEntities\SQL\GetNextOccurence.sql" />
     <Content Include="Models\CoreEntities\SQL\GetPreviousOccurance.sql" />
     <Content Include="Models\CoreEntities\SQL\GetResourcesWithLatestPoint.sql" />
-    <Content Include="Models\CoreEntities\SQL\GetServicesToBeCreatedForDate.txt" />
+    <Content Include="Models\CoreEntities\SQL\GetServiceTemplatesAndFields.sql" />
+    <Content Include="Models\CoreEntities\SQL\GetServiceTemplatesWithDateAndDetails.sql" />
     <Content Include="Models\CoreEntities\SQL\GetUnroutedServicesForDate.sql" />
     <Content Include="Models\CoreEntities\SQL Tests\TestFunctionForRecurringServices.sql" />
     <Content Include="Models\CoreEntities\SQL Tests\SchedulerTests.sql" />
