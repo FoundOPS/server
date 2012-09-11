@@ -243,9 +243,6 @@ namespace FoundOps.Server.Services.CoreDomainService
             if(user == null)
                 throw new Exception("No User logged in");
 
-            DateTime firstDate;
-            DateTime lastDate;
-
             using (var conn = new SqlConnection(ServerConstants.SqlConnectionString))
             {
                 conn.Open();
@@ -266,8 +263,8 @@ namespace FoundOps.Server.Services.CoreDomainService
                 //While that is being mapped we also attach the Client, Location and Region to the objectContext
                 var data = conn.QueryMultiple("GetDateRangeForServices", parameters, commandType: CommandType.StoredProcedure);
 
-                firstDate = data.Read<DateTime>().Single();
-                lastDate = data.Read<DateTime>().Single();
+                var firstDate = data.Read<DateTime>().Single();
+                var lastDate = data.Read<DateTime>().Single();
                 
                 //Reset parameters
                 parameters = new DynamicParameters();

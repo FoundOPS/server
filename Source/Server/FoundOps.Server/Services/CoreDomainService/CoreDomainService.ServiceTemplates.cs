@@ -50,12 +50,17 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// Searches the parent FoundOPS ServiceTemplate for Fields.
         /// </summary>
         /// <param name="roleId">The current role id.</param>
-        /// <param name="serviceTemplateId">The service template you are searching fields for.</param>
+        /// <param name="foundOpsLevelServiceTemplateId">The service template you are searching fields for.</param>
+        /// <param name="serviceProviderServiceTemplateId">The service template you are adding fields to. </param>
         /// <param name="searchText">The search text.</param>
-        public IQueryable<Field> SearchFieldsForServiceProvider(Guid roleId, Guid serviceTemplateId, string searchText)
+        public IQueryable<Field> SearchFieldsForServiceProvider(Guid roleId, Guid foundOpsLevelServiceTemplateId, Guid serviceProviderServiceTemplateId, string searchText)
         {
             //Gets all fields from the specified service template
-            var fields = HardCodedLoaders.LoadServiceTemplateWithDetails(this.ObjectContext, serviceTemplateId, null, null, null).SelectMany(st => st.Fields);
+            var foundOpsFields = HardCodedLoaders.LoadServiceTemplateWithDetails(this.ObjectContext, foundOpsLevelServiceTemplateId, null, null, null).SelectMany(st => st.Fields);
+
+            var serviceProviderFields = HardCodedLoaders.LoadServiceTemplateWithDetails(this.ObjectContext, serviceProviderServiceTemplateId, null, null, null).SelectMany(st => st.Fields);
+
+            var fields = foundOpsFields.Where(f => !serviceProviderFields.Select(spf => spf.Name).Contains(f.Name));
 
             if (!String.IsNullOrEmpty(searchText))
                 fields = fields.Where(f => f.Name.StartsWith(searchText));

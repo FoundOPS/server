@@ -112,7 +112,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                 // Search the parent FoundOPS ServiceTemplate for Fields the current service template does not have yet
                 SearchSuggestionsHelper(autoCompleteBox, () =>
-                     Manager.Data.DomainContext.SearchFieldsForServiceProviderQuery(Manager.Context.RoleId, serviceTemplateContext.Id, autoCompleteBox.SearchText));
+                     Manager.Data.DomainContext.SearchFieldsForServiceProviderQuery(Manager.Context.RoleId, serviceTemplateContext.ParentServiceTemplate.Id, serviceTemplateContext.Id, autoCompleteBox.SearchText));
             };
 
             #endregion
