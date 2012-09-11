@@ -255,7 +255,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                 parameters.Add("@clientIdContext", clientContextId);
                 parameters.Add("@recurringServiceIdContext", recurringServiceContextId);
                 parameters.Add("@seedDate", user.AdjustTimeForUserTimeZone(DateTime.UtcNow));
-                parameters.Add("@frontBackMinimum", 100);
+                parameters.Add("@frontBackMinimum", 50);
                 parameters.Add("@getPrevious", 1);
                 parameters.Add("@getNext", 1);
                 parameters.Add("@serviceTypeContext", null);
@@ -269,15 +269,24 @@ namespace FoundOps.Server.Services.CoreDomainService
                 firstDate = data.Read<DateTime>().Single();
                 lastDate = data.Read<DateTime>().Single();
                 
-                conn.Close();
-            }
+                //Reset parameters
+                parameters = new DynamicParameters();
+                parameters.Add("@serviceProviderIdContext", serviceProviderContextId);
+                parameters.Add("@clientIdContext", clientContextId);
+                parameters.Add("@recurringServiceIdContext", recurringServiceContextId);
+                parameters.Add("@firstDate", firstDate);
+                parameters.Add("@lastDate", lastDate);
+                parameters.Add("@serviceTypeContext", null);
+                parameters.Add("@withFields", false);
 
-            //Order by OccurDate and Service Name for UI
-            //Order by ServiceId and RecurringServiceId to ensure they are always returned in the same order
-            return ObjectContext.GetServiceHolders(serviceProviderContextId, clientContextId, recurringServiceContextId,
-                firstDate, lastDate, null, false)
-                .OrderBy(sh => sh.OccurDate).ThenBy(sh => sh.ServiceName).ThenBy(sh => sh.ServiceId).ThenBy(sh => sh.RecurringServiceId)
-                .AsQueryable();
+                var serviceHolders = conn.Query<ServiceHolder>("GetServiceHolders", parameters, commandType: CommandType.StoredProcedure);
+
+                conn.Close();
+
+                //Order by OccurDate and Service Name for UI
+                //Order by ServiceId and RecurringServiceId to ensure they are always returned in the same order
+                return serviceHolders.OrderBy(sh => sh.OccurDate).ThenBy(sh => sh.ServiceName).ThenBy(sh => sh.ServiceId).ThenBy(sh => sh.RecurringServiceId).AsQueryable();
+            }
         }
 
         /// <summary>
