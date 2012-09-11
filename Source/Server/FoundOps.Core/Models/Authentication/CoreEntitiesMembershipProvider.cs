@@ -1,16 +1,28 @@
+using System.Net;
+using System.Net.Mail;
+using FoundOps.Common.NET;
+using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Core.Tools;
 using System;
 using System.Linq;
 using System.Text;
 using System.Web.Security;
-using FoundOps.Common.NET;
-using FoundOps.Core.Models.CoreEntities;
-using FoundOps.Core.Tools;
 
 namespace FoundOps.Core.Models.Authentication
 {
     public class CoreEntitiesMembershipProvider : MembershipProvider
     {
-        readonly CoreEntitiesContainer _coreEntitiesContainer = new CoreEntitiesContainer();
+        private readonly CoreEntitiesContainer _coreEntitiesContainer;
+
+        public CoreEntitiesMembershipProvider()
+        {
+            _coreEntitiesContainer = new CoreEntitiesContainer();
+        }
+
+        public CoreEntitiesMembershipProvider(CoreEntitiesContainer coreEntitiesContainer)
+        {
+            _coreEntitiesContainer = coreEntitiesContainer;
+        }
 
         private static string GenerateRandomResetToken()
         {
@@ -29,31 +41,54 @@ namespace FoundOps.Core.Models.Authentication
         }
 
         /// <summary>
-        /// Set a one time reset code on the user account.
+        /// Set a one time reset code on the user account and send an email
         /// </summary>
-        /// <param name="account">The account</param>
-        /// <param name="expires">When to expire</param>
-        public void ResetAccount(UserAccount account, TimeSpan expires)
+        /// <param name="emailAddress">The account's email address</param>
+        /// <param name="subject">The email subject line</param>
+        /// <param name="body">The email body. {0} will be replaced with the link</param>
+        /// <param name="expires">When to expire. Defaults to an hour</param>
+        /// <returns>True if succesful, or false if it failed</returns>
+        public bool ResetAccount(string emailAddress, string subject = null, string body = null, TimeSpan? expires = null)
         {
-            var expireTime = DateTime.UtcNow.Add(expires);
+            var account = _coreEntitiesContainer.Parties.OfType<UserAccount>().FirstOrDefault(ua => ua.EmailAddress == emailAddress);
 
+            if (account == null)
+                return false;
+
+            if (!expires.HasValue)
+                expires = TimeSpan.FromHours(1);
+
+            var expireTime = DateTime.UtcNow.Add(expires.Value);
             var token = GenerateRandomResetToken();
 
             account.TempTokenExpireTime = expireTime;
             account.TempResetToken = token;
 
             _coreEntitiesContainer.SaveChanges();
+
+            var to = emailAddress;
+            if (subject == null)
+                subject = "FoundOPS Password Reset";
+
+            if (body == null)
+                body = "You can reset your password here: \r\n {0}";
+
+            var link = ServerConstants.RootApplicationUrl + "/Account/ResetPassword?resetCode=" + token;
+            body = string.Format(body, link);
+
+            EmailPasswordTools.SendEmail(to, subject, body);
+
+            return true;
         }
 
         /// <summary>
         /// Set the password using a (one-time) reset code.
         /// </summary>
-        /// <param name="account"></param>
-        /// <param name="resetCode"></param>
-        /// <param name="newPassword"></param>
         /// <returns>True if succesful, or false if it failed</returns>
-        public bool SetPassword(UserAccount account, string resetCode, string newPassword)
+        public bool SetPassword(string resetCode, string newPassword)
         {
+            var account = _coreEntitiesContainer.Parties.OfType<UserAccount>().First(ua => ua.TempResetToken == resetCode);
+
             if (resetCode != account.TempResetToken || DateTime.UtcNow > account.TempTokenExpireTime)
                 return false;
 
@@ -74,7 +109,7 @@ namespace FoundOps.Core.Models.Authentication
 
         public override bool ChangePassword(string username, string oldPassword, string newPassword)
         {
-            var user = AuthenticationLogic.GetUserAccount(_coreEntitiesContainer, username);
+            var user = _coreEntitiesContainer.GetUserAccount(username);
 
             if (!ValidateUser(username, oldPassword) || user == null)
                 return false;
@@ -199,7 +234,6 @@ namespace FoundOps.Core.Models.Authentication
         {
             get { return @"(?=.{6,})(?=(.*\d){1,})(?=(.*\W){1,})"; }
         }
-
 
         #region NotImplemented
 

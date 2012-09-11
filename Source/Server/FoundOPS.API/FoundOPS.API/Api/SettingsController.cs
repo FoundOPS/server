@@ -26,12 +26,13 @@ namespace FoundOPS.API.Api
     public class SettingsController : ApiController
     {
         private readonly CoreEntitiesContainer _coreEntitiesContainer;
-        private IMembershipService MembershipService { get; set; }
+        private readonly CoreEntitiesMembershipProvider _coreEntitiesMembershipProvider;
 
         public SettingsController()
         {
             _coreEntitiesContainer = new CoreEntitiesContainer();
             _coreEntitiesContainer.ContextOptions.LazyLoadingEnabled = false;
+            _coreEntitiesMembershipProvider = new CoreEntitiesMembershipProvider(_coreEntitiesContainer);
         }
 
         #region Conflicts and Responses
@@ -119,28 +120,14 @@ namespace FoundOPS.API.Api
             return Request.CreateResponse(HttpStatusCode.Accepted);
         }
 
-        [System.Web.Http.AcceptVerbs("POST")]
-        public HttpResponseMessage UpdatePassword(string newPass, string oldPass = null, string resetCode = null)
+        [AcceptVerbs("POST")]
+        public HttpResponseMessage UpdatePassword(string newPass, string oldPass)
         {
-            if (MembershipService == null) { MembershipService = new PartyMembershipService(); }
-
             var user = _coreEntitiesContainer.CurrentUserAccount().First();
 
-            if (oldPass != null)
-            {
-                return Request.CreateResponse(MembershipService.ChangePassword(user.EmailAddress, oldPass, newPass)
-                                           ? HttpStatusCode.Accepted
-                                           : HttpStatusCode.NotAcceptable);
-            }
-            if (resetCode == null || resetCode != user.TempResetToken || DateTime.UtcNow > user.TempTokenExpireTime)
-                return Request.CreateResponse(HttpStatusCode.NotAcceptable);
-
-            user.PasswordSalt = EncryptionTools.GenerateSalt();
-            user.PasswordHash = EncryptionTools.Hash(newPass, user.PasswordSalt);
-
-            _coreEntitiesContainer.SaveChanges();
-
-            return Request.CreateResponse(HttpStatusCode.Accepted);
+            return Request.CreateResponse(_coreEntitiesMembershipProvider.ChangePassword(user.EmailAddress, oldPass, newPass)
+                                       ? HttpStatusCode.Accepted
+                                       : HttpStatusCode.NotAcceptable);
         }
 
         /// <summary>
@@ -257,10 +244,8 @@ namespace FoundOPS.API.Api
             };
 
             //Find the role in the BusinessAccount that matches the name of the one passed in
-            var newRole = _coreEntitiesContainer.Roles.FirstOrDefault(r => r.OwnerBusinessAccountId == businessAccount.Id && r.Name == settings.Role);
-
-            if (newRole != null)
-                user.RoleMembership.Add(newRole);
+            var role = _coreEntitiesContainer.Roles.FirstOrDefault(r => r.OwnerBusinessAccountId == businessAccount.Id && r.Name == settings.Role);
+            user.RoleMembership.Add(role);
 
             #endregion
 
@@ -292,23 +277,17 @@ namespace FoundOPS.API.Api
             var sender = _coreEntitiesContainer.CurrentUserAccount().First().DisplayName;
             var recipient = user.FirstName;
 
-
-            //Create the link that will login the new user and then redirect them to the
-            //settings page where they can change their password
-            //ex: http://api.foundops.com/api/session/Login?email=bright.zach@gmail.com&pass=HJ15MG3G&redirectUrl=http://app.foundops.com/App/Index#view/createPassword.html
-            var redirect = ServerConstants.RootApplicationUrl + "/App/Index.html%23view/createPassword.html";
-
-            var link = ServerConstants.RootApiUrl + "/api/session/Login?email=" + user.EmailAddress + "&pass=" + temporaryPassword + "&redirectUrl=" + redirect;
-
             //Construct the email
             var subject = "Your FoundOPS invite from " + sender;
-            var body = "Hi " + recipient + ", \r\n\r\n" + sender + " has created a user account for you in FoundOPS. \r\n\r\nFoundOPS is an easy to use " +
-                                "tool that helps field services teams communicate and provide the best " +
-                                "possible service to their clients. \r\n\r\nClick here to accept the invite: \r\n" + link +
-                                " \r\n\r\nIf you have any difficulty accepting the invitation, email us at " +
-                                "support@foundops.com. \r\n\r\n\r\nThe FoundOPS Team";
+            var body = "Hi " + recipient + ", \r\n\r\n" +
+                        sender + " has created a user account for you in FoundOPS. \r\n\r\n" +
+                        "FoundOPS is an easy to use tool that helps field services teams communicate and provide the best possible service to their clients. \r\n\r\n" +
+                        "Click here to accept the invite: \r\n " + @"{0}" + "\r\n\r\n" +
+                        "If you have any difficulty accepting the invitation, email us at support@foundops.com. This invitation expires in 7 days. \r\n\r\n\r\n" +
+                        "The FoundOPS Team";
 
-            EmailPasswordTools.SendEmail(user.EmailAddress, subject, body);
+
+            _coreEntitiesMembershipProvider.ResetAccount(user.EmailAddress, subject, body, TimeSpan.FromDays(7));
 
             #endregion
 

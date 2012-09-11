@@ -8,14 +8,17 @@ using System.Web.Security;
 namespace FoundOps.Core.Models.Authentication
 {
     #region Models
-    [PropertiesMustMatch("NewPassword", "ConfirmPassword", ErrorMessage = "The new password and confirmation password do not match.")]
-    public class ChangePasswordModel
+  
+    public class ForgotPasswordModel
     {
         [Required]
-        [DataType(DataType.Password)]
-        [DisplayName("Current password")]
-        public string OldPassword { get; set; }
+        [DisplayName("Email Address")]
+        public string EmailAddress { get; set; }
+    }
 
+    [PropertiesMustMatch("NewPassword", "ConfirmPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+    public class ResetPasswordModel
+    {
         [Required]
         [ValidatePasswordLength]
         [DataType(DataType.Password)]
@@ -60,158 +63,6 @@ namespace FoundOps.Core.Models.Authentication
         public string RedirectUrl { get; set; }
     }
 
-    public class EmailAddressModel
-    {
-        [Required]
-        [DisplayName("Email Address")]
-        public string EmailAddress { get; set; }
-    }
-
-    [PropertiesMustMatch("Password", "ConfirmPassword", ErrorMessage = "The password and confirmation password do not match.")]
-    public class RegisterModel
-    {
-        [Required]
-        [DataType(DataType.EmailAddress)]
-        [DisplayName("Email address")]
-        public string Email { get; set; }
-
-        [Required]
-        [DataType(DataType.Text)]
-        [DisplayName("Temporary password")]
-        public string TemporaryPassword { get; set; }
-
-        [Required]
-        [ValidatePasswordLength]
-        [DataType(DataType.Password)]
-        [DisplayName("Password")]
-        public string Password { get; set; }
-
-        [Required]
-        [DataType(DataType.Password)]
-        [DisplayName("Confirm password")]
-        public string ConfirmPassword { get; set; }
-    }
-    #endregion
-
-    #region Services
-    // The FormsAuthentication type is sealed and contains static members, so it is difficult to
-    // unit test code that calls its members. The interface and helper class below demonstrate
-    // how to create an abstract wrapper around such a type in order to make the PartyController
-    // code unit testable.
-
-    public interface IMembershipService
-    {
-        int MinPasswordLength { get; }
-        bool ValidateReset(string email);
-        bool ValidateUser(string email, string password);
-        MembershipCreateStatus CreateUser(string email, string password, string linkCode);
-        bool ChangePassword(string email, string oldPassword, string newPassword);
-        int MaxInvalidPasswordAttempts { get; set; }
-    }
-
-    public class PartyMembershipService : IMembershipService
-    {
-        private readonly MembershipProvider _provider;
-
-        public PartyMembershipService()
-            : this(null)
-        {
-        }
-
-        public PartyMembershipService(MembershipProvider provider)
-        {
-            _provider = provider ?? Membership.Provider;
-        }
-
-        public int MinPasswordLength
-        {
-            get
-            {
-                return _provider.MinRequiredPasswordLength;
-            }
-        }
-
-        public int MaxInvalidPasswordAttempts
-        {
-            get
-            {
-                return _provider.MaxInvalidPasswordAttempts;
-            }
-            set { }
-        }
-
-        public bool ValidateReset(string email)
-        {
-            if (String.IsNullOrEmpty(email)) throw new ArgumentException("  Value cannot be null or empty.", "email");
-            return _provider.GetUser(email, false) != null;
-        }
-
-        public bool ValidateUser(string email, string password)
-        {
-            if (String.IsNullOrEmpty(email)) throw new ArgumentException("  Value cannot be null or empty.", "email");
-            if (String.IsNullOrEmpty(password)) throw new ArgumentException("  Value cannot be null or empty.", "password");
-            return _provider.ValidateUser(email, password);
-        }
-
-        public MembershipCreateStatus CreateUser(string email, string password, string temporaryPassword)
-        {
-            if (_provider.GetUser(email, false) == null)
-                return MembershipCreateStatus.InvalidEmail;
-
-            if (!_provider.ValidateUser(email, temporaryPassword))
-                return MembershipCreateStatus.InvalidPassword;
-
-            ChangePassword(email, temporaryPassword, password);
-
-            return MembershipCreateStatus.Success;
-        }
-
-        public bool ChangePassword(string userName, string oldPassword, string newPassword)
-        {
-            if (String.IsNullOrEmpty(userName)) throw new ArgumentException("Value cannot be null or empty.", "userName");
-            if (String.IsNullOrEmpty(oldPassword)) throw new ArgumentException("Value cannot be null or empty.", "oldPassword");
-            if (String.IsNullOrEmpty(newPassword)) throw new ArgumentException("Value cannot be null or empty.", "newPassword");
-
-            // The underlying ChangePassword() will throw an exception rather
-            // than return false in certain failure scenarios.
-            try
-            {
-                MembershipUser currentUser = _provider.GetUser(userName, true /* userIsOnline */);
-                var worked = currentUser.ChangePassword(oldPassword, newPassword);
-
-                return worked;
-            }
-            catch (ArgumentException)
-            {
-                return false;
-            }
-            catch (MembershipPasswordException)
-            {
-                return false;
-            }
-        }
-    }
-
-    public interface IFormsAuthenticationService
-    {
-        void SignIn(string userName, bool createPersistentCookie);
-        void SignOut();
-    }
-
-    public class FormsAuthenticationService : IFormsAuthenticationService
-    {
-        public void SignIn(string userName, bool createPersistentCookie)
-        {
-            if (String.IsNullOrEmpty(userName)) throw new ArgumentException("Value cannot be null or empty.", "userName");
-
-            FormsAuthentication.SetAuthCookie(userName, createPersistentCookie);
-        }
-
-        public void SignOut()
-        {
-            FormsAuthentication.SignOut();
-        }
-    }
     #endregion
 
     #region Validation

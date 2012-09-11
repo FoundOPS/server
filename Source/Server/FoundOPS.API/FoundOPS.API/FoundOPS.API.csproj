@@ -273,7 +273,6 @@
     <Compile Include="TechnicianDomainService.cs" />
     <Compile Include="Tools\FormTools.cs" />
     <Compile Include="Tools\JsonpMediaTypeFormatter.cs" />
-    <Compile Include="Tools\EmailPasswordTools.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />

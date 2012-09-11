@@ -1,3 +1,4 @@
+using System.Web.Security;
 using FoundOPS.API.Models;
 using FoundOps.Common.Tools;
 using FoundOps.Core.Models.Authentication;
@@ -20,14 +21,13 @@ namespace FoundOPS.API.Api
     /// </summary>
     public class SessionController : ApiController
     {
-        private readonly IFormsAuthenticationService _formsService = new FormsAuthenticationService();
-        private readonly IMembershipService _membershipService = new PartyMembershipService();
-
         private readonly CoreEntitiesContainer _coreEntitiesContainer;
+        private readonly CoreEntitiesMembershipProvider _coreEntitiesMembershipProvider;
         public SessionController()
         {
             _coreEntitiesContainer = new CoreEntitiesContainer();
             _coreEntitiesContainer.ContextOptions.LazyLoadingEnabled = false;
+            _coreEntitiesMembershipProvider = new CoreEntitiesMembershipProvider(_coreEntitiesContainer);
         }
 
         #region Authentication
@@ -42,9 +42,9 @@ namespace FoundOPS.API.Api
         [AcceptVerbs("GET", "POST")]
         public HttpResponseMessage Login(string email, string pass, string redirectUrl = "")
         {
-            if (_membershipService.ValidateUser(email, pass))
+            if (_coreEntitiesMembershipProvider.ValidateUser(email, pass))
             {
-                _formsService.SignIn(email, false);
+                FormsAuthentication.SetAuthCookie(email, true);
 
                 if (!string.IsNullOrEmpty(redirectUrl))
                 {
@@ -65,7 +65,7 @@ namespace FoundOPS.API.Api
         [AcceptVerbs("GET", "POST")]
         public bool LogOut()
         {
-            _formsService.SignOut();
+            FormsAuthentication.SignOut();
             return true;
         }
 
