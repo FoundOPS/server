@@ -91,6 +91,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 //Setup the mobile role
                 var serviceProviderMobileRole = SetupServiceProviderRole(serviceProvider, RoleType.Mobile);
 
+                //Setup the regular role
+                var serviceProviderRegularRole = SetupServiceProviderRole(serviceProvider, RoleType.Regular);
+
                 if (serviceProvider == _businessAccountsDesignData.GotGrease)
                 {
                     _gotGreaseAdministratorRole = serviceProviderAdminRole;
@@ -116,7 +119,13 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             if (roleType == RoleType.Administrator)
             {
                 role.Name = "Administrator";
-                foreach (var block in BlocksData.RegularBlocks.Union(BlocksData.RegularBlocks).Union(BlocksData.MobileBlocks))
+                foreach (var block in BlocksData.RegularBlocks.Union(BlocksData.MobileBlocks))
+                    role.Blocks.Add(block);
+            }
+            else if (roleType == RoleType.Regular)
+            {
+                role.Name = "Regular";
+                foreach (var block in BlocksData.RegularBlocks.Union(BlocksData.MobileBlocks))
                     role.Blocks.Add(block);
             }
             else if (roleType == RoleType.Mobile)

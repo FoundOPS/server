@@ -1,12 +1,8 @@
-using FoundOps.Common.Silverlight.Tools;
 using FoundOps.Core.Models;
 using FoundOps.Core.Models.Authentication;
 using Recaptcha;
 using System;
-using System.Net;
-using System.Text;
 using System.Web.Mvc;
-using System.Net.Mail;
 using System.Web.Routing;
 using System.Web.Security;
 
@@ -167,7 +163,7 @@ namespace FoundOps.Server.Controllers
         }
 
         /// <summary>
-        /// Checks the captcha. TODO Then sends an email with a reset password link.
+        /// Checks the captcha, then sends an email with a reset password link.
         /// </summary>
         [HttpPost]
         public ActionResult ForgotPassword(ForgotPasswordModel model)
@@ -185,20 +181,19 @@ namespace FoundOps.Server.Controllers
 
             //Store the ViewData so that you can maintain validation errors on LoginPage
             TempData["ViewData"] = ViewData;
-            return RedirectToAction("ResetPassword", "Account", model);
+            return RedirectToAction("ForgotPassword", "Account", model);
+        }
+
+        public ActionResult ForgotPasswordSuccess()
+        {
+            return View();
         }
 
         /// <summary>
-        /// A captcha page for resetting a password
+        /// A page for resetting a password
         /// </summary>
-        public ActionResult ResetPassword(string resetCode)
+        public ActionResult ResetPassword()
         {
-            //Setup ViewData when returning Login View
-            var viewData = TempData["ViewData"];
-
-            if (viewData != null)  //Save ViewData if passed from TempData
-                ViewData = (ViewDataDictionary)viewData;
-
             return View();
         }
 
@@ -211,7 +206,7 @@ namespace FoundOps.Server.Controllers
         [HttpPost]
         public ActionResult ResetPassword(ResetPasswordModel model, string resetCode)
         {
-            if (ModelState.IsValid && PerformRecaptcha())
+            if (ModelState.IsValid)
             {
                 if (_coreEntitiesMembershipProvider.SetPassword(resetCode, model.NewPassword))
                     return RedirectToAction("ResetPasswordSuccess", "Account");
@@ -220,8 +215,6 @@ namespace FoundOps.Server.Controllers
             // If we got this far, something failed, redisplay form
             ModelState.AddModelError("", "");
 
-            //Store the ViewData so that you can maintain validation errors on LoginPage
-            TempData["ViewData"] = ViewData;
             return RedirectToAction("ResetPassword", "Account", model);
         }
 

@@ -41,12 +41,14 @@ namespace FoundOps.Core.Models.Authentication
         }
 
         /// <summary>
-        /// Set a one time reset code on the user account.
+        /// Set a one time reset code on the user account and send an email
         /// </summary>
         /// <param name="emailAddress">The account's email address</param>
+        /// <param name="subject">The email subject line</param>
+        /// <param name="body">The email body. {0} will be replaced with the link</param>
         /// <param name="expires">When to expire. Defaults to an hour</param>
         /// <returns>True if succesful, or false if it failed</returns>
-        public bool ResetAccount(string emailAddress, TimeSpan? expires = null)
+        public bool ResetAccount(string emailAddress, string subject = null, string body = null, TimeSpan? expires = null)
         {
             var account = _coreEntitiesContainer.Parties.OfType<UserAccount>().FirstOrDefault(ua => ua.EmailAddress == emailAddress);
 
@@ -64,27 +66,17 @@ namespace FoundOps.Core.Models.Authentication
 
             _coreEntitiesContainer.SaveChanges();
 
-            //Send email
-            var ss = new SmtpClient("smtp.gmail.com", 587)
-            {
-                EnableSsl = true,
-                Timeout = 10000,
-                DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential("info@foundops.com", "6Neoy1KRjSVQV6sCk6ax")
-            };
-
             var to = emailAddress;
-            const string from = "info@foundops.com";
-            const string subject = "FoundOPS Password Reset";
-            //TODO
-            var body = "You can reset your password here: app.foundops.com/Account/ResetPassword?resetCode=" + token;
-            var mm = new MailMessage(from, to, subject, body)
-            {
-                BodyEncoding = Encoding.UTF8,
-                DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure
-            };
-            ss.Send(mm);
+            if (subject == null)
+                subject = "FoundOPS Password Reset";
+
+            if (body == null)
+                body = "You can reset your password here: \r\n {0}";
+
+            var link = ServerConstants.RootApplicationUrl + "/Account/ResetPassword?resetCode=" + token;
+            body = string.Format(body, link);
+
+            EmailPasswordTools.SendEmail(to, subject, body);
 
             return true;
         }
@@ -117,7 +109,7 @@ namespace FoundOps.Core.Models.Authentication
 
         public override bool ChangePassword(string username, string oldPassword, string newPassword)
         {
-            var user = AuthenticationLogic.GetUserAccount(_coreEntitiesContainer, username);
+            var user = _coreEntitiesContainer.GetUserAccount(username);
 
             if (!ValidateUser(username, oldPassword) || user == null)
                 return false;
@@ -299,100 +291,5 @@ namespace FoundOps.Core.Models.Authentication
         #endregion
 
         #endregion
-
-        //public interface IMembershipService
-        //{
-        //    int MinPasswordLength { get; }
-        //    bool ValidateReset(string resetCode);
-        //    bool ValidateUser(string email, string password);
-        //    MembershipCreateStatus CreateUser(string email, string password, string linkCode);
-        //    bool ChangePassword(string email, string oldPassword, string newPassword);
-        //    int MaxInvalidPasswordAttempts { get; set; }
-        //}
-
-        //public class PartyMembershipService : IMembershipService
-        //{
-        //    private readonly MembershipProvider _provider;
-
-        //    public PartyMembershipService()
-        //        : this(null)
-        //    {
-        //    }
-
-        //    public PartyMembershipService(MembershipProvider provider)
-        //    {
-        //        _provider = provider ?? Membership.Provider;
-        //    }
-
-        //    public int MinPasswordLength
-        //    {
-        //        get
-        //        {
-        //            return _provider.MinRequiredPasswordLength;
-        //        }
-        //    }
-
-        //    public int MaxInvalidPasswordAttempts
-        //    {
-        //        get
-        //        {
-        //            return _provider.MaxInvalidPasswordAttempts;
-        //        }
-        //        set { }
-        //    }
-
-        //    public bool ValidateReset(string resetCode)
-        //    {
-
-
-        //        if (String.IsNullOrEmpty(email)) throw new ArgumentException("  Value cannot be null or empty.", "email");
-        //        return _provider.GetUser(email, false) != null;
-        //    }
-
-        //    public bool ValidateUser(string email, string password)
-        //    {
-        //        if (String.IsNullOrEmpty(email)) throw new ArgumentException("  Value cannot be null or empty.", "email");
-        //        if (String.IsNullOrEmpty(password)) throw new ArgumentException("  Value cannot be null or empty.", "password");
-        //        return _provider.ValidateUser(email, password);
-        //    }
-
-        //    public MembershipCreateStatus CreateUser(string email, string password, string temporaryPassword)
-        //    {
-        //        if (_provider.GetUser(email, false) == null)
-        //            return MembershipCreateStatus.InvalidEmail;
-
-        //        if (!_provider.ValidateUser(email, temporaryPassword))
-        //            return MembershipCreateStatus.InvalidPassword;
-
-        //        ChangePassword(email, temporaryPassword, password);
-
-        //        return MembershipCreateStatus.Success;
-        //    }
-
-        //    public bool ChangePassword(string userName, string oldPassword, string newPassword)
-        //    {
-        //        if (String.IsNullOrEmpty(userName)) throw new ArgumentException("Value cannot be null or empty.", "userName");
-        //        if (String.IsNullOrEmpty(oldPassword)) throw new ArgumentException("Value cannot be null or empty.", "oldPassword");
-        //        if (String.IsNullOrEmpty(newPassword)) throw new ArgumentException("Value cannot be null or empty.", "newPassword");
-
-        //        // The underlying ChangePassword() will throw an exception rather
-        //        // than return false in certain failure scenarios.
-        //        try
-        //        {
-        //            MembershipUser currentUser = _provider.GetUser(userName, true /* userIsOnline */);
-        //            var worked = currentUser.ChangePassword(oldPassword, newPassword);
-
-        //            return worked;
-        //        }
-        //        catch (ArgumentException)
-        //        {
-        //            return false;
-        //        }
-        //        catch (MembershipPasswordException)
-        //        {
-        //            return false;
-        //        }
-        //    }
-        //}
     }
 }
