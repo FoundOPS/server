@@ -558,7 +558,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         public IQueryable<Vehicle> GetVehiclesForParty(Guid roleId)
         {
             var businessAccount = ObjectContext.Owner(roleId).First();
-            return this.ObjectContext.Vehicles.Where(v => v.OwnerPartyId == businessAccount.Id).OrderBy(v => v.VehicleId);
+            return this.ObjectContext.Vehicles.Where(v => v.BusinessAccountId == businessAccount.Id).OrderBy(v => v.VehicleId);
         }
 
         /// <summary>
@@ -630,7 +630,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             return
                 this.ObjectContext.VehicleMaintenanceLineItems.Include(vm => vm.VehicleMaintenanceLogEntry)
-                .Where(vm => vm.VehicleMaintenanceLogEntry.Vehicle.OwnerPartyId == party.Id);
+                .Where(vm => vm.VehicleMaintenanceLogEntry.Vehicle.BusinessAccountId == party.Id);
         }
 
         // Get, Insert, Update, and Delete VehicleMaintenanceLineItems
@@ -673,9 +673,9 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public IQueryable<VehicleMaintenanceLogEntry> GetVehicleMaintenanceLogForParty(Guid roleId)
         {
-            var party = ObjectContext.Owner(roleId).First();
+            var businessAccount = ObjectContext.Owner(roleId).First();
 
-            return ObjectContext.VehicleMaintenanceLog.Where(vm => vm.Vehicle.OwnerPartyId == party.Id)
+            return ObjectContext.VehicleMaintenanceLog.Where(vm => vm.Vehicle.BusinessAccountId == businessAccount.Id)
                    .Include(vml => vml.LineItems).OrderBy(vm => vm.Date);
         }
 

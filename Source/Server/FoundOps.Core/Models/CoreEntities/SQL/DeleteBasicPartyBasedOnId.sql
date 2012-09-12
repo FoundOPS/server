@@ -19,9 +19,6 @@ CREATE PROCEDURE dbo.DeleteBasicPartyBasedOnId
 	DELETE FROM Roles
 	WHERE	OwnerBusinessAccountId = @providerId
 
-	DELETE FROM Vehicles 
-	WHERE	OwnerPartyId = @providerId
-
 	DELETE FROM Files
 	WHERE	PartyId = @providerId
 

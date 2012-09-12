@@ -41,7 +41,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Set the new Vehicles OwnerParty to this OwnerAccount
             CreateNewItem = vehicleId =>
             {
-                var newVehicle = new Vehicle { VehicleId = vehicleId, OwnerParty = ContextManager.OwnerAccount };
+                var newVehicle = new Vehicle { VehicleId = vehicleId, BusinessAccount = ((BusinessAccount)ContextManager.OwnerAccount) };
 
                 //Add the entity to the EntitySet so it is tracked by the DomainContext
                 DomainContext.Vehicles.Add(newVehicle);

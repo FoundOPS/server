@@ -3,7 +3,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 09/10/2012 17:04:00
+-- Date Created: 09/11/2012 19:46:20
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -490,9 +490,9 @@ CREATE TABLE [dbo].[Vehicles] (
     [LastTimeStamp] datetime  NULL,
     [LastSpeed] float  NULL,
     [LastSource] nvarchar(max)  NULL,
-    [OwnerPartyId] uniqueidentifier  NOT NULL,
     [LastPushToAzureTimeStamp] datetime  NULL,
-    [LastAccuracy] int  NULL
+    [LastAccuracy] int  NULL,
+    [BusinessAccountId] uniqueidentifier  NOT NULL
 );
 GO
 
@@ -1439,20 +1439,6 @@ ON [dbo].[ServiceTemplates]
     ([OwnerClientId]);
 GO
 
--- Creating foreign key on [OwnerPartyId] in table 'Vehicles'
-ALTER TABLE [dbo].[Vehicles]
-ADD CONSTRAINT [FK_VehicleParty]
-    FOREIGN KEY ([OwnerPartyId])
-    REFERENCES [dbo].[Parties]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_VehicleParty'
-CREATE INDEX [IX_FK_VehicleParty]
-ON [dbo].[Vehicles]
-    ([OwnerPartyId]);
-GO
-
 -- Creating foreign key on [Id] in table 'Services'
 ALTER TABLE [dbo].[Services]
 ADD CONSTRAINT [FK_ServiceServiceTemplate]
@@ -1921,6 +1907,20 @@ ON [dbo].[RouteTasks]
     ([TaskStatusId]);
 GO
 
+-- Creating foreign key on [BusinessAccountId] in table 'Vehicles'
+ALTER TABLE [dbo].[Vehicles]
+ADD CONSTRAINT [FK_BusinessAccountVehicle]
+    FOREIGN KEY ([BusinessAccountId])
+    REFERENCES [dbo].[Parties_BusinessAccount]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_BusinessAccountVehicle'
+CREATE INDEX [IX_FK_BusinessAccountVehicle]
+ON [dbo].[Vehicles]
+    ([BusinessAccountId]);
+GO
+
 -- Creating foreign key on [Id] in table 'Parties_BusinessAccount'
 ALTER TABLE [dbo].[Parties_BusinessAccount]
 ADD CONSTRAINT [FK_BusinessAccount_inherits_Party]
@@ -2085,9 +2085,6 @@ CREATE PROCEDURE dbo.DeleteBasicPartyBasedOnId
 	DELETE FROM Roles
 	WHERE	OwnerBusinessAccountId = @providerId
 
-	DELETE FROM Vehicles 
-	WHERE	OwnerPartyId = @providerId
-
 	DELETE FROM Files
 	WHERE	PartyId = @providerId
 
@@ -2116,6 +2113,9 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 
 	AS
 	BEGIN
+
+	DELETE FROM Vehicles 
+	WHERE	BusinessAccountId = @providerId
 
 	DELETE FROM RouteEmployee
 	WHERE Routes_Id IN

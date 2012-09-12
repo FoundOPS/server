@@ -41,7 +41,6 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("CoreEntities", "RecurringServiceService", "RecurringService", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.RecurringService), "Service", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Service), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "RecurringServiceClient", "RecurringService", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.RecurringService), "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.Client), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "ClientServiceTemplate", "Client", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Client), "ServiceTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.ServiceTemplate), true)]
-[assembly: EdmRelationshipAttribute("CoreEntities", "VehicleParty", "Vehicle", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Vehicle), "Party", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.Party), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "ServiceServiceTemplate", "Service", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Service), "ServiceTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.ServiceTemplate), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "PartyRole", "Party", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Party), "Role", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Role))]
 [assembly: EdmRelationshipAttribute("CoreEntities", "RegionLocation", "Regions", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Region), "Location", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Location), true)]
@@ -75,6 +74,7 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("CoreEntities", "RoleBusinessAccount", "Role", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Role), "BusinessAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.BusinessAccount), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "TaskStatusBusinessAccount", "TaskStatus", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.TaskStatus), "BusinessAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.BusinessAccount), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "TaskStatusRouteTask", "TaskStatus", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.TaskStatus), "RouteTask", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.RouteTask), true)]
+[assembly: EdmRelationshipAttribute("CoreEntities", "BusinessAccountVehicle", "BusinessAccount", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.BusinessAccount), "Vehicle", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Vehicle), true)]
 
 #endregion
 
@@ -1042,6 +1042,132 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <param name="serviceProviderIdContext">No Metadata Documentation available.</param>
         /// <param name="clientIdContext">No Metadata Documentation available.</param>
         /// <param name="recurringServiceIdContext">No Metadata Documentation available.</param>
+        /// <param name="seedDate">No Metadata Documentation available.</param>
+        /// <param name="frontBackMinimum">No Metadata Documentation available.</param>
+        /// <param name="getPrevious">No Metadata Documentation available.</param>
+        /// <param name="getNext">No Metadata Documentation available.</param>
+        /// <param name="serviceTypeContext">No Metadata Documentation available.</param>
+        public ObjectResult<Nullable<global::System.DateTime>> GetDateRangeForServices(Nullable<global::System.Guid> serviceProviderIdContext, Nullable<global::System.Guid> clientIdContext, Nullable<global::System.Guid> recurringServiceIdContext, Nullable<global::System.DateTime> seedDate, Nullable<global::System.Int32> frontBackMinimum, Nullable<global::System.Boolean> getPrevious, Nullable<global::System.Boolean> getNext, global::System.String serviceTypeContext)
+        {
+            ObjectParameter serviceProviderIdContextParameter;
+            if (serviceProviderIdContext.HasValue)
+            {
+                serviceProviderIdContextParameter = new ObjectParameter("serviceProviderIdContext", serviceProviderIdContext);
+            }
+            else
+            {
+                serviceProviderIdContextParameter = new ObjectParameter("serviceProviderIdContext", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter clientIdContextParameter;
+            if (clientIdContext.HasValue)
+            {
+                clientIdContextParameter = new ObjectParameter("clientIdContext", clientIdContext);
+            }
+            else
+            {
+                clientIdContextParameter = new ObjectParameter("clientIdContext", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter recurringServiceIdContextParameter;
+            if (recurringServiceIdContext.HasValue)
+            {
+                recurringServiceIdContextParameter = new ObjectParameter("recurringServiceIdContext", recurringServiceIdContext);
+            }
+            else
+            {
+                recurringServiceIdContextParameter = new ObjectParameter("recurringServiceIdContext", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter seedDateParameter;
+            if (seedDate.HasValue)
+            {
+                seedDateParameter = new ObjectParameter("seedDate", seedDate);
+            }
+            else
+            {
+                seedDateParameter = new ObjectParameter("seedDate", typeof(global::System.DateTime));
+            }
+    
+            ObjectParameter frontBackMinimumParameter;
+            if (frontBackMinimum.HasValue)
+            {
+                frontBackMinimumParameter = new ObjectParameter("frontBackMinimum", frontBackMinimum);
+            }
+            else
+            {
+                frontBackMinimumParameter = new ObjectParameter("frontBackMinimum", typeof(global::System.Int32));
+            }
+    
+            ObjectParameter getPreviousParameter;
+            if (getPrevious.HasValue)
+            {
+                getPreviousParameter = new ObjectParameter("getPrevious", getPrevious);
+            }
+            else
+            {
+                getPreviousParameter = new ObjectParameter("getPrevious", typeof(global::System.Boolean));
+            }
+    
+            ObjectParameter getNextParameter;
+            if (getNext.HasValue)
+            {
+                getNextParameter = new ObjectParameter("getNext", getNext);
+            }
+            else
+            {
+                getNextParameter = new ObjectParameter("getNext", typeof(global::System.Boolean));
+            }
+    
+            ObjectParameter serviceTypeContextParameter;
+            if (serviceTypeContext != null)
+            {
+                serviceTypeContextParameter = new ObjectParameter("serviceTypeContext", serviceTypeContext);
+            }
+            else
+            {
+                serviceTypeContextParameter = new ObjectParameter("serviceTypeContext", typeof(global::System.String));
+            }
+    
+            return base.ExecuteFunction<Nullable<global::System.DateTime>>("GetDateRangeForServices", serviceProviderIdContextParameter, clientIdContextParameter, recurringServiceIdContextParameter, seedDateParameter, frontBackMinimumParameter, getPreviousParameter, getNextParameter, serviceTypeContextParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="businessAccountId">No Metadata Documentation available.</param>
+        /// <param name="serviceType">No Metadata Documentation available.</param>
+        public ObjectResult<FieldJavaScript> GetFieldsInJavaScriptFormat(Nullable<global::System.Guid> businessAccountId, global::System.String serviceType)
+        {
+            ObjectParameter businessAccountIdParameter;
+            if (businessAccountId.HasValue)
+            {
+                businessAccountIdParameter = new ObjectParameter("businessAccountId", businessAccountId);
+            }
+            else
+            {
+                businessAccountIdParameter = new ObjectParameter("businessAccountId", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter serviceTypeParameter;
+            if (serviceType != null)
+            {
+                serviceTypeParameter = new ObjectParameter("serviceType", serviceType);
+            }
+            else
+            {
+                serviceTypeParameter = new ObjectParameter("serviceType", typeof(global::System.String));
+            }
+    
+            return base.ExecuteFunction<FieldJavaScript>("GetFieldsInJavaScriptFormat", businessAccountIdParameter, serviceTypeParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="serviceProviderIdContext">No Metadata Documentation available.</param>
+        /// <param name="clientIdContext">No Metadata Documentation available.</param>
+        /// <param name="recurringServiceIdContext">No Metadata Documentation available.</param>
         /// <param name="firstDate">No Metadata Documentation available.</param>
         /// <param name="lastDate">No Metadata Documentation available.</param>
         /// <param name="serviceTypeContext">No Metadata Documentation available.</param>
@@ -1406,36 +1532,6 @@ namespace FoundOps.Core.Models.CoreEntities
             }
     
             return base.ExecuteFunction("sp_GetUnroutedServicesForDate", serviceProviderIdContextParameter, serviceDateParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        /// <param name="businessAccountId">No Metadata Documentation available.</param>
-        /// <param name="serviceType">No Metadata Documentation available.</param>
-        public ObjectResult<FieldJavaScript> GetFieldsInJavaScriptFormat(Nullable<global::System.Guid> businessAccountId, global::System.String serviceType)
-        {
-            ObjectParameter businessAccountIdParameter;
-            if (businessAccountId.HasValue)
-            {
-                businessAccountIdParameter = new ObjectParameter("businessAccountId", businessAccountId);
-            }
-            else
-            {
-                businessAccountIdParameter = new ObjectParameter("businessAccountId", typeof(global::System.Guid));
-            }
-    
-            ObjectParameter serviceTypeParameter;
-            if (serviceType != null)
-            {
-                serviceTypeParameter = new ObjectParameter("serviceType", serviceType);
-            }
-            else
-            {
-                serviceTypeParameter = new ObjectParameter("serviceType", typeof(global::System.String));
-            }
-    
-            return base.ExecuteFunction<FieldJavaScript>("GetFieldsInJavaScriptFormat", businessAccountIdParameter, serviceTypeParameter);
         }
     
         /// <summary>
@@ -2180,6 +2276,28 @@ namespace FoundOps.Core.Models.CoreEntities
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<TaskStatus>("CoreEntities.TaskStatusBusinessAccount", "TaskStatus", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "BusinessAccountVehicle", "Vehicle")]
+        public EntityCollection<Vehicle> Vehicles
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Vehicle>("CoreEntities.BusinessAccountVehicle", "Vehicle");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Vehicle>("CoreEntities.BusinessAccountVehicle", "Vehicle", value);
                 }
             }
         }
@@ -6790,28 +6908,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
     
         #region Navigation Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "VehicleParty", "Vehicle")]
-        public EntityCollection<Vehicle> Vehicles
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Vehicle>("CoreEntities.VehicleParty", "Vehicle");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Vehicle>("CoreEntities.VehicleParty", "Vehicle", value);
-                }
-            }
-        }
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -11437,12 +11533,12 @@ namespace FoundOps.Core.Models.CoreEntities
         /// Create a new Vehicle object.
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
-        /// <param name="ownerPartyId">Initial value of the OwnerPartyId property.</param>
-        public static Vehicle CreateVehicle(global::System.Guid id, global::System.Guid ownerPartyId)
+        /// <param name="businessAccountId">Initial value of the BusinessAccountId property.</param>
+        public static Vehicle CreateVehicle(global::System.Guid id, global::System.Guid businessAccountId)
         {
             Vehicle vehicle = new Vehicle();
             vehicle.Id = id;
-            vehicle.OwnerPartyId = ownerPartyId;
+            vehicle.BusinessAccountId = businessAccountId;
             return vehicle;
         }
 
@@ -11816,30 +11912,6 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Guid OwnerPartyId
-        {
-            get
-            {
-                return _OwnerPartyId;
-            }
-            set
-            {
-                OnOwnerPartyIdChanging(value);
-                ReportPropertyChanging("OwnerPartyId");
-                _OwnerPartyId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("OwnerPartyId");
-                OnOwnerPartyIdChanged();
-            }
-        }
-        private global::System.Guid _OwnerPartyId;
-        partial void OnOwnerPartyIdChanging(global::System.Guid value);
-        partial void OnOwnerPartyIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
         public Nullable<global::System.DateTime> LastPushToAzureTimeStamp
@@ -11884,6 +11956,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private Nullable<global::System.Int32> _LastAccuracy;
         partial void OnLastAccuracyChanging(Nullable<global::System.Int32> value);
         partial void OnLastAccuracyChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Guid BusinessAccountId
+        {
+            get
+            {
+                return _BusinessAccountId;
+            }
+            set
+            {
+                OnBusinessAccountIdChanging(value);
+                ReportPropertyChanging("BusinessAccountId");
+                _BusinessAccountId = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("BusinessAccountId");
+                OnBusinessAccountIdChanged();
+            }
+        }
+        private global::System.Guid _BusinessAccountId;
+        partial void OnBusinessAccountIdChanging(global::System.Guid value);
+        partial void OnBusinessAccountIdChanged();
 
         #endregion
 
@@ -11940,16 +12036,16 @@ namespace FoundOps.Core.Models.CoreEntities
         [XmlIgnoreAttribute()]
         [SoapIgnoreAttribute()]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "VehicleParty", "Party")]
-        public Party OwnerParty
+        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "BusinessAccountVehicle", "BusinessAccount")]
+        public BusinessAccount BusinessAccount
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Party>("CoreEntities.VehicleParty", "Party").Value;
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<BusinessAccount>("CoreEntities.BusinessAccountVehicle", "BusinessAccount").Value;
             }
             set
             {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Party>("CoreEntities.VehicleParty", "Party").Value = value;
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<BusinessAccount>("CoreEntities.BusinessAccountVehicle", "BusinessAccount").Value = value;
             }
         }
         /// <summary>
@@ -11957,17 +12053,17 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [BrowsableAttribute(false)]
         [DataMemberAttribute()]
-        public EntityReference<Party> OwnerPartyReference
+        public EntityReference<BusinessAccount> BusinessAccountReference
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Party>("CoreEntities.VehicleParty", "Party");
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<BusinessAccount>("CoreEntities.BusinessAccountVehicle", "BusinessAccount");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Party>("CoreEntities.VehicleParty", "Party", value);
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<BusinessAccount>("CoreEntities.BusinessAccountVehicle", "BusinessAccount", value);
                 }
             }
         }

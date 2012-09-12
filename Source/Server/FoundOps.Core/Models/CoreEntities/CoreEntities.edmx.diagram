@@ -2,7 +2,7 @@
 <edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
   <edmx:Designer>
     <edmx:Diagrams>
-      <edmx:Diagram Name="CoreEntities" ZoomLevel="56">
+      <edmx:Diagram Name="CoreEntities" ZoomLevel="73">
         <edmx:EntityTypeShape EntityType="CoreEntities.Block" Width="1.5" PointX="23.625" PointY="22.875" Height="2.5571907552083353" />
         <edmx:EntityTypeShape EntityType="CoreEntities.Role" Width="1.5" PointX="21.375" PointY="23.125" Height="2.5571907552083246" />
         <edmx:EntityTypeShape EntityType="CoreEntities.Party" Width="1.875" PointX="18.75" PointY="22.875" Height="2.7494921875000102" />
@@ -266,25 +266,6 @@
           <edmx:ConnectorPoint PointX="18.010417916666668" PointY="13.980499674479166" />
           <edmx:ConnectorPoint PointX="18.177084583333333" PointY="13.980499674479166" />
           <edmx:ConnectorPoint PointX="18.25" PointY="13.980499674479166" />
-        </edmx:AssociationConnector>
-        <edmx:AssociationConnector Association="CoreEntities.VehicleParty">
-          <edmx:ConnectorPoint PointX="12.375" PointY="19.875" />
-          <edmx:ConnectorPoint PointX="13.541666666666666" PointY="19.875" />
-          <edmx:ConnectorPoint PointX="13.708333333333334" PointY="19.875" />
-          <edmx:ConnectorPoint PointX="13.947915416666666" PointY="19.875" />
-          <edmx:ConnectorPoint PointX="14.208335833333335" PointY="19.875" />
-          <edmx:ConnectorPoint PointX="14.744790416666666" PointY="19.875" />
-          <edmx:ConnectorPoint PointX="14.911457083333334" PointY="19.875" />
-          <edmx:ConnectorPoint PointX="15.326823854166666" PointY="19.875" />
-          <edmx:ConnectorPoint PointX="15.493490520833333" PointY="19.875" />
-          <edmx:ConnectorPoint PointX="16.166666666666668" PointY="19.875" />
-          <edmx:ConnectorPoint PointX="16.333333333333332" PointY="19.875" />
-          <edmx:ConnectorPoint PointX="18.026044791666667" PointY="19.875" />
-          <edmx:ConnectorPoint PointX="18.223963958333332" PointY="19.875" />
-          <edmx:ConnectorPoint PointX="18.471355729166667" PointY="19.875" />
-          <edmx:ConnectorPoint PointX="18.638022395833332" PointY="19.875" />
-          <edmx:ConnectorPoint PointX="19.86328125" PointY="19.875" />
-          <edmx:ConnectorPoint PointX="19.86328125" PointY="22.875" />
         </edmx:AssociationConnector>
         <edmx:AssociationConnector Association="CoreEntities.ServiceServiceTemplate">
           <edmx:ConnectorPoint PointX="9.25" PointY="13.150940755208332" />
@@ -560,6 +541,7 @@
         <edmx:EntityTypeShape EntityType="CoreEntities.TaskStatus" Width="1.5" PointX="22.125" PointY="33.875" />
         <edmx:AssociationConnector Association="CoreEntities.TaskStatusBusinessAccount" />
         <edmx:AssociationConnector Association="CoreEntities.TaskStatusRouteTask" />
+        <edmx:AssociationConnector Association="CoreEntities.BusinessAccountVehicle" />
       </edmx:Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
