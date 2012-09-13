@@ -5,8 +5,10 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using DevDefined.OAuth.Consumer;
+using FoundOPS.API.Models;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.QuickBooks;
+using FoundOps.Core.Tools;
 
 namespace FoundOPS.API.Api
 {
@@ -14,8 +16,13 @@ namespace FoundOPS.API.Api
     {
         public CoreEntitiesContainer coreEntitiesContainer = new CoreEntitiesContainer();
 
-        public bool DeauthorizeBusinessToken(BusinessAccount currentBusinessAccount)
+        [AcceptVerbs("GET", "POST")]
+        public bool DeauthorizeBusinessToken(Guid roleId)
         {
+            var currentBusinessAccount = coreEntitiesContainer.Owner(roleId).FirstOrDefault();
+            if (currentBusinessAccount == null)
+                throw new Exception("Bad Request");
+
             //URL for the QuickBooks API for getting the Users Info
             //Here we are accessing the Intuit Partner Platform instead of QuickBooks Online data
             var serviceEndPoint = "https://appcenter.intuit.com/api/v1/Connection/Disconnect";
@@ -54,12 +61,26 @@ namespace FoundOPS.API.Api
         /// Reads the response from that call and checks for an error code
         /// Based on whether there is an error or not, we determine if the user needs to authenticate their QuickBooks login information
         /// </summary>
-        /// <param name="currentBusinessAccount">The current business account.</param>
+        /// <param name="roleId">The current business account.</param>
         /// <returns>
         /// Boolean value that determines if the user needs to authenticate their QuickBooks login information
         /// </returns>
-        public static bool GetUserInfo(BusinessAccount currentBusinessAccount)
+        [AcceptVerbs("GET", "POST")]
+        public QuickBooksConnect GetUserInfo(Guid roleId)
         {
+            var currentBusinessAccount = coreEntitiesContainer.Owner(roleId).FirstOrDefault();
+            if (currentBusinessAccount == null)
+                throw new Exception("Bad Request");
+
+            var connect = new QuickBooksConnect();
+            connect.IsEnabled = currentBusinessAccount.QuickBooksEnabled;
+
+            if (connect.IsEnabled == false)
+            {
+                connect.IsConnected = false;
+                return connect;
+            }
+
             //URL for the QuickBooks API for getting the Users Info
             //Here we are accessing the Intuit Partner Platform instead of QuickBooks Online data
             var serviceEndPoint = "https://workplace.intuit.com/db/main?a=API_GetUserInfo";
@@ -79,13 +100,15 @@ namespace FoundOPS.API.Api
             //Checks for an Error Code in the response XML
             if (!(txtServiceResponse.Contains("<errcode>0</errcode>")))
             {
-                //A return Value of true means that Authorization is needed
-                return true;
+                //Authorization is needed
+                connect.IsEnabled = false;
             }
 
-            //A return value of false means that the attempt at authorization has succeeded
+            //Attempt at authorization has succeeded
             //No further action needs to be taken to access QuickBooks Online data
-            return false;
+            connect.IsEnabled = true;
+
+            return connect;
         }
     }
 }

@@ -219,6 +219,8 @@ namespace FoundOps.Core.Models.QuickBooks
             //invoiceInfo[1] = integer.ToString();
             //DeleteInvoice(currentBusinessAccount, invoiceInfo);
 
+            var customers = GetEntityList(currentBusinessAccount, "customers", "PageNum=1&ResultsPerPage=100");
+
             #endregion
 
             //A return value of false means that the attempt at authorization has succeeded
