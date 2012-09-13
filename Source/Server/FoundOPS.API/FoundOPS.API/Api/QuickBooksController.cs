@@ -65,7 +65,6 @@ namespace FoundOPS.API.Api
         /// <returns>
         /// Boolean value that determines if the user needs to authenticate their QuickBooks login information
         /// </returns>
-        [AcceptVerbs("GET", "POST")]
         public QuickBooksConnect GetUserInfo(Guid roleId)
         {
             var currentBusinessAccount = coreEntitiesContainer.Owner(roleId).FirstOrDefault();
@@ -109,6 +108,26 @@ namespace FoundOPS.API.Api
             connect.IsEnabled = true;
 
             return connect;
+        }
+
+        /// <summary>
+        /// Changes the quickbooks status on a business account
+        /// </summary>
+        /// <param name="roleId">RoleId of the business account</param>
+        /// <param name="enabled">Boolean value that you would like to change the status to</param>
+        /// <returns>Http status code of accepted if all goes well</returns>
+        [AcceptVerbs("GET", "POST")]
+        public HttpStatusCode UpdateQuickBooksStatus (Guid roleId, bool enabled)
+        {
+            var currentBusinessAccount = coreEntitiesContainer.Owner(roleId).FirstOrDefault();
+            if (currentBusinessAccount == null)
+                return HttpStatusCode.BadRequest;
+
+            currentBusinessAccount.QuickBooksEnabled = enabled;
+
+            coreEntitiesContainer.SaveChanges();
+
+            return HttpStatusCode.Accepted;
         }
     }
 }
