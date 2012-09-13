@@ -126,6 +126,29 @@ namespace FoundOps.SLClient.UI.ViewModels
         [ScriptableMember]
         public void ChangeRole(string roleId)
         {
+            #region QuickBooks Stuff
+
+            var isAuthorizedUri = string.Concat("http://localhost:31820/Quickbooks/NeedsAuthorization", "?roleId=", roleId);
+
+            var client = new WebClient();
+            //Check if the current BusinessAccount needs QuickBooks authorization
+            client.DownloadStringCompleted += (sender, e) =>
+            {
+                //If it needs QuickBooks authorization, get it in a new window
+                if (e.Result.ToLower() == "true")
+                {
+                    //creates the uri for the popup mentioned above
+                    var uriString = string.Concat("http://localhost:31820/Quickbooks/GetAuthorization", "?roleId=", roleId);
+
+                    //generates the Html popup using the uri and options
+                    HtmlPage.Window.Navigate(new Uri(uriString), "new");
+                }
+            };
+
+            client.DownloadStringAsync(new Uri(isAuthorizedUri));
+
+            #endregion
+
             var roleGuid = new Guid(roleId);
             Manager.Context.RoleIdObserver.OnNext(roleGuid);
         }
