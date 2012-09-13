@@ -125,6 +125,10 @@ namespace FoundOPS.API.Api
 
             currentBusinessAccount.QuickBooksEnabled = enabled;
 
+            //If the user chose to disconnect from QuickBooks, deactivate their token
+            if(!enabled)
+                DeauthorizeBusinessToken(roleId);
+
             coreEntitiesContainer.SaveChanges();
 
             return HttpStatusCode.Accepted;
