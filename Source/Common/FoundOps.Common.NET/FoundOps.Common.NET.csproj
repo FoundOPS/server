@@ -169,6 +169,18 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Lib\Intuit.Ipp.AsyncServices.dll" />
+    <Content Include="Lib\Intuit.Ipp.Core.dll" />
+    <Content Include="Lib\Intuit.Ipp.Data.dll" />
+    <Content Include="Lib\Intuit.Ipp.Diagnostics.dll" />
+    <Content Include="Lib\Intuit.Ipp.Exception.dll" />
+    <Content Include="Lib\Intuit.Ipp.PlatformServices.dll" />
+    <Content Include="Lib\Intuit.Ipp.Retry.dll" />
+    <Content Include="Lib\Intuit.Ipp.Security.dll" />
+    <Content Include="Lib\Intuit.Ipp.Services.dll" />
+    <Content Include="Lib\Intuit.Ipp.Utility.dll" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -61,35 +61,45 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.AsyncServices">
-      <HintPath>..\..\..\..\..\Users\zbright\Documents\Visual Studio 2010\Projects\IA Azure ASP.NET MVC 3 Web Role2\packages\IPPDotNetDevKit.2.1.4.0\lib\Intuit.Ipp.AsyncServices.dll</HintPath>
+    <Reference Include="Intuit.Ipp.AsyncServices, Version=2.1.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Common\FoundOps.Common.NET\Lib\Intuit.Ipp.AsyncServices.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Core">
-      <HintPath>..\..\..\..\..\Users\zbright\Documents\Visual Studio 2010\Projects\IA Azure ASP.NET MVC 3 Web Role2\packages\IPPDotNetDevKit.2.1.4.0\lib\Intuit.Ipp.Core.dll</HintPath>
+    <Reference Include="Intuit.Ipp.Core, Version=2.1.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Common\FoundOps.Common.NET\Lib\Intuit.Ipp.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Data">
-      <HintPath>..\..\..\..\..\Users\zbright\Documents\Visual Studio 2010\Projects\IA Azure ASP.NET MVC 3 Web Role2\packages\IPPDotNetDevKit.2.1.4.0\lib\Intuit.Ipp.Data.dll</HintPath>
+    <Reference Include="Intuit.Ipp.Data, Version=2.1.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Common\FoundOps.Common.NET\Lib\Intuit.Ipp.Data.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Diagnostics">
-      <HintPath>..\..\..\..\..\Users\zbright\Documents\Visual Studio 2010\Projects\IA Azure ASP.NET MVC 3 Web Role2\packages\IPPDotNetDevKit.2.1.4.0\lib\Intuit.Ipp.Diagnostics.dll</HintPath>
+    <Reference Include="Intuit.Ipp.Diagnostics, Version=2.1.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Common\FoundOps.Common.NET\Lib\Intuit.Ipp.Diagnostics.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Exception">
-      <HintPath>..\..\..\..\..\Users\zbright\Documents\Visual Studio 2010\Projects\IA Azure ASP.NET MVC 3 Web Role2\packages\IPPDotNetDevKit.2.1.4.0\lib\Intuit.Ipp.Exception.dll</HintPath>
+    <Reference Include="Intuit.Ipp.Exception, Version=2.1.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Common\FoundOps.Common.NET\Lib\Intuit.Ipp.Exception.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.PlatformServices">
-      <HintPath>..\..\..\..\..\Users\zbright\Documents\Visual Studio 2010\Projects\IA Azure ASP.NET MVC 3 Web Role2\packages\IPPDotNetDevKit.2.1.4.0\lib\Intuit.Ipp.PlatformServices.dll</HintPath>
+    <Reference Include="Intuit.Ipp.PlatformServices, Version=2.1.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Common\FoundOps.Common.NET\Lib\Intuit.Ipp.PlatformServices.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Retry">
-      <HintPath>..\..\..\..\..\Users\zbright\Documents\Visual Studio 2010\Projects\IA Azure ASP.NET MVC 3 Web Role2\packages\IPPDotNetDevKit.2.1.4.0\lib\Intuit.Ipp.Retry.dll</HintPath>
+    <Reference Include="Intuit.Ipp.Retry, Version=2.1.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Common\FoundOps.Common.NET\Lib\Intuit.Ipp.Retry.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Security">
-      <HintPath>..\..\..\..\..\Users\zbright\Documents\Visual Studio 2010\Projects\IA Azure ASP.NET MVC 3 Web Role2\packages\IPPDotNetDevKit.2.1.4.0\lib\Intuit.Ipp.Security.dll</HintPath>
+    <Reference Include="Intuit.Ipp.Security, Version=2.1.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Common\FoundOps.Common.NET\Lib\Intuit.Ipp.Security.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Services">
-      <HintPath>..\..\..\..\..\Users\zbright\Documents\Visual Studio 2010\Projects\IA Azure ASP.NET MVC 3 Web Role2\packages\IPPDotNetDevKit.2.1.4.0\lib\Intuit.Ipp.Services.dll</HintPath>
+    <Reference Include="Intuit.Ipp.Services, Version=2.1.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Common\FoundOps.Common.NET\Lib\Intuit.Ipp.Services.dll</HintPath>
     </Reference>
-    <Reference Include="Intuit.Ipp.Utility">
-      <HintPath>..\..\..\..\..\Users\zbright\Documents\Visual Studio 2010\Projects\IA Azure ASP.NET MVC 3 Web Role2\packages\IPPDotNetDevKit.2.1.4.0\lib\Intuit.Ipp.Utility.dll</HintPath>
+    <Reference Include="Intuit.Ipp.Utility, Version=2.1.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Common\FoundOps.Common.NET\Lib\Intuit.Ipp.Utility.dll</HintPath>
     </Reference>
     <Reference Include="Kent.Boogaart.KBCsv">
       <HintPath>..\..\Common\FoundOps.Common.NET\Lib\Kent.Boogaart.KBCsv.dll</HintPath>

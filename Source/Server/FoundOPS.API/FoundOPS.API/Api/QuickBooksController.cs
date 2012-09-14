@@ -97,15 +97,9 @@ namespace FoundOPS.API.Api
             var txtServiceResponse = conReq.ReadBody();
 
             //Checks for an Error Code in the response XML
-            if (!(txtServiceResponse.Contains("<errcode>0</errcode>")))
-            {
-                //Authorization is needed
-                connect.IsEnabled = false;
-            }
-
-            //Attempt at authorization has succeeded
-            //No further action needs to be taken to access QuickBooks Online data
-            connect.IsEnabled = true;
+            //If true, No further action needs to be taken to access QuickBooks Online data
+            //If false, Authorization is needed
+            connect.IsConnected = (txtServiceResponse.Contains("<errcode>0</errcode>"));
 
             return connect;
         }

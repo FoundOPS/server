@@ -415,7 +415,6 @@
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\HelperController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\QuickBooksController.cs" />
     <Compile Include="Controllers\ToolsController.cs" />
     <Compile Include="Controllers\WorkFlowController.cs" />
     <Compile Include="Global.asax.cs">
@@ -487,8 +486,7 @@
     <Content Include="Views\Home\PerformServerOperations.cshtml" />
     <Content Include="Views\Error\NotFound.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\QuickBooks\GetAuthorization.cshtml" />
-    <Content Include="Views\QuickBooks\OAuthGrantHandler.cshtml" />
+    <Content Include="Views\App\Close.cshtml" />
     <Content Include="Views\Shared\Master.cshtml" />
     <Content Include="Views\WorkFlow\TimeCheck.cshtml" />
     <Content Include="Views\Tools\ClearHistoricalTrackPoints.cshtml" />

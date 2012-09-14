@@ -70,5 +70,13 @@ namespace FoundOps.Server.Controllers
         {
             return View();
         }
+
+        /// <summary>
+        /// A view that automatically closes
+        /// </summary>
+        public ActionResult Close()
+        {
+            return View();
+        }
     }
 }

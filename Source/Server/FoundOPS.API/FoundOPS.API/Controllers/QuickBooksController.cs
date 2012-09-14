@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Linq;
 using System.Web.Mvc;
+using FoundOps.Core.Models;
 using FoundOps.Core.Tools;
 using FoundOps.Common.Tools;
 using FoundOps.Core.Models.QuickBooks;
 using FoundOps.Core.Models.CoreEntities;
 
-namespace FoundOps.Server.Controllers
+namespace FoundOPS.API.Controllers
 {
     [FoundOps.Core.Tools.Authorize]
     public class QuickBooksController : Controller
@@ -37,22 +38,6 @@ namespace FoundOps.Server.Controllers
             //Check validity of tokens
             //If the tokens are invalid return false, else return true
             return (QuickBooksTools.GetUserInfo(businessAccount));
-        }
-
-        /// <summary>
-        /// Creates the URL needed to send to QuickBooks to get the user authenticated
-        /// </summary>
-        /// <param name="roleId">The roleId.</param>
-        /// <returns>
-        /// Creates a page the goes to the GrantURL
-        /// </returns>
-        public ActionResult GetAuthorization(Guid roleId)
-        {
-            //Pass the grantUrl to the View as its Model.
-            //Cast it as an Object so the proper View method is called
-            var grantUrl = String.Format("{0}?roleId={1}", QuickBooksTools.OauthConstants.GrantUrl, roleId);
-
-            return View((Object)grantUrl);
         }
 
         /// <summary>
@@ -113,7 +98,7 @@ namespace FoundOps.Server.Controllers
             //Saves the base url needed for QuickBooks APIs for this user
             QuickBooksTools.GetBaseUrl(businessAccount, CoreEntitiesContainer);
 
-            return View();
+            return Redirect(ServerConstants.RootApplicationUrl + "/App/Close");
         }
     }
 }
