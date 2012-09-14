@@ -1,5 +1,6 @@
 ﻿ using System;
-using System.Collections.Generic;
+ using System.Collections;
+ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Text;
@@ -8,9 +9,15 @@ using DevDefined.OAuth.Framework;
 using FoundOps.Common.Tools;
 using FoundOps.Core.Models.Azure;
 using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Core.Models.QuickBooks.Utilities;
+using Intuit.Ipp.Core;
+using Intuit.Ipp.Data.Qbo;
+using Intuit.Ipp.Data.Extensions;
+using Intuit.Ipp.Services;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using Microsoft.WindowsAzure.StorageClient;
+using Invoice = FoundOps.Core.Models.CoreEntities.Invoice;
 
 namespace FoundOps.Core.Models.QuickBooks
 {
@@ -211,15 +218,12 @@ namespace FoundOps.Core.Models.QuickBooks
 
             #region Used for testing purposes only
 
-            //GetInvoiceList(currentBusinessAccount);
-            //var invoiceInfo = CreateNewInvoice(currentBusinessAccount);
-            //UpdateInvoice(currentBusinessAccount, invoiceInfo);
-            //var integer = Convert.ToInt32(invoiceInfo[1]);
-            //integer++;
-            //invoiceInfo[1] = integer.ToString();
-            //DeleteInvoice(currentBusinessAccount, invoiceInfo);
+            var invoice = new Invoice();
+            invoice.Client = new Client() { Name = "18TH ST COMMISSARY" };
 
-            var customers = GetEntityList(currentBusinessAccount, "customers", "PageNum=1&ResultsPerPage=100");
+            var newInvoice = CreateNewInvoice(currentBusinessAccount, invoice);
+
+            var customers = GetAllClients(currentBusinessAccount);
 
             #endregion
 
@@ -231,51 +235,49 @@ namespace FoundOps.Core.Models.QuickBooks
         /// <summary>
         /// Makes a call to QuickBooks Data Services to get a list of invoices
         /// </summary>
-        /// <param name="currentBusinessAccount">The current business account.</param>
-        /// <param name="entityType">The type of QuickBooks Entity you want to get a list of</param>
-        /// <param name="filter">Specifies the filter if one is provided</param>
-        private static string GetEntityList(BusinessAccount currentBusinessAccount, string entityType, string filter = null)
+        private static IEnumerable<Intuit.Ipp.Data.Qbo.Customer> GetClientPage(BusinessAccount currentBusinessAccount, int pageNumber, int resultsPerPage)
         {
             var quickBooksSession = SerializationTools.Deserialize<QuickBooksSession>(currentBusinessAccount.QuickBooksSessionXml);
 
-            //URL for the QuickBooks DataService for getting the List of Invoices
-            //In this case we are only looking for the first 25 of them
-            //Here we are accessing QuickBooks Online data
-            var serviceEndPoint = String.Format(quickBooksSession.BaseUrl + @"/resource/" + entityType + "/v2/" + quickBooksSession.RealmId);
+            var oauthValidator = Initializer.InitializeOAuthValidator(currentBusinessAccount.QuickBooksAccessToken, currentBusinessAccount.QuickBooksAccessTokenSecret, OauthConstants.ConsumerKey, OauthConstants.ConsumerSecret);
+            var context = Initializer.InitializeServiceContext(oauthValidator, quickBooksSession.RealmId, string.Empty, string.Empty, IntuitServicesType.QBO.ToString());
+            var commonService = new DataServices(context);
 
-            var oSession = CreateOAuthSessionAndAccessToken(currentBusinessAccount);
+            var qboCustomer = new Intuit.Ipp.Data.Qbo.Customer();
 
-            //Sets up the Post Request bus does not actually send it out
-            IConsumerRequest consumerRequest = oSession.Request();
-            consumerRequest = consumerRequest.ForMethod("POST");
-            consumerRequest = consumerRequest.ForUrl(serviceEndPoint);
+            IEnumerable<Intuit.Ipp.Data.Qbo.Customer> customers = commonService.FindAll(qboCustomer, pageNumber, resultsPerPage);
 
-            //Sets up the filter to send back the first page with 25 results on it
-            String completeFilter = filter;
-            if (filter == null)
-                completeFilter = "PageNum=" + 1 + "&ResultsPerPage=" + 25;
+            return customers;
+        }
 
-            //Converts the filter created above from a string to a dictionary
-            //In order to send the filter as part of the request it needs to be a dictionary
-            var paramCollection = new Dictionary<string, string>();
-            String[] splitParams = completeFilter.Split('&');
-            for (int i = 0; i < splitParams.Length; i++)
+        private static Client[] GetAllClients(BusinessAccount businessAccount)
+        {
+            int count;
+            var page = 1;
+            var resultsPerPage = 100;
+
+            List<Intuit.Ipp.Data.Qbo.Customer> customers = null;
+
+            do
             {
-                String[] nameValueSplit = splitParams[i].Split('=');
-                paramCollection.Add(nameValueSplit[0], nameValueSplit[1]);
-            }
+                var customersPage = GetClientPage(businessAccount, page, resultsPerPage).ToList();
 
-            //Adds the parameters of sending back Page 1 with 25 invoices on it
-            consumerRequest = consumerRequest.WithFormParameters(paramCollection);
+                count = customersPage.Count();
 
-            //Signs the Request
-            consumerRequest = consumerRequest.SignWithToken();
+                if (customers == null)
+                    customers = customersPage;
+                else
+                    customers.AddRange(customersPage);  
+                
 
-            //Sends the request with the body attached
-            consumerRequest.Post().WithRawContentType("application/x-www-form-urlencoded").WithBody(completeFilter);
+                //go to the next page
+                page++;
 
-            //Reads the response XML
-            return consumerRequest.ReadBody();
+            } while (count == 100);
+
+            //Convert customers to clients and locations
+
+            return new Client[1];
         }
 
         #endregion
@@ -287,55 +289,38 @@ namespace FoundOps.Core.Models.QuickBooks
         /// </summary>
         /// <param name="currentBusinessAccount">The current business account.</param>
         /// <param name="currentInvoice">The current invoice.</param>
-        public static void CreateNewInvoice(BusinessAccount currentBusinessAccount, Invoice currentInvoice)
+        public static Intuit.Ipp.Data.Qbo.Invoice CreateNewInvoice(BusinessAccount currentBusinessAccount, Invoice currentInvoice)
         {
             var quickBooksSession = SerializationTools.Deserialize<QuickBooksSession>(currentBusinessAccount.QuickBooksSessionXml);
 
-            //URL for the QuickBooks DataService for getting the creating an Invoice
-            //Here we are accessing QuickBooks Online data
-            var serviceEndPoint = String.Format(quickBooksSession.BaseUrl + @"/resource/invoice/v2/" + quickBooksSession.RealmId);
+            var oauthValidator = Initializer.InitializeOAuthValidator(currentBusinessAccount.QuickBooksAccessToken, currentBusinessAccount.QuickBooksAccessTokenSecret, OauthConstants.ConsumerKey, OauthConstants.ConsumerSecret);
+            var context = Initializer.InitializeServiceContext(oauthValidator, quickBooksSession.RealmId, string.Empty, string.Empty, IntuitServicesType.QBO.ToString());
+            var commonService = new DataServices(context);
 
-            var oSession = CreateOAuthSessionAndAccessToken(currentBusinessAccount);
+            var customerQuery = new Intuit.Ipp.Data.Qbo.CustomerQuery { Name = currentInvoice.Client.Name };
 
-            //Sets up the Post Request bus does not actually send it out
-            IConsumerRequest consumerRequest = oSession.Request();
-            consumerRequest = consumerRequest.ForMethod("POST");
-            consumerRequest = consumerRequest.ForUri(new Uri(serviceEndPoint));
+            customerQuery.SpecifyOperatorOption(FilterProperty.Name, FilterOperatorType.EQUALS);
 
-            #region Generates the XML body of the Post call
+            var client = customerQuery.ExecuteQuery<Intuit.Ipp.Data.Qbo.Customer>(context).ToList().FirstOrDefault();
 
-            var filter = "Name=" + ":EQUALS:" + currentInvoice.Client.Name;
+            //TODO: If client is null, create a new one?
 
-            var clientXML = GetEntityList(currentBusinessAccount, "customers", filter);
-
-            var clientId = "";
-
-            //Splits the response XML into by line
-            string[] responseArray = clientXML.Split('<');
-
-            //Checks each line for the one containing the BaseURL
-            foreach (string s in responseArray)
-            {
-                if (s.Contains(":Id>"))
+            var invoice = new Intuit.Ipp.Data.Qbo.Invoice
                 {
-                    responseArray = s.Split('>');
-                    clientId = responseArray[1];
-                    break;
-                }
-            }
+                    Header = new InvoiceHeader 
+                        {
+                            DueDate = DateTime.UtcNow.Date,
+                            CustomerId = client.Id, 
+                            TxnDate = DateTime.UtcNow
+                        }
+                };
 
-            var body = QuickBooksXml.InvoiceXml(currentInvoice, clientId, Operation.Create);
+            var line = new InvoiceLine {Amount = 100, AmountSpecified = true, Desc = "TEST"};
 
-            #endregion
+            invoice.Line = new[] {line};
 
-            //Signs the request
-            consumerRequest = consumerRequest.SignWithToken();
+            return commonService.Add(invoice);
 
-            //Sends the request with the body attached
-            consumerRequest.Post().WithRawContentType("application/xml").WithRawContent(Encoding.ASCII.GetBytes((string)body));
-
-            //Reads the response XML
-            var responseString = consumerRequest.ReadBody();
         }
 
         /// <summary>
@@ -347,51 +332,16 @@ namespace FoundOps.Core.Models.QuickBooks
         {
             var quickBooksSession = SerializationTools.Deserialize<QuickBooksSession>(currentBusinessAccount.QuickBooksSessionXml);
 
-            //URL for the QuickBooks DataService for getting the updating an Invoice
-            //Here we are accessing QuickBooks Online data
-            var serviceEndPoint = String.Format(quickBooksSession.BaseUrl + @"/resource/invoice/v2/" + quickBooksSession.RealmId + "/" + currentInvoice.CustomerId);
+            var oauthValidator = Initializer.InitializeOAuthValidator(currentBusinessAccount.QuickBooksAccessToken, currentBusinessAccount.QuickBooksAccessTokenSecret, OauthConstants.ConsumerKey, OauthConstants.ConsumerSecret);
+            var context = Initializer.InitializeServiceContext(oauthValidator, quickBooksSession.RealmId, string.Empty, string.Empty, IntuitServicesType.QBO.ToString());
+            var commonService = new DataServices(context);
 
-            var oSession = CreateOAuthSessionAndAccessToken(currentBusinessAccount);
+            var customerQuery = new Intuit.Ipp.Data.Qbo.CustomerQuery { Name = currentInvoice.Client.Name };
 
-            //Sets up the Post Request bus does not actually send it out
-            IConsumerRequest consumerRequest = oSession.Request();
-            consumerRequest = consumerRequest.ForMethod("POST");
-            consumerRequest = consumerRequest.ForUri(new Uri(serviceEndPoint));
+            customerQuery.SpecifyOperatorOption(FilterProperty.Name, FilterOperatorType.EQUALS);
 
-            #region Generates the XML body of the Post call
+            var client = customerQuery.ExecuteQuery<Intuit.Ipp.Data.Qbo.Customer>(context).ToList().FirstOrDefault();
 
-            var filter = "Name=" + ":EQUALS:" + currentInvoice.Client.Name;
-
-            var clientXML = GetEntityList(currentBusinessAccount, "customers", filter);
-
-            var clientId = "";
-
-            //Splits the response XML into by line
-            string[] responseArray = clientXML.Split('<');
-
-            //Checks each line for the one containing the BaseURL
-            foreach (string s in responseArray)
-            {
-                if (s.Contains(":Id>"))
-                {
-                    responseArray = s.Split('>');
-                    clientId = responseArray[1];
-                    break;
-                }
-            }
-
-            var body = QuickBooksXml.InvoiceXml(currentInvoice, clientId, Operation.Update);
-
-            #endregion
-
-            //Signs the Request
-            consumerRequest = consumerRequest.SignWithToken();
-
-            //Sends the request with the body attached
-            consumerRequest.Post().WithRawContentType("application/xml").WithRawContent(Encoding.ASCII.GetBytes((string)body));
-
-            //Reads the response XML
-            var responseString = consumerRequest.ReadBody();
         }
 
         /// <summary>
@@ -418,7 +368,7 @@ namespace FoundOps.Core.Models.QuickBooks
 
             var filter = "Name=" + ":EQUALS:" + currentInvoice.Client.Name;
 
-            var clientXML = GetEntityList(currentBusinessAccount, "customers", filter);
+            var clientXML = "";// GetEntityList(currentBusinessAccount, "customers", filter);
 
             var clientId = "";
 

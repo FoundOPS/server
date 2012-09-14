@@ -61,6 +61,36 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="Intuit.Ipp.AsyncServices">
+      <HintPath>..\..\..\..\..\Users\zbright\Documents\Visual Studio 2010\Projects\IA Azure ASP.NET MVC 3 Web Role2\packages\IPPDotNetDevKit.2.1.4.0\lib\Intuit.Ipp.AsyncServices.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Core">
+      <HintPath>..\..\..\..\..\Users\zbright\Documents\Visual Studio 2010\Projects\IA Azure ASP.NET MVC 3 Web Role2\packages\IPPDotNetDevKit.2.1.4.0\lib\Intuit.Ipp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Data">
+      <HintPath>..\..\..\..\..\Users\zbright\Documents\Visual Studio 2010\Projects\IA Azure ASP.NET MVC 3 Web Role2\packages\IPPDotNetDevKit.2.1.4.0\lib\Intuit.Ipp.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Diagnostics">
+      <HintPath>..\..\..\..\..\Users\zbright\Documents\Visual Studio 2010\Projects\IA Azure ASP.NET MVC 3 Web Role2\packages\IPPDotNetDevKit.2.1.4.0\lib\Intuit.Ipp.Diagnostics.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Exception">
+      <HintPath>..\..\..\..\..\Users\zbright\Documents\Visual Studio 2010\Projects\IA Azure ASP.NET MVC 3 Web Role2\packages\IPPDotNetDevKit.2.1.4.0\lib\Intuit.Ipp.Exception.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.PlatformServices">
+      <HintPath>..\..\..\..\..\Users\zbright\Documents\Visual Studio 2010\Projects\IA Azure ASP.NET MVC 3 Web Role2\packages\IPPDotNetDevKit.2.1.4.0\lib\Intuit.Ipp.PlatformServices.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Retry">
+      <HintPath>..\..\..\..\..\Users\zbright\Documents\Visual Studio 2010\Projects\IA Azure ASP.NET MVC 3 Web Role2\packages\IPPDotNetDevKit.2.1.4.0\lib\Intuit.Ipp.Retry.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Security">
+      <HintPath>..\..\..\..\..\Users\zbright\Documents\Visual Studio 2010\Projects\IA Azure ASP.NET MVC 3 Web Role2\packages\IPPDotNetDevKit.2.1.4.0\lib\Intuit.Ipp.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Services">
+      <HintPath>..\..\..\..\..\Users\zbright\Documents\Visual Studio 2010\Projects\IA Azure ASP.NET MVC 3 Web Role2\packages\IPPDotNetDevKit.2.1.4.0\lib\Intuit.Ipp.Services.dll</HintPath>
+    </Reference>
+    <Reference Include="Intuit.Ipp.Utility">
+      <HintPath>..\..\..\..\..\Users\zbright\Documents\Visual Studio 2010\Projects\IA Azure ASP.NET MVC 3 Web Role2\packages\IPPDotNetDevKit.2.1.4.0\lib\Intuit.Ipp.Utility.dll</HintPath>
+    </Reference>
     <Reference Include="Kent.Boogaart.KBCsv">
       <HintPath>..\..\Common\FoundOps.Common.NET\Lib\Kent.Boogaart.KBCsv.dll</HintPath>
     </Reference>
@@ -118,6 +148,7 @@
     <Compile Include="Models\CoreEntities\ServiceEntites\SimpleDateField.cs" />
     <Compile Include="Models\CoreEntities\ServiceEntites\SimpleNumericField.cs" />
     <Compile Include="Models\CoreEntities\ServiceEntites\SimpleTextField.cs" />
+    <Compile Include="Models\QuickBooks\Utilities\Initializer.cs" />
     <Compile Include="Models\ServerConstants.cs" />
     <Compile Include="Models\CoreEntities\BlocksData.cs" />
     <Compile Include="Models\CoreEntities\CoreEntities.metadata.cs" />

@@ -282,6 +282,14 @@
             <End Role="Vehicles" EntitySet="Vehicles" />
             <End Role="RouteVehicle" EntitySet="RouteVehicle" />
           </AssociationSet>
+          <AssociationSet Name="FK_SalesTermBusinessAccount" Association="CoreEntities.Store.FK_SalesTermBusinessAccount">
+            <End Role="Parties_BusinessAccount" EntitySet="Parties_BusinessAccount" />
+            <End Role="SalesTerms" EntitySet="SalesTerms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SalesTermClient" Association="CoreEntities.Store.FK_SalesTermClient">
+            <End Role="SalesTerms" EntitySet="SalesTerms" />
+            <End Role="Clients" EntitySet="Clients" />
+          </AssociationSet>
           <AssociationSet Name="FK_ServiceClient" Association="CoreEntities.Store.FK_ServiceClient">
             <End Role="Clients" EntitySet="Clients" />
             <End Role="Services" EntitySet="Services" />
@@ -362,6 +370,8 @@
           <Property Name="Salesperson" Type="nvarchar(max)" />
           <Property Name="BusinessAccountId" Type="uniqueidentifier" />
           <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="QuickBooksId" Type="nvarchar(max)" />
+          <Property Name="SalesTermId" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="ContactInfoSet">
           <Key>
@@ -517,6 +527,11 @@
           <Property Name="LastUpdatedTime" Type="nvarchar(max)" />
           <Property Name="BusinessAccountId" Type="uniqueidentifier" />
           <Property Name="ClientId" Type="uniqueidentifier" />
+          <Property Name="QuickBooksId" Type="nvarchar(max)" />
+          <Property Name="IsMemoChanged" Type="bit" Nullable="false" />
+          <Property Name="IsBillToLocationChanged" Type="bit" Nullable="false" />
+          <Property Name="IsSalesTermChanged" Type="bit" Nullable="false" />
+          <Property Name="IsDueDateChanged" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="LineItems">
           <Key>
@@ -526,6 +541,8 @@
           <Property Name="InvoiceId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Description" Type="nvarchar(max)" />
           <Property Name="Amount" Type="nvarchar(max)" />
+          <Property Name="IsAmountChanged" Type="bit" Nullable="false" />
+          <Property Name="IsDescriptionChanged" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Locations">
           <Key>
@@ -722,6 +739,13 @@
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="DueDays" Type="int" />
           <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="BusinessAccountId" Type="uniqueidentifier" />
+          <Property Name="QuickBooksId" Type="nvarchar(max)" />
+          <Property Name="IsNameChanged" Type="bit" Nullable="false" />
+          <Property Name="IsDueDateChanged" Type="bit" Nullable="false" />
+          <Property Name="SyncToken" Type="nvarchar(max)" />
+          <Property Name="CreateTime" Type="nvarchar(max)" />
+          <Property Name="LastUpdatedTime" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Services">
           <Key>
@@ -1559,6 +1583,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_SalesTermBusinessAccount">
+          <End Role="Parties_BusinessAccount" Type="CoreEntities.Store.Parties_BusinessAccount" Multiplicity="0..1" />
+          <End Role="SalesTerms" Type="CoreEntities.Store.SalesTerms" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Parties_BusinessAccount">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SalesTerms">
+              <PropertyRef Name="BusinessAccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SalesTermClient">
+          <End Role="SalesTerms" Type="CoreEntities.Store.SalesTerms" Multiplicity="0..1" />
+          <End Role="Clients" Type="CoreEntities.Store.Clients" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SalesTerms">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Clients">
+              <PropertyRef Name="SalesTermId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ServiceClient">
           <End Role="Clients" Type="CoreEntities.Store.Clients" Multiplicity="1" />
           <End Role="Services" Type="CoreEntities.Store.Services" Multiplicity="*" />
@@ -2058,6 +2106,14 @@
             <End Role="BusinessAccount" EntitySet="Parties" />
             <End Role="Vehicle" EntitySet="Vehicles" />
           </AssociationSet>
+          <AssociationSet Name="SalesTermClient" Association="CoreEntities.SalesTermClient">
+            <End Role="SalesTerm" EntitySet="SalesTerms" />
+            <End Role="Client" EntitySet="Clients" />
+          </AssociationSet>
+          <AssociationSet Name="SalesTermBusinessAccount" Association="CoreEntities.SalesTermBusinessAccount">
+            <End Role="SalesTerm" EntitySet="SalesTerms" />
+            <End Role="BusinessAccount" EntitySet="Parties" />
+          </AssociationSet>
           <FunctionImport Name="DeleteBasicPartyBasedOnId">
             <Parameter Name="providerId" Mode="In" Type="Guid" />
           </FunctionImport>
@@ -2504,6 +2560,9 @@
           <NavigationProperty Name="Locations" Relationship="CoreEntities.ClientLocation1" FromRole="Client" ToRole="Location" />
           <Property Type="String" Name="Name" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="ContactInfoSet" Relationship="CoreEntities.ClientContactInfo" FromRole="Client" ToRole="ContactInfo" />
+          <Property Type="String" Name="QuickBooksId" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <NavigationProperty Name="DefaultSalesTerm" Relationship="CoreEntities.SalesTermClient" FromRole="Client" ToRole="SalesTerm" />
+          <Property Type="Guid" Name="SalesTermId" Nullable="true" />
         </EntityType>
         <Association Name="RouteTaskClient">
           <End Type="CoreEntities.RouteTask" Role="RouteTask" Multiplicity="*" />
@@ -2574,6 +2633,7 @@
           <NavigationProperty Name="OwnedRoles" Relationship="CoreEntities.RoleBusinessAccount" FromRole="BusinessAccount" ToRole="Role" />
           <NavigationProperty Name="TaskStatuses" Relationship="CoreEntities.TaskStatusBusinessAccount" FromRole="BusinessAccount" ToRole="TaskStatus" />
           <NavigationProperty Name="Vehicles" Relationship="CoreEntities.BusinessAccountVehicle" FromRole="BusinessAccount" ToRole="Vehicle" />
+          <NavigationProperty Name="SalesTerms" Relationship="CoreEntities.SalesTermBusinessAccount" FromRole="BusinessAccount" ToRole="SalesTerm" />
         </EntityType>
         <Association Name="BusinessAccountService">
           <End Type="CoreEntities.BusinessAccount" Role="BusinessAccount" Multiplicity="1" />
@@ -3052,6 +3112,11 @@
           <Property Type="Guid" Name="BusinessAccountId" Nullable="true" />
           <NavigationProperty Name="Client" Relationship="CoreEntities.ClientInvoice" FromRole="Invoice" ToRole="Client" />
           <Property Type="Guid" Name="ClientId" Nullable="true" />
+          <Property Type="String" Name="QuickBooksId" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Type="Boolean" Name="IsMemoChanged" Nullable="false" />
+          <Property Type="Boolean" Name="IsBillToLocationChanged" Nullable="false" />
+          <Property Type="Boolean" Name="IsSalesTermChanged" Nullable="false" />
+          <Property Type="Boolean" Name="IsDueDateChanged" Nullable="false" />
         </EntityType>
         <Association Name="InvoiceLocation">
           <End Type="CoreEntities.Invoice" Role="Invoice" Multiplicity="*" />
@@ -3073,6 +3138,15 @@
           <Property Type="Int32" Name="DueDays" Nullable="true" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Invoices" Relationship="CoreEntities.InvoiceSalesTerm" FromRole="SalesTerm" ToRole="Invoice" />
+          <NavigationProperty Name="Clients" Relationship="CoreEntities.SalesTermClient" FromRole="SalesTerm" ToRole="Client" />
+          <NavigationProperty Name="BusinessAccount" Relationship="CoreEntities.SalesTermBusinessAccount" FromRole="SalesTerm" ToRole="BusinessAccount" />
+          <Property Type="Guid" Name="BusinessAccountId" Nullable="true" />
+          <Property Type="String" Name="QuickBooksId" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Type="Boolean" Name="IsNameChanged" Nullable="false" />
+          <Property Type="Boolean" Name="IsDueDateChanged" Nullable="false" />
+          <Property Type="String" Name="SyncToken" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Type="String" Name="CreateTime" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Type="String" Name="LastUpdatedTime" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
         </EntityType>
         <Association Name="InvoiceSalesTerm">
           <End Type="CoreEntities.Invoice" Role="Invoice" Multiplicity="*" />
@@ -3107,6 +3181,8 @@
           <Property Type="Guid" Name="InvoiceId" Nullable="false" />
           <Property Type="String" Name="Description" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="String" Name="Amount" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Type="Boolean" Name="IsAmountChanged" Nullable="false" />
+          <Property Type="Boolean" Name="IsDescriptionChanged" Nullable="false" />
         </EntityType>
         <Association Name="LineItemInvoice">
           <End Type="CoreEntities.LineItem" Role="LineItem" Multiplicity="*" />
@@ -3349,6 +3425,30 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Vehicle">
+              <PropertyRef Name="BusinessAccountId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SalesTermClient">
+          <End Type="CoreEntities.SalesTerm" Role="SalesTerm" Multiplicity="0..1" />
+          <End Type="CoreEntities.Client" Role="Client" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SalesTerm">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Client">
+              <PropertyRef Name="SalesTermId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SalesTermBusinessAccount">
+          <End Type="CoreEntities.SalesTerm" Role="SalesTerm" Multiplicity="*" />
+          <End Type="CoreEntities.BusinessAccount" Role="BusinessAccount" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="BusinessAccount">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="SalesTerm">
               <PropertyRef Name="BusinessAccountId" />
             </Dependent>
           </ReferentialConstraint>
@@ -3606,6 +3706,8 @@
           <ScalarProperty Name="Salesperson" ColumnName="Salesperson" />
           <ScalarProperty Name="BusinessAccountId" ColumnName="BusinessAccountId" />
           <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="QuickBooksId" ColumnName="QuickBooksId" />
+          <ScalarProperty Name="SalesTermId" ColumnName="SalesTermId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -3760,6 +3862,11 @@
           <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
           <ScalarProperty Name="BusinessAccountId" ColumnName="BusinessAccountId" />
           <ScalarProperty Name="ClientId" ColumnName="ClientId" />
+          <ScalarProperty Name="QuickBooksId" ColumnName="QuickBooksId" />
+          <ScalarProperty Name="IsMemoChanged" ColumnName="IsMemoChanged" />
+          <ScalarProperty Name="IsBillToLocationChanged" ColumnName="IsBillToLocationChanged" />
+          <ScalarProperty Name="IsSalesTermChanged" ColumnName="IsSalesTermChanged" />
+          <ScalarProperty Name="IsDueDateChanged" ColumnName="IsDueDateChanged" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -3769,6 +3876,13 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="DueDays" ColumnName="DueDays" />
           <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="BusinessAccountId" ColumnName="BusinessAccountId" />
+          <ScalarProperty Name="QuickBooksId" ColumnName="QuickBooksId" />
+          <ScalarProperty Name="IsNameChanged" ColumnName="IsNameChanged" />
+          <ScalarProperty Name="IsDueDateChanged" ColumnName="IsDueDateChanged" />
+          <ScalarProperty Name="SyncToken" ColumnName="SyncToken" />
+          <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+          <ScalarProperty Name="LastUpdatedTime" ColumnName="LastUpdatedTime" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -3779,6 +3893,8 @@
           <ScalarProperty Name="InvoiceId" ColumnName="InvoiceId" />
           <ScalarProperty Name="Description" ColumnName="Description" />
           <ScalarProperty Name="Amount" ColumnName="Amount" />
+          <ScalarProperty Name="IsAmountChanged" ColumnName="IsAmountChanged" />
+          <ScalarProperty Name="IsDescriptionChanged" ColumnName="IsDescriptionChanged" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

@@ -443,7 +443,7 @@
           <edmx:ConnectorPoint PointX="11.156309787556104" PointY="191.86480794270833" />
           <edmx:ConnectorPoint PointX="11.156309787556104" PointY="204.625" />
         </edmx:AssociationConnector>
-        <edmx:EntityTypeShape EntityType="CoreEntities.SalesTerm" Width="1.5" PointX="17.25" PointY="4.5" Height="1.5956835937499818" />
+        <edmx:EntityTypeShape EntityType="CoreEntities.SalesTerm" Width="1.5" PointX="16.25" PointY="4.5" Height="1.5956835937499818" />
         <edmx:AssociationConnector Association="CoreEntities.InvoiceSalesTerm">
           <edmx:ConnectorPoint PointX="11.375" PointY="188.14399251302081" />
           <edmx:ConnectorPoint PointX="13.375" PointY="188.14399251302081" />
@@ -517,7 +517,7 @@
           <edmx:ConnectorPoint PointX="10.820992273335344" PointY="197.47773880264663" />
           <edmx:ConnectorPoint PointX="10.820992273335344" PointY="191.86480794270833" />
         </edmx:AssociationConnector>
-        <edmx:EntityTypeShape EntityType="CoreEntities.Error" Width="1.5" PointX="9" PointY="4.625" Height="2.1725878906249818" />
+        <edmx:EntityTypeShape EntityType="CoreEntities.Error" Width="1.5" PointX="9" PointY="4.625" Height="2.1725878906249818" IsExpanded="true" />
         <edmx:EntityTypeShape EntityType="CoreEntities.ServiceTemplateWithVendorId" Width="1.5" PointX="20.625" PointY="8.625" />
         <edmx:AssociationConnector Association="CoreEntities.RouteTaskRecurringService">
           <edmx:ConnectorPoint PointX="18.140630625" PointY="34" />
@@ -542,6 +542,8 @@
         <edmx:AssociationConnector Association="CoreEntities.TaskStatusBusinessAccount" />
         <edmx:AssociationConnector Association="CoreEntities.TaskStatusRouteTask" />
         <edmx:AssociationConnector Association="CoreEntities.BusinessAccountVehicle" />
+        <edmx:AssociationConnector Association="CoreEntities.SalesTermClient" />
+        <edmx:AssociationConnector Association="CoreEntities.SalesTermBusinessAccount" />
       </edmx:Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

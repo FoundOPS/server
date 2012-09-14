@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 09/11/2012 19:46:20
+-- Date Created: 09/14/2012 12:55:09
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -37,6 +37,9 @@ IF OBJECT_ID(N'[dbo].[FK_BusinessAccountRouteTask]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_BusinessAccountService]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Services] DROP CONSTRAINT [FK_BusinessAccountService];
+GO
+IF OBJECT_ID(N'[dbo].[FK_BusinessAccountVehicle]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Vehicles] DROP CONSTRAINT [FK_BusinessAccountVehicle];
 GO
 IF OBJECT_ID(N'[dbo].[FK_ClientBusinessAccount]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Clients] DROP CONSTRAINT [FK_ClientBusinessAccount];
@@ -220,9 +223,6 @@ IF OBJECT_ID(N'[dbo].[FK_VehicleMaintenanceLogEntryLineItem]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_VehicleMaintenanceLogEntryVehicle]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[VehicleMaintenanceLog] DROP CONSTRAINT [FK_VehicleMaintenanceLogEntryVehicle];
-GO
-IF OBJECT_ID(N'[dbo].[FK_VehicleParty]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Vehicles] DROP CONSTRAINT [FK_VehicleParty];
 GO
 
 -- --------------------------------------------------
@@ -524,7 +524,9 @@ CREATE TABLE [dbo].[Clients] (
     [DateAdded] datetime  NOT NULL,
     [Salesperson] nvarchar(max)  NULL,
     [BusinessAccountId] uniqueidentifier  NULL,
-    [Name] nvarchar(max)  NULL
+    [Name] nvarchar(max)  NULL,
+    [QuickBooksId] nvarchar(max)  NULL,
+    [SalesTermId] uniqueidentifier  NULL
 );
 GO
 
@@ -658,7 +660,12 @@ CREATE TABLE [dbo].[Invoices] (
     [CreateTime] nvarchar(max)  NULL,
     [LastUpdatedTime] nvarchar(max)  NULL,
     [BusinessAccountId] uniqueidentifier  NULL,
-    [ClientId] uniqueidentifier  NULL
+    [ClientId] uniqueidentifier  NULL,
+    [QuickBooksId] nvarchar(max)  NULL,
+    [IsMemoChanged] bit  NOT NULL,
+    [IsBillToLocationChanged] bit  NOT NULL,
+    [IsSalesTermChanged] bit  NOT NULL,
+    [IsDueDateChanged] bit  NOT NULL
 );
 GO
 
@@ -666,7 +673,14 @@ GO
 CREATE TABLE [dbo].[SalesTerms] (
     [Id] uniqueidentifier  NOT NULL,
     [DueDays] int  NULL,
-    [Name] nvarchar(max)  NOT NULL
+    [Name] nvarchar(max)  NOT NULL,
+    [BusinessAccountId] uniqueidentifier  NULL,
+    [QuickBooksId] nvarchar(max)  NULL,
+    [IsNameChanged] bit  NOT NULL,
+    [IsDueDateChanged] bit  NOT NULL,
+    [SyncToken] nvarchar(max)  NULL,
+    [CreateTime] nvarchar(max)  NULL,
+    [LastUpdatedTime] nvarchar(max)  NULL
 );
 GO
 
@@ -675,7 +689,9 @@ CREATE TABLE [dbo].[LineItems] (
     [Id] uniqueidentifier  NOT NULL,
     [InvoiceId] uniqueidentifier  NOT NULL,
     [Description] nvarchar(max)  NULL,
-    [Amount] nvarchar(max)  NULL
+    [Amount] nvarchar(max)  NULL,
+    [IsAmountChanged] bit  NOT NULL,
+    [IsDescriptionChanged] bit  NOT NULL
 );
 GO
 
@@ -1904,6 +1920,34 @@ ADD CONSTRAINT [FK_BusinessAccountVehicle]
 -- Creating non-clustered index for FOREIGN KEY 'FK_BusinessAccountVehicle'
 CREATE INDEX [IX_FK_BusinessAccountVehicle]
 ON [dbo].[Vehicles]
+    ([BusinessAccountId]);
+GO
+
+-- Creating foreign key on [SalesTermId] in table 'Clients'
+ALTER TABLE [dbo].[Clients]
+ADD CONSTRAINT [FK_SalesTermClient]
+    FOREIGN KEY ([SalesTermId])
+    REFERENCES [dbo].[SalesTerms]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_SalesTermClient'
+CREATE INDEX [IX_FK_SalesTermClient]
+ON [dbo].[Clients]
+    ([SalesTermId]);
+GO
+
+-- Creating foreign key on [BusinessAccountId] in table 'SalesTerms'
+ALTER TABLE [dbo].[SalesTerms]
+ADD CONSTRAINT [FK_SalesTermBusinessAccount]
+    FOREIGN KEY ([BusinessAccountId])
+    REFERENCES [dbo].[Parties_BusinessAccount]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_SalesTermBusinessAccount'
+CREATE INDEX [IX_FK_SalesTermBusinessAccount]
+ON [dbo].[SalesTerms]
     ([BusinessAccountId]);
 GO
 
