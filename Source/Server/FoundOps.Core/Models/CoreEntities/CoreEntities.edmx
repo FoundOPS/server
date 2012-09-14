@@ -523,8 +523,8 @@
           <Property Name="DueDate" Type="datetime" />
           <Property Name="SyncToken" Type="nvarchar(max)" />
           <Property Name="CustomerId" Type="nvarchar(max)" />
-          <Property Name="CreateTime" Type="nvarchar(max)" />
-          <Property Name="LastUpdatedTime" Type="nvarchar(max)" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="LastUpdatedTime" Type="datetime" />
           <Property Name="BusinessAccountId" Type="uniqueidentifier" />
           <Property Name="ClientId" Type="uniqueidentifier" />
           <Property Name="QuickBooksId" Type="nvarchar(max)" />
@@ -560,7 +560,7 @@
           <Property Name="BusinessAccountIdIfDepot" Type="uniqueidentifier" />
           <Property Name="BusinessAccountId" Type="uniqueidentifier" />
           <Property Name="ClientId" Type="uniqueidentifier" />
-          <Property Name="IsDefaultBillingLocation" Type="bit" />
+          <Property Name="IsDefaultBillingLocation" Type="bit" Nullable="false" />
         </EntityType>
         <EntityType Name="Options">
           <Key>
@@ -744,8 +744,8 @@
           <Property Name="IsNameChanged" Type="bit" Nullable="false" />
           <Property Name="IsDueDateChanged" Type="bit" Nullable="false" />
           <Property Name="SyncToken" Type="nvarchar(max)" />
-          <Property Name="CreateTime" Type="nvarchar(max)" />
-          <Property Name="LastUpdatedTime" Type="nvarchar(max)" />
+          <Property Name="CreateTime" Type="datetime" />
+          <Property Name="LastUpdatedTime" Type="datetime" />
         </EntityType>
         <EntityType Name="Services">
           <Key>
@@ -2302,7 +2302,7 @@
           <Property Type="Guid" Name="BusinessAccountId" Nullable="true" />
           <NavigationProperty Name="Client" Relationship="CoreEntities.ClientLocation1" FromRole="Location" ToRole="Client" />
           <Property Type="Guid" Name="ClientId" Nullable="true" />
-          <Property Type="Boolean" Name="IsDefaultBillingLocation" Nullable="true" />
+          <Property Type="Boolean" Name="IsDefaultBillingLocation" Nullable="false" />
         </EntityType>
         <EntityType Name="Service">
           <Key>
@@ -3105,8 +3105,8 @@
           <NavigationProperty Name="ServiceTemplate" Relationship="CoreEntities.InvoiceServiceTemplate" FromRole="Invoice" ToRole="ServiceTemplate" />
           <Property Type="String" Name="SyncToken" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="String" Name="CustomerId" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Type="String" Name="CreateTime" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Type="String" Name="LastUpdatedTime" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Type="DateTime" Name="CreateTime" Nullable="true" Precision="3" />
+          <Property Type="DateTime" Name="LastUpdatedTime" Nullable="true" Precision="3" />
           <NavigationProperty Name="LineItems" Relationship="CoreEntities.LineItemInvoice" FromRole="Invoice" ToRole="LineItem" />
           <NavigationProperty Name="BusinessAccount" Relationship="CoreEntities.BusinessAccountInvoice" FromRole="Invoice" ToRole="BusinessAccount" />
           <Property Type="Guid" Name="BusinessAccountId" Nullable="true" />
@@ -3145,8 +3145,8 @@
           <Property Type="Boolean" Name="IsNameChanged" Nullable="false" />
           <Property Type="Boolean" Name="IsDueDateChanged" Nullable="false" />
           <Property Type="String" Name="SyncToken" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Type="String" Name="CreateTime" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Type="String" Name="LastUpdatedTime" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Type="DateTime" Name="CreateTime" Nullable="true" Precision="3" />
+          <Property Type="DateTime" Name="LastUpdatedTime" Nullable="true" Precision="3" />
         </EntityType>
         <Association Name="InvoiceSalesTerm">
           <End Type="CoreEntities.Invoice" Role="Invoice" Multiplicity="*" />
@@ -3994,7 +3994,7 @@
           <FunctionImportMapping FunctionImportName="DeleteUserAccountBasedOnId" FunctionName="CoreEntities.Store.DeleteUserAccountBasedOnId" />
           <FunctionImportMapping FunctionImportName="GetDateRangeForServices" FunctionName="CoreEntities.Store.GetDateRangeForServices" />
           <FunctionImportMapping FunctionImportName="GetFieldsInJavaScriptFormat" FunctionName="CoreEntities.Store.GetFieldsInJavaScriptFormat">
-            <ResultMapping>
+          <ResultMapping>
               <ComplexTypeMapping TypeName="CoreEntities.FieldJavaScript">
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
@@ -4002,7 +4002,7 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GetServiceHolders" FunctionName="CoreEntities.Store.GetServiceHolders">
-            <ResultMapping>
+          <ResultMapping>
               <ComplexTypeMapping TypeName="CoreEntities.ServiceHolder">
                 <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
                 <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />

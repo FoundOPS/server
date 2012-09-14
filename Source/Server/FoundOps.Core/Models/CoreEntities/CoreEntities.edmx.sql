@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 09/14/2012 12:55:09
+-- Date Created: 09/14/2012 17:46:53
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -187,6 +187,12 @@ IF OBJECT_ID(N'[dbo].[FK_RouteVehicle_Route]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_RouteVehicle_Vehicle]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[RouteVehicle] DROP CONSTRAINT [FK_RouteVehicle_Vehicle];
+GO
+IF OBJECT_ID(N'[dbo].[FK_SalesTermBusinessAccount]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[SalesTerms] DROP CONSTRAINT [FK_SalesTermBusinessAccount];
+GO
+IF OBJECT_ID(N'[dbo].[FK_SalesTermClient]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Clients] DROP CONSTRAINT [FK_SalesTermClient];
 GO
 IF OBJECT_ID(N'[dbo].[FK_ServiceClient]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Services] DROP CONSTRAINT [FK_ServiceClient];
@@ -439,7 +445,7 @@ CREATE TABLE [dbo].[Locations] (
     [BusinessAccountIdIfDepot] uniqueidentifier  NULL,
     [BusinessAccountId] uniqueidentifier  NULL,
     [ClientId] uniqueidentifier  NULL,
-    [IsDefaultBillingLocation] bit  NULL
+    [IsDefaultBillingLocation] bit  NOT NULL
 );
 GO
 
@@ -657,8 +663,8 @@ CREATE TABLE [dbo].[Invoices] (
     [DueDate] datetime  NULL,
     [SyncToken] nvarchar(max)  NULL,
     [CustomerId] nvarchar(max)  NULL,
-    [CreateTime] nvarchar(max)  NULL,
-    [LastUpdatedTime] nvarchar(max)  NULL,
+    [CreateTime] datetime  NULL,
+    [LastUpdatedTime] datetime  NULL,
     [BusinessAccountId] uniqueidentifier  NULL,
     [ClientId] uniqueidentifier  NULL,
     [QuickBooksId] nvarchar(max)  NULL,
@@ -679,8 +685,8 @@ CREATE TABLE [dbo].[SalesTerms] (
     [IsNameChanged] bit  NOT NULL,
     [IsDueDateChanged] bit  NOT NULL,
     [SyncToken] nvarchar(max)  NULL,
-    [CreateTime] nvarchar(max)  NULL,
-    [LastUpdatedTime] nvarchar(max)  NULL
+    [CreateTime] datetime  NULL,
+    [LastUpdatedTime] datetime  NULL
 );
 GO
 

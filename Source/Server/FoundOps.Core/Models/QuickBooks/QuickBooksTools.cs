@@ -1,6 +1,6 @@
-﻿ using System;
- using System.Collections;
- using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Text;
@@ -11,8 +11,8 @@ using FoundOps.Core.Models.Azure;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.QuickBooks.Utilities;
 using Intuit.Ipp.Core;
-using Intuit.Ipp.Data.Qbo;
 using Intuit.Ipp.Data.Extensions;
+using Intuit.Ipp.Data.Qbo;
 using Intuit.Ipp.Services;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.ServiceRuntime;
@@ -37,12 +37,10 @@ namespace FoundOps.Core.Models.QuickBooks
             //AKA oauthLink
             public const string AuthorizeUrl = "https://workplace.intuit.com/Connect/Begin";
 
-            public static readonly string GrantUrl = "http://localhost:31820/QuickBooks/OAuthGrantLogin";
-
             public static readonly string ConsumerKey = ConfigurationManager.AppSettings["consumerKey"];
             public static readonly string ConsumerSecret = ConfigurationManager.AppSettings["consumerSecret"];
 
-            public static readonly string OauthCallbackUrl = "http://localhost:9711/QuickBooks/OAuthGrantHandler";
+            public static readonly string OauthCallbackUrl = ServerConstants.RootApiUrl + "/QuickBooks/OAuthGrantHandler";
 
             //Connection String for Azure Tables
             public const string StorageConnectionString = "DefaultEndpointsProtocol=http;AccountName=fstorequickbooks;AccountKey=fyZ0dsbFfQZET9RFdIlSeVepYgmtO0aBQYVArhazF0KO2X80BUZ2drEJLmRYjDbzelf7PAKzTrePzMJpt3vGaA==";
@@ -216,16 +214,7 @@ namespace FoundOps.Core.Models.QuickBooks
                 return true;
             }
 
-            #region Used for testing purposes only
 
-            var invoice = new Invoice();
-            invoice.Client = new Client() { Name = "18TH ST COMMISSARY" };
-
-            var newInvoice = CreateNewInvoice(currentBusinessAccount, invoice);
-
-            var customers = GetAllClients(currentBusinessAccount);
-
-            #endregion
 
             //A return value of false means that the attempt at authorization has succeeded
             //No further action needs to be taken to access QuickBooks Online data
@@ -250,7 +239,7 @@ namespace FoundOps.Core.Models.QuickBooks
             return customers;
         }
 
-        private static Client[] GetAllClients(BusinessAccount businessAccount)
+        public static List<Customer> GetAllClients(BusinessAccount businessAccount)
         {
             int count;
             var page = 1;
@@ -267,8 +256,8 @@ namespace FoundOps.Core.Models.QuickBooks
                 if (customers == null)
                     customers = customersPage;
                 else
-                    customers.AddRange(customersPage);  
-                
+                    customers.AddRange(customersPage);
+
 
                 //go to the next page
                 page++;
@@ -277,7 +266,7 @@ namespace FoundOps.Core.Models.QuickBooks
 
             //Convert customers to clients and locations
 
-            return new Client[1];
+            return customers;
         }
 
         #endregion
@@ -297,30 +286,54 @@ namespace FoundOps.Core.Models.QuickBooks
             var context = Initializer.InitializeServiceContext(oauthValidator, quickBooksSession.RealmId, string.Empty, string.Empty, IntuitServicesType.QBO.ToString());
             var commonService = new DataServices(context);
 
-            var customerQuery = new Intuit.Ipp.Data.Qbo.CustomerQuery { Name = currentInvoice.Client.Name };
+            Customer customer = FindOrCreateCustomer(context, commonService, currentInvoice.Client);
 
-            customerQuery.SpecifyOperatorOption(FilterProperty.Name, FilterOperatorType.EQUALS);
-
-            var client = customerQuery.ExecuteQuery<Intuit.Ipp.Data.Qbo.Customer>(context).ToList().FirstOrDefault();
-
-            //TODO: If client is null, create a new one?
-
-            var invoice = new Intuit.Ipp.Data.Qbo.Invoice
+            Intuit.Ipp.Data.Qbo.Invoice invoice = ConvertInvoiceToQuickBooksModel(currentInvoice, customer);
+                
+                new Intuit.Ipp.Data.Qbo.Invoice
                 {
-                    Header = new InvoiceHeader 
+                    Header = new InvoiceHeader
                         {
                             DueDate = DateTime.UtcNow.Date,
-                            CustomerId = client.Id, 
+                            CustomerId = customer.Id,
                             TxnDate = DateTime.UtcNow
                         }
                 };
 
-            var line = new InvoiceLine {Amount = 100, AmountSpecified = true, Desc = "TEST"};
+            var line = new InvoiceLine { Amount = 100, AmountSpecified = true, Desc = "TEST" };
 
-            invoice.Line = new[] {line};
+            invoice.Line = new[] { line };
 
             return commonService.Add(invoice);
 
+        }
+
+        private static Intuit.Ipp.Data.Qbo.Invoice ConvertInvoiceToQuickBooksModel(Invoice currentInvoice, Customer customer)
+        {
+            var qbInvoice = new Intuit.Ipp.Data.Qbo.Invoice();
+
+            qbInvoice.Id = new IdType() {Value = currentInvoice.QuickBooksId};
+            qbInvoice.SyncToken = currentInvoice.SyncToken;
+            qbInvoice.Header = new InvoiceHeader() {CustomerId = customer.Id};
+            //This means that the invoice has already been created
+            //Also that we need to include all the metadata
+            if(currentInvoice.CreateTime != null)
+            {
+                qbInvoice.MetaData = new ModificationMetaData()
+                    {
+                        CreateTime = currentInvoice.CreateTime.Value, 
+                        LastUpdatedTime = currentInvoice.CreateTime.Value, 
+                        CreateTimeSpecified = true, 
+                        LastUpdatedTimeSpecified = true
+                    };
+            }
+
+            //qbInvoice.
+
+            
+
+
+            return qbInvoice;
         }
 
         /// <summary>
@@ -328,7 +341,7 @@ namespace FoundOps.Core.Models.QuickBooks
         /// </summary>
         /// <param name="currentBusinessAccount">The current business account.</param>
         /// <param name="currentInvoice">The current invoice.</param>
-        public static void UpdateInvoice(BusinessAccount currentBusinessAccount, Invoice currentInvoice)
+        public static Intuit.Ipp.Data.Qbo.Invoice UpdateInvoice(BusinessAccount currentBusinessAccount, Invoice currentInvoice)
         {
             var quickBooksSession = SerializationTools.Deserialize<QuickBooksSession>(currentBusinessAccount.QuickBooksSessionXml);
 
@@ -336,12 +349,94 @@ namespace FoundOps.Core.Models.QuickBooks
             var context = Initializer.InitializeServiceContext(oauthValidator, quickBooksSession.RealmId, string.Empty, string.Empty, IntuitServicesType.QBO.ToString());
             var commonService = new DataServices(context);
 
-            var customerQuery = new Intuit.Ipp.Data.Qbo.CustomerQuery { Name = currentInvoice.Client.Name };
+            Customer client = FindOrCreateCustomer(context, commonService, currentInvoice.Client);
+            
+            var invoice = new Intuit.Ipp.Data.Qbo.Invoice
+            {
+                Id = new IdType() { Value = currentInvoice.QuickBooksId },
+                SyncToken = currentInvoice.SyncToken,
+                Header = new InvoiceHeader
+                {
+                    DueDate = DateTime.UtcNow.Date.AddDays(1),
+                    CustomerId = client.Id,
+                    TxnDate = DateTime.UtcNow,
+                    Msg = "Ive Been Changed!!"
+                }
+            };
 
-            customerQuery.SpecifyOperatorOption(FilterProperty.Name, FilterOperatorType.EQUALS);
+            var line = new InvoiceLine { Amount = 200, AmountSpecified = true, Desc = "Changed" };
 
-            var client = customerQuery.ExecuteQuery<Intuit.Ipp.Data.Qbo.Customer>(context).ToList().FirstOrDefault();
+            invoice.Line = new[] { line };
 
+            return commonService.Update(invoice);
+        }
+
+        /// <summary>
+        /// Either finds the correct customer from QB or creates a new one and returns that
+        /// </summary>
+        /// <param name="context">Service Context to connect to QB</param>
+        /// <param name="commonService">Data Service to connect to QB</param>
+        /// <param name="client">The FoundOPS client</param>
+        /// <returns>The found or created customer</returns>
+        private static Customer FindOrCreateCustomer(ServiceContext context, DataServices commonService, Client client)
+        {
+            Customer customer;
+            if (client.QuickBooksId == null)
+            {
+                var customerQuery = new Intuit.Ipp.Data.Qbo.CustomerQuery { Name = client.Name };
+
+                customerQuery.SpecifyOperatorOption(FilterProperty.Name, FilterOperatorType.EQUALS);
+
+                customer = customerQuery.ExecuteQuery<Intuit.Ipp.Data.Qbo.Customer>(context).ToList().FirstOrDefault();
+            }
+            else
+            {
+                customer = new Customer
+                {
+                    Id = new IdType() { Value = client.QuickBooksId, idDomain = idDomainEnum.QBO }
+                };
+            }
+
+            //If client is null, create a new one
+            if (customer == null)
+            {
+                //Convert FoundOPS client to QB customer
+                var convertedCustomer = ConvertClientToQuickBooksModel(client);
+
+                //Create the customer in QB
+                customer = commonService.Add(convertedCustomer);
+            }
+
+            return customer;
+        }
+
+        /// <summary>
+        /// Converts a FoundOPS client to a QB customer
+        /// </summary>
+        /// <param name="client">FoundOPS client</param>
+        /// <returns>A QB customers</returns>
+        private static Customer ConvertClientToQuickBooksModel(Client client)
+        {
+            var billingLocation = client.Locations.FirstOrDefault(l => l.IsDefaultBillingLocation);
+            var location = billingLocation == null
+                               ? new PhysicalAddress()
+                                   {
+                                       Line1 = billingLocation.AddressLineOne,
+                                       Line2 = billingLocation.AddressLineTwo,
+                                       City = billingLocation.City,
+                                       CountrySubDivisionCode = billingLocation.State,
+                                       PostalCode = billingLocation.ZipCode
+                                   }
+                               : new PhysicalAddress();
+
+
+            var customer = new Customer
+                {TypeOf = partyType.Organization, Name = client.Name, Address = new PhysicalAddress[] {location}};
+
+
+
+
+            return customer;
         }
 
         /// <summary>
@@ -353,51 +448,17 @@ namespace FoundOps.Core.Models.QuickBooks
         {
             var quickBooksSession = SerializationTools.Deserialize<QuickBooksSession>(currentBusinessAccount.QuickBooksSessionXml);
 
-            //URL for the QuickBooks DataService for getting the deleting an Invoice
-            //Here we are accessing QuickBooks Online data
-            var serviceEndPoint = String.Format(quickBooksSession.BaseUrl + @"/resource/invoice/v2/" + quickBooksSession.RealmId + "/" + currentInvoice.CustomerId + "?methodx=delete");
+            var oauthValidator = Initializer.InitializeOAuthValidator(currentBusinessAccount.QuickBooksAccessToken, currentBusinessAccount.QuickBooksAccessTokenSecret, OauthConstants.ConsumerKey, OauthConstants.ConsumerSecret);
+            var context = Initializer.InitializeServiceContext(oauthValidator, quickBooksSession.RealmId, string.Empty, string.Empty, IntuitServicesType.QBO.ToString());
+            var commonService = new DataServices(context);
 
-            var oSession = CreateOAuthSessionAndAccessToken(currentBusinessAccount);
-
-            //Sets up the Post Request bus does not actually send it out
-            IConsumerRequest consumerRequest = oSession.Request();
-            consumerRequest = consumerRequest.ForMethod("POST");
-            consumerRequest = consumerRequest.ForUri(new Uri(serviceEndPoint));
-
-            #region Generates the XML body of the Post call
-
-            var filter = "Name=" + ":EQUALS:" + currentInvoice.Client.Name;
-
-            var clientXML = "";// GetEntityList(currentBusinessAccount, "customers", filter);
-
-            var clientId = "";
-
-            //Splits the response XML into by line
-            string[] responseArray = clientXML.Split('<');
-
-            //Checks each line for the one containing the BaseURL
-            foreach (string s in responseArray)
+            var invoice = new Intuit.Ipp.Data.Qbo.Invoice
             {
-                if (s.Contains(":Id>"))
-                {
-                    responseArray = s.Split('>');
-                    clientId = responseArray[1];
-                    break;
-                }
-            }
-
-            var body = QuickBooksXml.InvoiceXml(currentInvoice, clientId, Operation.Delete);
-
-            #endregion
-
-            //Signs the Request
-            consumerRequest = consumerRequest.SignWithToken();
-
-            //Sends the request with the body attached
-            consumerRequest.Post().WithRawContentType("application/xml").WithRawContent(Encoding.ASCII.GetBytes((string)body));
-
-            //Reads the response XML
-            var responseString = consumerRequest.ReadBody();
+                Id = new IdType() { Value = currentInvoice.QuickBooksId },
+                SyncToken = currentInvoice.SyncToken
+            };
+            
+            commonService.Delete(invoice);
         }
 
         #endregion

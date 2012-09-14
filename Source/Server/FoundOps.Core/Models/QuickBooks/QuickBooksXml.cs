@@ -68,8 +68,8 @@ namespace FoundOps.Core.Models.QuickBooks
                     if (operation == Operation.Delete)
                         return;
 
-                    writer.CreateElement("CreateTime", invoice.CreateTime);
-                    writer.CreateElement("LastUpdatedTime", invoice.LastUpdatedTime);
+                    //writer.CreateElement("CreateTime", invoice.CreateTime);
+                    //writer.CreateElement("LastUpdatedTime", invoice.LastUpdatedTime);
                 }
 
                 #endregion

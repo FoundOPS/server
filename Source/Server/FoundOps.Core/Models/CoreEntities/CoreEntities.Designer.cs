@@ -5174,7 +5174,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String CreateTime
+        public Nullable<global::System.DateTime> CreateTime
         {
             get
             {
@@ -5184,13 +5184,13 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnCreateTimeChanging(value);
                 ReportPropertyChanging("CreateTime");
-                _CreateTime = StructuralObject.SetValidValue(value, true);
+                _CreateTime = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("CreateTime");
                 OnCreateTimeChanged();
             }
         }
-        private global::System.String _CreateTime;
-        partial void OnCreateTimeChanging(global::System.String value);
+        private Nullable<global::System.DateTime> _CreateTime;
+        partial void OnCreateTimeChanging(Nullable<global::System.DateTime> value);
         partial void OnCreateTimeChanged();
     
         /// <summary>
@@ -5198,7 +5198,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String LastUpdatedTime
+        public Nullable<global::System.DateTime> LastUpdatedTime
         {
             get
             {
@@ -5208,13 +5208,13 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLastUpdatedTimeChanging(value);
                 ReportPropertyChanging("LastUpdatedTime");
-                _LastUpdatedTime = StructuralObject.SetValidValue(value, true);
+                _LastUpdatedTime = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("LastUpdatedTime");
                 OnLastUpdatedTimeChanged();
             }
         }
-        private global::System.String _LastUpdatedTime;
-        partial void OnLastUpdatedTimeChanging(global::System.String value);
+        private Nullable<global::System.DateTime> _LastUpdatedTime;
+        partial void OnLastUpdatedTimeChanging(Nullable<global::System.DateTime> value);
         partial void OnLastUpdatedTimeChanged();
     
         /// <summary>
@@ -5845,10 +5845,12 @@ namespace FoundOps.Core.Models.CoreEntities
         /// Create a new Location object.
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
-        public static Location CreateLocation(global::System.Guid id)
+        /// <param name="isDefaultBillingLocation">Initial value of the IsDefaultBillingLocation property.</param>
+        public static Location CreateLocation(global::System.Guid id, global::System.Boolean isDefaultBillingLocation)
         {
             Location location = new Location();
             location.Id = id;
+            location.IsDefaultBillingLocation = isDefaultBillingLocation;
             return location;
         }
 
@@ -6150,9 +6152,9 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Boolean> IsDefaultBillingLocation
+        public global::System.Boolean IsDefaultBillingLocation
         {
             get
             {
@@ -6167,8 +6169,8 @@ namespace FoundOps.Core.Models.CoreEntities
                 OnIsDefaultBillingLocationChanged();
             }
         }
-        private Nullable<global::System.Boolean> _IsDefaultBillingLocation;
-        partial void OnIsDefaultBillingLocationChanging(Nullable<global::System.Boolean> value);
+        private global::System.Boolean _IsDefaultBillingLocation;
+        partial void OnIsDefaultBillingLocationChanging(global::System.Boolean value);
         partial void OnIsDefaultBillingLocationChanged();
 
         #endregion
@@ -9860,7 +9862,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String CreateTime
+        public Nullable<global::System.DateTime> CreateTime
         {
             get
             {
@@ -9870,13 +9872,13 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnCreateTimeChanging(value);
                 ReportPropertyChanging("CreateTime");
-                _CreateTime = StructuralObject.SetValidValue(value, true);
+                _CreateTime = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("CreateTime");
                 OnCreateTimeChanged();
             }
         }
-        private global::System.String _CreateTime;
-        partial void OnCreateTimeChanging(global::System.String value);
+        private Nullable<global::System.DateTime> _CreateTime;
+        partial void OnCreateTimeChanging(Nullable<global::System.DateTime> value);
         partial void OnCreateTimeChanged();
     
         /// <summary>
@@ -9884,7 +9886,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String LastUpdatedTime
+        public Nullable<global::System.DateTime> LastUpdatedTime
         {
             get
             {
@@ -9894,13 +9896,13 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLastUpdatedTimeChanging(value);
                 ReportPropertyChanging("LastUpdatedTime");
-                _LastUpdatedTime = StructuralObject.SetValidValue(value, true);
+                _LastUpdatedTime = StructuralObject.SetValidValue(value);
                 ReportPropertyChanged("LastUpdatedTime");
                 OnLastUpdatedTimeChanged();
             }
         }
-        private global::System.String _LastUpdatedTime;
-        partial void OnLastUpdatedTimeChanging(global::System.String value);
+        private Nullable<global::System.DateTime> _LastUpdatedTime;
+        partial void OnLastUpdatedTimeChanging(Nullable<global::System.DateTime> value);
         partial void OnLastUpdatedTimeChanged();
 
         #endregion

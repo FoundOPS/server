@@ -9,6 +9,9 @@ using FoundOPS.API.Models;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.QuickBooks;
 using FoundOps.Core.Tools;
+using Intuit.Ipp.Data.Qbo;
+using Client = FoundOps.Core.Models.CoreEntities.Client;
+using Invoice = FoundOps.Core.Models.CoreEntities.Invoice;
 
 namespace FoundOPS.API.Api
 {
@@ -100,6 +103,26 @@ namespace FoundOPS.API.Api
             //If true, No further action needs to be taken to access QuickBooks Online data
             //If false, Authorization is needed
             connect.IsConnected = (txtServiceResponse.Contains("<errcode>0</errcode>"));
+
+            #region Used for testing purposes only
+
+            //var invoice = new Invoice();
+            //invoice.Client = new Client() { Name = "18TH ST COMMISSARYa"};
+
+            //var newInvoice = QuickBooksTools.CreateNewInvoice(currentBusinessAccount, invoice);
+
+            //invoice.QuickBooksId = newInvoice.Id.Value;
+            //invoice.SyncToken = newInvoice.SyncToken;
+
+            //var updatedInvoice = QuickBooksTools.UpdateInvoice(currentBusinessAccount, invoice);
+
+            //invoice.SyncToken = updatedInvoice.SyncToken;
+
+            //QuickBooksTools.DeleteInvoice(currentBusinessAccount, invoice);
+
+            var customers = QuickBooksTools.GetAllClients(currentBusinessAccount);
+
+            #endregion
 
             return connect;
         }
