@@ -101,7 +101,11 @@ namespace FoundOPS.API.Api
             }
 
             var roles = user.RoleMembership.Distinct().OrderBy(r => r.OwnerBusinessAccount.DisplayName);
-            var sections = roles.SelectMany(r => r.Blocks).Where(s => !s.HideFromNavigation).Distinct().OrderBy(b => b.Name);
+            var sections = roles.SelectMany(r => r.Blocks).Where(s => !s.HideFromNavigation).Distinct().OrderBy(b => b.Name).ToList();
+
+            //remove all silverlight sections if this is a mobile session
+            if (isMobile)
+                sections.RemoveAll(s => s.IsSilverlight.HasValue && s.IsSilverlight.Value);
 
             dynamic config = new JObject();
             config.name = user.FirstName + " " + user.LastName;
@@ -130,10 +134,15 @@ namespace FoundOPS.API.Api
                     jRole.businessLogoUrl = partyImageUrls[role.OwnerBusinessAccount.PartyImage.Id];
                 }
 
-                var availableSections = role.Blocks.Where(s => !s.HideFromNavigation).OrderBy(r => r.Name).Select(b => b.Name).ToArray();
+                var availableSections = role.Blocks.Where(s => !s.HideFromNavigation).OrderBy(r => r.Name).ToList();
+                //remove all silverlight sections if this is a mobile session
+                if (isMobile)
+                    availableSections.RemoveAll(s => s.IsSilverlight.HasValue && s.IsSilverlight.Value);
+
+                var availableSectionNames = availableSections.Select(b => b.Name);
 
                 //Add the available sections's names for the roles
-                jRole.sections = new JArray(availableSections);
+                jRole.sections = new JArray(availableSectionNames);
 
                 jRoles.Add(jRole);
             }
