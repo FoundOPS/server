@@ -119,7 +119,7 @@ namespace FoundOPS.API.Api
             {
                 var routeNumber = count % numberOfRoutes;
 
-        #region Adjust Technician Location, Speed and Heading
+                #region Adjust Technician Location, Speed and Heading
 
                 foreach (var employee in route.Employees)
                 {
@@ -222,6 +222,9 @@ namespace FoundOPS.API.Api
             {
                 if (lastPushToAzureTimeStamp.HasValue && (trackPoint.CollectedTimeStamp - lastPushToAzureTimeStamp) < TimeSpan.FromSeconds(UpdateConstants.SecondsBetweenHistoricalTrackPoints))
                     continue;
+
+                if (trackPoint.Id == Guid.Empty)
+                    trackPoint.Id = Guid.NewGuid();
 
                 PushTrackPointToAzure(currentBusinessAccount, trackPoint, employee, routeId);
 
