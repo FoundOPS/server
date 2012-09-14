@@ -1,14 +1,11 @@
 <!doctype html>
-
 <!--[if IEMobile 7 ]>
 <html class="no-js iem7" lang="en"> <![endif]-->
 <!--[if (gt IEMobile 7)|!(IEMobile)]><!-->
 <html class="no-js" lang="en"> <!--<![endif]-->
-
 <head>
     <meta charset="utf-8">
     <title>FoundOPS</title>
-
     <meta name="description" content="">
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
@@ -18,6 +15,9 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="@Model["BlobRoot"]../img/Icon-72x72.png">
     <link rel="apple-touch-icon-precomposed" href="@Model["BlobRoot"]../img/Icon-36x36.png">
     <link rel="shortcut icon" href="@Model["BlobRoot"]../img/Icon-36x36.png">
+    <!--[if IE]>
+    <style type="text/css">.leaflet-marker-icon .number{top: -5.3px;left: -2.5px;}</style>
+    <![endif]-->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <script>(function (a, b, c) { if (c in b && b[c]) { var d, e = a.location, f = /^(a|html)$/i; a.addEventListener("click", function (a) { d = a.target; while (!f.test(d.nodeName)) d = d.parentNode; "href" in d && (d.href.indexOf("http") || ~d.href.indexOf(e.host)) && (a.preventDefault(), e.href = d.href) }, !1) } })(document, window.navigator, "standalone")</script>
@@ -31,26 +31,6 @@
         <div id="remoteContent">
             <div data-role="view" id="silverlight"></div>
         </div>
-        <div id="silverlightControlHost">
-            <object id="silverlightPlugin" data="data:application/x-silverlight-2," type="application/x-silverlight-2"
-                    style="height: 1px; width: 1px">
-                <param name="onSourceDownloadProgressChanged" value="onSourceDownloadProgressChanged"/>
-                <param name="splashscreensource" value='@Model["SplashSource"]' />
-                <param name="source" value='@Model["XapSource"]'/>
-                <param name="onError" value="onSilverlightError"/>
-                <param name="background" value="#ff333335"/>
-                <param name="windowless" value="true"/>
-                <param name="minRuntimeVersion" value="5.0.61118.0"/>
-                <param name="enableHtmlAccess" value="true"/>
-                <param name="autoUpgrade" value="true"/>
-                <a href="http://go.microsoft.com/fwlink/?LinkID=149156&v=5.0.61118.0" style="text-decoration: none">
-                    <img src="http://go.microsoft.com/fwlink/?LinkId=161376" alt="Get Microsoft Silverlight"
-                         style="border-style: none"/>
-                </a>
-            </object>
-            <iframe id="_sl_historyFrame" style="visibility: hidden; height: 0; width: 0; z-index: -1;
-            border: 0"></iframe>
-        </div>
     </div>
 </div>
 <!--Setup an empty silverlight view, so there is something to navigate to-->
@@ -59,42 +39,7 @@
     var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
     document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
 </script>
-<script src="lib/cordova-2.0.0.js" type="application/javascript"></script>
+<link rel="stylesheet/less" type="text/less" href="styles/main.less">
 <link rel="stylesheet" type="text/css" href="@Model["BlobRoot"]main-built.css">
 <script data-main="@Model["BlobRoot"]main-built.js" src="@Model["BlobRoot"]require-jquery.js"></script>
-<script id="backButtonTemplate" type="text/x-kendo-template">
-    <div id="backButtonContainer">
-        <a onclick="main.onBack()"><img id="backArrow" src="img/backArrow.png"/></a>
-    </div>
-</script>
-<script id="navTemplate" type="text/x-kendo-template">
-    <div id='navContainer'>
-        <div id='navSearch' class='navElement'>
-            <input name='search' type='text' placeholder='Search...'/>
-            <a><img src='img/Search.png'/></a>
-        </div>
-        <div id='navClient' class='navElement last'>
-            <a><img class='navIcon profile' src='#= data[0] #'/><img id='clientLogo' src='#= data[1] #'/></a>
-        </div>
-    </div>
-    <img id='logo' src='./img/Logo.png' alt='FoundOPS'/>
-</script>
-<script id="expandTemplate" type="text/x-kendo-template">
-    <a id="expandMenuButton">
-        <div id='slideMenu'><img class='iconExpand' src='img/Expand.png'/></div>
-    </a>
-</script>
-<script id="showMenuTemplate" type="text/x-kendo-template">
-    <div id="showMenu">
-        <a><img class='iconShow' src='img/Expand.png'/></a>
-    </div>
-</script>
-<script id="sideBarElementTemplate" type="text/x-kendo-template">
-    <!-- href - Weird KendoUI Binding. Maybe fix in the future but works fine as is for now.!-->
-    <a #= href # class='sideBarElement' data-color='#= color #' data-iconUrl='#= iconUrl #' data-hoverIconUrl='#=
-    hoverIconUrl #'>
-        <span class='icon' style="background: url('#= iconUrl #') #= bgX # #= bgY # no-repeat"></span>
-        <span class='sectionName'>#= name #</span>
-    </a>
-</script>
 </html>

@@ -52,7 +52,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 LastCompassDirection = 100,
                 LastLatitude = 40.4599,
                 LastLongitude = -86.9309,
-                LastSource = "Android",
+                LastSource = "android",
                 LastSpeed = 25.65,
                 LastTimeStamp = dateTime,
                 LinkedUserAccountId = _userAccountDesignData.Jon.Id
@@ -75,7 +75,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 LastCompassDirection = 32,
                 LastLatitude = 40.4585,
                 LastLongitude = -86.9329,
-                LastSource = "iPhone",
+                LastSource = "iphone",
                 LastSpeed = 15.2,
                 LastTimeStamp = dateTime,
                 LinkedUserAccountId = _userAccountDesignData.Zach.Id
@@ -98,7 +98,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 LastCompassDirection = -11,
                 LastLatitude = 40.4559,
                 LastLongitude = -86.9305,
-                LastSource = "Windows Phone",
+                LastSource = "winphone",
                 LastSpeed = 48.82,
                 LastTimeStamp = dateTime,
                 LinkedUserAccountId = _userAccountDesignData.Oren.Id
