@@ -323,14 +323,20 @@ namespace FoundOps.SLClient.Data.ViewModels
         }
 
         private readonly Subject<bool> _cancelLastSearchSubject = new Subject<bool>();
+
         /// <summary>
         /// Sets up the search suggestions for an AutoCompleteBox.
         /// </summary>
         /// <param name="autoCompleteBox">The autocomplete box.</param>
         /// <param name="searchQueryFunction">A function that returns the search EntityQuery.</param>
-        protected void SearchSuggestionsHelper(AutoCompleteBox autoCompleteBox, Func<EntityQuery<TBase>> searchQueryFunction)
+        /// <param name="limit">(Optional) Limit to 10 results, set to true by default</param>
+        protected void SearchSuggestionsHelper(AutoCompleteBox autoCompleteBox, Func<EntityQuery<TBase>> searchQueryFunction, bool limit = true)
         {
-            Manager.CoreDomainContext.LoadAsync(searchQueryFunction().Take(10), _cancelLastSearchSubject)
+            var query = searchQueryFunction();
+            if (limit)
+                query = query.Take(10);
+
+            Manager.CoreDomainContext.LoadAsync(query, _cancelLastSearchSubject)
                 .ContinueWith(task =>
                 {
                     _cancelLastSearchSubject.OnNext(true);

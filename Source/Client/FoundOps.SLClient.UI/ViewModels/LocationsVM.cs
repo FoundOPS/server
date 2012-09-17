@@ -158,7 +158,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                     if (recurringServiceContext != null && recurringServiceContext.ClientId != Guid.Empty)
                         query = query.Where(l => l.ClientId == recurringServiceContext.ClientId);
                     return query;
-                });
+                }, false);
 
             #endregion
         }

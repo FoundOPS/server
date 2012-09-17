@@ -308,7 +308,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         }
 
         /// <summary>
-        /// Searches the locations for the current role. Uses a StartsWith search mode.
+        /// Searches the locations for the current role. Where the address line one starts with the search text.
         /// </summary>
         /// <param name="roleId">The role id.</param>
         /// <param name="searchText">The search text.</param>
@@ -317,7 +317,10 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             var locations = GetLocationsToAdministerForRole(roleId);
 
-            return locations;
+            if (!string.IsNullOrEmpty(searchText))
+                locations = locations.Where(l => l.AddressLineOne.StartsWith(searchText));
+
+            return locations.OrderBy(l => l.AddressLineOne);
         }
 
         /// <summary>
