@@ -203,8 +203,8 @@ namespace FoundOps.Core.Models.CoreEntities
                     }
 
                     //Update the ServiceDate
-                    if (this.OccurDate != DateTime.MinValue)
-                        Service.ServiceDate = this.OccurDate;
+                    if (this.OccurDate != DateTime.MinValue && Service.ServiceDate.Date != this.OccurDate.Date)
+                        Service.ServiceDate = this.OccurDate.Date;
                 });
         }
 

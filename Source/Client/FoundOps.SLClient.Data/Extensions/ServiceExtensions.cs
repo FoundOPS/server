@@ -1,4 +1,5 @@
-﻿using FoundOps.Common.Silverlight.Interfaces;
+﻿using System;
+using FoundOps.Common.Silverlight.Interfaces;
 using RiaServicesContrib;
 using System.ServiceModel.DomainServices.Client;
 
@@ -15,12 +16,6 @@ namespace FoundOps.Core.Models.CoreEntities
         /// The parent ServiceHolder if this is a generated service. Otherwise it will be null.
         /// </summary>
         public ServiceHolder ParentServiceHolder { get; set; }
-
-        #endregion
-
-        #region Constructor
-
-
 
         #endregion
 
