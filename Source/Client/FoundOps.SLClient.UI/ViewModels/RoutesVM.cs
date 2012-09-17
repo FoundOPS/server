@@ -750,7 +750,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         protected override void CheckDelete(Action<bool> checkCompleted)
         {
             //Id the Route's date is in the past you can not delete
-            if (SelectedEntity.Date < Manager.Context.UserAccount.AdjustTimeForUserTimeZone(DateTime.UtcNow).Date)
+            if (SelectedEntity.Date < Manager.Context.UserAccount.Now().Date)
             {
                 MessageBox.Show("You cannot delete Routes in the past.");
                 checkCompleted(false);

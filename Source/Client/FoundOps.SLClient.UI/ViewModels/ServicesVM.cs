@@ -369,7 +369,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             var newService = new Service
                 {
                     Id = Guid.NewGuid(),
-                    ServiceDate = Manager.Context.UserAccount.AdjustTimeForUserTimeZone(DateTime.UtcNow).Date
+                    ServiceDate = Manager.Context.UserAccount.Now().Date
                 };
 
             //The RecurringServices Add Button will pass a ServiceProviderLevel or ClientLevel ServiceTemplate (Available Service)

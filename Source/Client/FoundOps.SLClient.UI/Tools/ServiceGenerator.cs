@@ -347,7 +347,7 @@ namespace FoundOps.SLClient.UI.Tools
             var collectionAsList = serviceTuples.ToList();
 
             if (selectedEntity == null) //if there is no selectedEntity find the index of the closest ServiceDate on or after today
-                middleServiceIndexInt = collectionAsList.FindIndex(s => s.ServiceDate >= Manager.Context.UserAccount.AdjustTimeForUserTimeZone(DateTime.UtcNow).Date);
+                middleServiceIndexInt = collectionAsList.FindIndex(s => s.ServiceDate >= Manager.Context.UserAccount.Now().Date);
             else if (selectedEntity.Generated) //Find the corresponding generated service
                 middleServiceIndexInt = collectionAsList.FindIndex(s => s.ServiceDate == selectedEntity.ServiceDate && s.RecurringServiceToGenerateFrom != null &&
                     s.RecurringServiceToGenerateFrom.Id == selectedEntity.RecurringServiceId);
