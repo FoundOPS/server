@@ -288,7 +288,6 @@
     <Content Include="app\lib\filereader.swf" />
     <Content Include="app\view\businessSettings.html" />
     <Content Include="app\view\changePassword.html" />
-    <Content Include="app\view\clearhist.html" />
     <Content Include="app\view\createPassword.html" />
     <Content Include="app\view\dispatcherSettings.html" />
     <Content Include="app\view\importer.html" />
