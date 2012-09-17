@@ -73,7 +73,7 @@ namespace FoundOps.Core.Models.Authentication
             if (body == null)
                 body = "You can reset your password here: \r\n {0}";
 
-            var link = ServerConstants.RootApplicationUrl + "/Account/ResetPassword?resetCode=" + token;
+            var link = AppConstants.RootApplicationUrl + "/Account/ResetPassword?resetCode=" + token;
             body = string.Format(body, link);
 
             EmailPasswordTools.SendEmail(to, subject, body);

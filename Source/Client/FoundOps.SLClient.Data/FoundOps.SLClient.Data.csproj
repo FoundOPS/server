@@ -200,6 +200,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\..\Server\FoundOps.Core\Models\AppConstants.cs">
+      <Link>Models\AppConstants.cs</Link>
+    </Compile>
     <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\BlocksData.cs">
       <Link>DesignData\BlocksData.cs</Link>
     </Compile>

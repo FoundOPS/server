@@ -1,6 +1,5 @@
-using System.ComponentModel.Composition;
-using FoundOps.Common.Composite;
 using FoundOps.Common.Tools;
+using FoundOps.Core.Models;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.UI.Tools;
 using FoundOps.SLClient.Data.Tools;
@@ -14,6 +13,7 @@ using Analytics = FoundOps.SLClient.Data.Services.Analytics;
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using System.ComponentModel.Composition;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
@@ -451,20 +451,28 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
         private string SaveLayout()
         {
             string xml;
-            // Save your layout
-            using (var storage = IsolatedStorageFile.GetUserStoreForApplication())
+            try
             {
-                using (var isoStream = storage.OpenFile("RadDocking_Layout.xml", FileMode.OpenOrCreate))
+                // Save your layout
+                using (var storage = IsolatedStorageFile.GetUserStoreForApplication())
                 {
-                    this.radDocking.SaveLayout(isoStream);
-                    isoStream.Seek(0, SeekOrigin.Begin);
-                    var reader = new StreamReader(isoStream);
-                    xml = reader.ReadToEnd();
+                    using (var isoStream = storage.OpenFile("RadDocking_Layout.xml", FileMode.OpenOrCreate))
+                    {
+                        this.radDocking.SaveLayout(isoStream);
+                        isoStream.Seek(0, SeekOrigin.Begin);
+                        var reader = new StreamReader(isoStream);
+                        xml = reader.ReadToEnd();
 
-                    ////Save to local file system (for FoundOPS use when resetting default layout)
-                    //SaveToFileSystem(xml);
+                        ////Save to local file system (for FoundOPS use when resetting default layout)
+                        //SaveToFileSystem(xml);
+                    }
                 }
             }
+            catch (Exception)
+            {
+                return "";
+            }
+
             // Return the generated XML
             return xml;
         }
@@ -526,46 +534,53 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
 
         #region Map
 
+        private ScriptObject JavascriptMap
+        {
+            get
+            {
+                var element = map.HtmlPresenter.Children.Cast<HtmlElement>().FirstOrDefault();
+                if (element == null)
+                    return null;
+
+                var iFrame = (ScriptObject)element.GetProperty("contentWindow");
+                if (iFrame == null)
+                    return null;
+
+                return iFrame.GetProperty("map") as ScriptObject;
+            }
+        }
+
+        private void SetMapUrl()
+        {
+            if (RoutesVM.SelectedDate == new DateTime())
+                return;
+
+            //http://localhost:31820/App/Index#view/mapView.html?roleId=dca5d7c1-f62d-4dea-832c-b082a43877ce&date=9-16-2012
+            var mapUrl = AppConstants.ApplicationUrl + "#view/mapView.html?disableNavigator=true&" + String.Format("roleId={0}&date={1}", Manager.Context.RoleId, RoutesVM.SelectedDate.ToString("M-d-yyyy"));
+            map.SourceUrl = new Uri(mapUrl);
+        }
+
         /// <summary>
         /// Link up to the map view's javascript functions
         /// </summary>
         private void SetupMap()
         {
-            var mapLoadedObservable = Observable.FromEventPattern<EventHandler, EventArgs>(h => map.UrlLoaded += h, h => map.UrlLoaded -= h);
-
             //Whenever the routes update (the routesvm is saved): update the map's routes
-            this.RoutesVM.SaveCommand.Throttle(TimeSpan.FromSeconds(5)).ObserveOnDispatcher()
+            this.RoutesVM.SaveCommand.Throttle(TimeSpan.FromSeconds(1)).ObserveOnDispatcher()
                 .Subscribe(_ => UpdateMapRoutes());
 
+            //TODO move to url param
             //Whenever the selected route changes: update the selected route in the map view
             this.RoutesVM.SelectedEntityObservable.Throttle(TimeSpan.FromSeconds(1)).ObserveOnDispatcher()
                 .Subscribe(_ => SetMapSelectedRoute());
 
-            //Whenever the selected date changes: update the map's date
-            this.RoutesVM.SelectedDateObservable.Where(sd => sd != new DateTime()).Throttle(TimeSpan.FromSeconds(1)).ObserveOnDispatcher()
-                .Subscribe(_ => SetMapDate());
-
-            //set _mapLoaded to true whenever the map is loaded
-            mapLoadedObservable.Subscribe(_ => _mapLoaded = true);
-
-            //Set the map's role id when
-            //the map is loaded and the role id changes
-            mapLoadedObservable.AsGeneric()
-                //CombineLatest to only trigger when both observables have pushed (the map is loaded, and the role id has been set)
-            .CombineLatest(Manager.Context.RoleIdObservable.AsGeneric(), (a, b) => true)
-            .Throttle(TimeSpan.FromSeconds(1)).ObserveOnDispatcher().Subscribe(_ =>
+            //Set the map's url when the role id changes
+            //when the date changes
+            Manager.Context.RoleIdObservable.AsGeneric()
+            .Merge(RoutesVM.SelectedDateObservable.AsGeneric())
+            .Throttle(TimeSpan.FromMilliseconds(500)).ObserveOnDispatcher().Subscribe(_ =>
             {
-                // Get the IFrame from the HtmlPresenter 
-                var iframe = (HtmlElement)map.HtmlPresenter.Children[0];
-                // Set an ID to the IFrame so that can be used later when calling the javascript 
-                iframe.SetAttribute("id", "mapIFrame");
-
-                var roleId = Manager.Context.RoleId.ToString();
-
-                // set the map date, then role id to load the routes
-                SetMapDate();
-                var code = "document.getElementById('mapIFrame').contentWindow.map.setRoleId('" + roleId + "');";
-                HtmlPage.Window.Eval(code);
+                SetMapUrl();
 
                 //set the selected route after initializing (if there is one)
                 SetMapSelectedRoute();
@@ -573,33 +588,16 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
         }
 
         /// <summary>
-        /// Sets the map's date to the selected date.
-        /// </summary>
-        private void SetMapDate()
-        {
-            //If the map is not loaded, return
-            if (!_mapLoaded)
-                return;
-
-            var date = RoutesVM.SelectedDate;
-            var convertedDate = String.Format("new Date('{0}')", date.RFC822());
-            //Call the setSelectedRoute function
-            var code = String.Format("document.getElementById('mapIFrame').contentWindow.map.setDate({0});", convertedDate);
-            HtmlPage.Window.Eval(code);
-        }
-
-        /// <summary>
         /// Calls the map's getRoutes method.
         /// </summary>
         private void UpdateMapRoutes()
         {
+            var jMap = JavascriptMap;
             //If the map is not loaded, return
-            if (!_mapLoaded)
+            if (jMap == null)
                 return;
 
-            //Call the setSelectedRoute function 
-            const string code = "document.getElementById('mapIFrame').contentWindow.map.getRoutes();";
-            HtmlPage.Window.Eval(code);
+            jMap.Invoke("getRoutes");
         }
 
         /// <summary>
@@ -607,17 +605,16 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
         /// </summary>
         private void SetMapSelectedRoute()
         {
-            //If the map is not loaded, return
-            if (!_mapLoaded)
-                return;
-
             //if there is no selected route, return
             if (RoutesVM.SelectedEntity == null)
                 return;
 
-            //Call the setSelectedRoute function 
-            var code = "document.getElementById('mapIFrame').contentWindow.map.setSelectedRoute('" + RoutesVM.SelectedEntity.Id.ToString() + "');";
-            HtmlPage.Window.Eval(code);
+            var jMap = JavascriptMap;
+            //If the map is not loaded, return
+            if (jMap == null)
+                return;
+
+            jMap.Invoke("setSelectedRoute", RoutesVM.SelectedEntity.Id.ToString());
         }
 
         #endregion

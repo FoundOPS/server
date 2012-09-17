@@ -76,7 +76,7 @@
                         </telerik:RadBusyIndicator>
                     </telerik:RadPane>
                     <telerik:RadPane Header="Route Map" telerik:RadDocking.SerializationTag="RouteMap" x:Name="RouteMapPane" CanUserClose="False">
-                        <telerik:RadHtmlPlaceholder x:Name="map" SourceUrl="MapView" KeepContentInMemory="True" />
+                        <telerik:RadHtmlPlaceholder x:Name="map" KeepContentInMemory="True"  />
                     </telerik:RadPane>
                 </telerik:RadPaneGroup>
             </telerik:RadSplitContainer>

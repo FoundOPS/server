@@ -7,7 +7,7 @@ namespace FoundOps.Server.Controllers
     {
         public ActionResult Index()
         {
-            return Redirect(ServerConstants.ApplicationUrl);
+            return Redirect(AppConstants.ApplicationUrl);
         }
     }
 }

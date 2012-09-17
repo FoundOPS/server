@@ -38,7 +38,7 @@ namespace FoundOps.Server.Controllers
                         if (!String.IsNullOrEmpty(returnUrl))
                             return Redirect(returnUrl);
 
-                        return Redirect(ServerConstants.ApplicationUrl);
+                        return Redirect(AppConstants.ApplicationUrl);
                     }
                     ModelState.AddModelError("", "The email address or password provided is incorrect.");
                 }
@@ -141,7 +141,7 @@ namespace FoundOps.Server.Controllers
         {
             FormsAuthentication.SignOut();
 
-            return Redirect(ServerConstants.RootFrontSiteUrl);
+            return Redirect(AppConstants.RootFrontSiteUrl);
         }
 
         #endregion

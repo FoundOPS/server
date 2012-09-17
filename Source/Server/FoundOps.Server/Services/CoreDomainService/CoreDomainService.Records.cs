@@ -430,7 +430,10 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="roleId">The role id.</param>
         public IQueryable<Region> GetRegionsForServiceProvider(Guid roleId)
         {
-            var businessAccount = ObjectContext.Owner(roleId).First();
+            var businessAccount = ObjectContext.Owner(roleId).FirstOrDefault();
+
+            if (businessAccount == null)
+                return null;
 
             var regions = from region in this.ObjectContext.Regions.Where(v => v.BusinessAccountId == businessAccount.Id)
                           orderby region.Name

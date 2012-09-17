@@ -103,6 +103,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\AppConstants.cs" />
     <Compile Include="Models\Authentication\AccountModels.cs" />
     <Compile Include="Models\Authentication\CoreEntitiesMembershipProvider.cs" />
     <Compile Include="Models\Authentication\UserAccountExtensions.cs" />
