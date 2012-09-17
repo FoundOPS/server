@@ -68,6 +68,7 @@ namespace FoundOPS.API.Api
         /// <returns>
         /// Boolean value that determines if the user needs to authenticate their QuickBooks login information
         /// </returns>
+        [AcceptVerbs("GET", "POST")]
         public QuickBooksConnect GetUserInfo(Guid roleId)
         {
             var currentBusinessAccount = coreEntitiesContainer.Owner(roleId).FirstOrDefault();
@@ -120,7 +121,7 @@ namespace FoundOPS.API.Api
 
             //QuickBooksTools.DeleteInvoice(currentBusinessAccount, invoice);
 
-            var customers = QuickBooksTools.GetAllClients(currentBusinessAccount);
+            //var customers = QuickBooksTools.GetAllClients(currentBusinessAccount);
 
             #endregion
 
