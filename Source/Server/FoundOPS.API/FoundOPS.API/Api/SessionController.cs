@@ -116,8 +116,8 @@ namespace FoundOPS.API.Api
                                    ? partyImageUrls[user.PartyImage.Id]
                                    : "img/emptyPerson.png";
 
-            config.userTimeZoneOffset = user.UserTimeZoneOffset.ToString(@"hh\:mm");
-            config.userTimeZoneOffset = user.UserTimeZoneOffset.TotalHours > 0 ? "+" + config.userTimeZoneOffset : "-" + config.userTimeZoneOffset;
+            //the user's timezone offset in minutes
+            config.userTimeZoneMinutes = user.UserTimeZoneOffset.TotalMinutes;
 
             var jRoles = new List<JObject>();
             //Go through each of the user's roles
