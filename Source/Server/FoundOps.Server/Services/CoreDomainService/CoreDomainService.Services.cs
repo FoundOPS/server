@@ -98,7 +98,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             var user = ObjectContext.CurrentUserAccount().First();
 
             //If the original date was prior to today, throw an exception
-            if (originalService.ServiceDate < user.AdjustTimeForUserTimeZone(DateTime.UtcNow).Date)
+            if (originalService.ServiceDate < user.Now().Date)
                 throw new Exception("Cannot change the date of a Service in the past.");
 
             //Delete any associated route tasks (today/in the future) if the service date changed
@@ -251,7 +251,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                 parameters.Add("@serviceProviderIdContext", serviceProviderContextId);
                 parameters.Add("@clientIdContext", clientContextId);
                 parameters.Add("@recurringServiceIdContext", recurringServiceContextId);
-                parameters.Add("@seedDate", user.AdjustTimeForUserTimeZone(DateTime.UtcNow));
+                parameters.Add("@seedDate", user.Now().Date);
                 parameters.Add("@frontBackMinimum", 50);
                 parameters.Add("@getPrevious", 1);
                 parameters.Add("@getNext", 1);
@@ -490,9 +490,9 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             var user = ObjectContext.CurrentUserAccount().First();
 
-            var date = user.AdjustTimeForUserTimeZone(DateTime.UtcNow);
+            var date = user.Now().Date;
 
-            var newlyAddedFutureDatesToExclude = currentRecurringService.ExcludedDates.Except(originalRecurringService.ExcludedDates).Where(d => d >= date.Date).ToArray();
+            var newlyAddedFutureDatesToExclude = currentRecurringService.ExcludedDates.Except(originalRecurringService.ExcludedDates).Where(d => d >= date).ToArray();
             if (newlyAddedFutureDatesToExclude.Any())
             {
                 var routeTasksToDelete = this.ObjectContext.RouteTasks.Where(rt =>

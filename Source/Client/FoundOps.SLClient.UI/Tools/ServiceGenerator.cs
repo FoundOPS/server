@@ -142,7 +142,7 @@ namespace FoundOps.SLClient.UI.Tools
             var collection = new SortedSet<ServiceTuple>();
 
             //Start the date range initially with the selectedService's ServiceDate (or today if there is no selectedService) +- 1 day
-            var middleDate = selectedService != null ? selectedService.ServiceDate : Manager.Context.UserAccount.AdjustTimeForUserTimeZone(DateTime.UtcNow).Date;
+            var middleDate = selectedService != null ? selectedService.ServiceDate : Manager.Context.UserAccount.Now().Date;
 
             var rangeStartDate = middleDate.AddDays(-1);
             var rangeEndDate = middleDate.AddDays(1);

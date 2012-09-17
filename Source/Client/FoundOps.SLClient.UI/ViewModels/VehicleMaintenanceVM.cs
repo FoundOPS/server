@@ -45,7 +45,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         protected override void OnAddEntity(VehicleMaintenanceLogEntry vehicleMaintenanceLogEntry)
         {
-            vehicleMaintenanceLogEntry.Date = Manager.Context.UserAccount.AdjustTimeForUserTimeZone(DateTime.UtcNow).Date;
+            vehicleMaintenanceLogEntry.Date = Manager.Context.UserAccount.Now().Date;
 
             var vehicleContext = ContextManager.GetContext<Vehicle>();
 

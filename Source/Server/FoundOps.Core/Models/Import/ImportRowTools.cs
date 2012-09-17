@@ -343,7 +343,7 @@ namespace FoundOps.Core.Models.Import
 
             var user = coreEntitiesContainer.CurrentUserAccount().First();
 
-            recurringService.Repeat.StartDate = user.AdjustTimeForUserTimeZone(DateTime.UtcNow);
+            recurringService.Repeat.StartDate = user.Now();
 
             if (locationAssociation != null)
                 recurringService.ServiceTemplate.SetDestination(locationAssociation);

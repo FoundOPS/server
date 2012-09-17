@@ -32,7 +32,7 @@
                 <TextBlock Text="Sch. Start:" HorizontalAlignment="Right" Grid.Column="1"/>
                 <telerik:RadTimePicker Foreground="Black" Grid.Column="3" EndTime="{Binding EndTime, Converter={StaticResource DateTimeOfTodayToTimeSpanConverter}}" SelectedTime="{Binding StartTime, Mode=TwoWay, Converter={StaticResource DateTimeOfTodayToTimeSpanConverter}}"/>
                 <TextBlock Text="Sch. End:" Grid.Row="1" HorizontalAlignment="Right" Grid.Column="1"/>
-                <telerik:RadTimePicker Foreground="Black" Grid.Row="1" Grid.Column="3" StartTime="{Binding StartTime, Converter={StaticResource DateTimeOfTodayToTimeSpanConverter}}"  SelectedTime="{Binding EndTime, Mode=TwoWay, Converter={StaticResource DateTimeOfTodayToTimeSpanConverter}}"/>
+                <telerik:RadTimePicker Foreground="Black" Grid.Row="1" Grid.Column="3" StartTime="{Binding StartTime, Converter={StaticResource DateTimeOfTodayToTimeSpanConverter}}" SelectedTime="{Binding EndTime, Mode=TwoWay, Converter={StaticResource DateTimeOfTodayToTimeSpanConverter}}"/>
                 <TextBlock Text="Est. End:" TextWrapping="Wrap" Grid.Row="2" HorizontalAlignment="Right" Grid.Column="1" TextAlignment="Right" />
                 <TextBlock Text="5ish" Grid.Row="2" Grid.Column="3"/>
                 <!--If exceeds estimated end time vs. scheduled end time, set foregound to red and -->

@@ -65,7 +65,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             var newRecurringService = new RecurringService();
             newRecurringService.AddRepeat();
 
-            newRecurringService.Repeat.StartDate = Manager.Context.UserAccount.AdjustTimeForUserTimeZone(DateTime.UtcNow);
+            newRecurringService.Repeat.StartDate = Manager.Context.UserAccount.Now().Date;
 
             //The RecurringServices Add Button will pass a ClientLevel ServiceTemplate (Available Service)
             var clientLevelServiceTemplate = (ServiceTemplate)commandParameter;
@@ -139,7 +139,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             DomainContext.GetRecurringServicesCSVForRole(ContextManager.RoleId, 
                 loadedCSV => csvLoadedObservable.OnNext(loadedCSV.Value), null);
 
-            var fileName = String.Format("RecurringServicesExport {0}.csv", Manager.Context.UserAccount.AdjustTimeForUserTimeZone(DateTime.UtcNow).ToString("MM'-'dd'-'yyyy"));
+            var fileName = String.Format("RecurringServicesExport {0}.csv", Manager.Context.UserAccount.Now().ToString("MM'-'dd'-'yyyy"));
             var saveFileDialog = new SaveFileDialog { DefaultFileName = fileName, DefaultExt = ".csv", Filter = "CSV File|*.csv" };
 
             if (saveFileDialog.ShowDialog() != true) return;
