@@ -249,7 +249,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             _selectedRouteTaskHelper = _selectedRouteTaskSubject.ToProperty(this, x => x.SelectedRouteTask);
             _routeTypesHelper = RouteTypesObservable.ToProperty(this, x => x.RouteTypes);
 
-            //when the user account loads, adjust for time zone
+            //when the user account loads, adjust UTCNow to the user's time zone to find the users today date
             DataManager.ContextManager.UserAccountObservable.WhereNotNull().Subscribe(ua =>
             {
                 SelectedDate = ua.AdjustTimeForUserTimeZone(DateTime.UtcNow).Date;

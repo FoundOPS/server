@@ -331,14 +331,17 @@
             <End Role="VehicleMaintenanceLog" EntitySet="VehicleMaintenanceLog" />
           </AssociationSet>
         </EntityContainer>
-      <Function Name="GetResourcesWithLastPoint" IsComposable="false">
+      <Function Name="GetResourcesWithLatestPoint" IsComposable="false">
         <CommandText>
           SELECT EmployeeId, VehicleId, EntityName, Heading, Latitude, Longitude, CollectedTimeStamp, Speed, Source, RouteId, Accuracy
-          FROM dbo.GetResourcesWithLatestPoint (@serviceProviderId)
+          FROM dbo.GetResourcesWithLatestPoint (@serviceProviderId, @serviceDateUtc)
         </CommandText>
         <Parameter Name="serviceProviderId"
                Mode="In"
                Type="uniqueidentifier"/>
+        <Parameter Name="serviceDateUtc"
+           Mode="In"
+           Type="date"/>
       </Function>
         <EntityType Name="Blocks">
           <Key>
@@ -2144,8 +2147,9 @@
             <Parameter Name="serviceProviderIdContext" Mode="In" Type="Guid" />
             <Parameter Name="serviceDate" Mode="In" Type="DateTime" />
           </FunctionImport>
-          <FunctionImport Name="GetResourcesWithLastPoint" ReturnType="Collection(CoreEntities.ResourceWithLastPoint)">
+          <FunctionImport Name="GetResourcesWithLatestPoint" ReturnType="Collection(CoreEntities.ResourceWithLastPoint)">
             <Parameter Name="serviceProviderId" Mode="In" Type="Guid" />
+            <Parameter Name="serviceDateUtc" Mode="In" Type="DateTime" />
           </FunctionImport>
           </EntityContainer>
         <EntityType Name="Block">
@@ -3903,7 +3907,7 @@
           <FunctionImportMapping FunctionImportName="PropagateNewFields" FunctionName="CoreEntities.Store.PropagateNewFields" />
           <FunctionImportMapping FunctionImportName="PropagateNewServiceTemplateToClients" FunctionName="CoreEntities.Store.PropagateNewServiceTemplateToClients" />
           <FunctionImportMapping FunctionImportName="sp_GetUnroutedServicesForDate" FunctionName="CoreEntities.Store.sp_GetUnroutedServicesForDate" />
-          <FunctionImportMapping FunctionImportName="GetResourcesWithLastPoint" FunctionName="CoreEntities.Store.GetResourcesWithLastPoint">
+          <FunctionImportMapping FunctionImportName="GetResourcesWithLatestPoint" FunctionName="CoreEntities.Store.GetResourcesWithLatestPoint">
             <ResultMapping>
               <ComplexTypeMapping TypeName="CoreEntities.ResourceWithLastPoint">
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />

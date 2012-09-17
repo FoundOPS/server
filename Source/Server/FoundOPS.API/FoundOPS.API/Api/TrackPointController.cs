@@ -74,7 +74,7 @@ namespace FoundOPS.API.Api
 
         //GET /api/trackpoint/GetResourcesWithLatestPoints?roleId={Guid}&date=Datetime
         /// <summary>
-        /// Gets all resources for a BusinessAccount and their last recorded location today.
+        /// Gets all resources for a BusinessAccount and their last recorded location on routes today.
         /// </summary>
         /// <param name="roleId">Used to find the Business Account</param>
         /// <returns>A list of Resource (employees or vehicles) with their latest tracked point</returns>
@@ -89,10 +89,13 @@ namespace FoundOPS.API.Api
             SetupDesignDataForGetResourcesWithLatestPoints(currentBusinessAccount.Id);
 #endif
 
-            //Calls the sql function to pull all the necessary information for a ResourcesWithTrackPoint
-            var resourcesWithTrackPoint = _coreEntitiesContainer.GetResourcesWithLastPoint(currentBusinessAccount.Id);
+            //TODO make a sql/dapper function for adjusting timezones to users?
+            var currentUserAccount = _coreEntitiesContainer.CurrentUserAccount().First();
+            var userToday = currentUserAccount.AdjustTimeForUserTimeZone(DateTime.UtcNow).Date;
 
-            var modelResources = resourcesWithTrackPoint.Select(ResourceWithLastPoint.ConvertToModel);
+            var resourcesWithTrackPoints = _coreEntitiesContainer.GetResourcesWithLatestPoint(currentBusinessAccount.Id, userToday);
+
+            var modelResources = resourcesWithTrackPoints.Select(ResourceWithLastPoint.ConvertToModel);
             return modelResources.AsQueryable();
         }
 
@@ -104,7 +107,6 @@ namespace FoundOPS.API.Api
         /// <param name="currentBusinessAccountId">The business account to update the design data on.</param>
         private void SetupDesignDataForGetResourcesWithLatestPoints(Guid currentBusinessAccountId)
         {
-
             var user = _coreEntitiesContainer.CurrentUserAccount().First();
 
             var serviceDate = user.AdjustTimeForUserTimeZone(DateTime.UtcNow).Date;
@@ -171,6 +173,7 @@ namespace FoundOPS.API.Api
         /// <summary>
         /// Stores employee trackpoints.
         /// Used by the mobile phone application.
+        /// NOTE: TrackPoints CollectedTimeStamp should be in UTC.
         /// </summary>
         /// <param name="trackPoints">The list of TrackPoints being passed from an Employee's device</param>
         /// <returns>An Http response to the device signaling that the TrackPoint was successfully created</returns>

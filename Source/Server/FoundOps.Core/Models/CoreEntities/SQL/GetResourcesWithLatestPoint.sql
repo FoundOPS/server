@@ -12,7 +12,7 @@ GO
 * It will then find all the required information from those Employees and Vehicles and return them in a table as depicted below.
 ** Input Parameters **
 * @serviceProviderId - The BusinessAccount Id that will be used to find all Employees and Vehicles
-* @serviceDate - The date the you want to get Resource and Locations for
+* @serviceDateUtc - The date (in UTC) you want to get Resource and Locations for
 ** Output Parameters: **
 * @ServicesTableToReturn - Ex. below
 * EmployeeId		| VehicleId | EntityName			| CompassHeading | Latitude	| Longitude	| LastTimeStamp	| Speed	| TrackSource	| RouteId
@@ -23,7 +23,7 @@ GO
 *****************************************************************************************************************************************************/
 
 CREATE FUNCTION [dbo].[GetResourcesWithLatestPoint]
-(@serviceProviderId uniqueidentifier)
+(@serviceProviderId uniqueidentifier, @serviceDateUtc date)
 RETURNS @EmployeeVehicleTableToReturn TABLE
 	(
 		EmployeeId uniqueidentifier,
@@ -41,9 +41,6 @@ RETURNS @EmployeeVehicleTableToReturn TABLE
 AS
 BEGIN
 
-	DECLARE @serviceDate datetime
-	SET @serviceDate = CONVERT (date, GETUTCDATE())
-
 	DECLARE @RoutesForDate TABLE
 	(
 		RouteId uniqueidentifier
@@ -52,7 +49,7 @@ BEGIN
 	--Finds all Routes for the ServiceProvider on the given date
 	INSERT INTO @RoutesForDate
 	SELECT Id FROM Routes
-	WHERE OwnerBusinessAccountId = @serviceProviderId AND Date = @serviceDate
+	WHERE OwnerBusinessAccountId = @serviceProviderId AND Date = @serviceDateUtc
 
 	DECLARE @EmployeesForRoutesForDate TABLE
 	(
