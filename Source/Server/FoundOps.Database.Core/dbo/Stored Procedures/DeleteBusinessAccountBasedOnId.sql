@@ -11,6 +11,9 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 	AS
 	BEGIN
 
+	DELETE FROM Vehicles 
+	WHERE	BusinessAccountId = @providerId
+
 	DELETE FROM RouteEmployee
 	WHERE Routes_Id IN
 	(

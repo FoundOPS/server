@@ -362,5 +362,9 @@
     <Build Include="dbo\Stored Procedures\sp_GetUnroutedServicesForDate.sql" />
     <Build Include="dbo\Stored Procedures\GetServiceHoldersWithFields.sql" />
     <Build Include="dbo\Stored Procedures\GetServiceHolders.sql" />
+    <Build Include="dbo\Stored Procedures\GetServiceTemplatesWithDateAndDetails_1.sql" />
+    <Build Include="dbo\Stored Procedures\GetServiceTemplatesAndFields_1.sql" />
+    <Build Include="dbo\Stored Procedures\GetFieldsInJavaScriptFormat_1.sql" />
+    <Build Include="dbo\Stored Procedures\GetDateRangeForServices.sql" />
   </ItemGroup>
 </Project>

@@ -1,4 +1,4 @@
-﻿CREATE TABLE [dbo].[Vehicles] (
+CREATE TABLE [dbo].[Vehicles] (
     [Id]                       UNIQUEIDENTIFIER NOT NULL,
     [VehicleId]                NVARCHAR (MAX)   NULL,
     [Mileage]                  INT              NULL,
@@ -14,11 +14,11 @@
     [LastTimeStamp]            DATETIME         NULL,
     [LastSpeed]                FLOAT (53)       NULL,
     [LastSource]               NVARCHAR (MAX)   NULL,
-    [OwnerPartyId]             UNIQUEIDENTIFIER NOT NULL,
     [LastPushToAzureTimeStamp] DATETIME         NULL,
     [LastAccuracy]             INT              NULL,
+    [BusinessAccountId]        UNIQUEIDENTIFIER NOT NULL,
     CONSTRAINT [PK_Vehicles] PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_VehicleParty] FOREIGN KEY ([OwnerPartyId]) REFERENCES [dbo].[Parties] ([Id])
+    CONSTRAINT [FK_BusinessAccountVehicle] FOREIGN KEY ([BusinessAccountId]) REFERENCES [dbo].[Parties_BusinessAccount] ([Id])
 );
 
 
@@ -28,7 +28,9 @@
 
 
 
+
+
 GO
-CREATE NONCLUSTERED INDEX [IX_FK_VehicleParty]
-    ON [dbo].[Vehicles]([OwnerPartyId] ASC);
+CREATE NONCLUSTERED INDEX [IX_FK_BusinessAccountVehicle]
+    ON [dbo].[Vehicles]([BusinessAccountId] ASC);
 

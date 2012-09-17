@@ -65,9 +65,9 @@ namespace FoundOPS.API
 #if DEBUG
             .ForOrigins(AppConstants.RootApplicationUrl, "http://localhost:8000")
 #else
-            .ForOrigins(ServerConstants.RootApplicationUrl)
+            .ForOrigins(AppConstants.RootApplicationUrl)
 #endif
-.AllowAll();
+            .AllowAll();
         }
     }
 }
