@@ -40,10 +40,9 @@ namespace FoundOPS.API.Api
         /// </summary>
         /// <param name="roleId">Used to find the Business Account</param>
         /// <param name="routeId">The Id of the Route to pull Track Points for</param>
-        /// <param name="serviceDateUtc">The date of the Route to look for (in UTC).</param>
         /// <returns>A Queryable list of TrackPoints</returns>
         [AcceptVerbs("GET", "POST")]
-        public IQueryable<TrackPoint> GetTrackPoints(Guid roleId, Guid routeId, DateTime serviceDateUtc)
+        public IQueryable<TrackPoint> GetTrackPoints(Guid roleId, Guid routeId)
         {
             //Get the storage account from Azure
             var storageAccount = CloudStorageAccount.Parse(AzureServerHelpers.StorageConnectionString);
@@ -58,11 +57,9 @@ namespace FoundOPS.API.Api
             //Table Names must start with a letter. They also must be alphanumeric. http://msdn.microsoft.com/en-us/library/windowsazure/dd179338.aspx
             var tableName = businessAccount.Id.TrackPointTableName();
 
-            var trackPointsDate = serviceDateUtc.Date;
-
             //Gets all objects from the Azure table specified on the date requested and returns the result
             var trackPoints = serviceContext.CreateQuery<TrackPointsHistoryTableDataModel>(tableName)
-                .Where(tp => tp.CollectedDate == trackPointsDate && tp.RouteId == routeId)
+                .Where(tp => tp.RouteId == routeId)
                 //The following allows us to get more than 1000 rows at a time
                 .AsTableServiceQuery().Execute().ToArray();
 
