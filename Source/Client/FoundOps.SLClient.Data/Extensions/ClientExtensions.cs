@@ -105,9 +105,13 @@ namespace FoundOps.Core.Models.CoreEntities
                 {
                     var defaultLocation = this.Locations.Count == 1 ? this.Locations.First() : null;
                     if (defaultLocation == null) return;
+                    if (defaultLocation.Name == name)
+                        return;
 
-                    if (lastName == defaultLocation.Name)
+                    if (lastName == defaultLocation.Name || string.IsNullOrEmpty(defaultLocation.Name))
+                    {
                         defaultLocation.Name = name;
+                    }
 
                     lastName = name;
                 });

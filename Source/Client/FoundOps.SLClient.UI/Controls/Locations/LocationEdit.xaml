@@ -166,12 +166,15 @@
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="2" />
                     <RowDefinition Height="Auto" />
+                    <RowDefinition Height="2" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                
-                <TextBlock Text="Address:" HorizontalAlignment="Right" Grid.Row="2" />
-                <StackPanel Grid.Row="2" Grid.Column="2">
-                    <TextBlock Text="Name:" HorizontalAlignment="Right" />
-                    <TextBox Text="{Binding Name, Mode=TwoWay}" Grid.Column="2" />
+
+                <TextBlock Grid.Row="2" HorizontalAlignment="Right" Text="Name:" />
+                <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding Name, Mode=TwoWay}" />
+
+                <TextBlock  Grid.Row="4" HorizontalAlignment="Right" Text="Address:" />
+                <StackPanel Grid.Row="4" Grid.Column="2">
                     <telerik:RadMaskedTextBox MaskType="None" EmptyContent="Address Line 1" Value="{Binding AddressLineOne, Mode=TwoWay}" />
                     <telerik:RadMaskedTextBox MaskType="None" EmptyContent="Address Line 2" Margin="0,2,0,0" Value="{Binding AddressLineTwo, Mode=TwoWay}" />
                     <StackPanel Orientation="Horizontal" Margin="0,2,0,0">

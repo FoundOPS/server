@@ -319,7 +319,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             var locations = GetLocationsToAdministerForRole(roleId);
 
             if (!string.IsNullOrEmpty(searchText))
-                locations = locations.Where(l => l.Name.StartsWith(searchText) || l.AddressLineOne.StartsWith(searchText));
+                locations = locations.Where(l => l.Name.StartsWith(searchText));
 
             return locations.OrderBy(l => l.Name).ThenBy(l => l.AddressLineOne);
         }

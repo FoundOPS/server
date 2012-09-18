@@ -33,19 +33,6 @@ namespace FoundOps.Core.Models.CoreEntities
             OnCreation();
         }
 
-        public string AddressCity { get
-        {
-            if (AddressLineOne == "" && AddressLineTwo == "" && City == "")
-                return "";
-            if (AddressLineTwo == "" && City == "")
-                return AddressLineOne;
-            if (AddressLineOne == "" && AddressLineTwo == "")
-                return City;
-            if (AddressLineTwo == "")
-                return AddressLineOne + ", " + City;
-            return this.AddressLineOne + " " + this.AddressLineTwo + ", " + this.City;
-        }}
-
         #region Implementation of ICompositeRaiseEntityPropertyChanged
 
 #if SILVERLIGHT

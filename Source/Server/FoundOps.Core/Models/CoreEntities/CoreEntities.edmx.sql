@@ -428,7 +428,7 @@ GO
 -- Creating table 'Locations'
 CREATE TABLE [dbo].[Locations] (
     [Id] uniqueidentifier  NOT NULL,
-    [Name] nvarchar(max) NOT NULL,
+    [Name] nvarchar(max) NULL,
     [AddressLineOne] nvarchar(max)  NULL,
     [Longitude] decimal(11,8)  NULL,
     [ZipCode] nvarchar(max)  NULL,

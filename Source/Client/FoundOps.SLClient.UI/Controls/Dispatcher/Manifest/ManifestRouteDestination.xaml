@@ -32,14 +32,14 @@
                         <TextBlock Text="{Binding OrderInRoute}" Foreground="Black" FontWeight="Bold"/>
                         <!--Bind to RouteStop Number in Route-->
                         <TextBlock Text=". " Foreground="Black" FontWeight="Bold"/>
-                        <TextBlock Text="{Binding Name}" Foreground="Black" FontWeight="Bold"/>
+                        <TextBlock Text="{Binding Location.Name}" Foreground="Black" FontWeight="Bold"/>
                         <!--Bind to Client Name-->
                         <TextBlock Text=" - " Foreground="Black" FontWeight="Bold">
                             <local:BindingUtil.MultiBindings>
                                 <local:MultiBindings>
                                     <local:MultiBinding TargetProperty="Visibility" Converter="{StaticResource LocationNameVisibilityConverter}">
                                         <local:BindingCollection>
-                                            <Binding Path="Name"/>
+                                            <Binding Path="Client.Name"/>
                                             <Binding Path="Location.Name"/>
                                         </local:BindingCollection>
                                     </local:MultiBinding>
@@ -51,7 +51,7 @@
                                 <local:MultiBindings>
                                     <local:MultiBinding TargetProperty="Visibility" Converter="{StaticResource LocationNameVisibilityConverter}">
                                         <local:BindingCollection>
-                                            <Binding Path="Name"/>
+                                            <Binding Path="Client.Name"/>
                                             <Binding Path="Location.Name"/>
                                         </local:BindingCollection>
                                     </local:MultiBinding>

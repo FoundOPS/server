@@ -427,7 +427,7 @@ GO
 -- Creating table 'Locations'
 CREATE TABLE [dbo].[Locations] (
     [Id] uniqueidentifier  NOT NULL,
-    [Name] nvarchar(max) NOT NULL,
+    [Name] nvarchar(max) NULL,
     [AddressLineOne] nvarchar(max)  NULL,
     [Longitude] decimal(11,8)  NULL,
     [ZipCode] nvarchar(max)  NULL,
@@ -5617,6 +5617,7 @@ BEGIN
 
 	UPDATE	@UnroutedOrUncompletedServices
 	SET		AddressLine = t1.AddressLineOne, 
+			LocationName = t1.Name,
 			LocationId = t1.Id,
 			Latitude = t1.Latitude, 
 			Longitude = t1.Longitude
