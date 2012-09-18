@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace FoundOps.SLClient.UI.Controls.Dispatcher.Converters
+namespace FoundOps.SLClient.UI.Converters
 {
     /// <summary>
     /// Allows manifest to only show the location name

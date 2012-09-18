@@ -535,6 +535,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
           <Property Name="AddressLineOne" Type="nvarchar(max)" />
           <Property Name="Longitude" Type="decimal" Precision="11" Scale="8" />
           <Property Name="ZipCode" Type="nvarchar(max)" />
@@ -2229,6 +2230,7 @@
           </Key>
           <NavigationProperty Name="ContactInfoSet" Relationship="CoreEntities.LocationContactInfo" FromRole="Location" ToRole="ContactInfo" />
           <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="String" Name="Name" Nullable="false" DefaultValue="" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="String" Name="AddressLineOne" Nullable="true" DefaultValue="" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="Decimal" Name="Longitude" Nullable="true" Precision="11" Scale="8" />
           <Property Type="String" Name="ZipCode" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
@@ -3506,6 +3508,7 @@
       <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Location)">
         <MappingFragment StoreEntitySet="Locations">
           <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="AddressLineOne" ColumnName="AddressLineOne" />
           <ScalarProperty Name="Longitude" ColumnName="Longitude" />
           <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />

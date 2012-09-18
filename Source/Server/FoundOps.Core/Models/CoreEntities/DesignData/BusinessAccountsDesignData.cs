@@ -75,6 +75,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 //Add depot
                 serviceProvider.Depots.Add(new Location
                 {
+                    Name = "Depot",
                     AddressLineOne = "1305 Cumberland Ave",
                     City = "West Lafayette",
                     State = "IN",
@@ -82,7 +83,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                     BusinessAccount = serviceProvider,
                     Latitude = (decimal?)40.460335,
                     Longitude = (decimal?)(-86.929840)
-                });     
+                });
 
                 //Choose the right set of ServiceTemplates
                 var serviceTemplates = serviceProvider == ABCouriers ? ServiceTemplatesDesignData.SameDayDeliveryCompanyServiceTemplates :

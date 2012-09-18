@@ -5607,6 +5607,30 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                OnNameChanging(value);
+                ReportPropertyChanging("Name");
+                _Name = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Name");
+                OnNameChanged();
+            }
+        }
+        private global::System.String _Name = "";
+        partial void OnNameChanging(global::System.String value);
+        partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
         public global::System.String AddressLineOne

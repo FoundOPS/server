@@ -240,7 +240,7 @@
     <Compile Include="Controls\Dispatcher\AlgorithmStatus.xaml.cs">
       <DependentUpon>AlgorithmStatus.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Dispatcher\Converters\ManifestConverters.cs" />
+    <Compile Include="Converters\ManifestConverters.cs" />
     <Compile Include="Controls\Dispatcher\Manifest\ManifestRouteDestination.xaml.cs">
       <DependentUpon>ManifestRouteDestination.xaml</DependentUpon>
     </Compile>
@@ -454,13 +454,9 @@
     </Compile>
     <Compile Include="Converters\DateTimeConverters.cs" />
     <Compile Include="Converters\TimeSpanConverters.cs" />
-    <Compile Include="Controls\Dispatcher\Converters\ClientConverters.cs" />
-    <Compile Include="Controls\Dispatcher\Converters\LocationConverters.cs" />
-    <Compile Include="Controls\Dispatcher\Converters\ScheduleConverters.cs" />
     <Compile Include="Controls\Vehicles\VehiclesGrid.xaml.cs">
       <DependentUpon>VehiclesGrid.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Converters\ContactInfoConverters.cs" />
     <Compile Include="Converters\ContactInfoDataTemplateSelector.cs" />
     <Compile Include="Converters\RouteDestinationsOpacityConverters.cs" />
     <Compile Include="Converters\FilterConverters.cs" />

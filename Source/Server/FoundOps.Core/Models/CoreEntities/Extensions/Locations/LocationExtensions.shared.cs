@@ -25,6 +25,7 @@ namespace FoundOps.Core.Models.CoreEntities
         {
             this.Id = Guid.NewGuid();
             //To prevent random HasChanges
+            this.Name = "";
             this.AddressLineOne = "";
             this.AddressLineTwo = "";
             this.City = "";

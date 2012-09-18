@@ -13,7 +13,6 @@ namespace FoundOPS.API.Models
         /// <summary>
         /// The name given to this Location
         /// </summary>
-        [Obsolete]
         public string Name { get; set; }
         
         /// <summary>
@@ -66,6 +65,7 @@ namespace FoundOPS.API.Models
             var location = new Location
             {
                 Id = locationModel.Id,
+                Name = locationModel.Name,
                 AddressLineOne = locationModel.AddressLineOne,
                 AddressLineTwo = locationModel.AddressLineTwo,
                 Longitude = locationModel.Longitude.ToString(),

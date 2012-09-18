@@ -3,12 +3,10 @@
     xmlns:Controls="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
     xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" xmlns:Converters="clr-namespace:FoundOps.Framework.Views.Converters"
     xmlns:CustomFields="clr-namespace:FoundOps.Framework.Views.Controls.CustomFields"
-             xmlns:Converters1="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI"
-             d:DesignHeight="100" d:DesignWidth="300"
+             xmlns:Converters1="clr-namespace:FoundOps.SLClient.UI.Converters" d:DesignHeight="100" d:DesignWidth="300"
     ViewModelLocator:ViewModelLocator.SharedViewModel="RoutesVM">
     <UserControl.Resources>
-        <Converters:EstimatedLengthConverter x:Key="EstimatedLengthConverter"/>
-        <Converters1:EnumValuesConverter x:Key="EnumValuesConverter"/>
+        <Converters1:EstimatedLengthConverter x:Key="EstimatedLengthConverter"/>
     </UserControl.Resources>
     <ScrollViewer x:Name="LayoutRoot" DataContext="{Binding SelectedRouteTask}">
         <StackPanel>

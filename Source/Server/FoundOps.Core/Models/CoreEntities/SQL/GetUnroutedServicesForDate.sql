@@ -252,6 +252,7 @@ BEGIN
 
 	UPDATE	@UnroutedOrUncompletedServices
 	SET		AddressLine = t1.AddressLineOne, 
+			LocationName = t1.Name,
 			LocationId = t1.Id,
 			Latitude = t1.Latitude, 
 			Longitude = t1.Longitude
