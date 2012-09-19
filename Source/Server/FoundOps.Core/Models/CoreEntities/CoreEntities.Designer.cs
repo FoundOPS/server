@@ -1538,7 +1538,8 @@ namespace FoundOps.Core.Models.CoreEntities
         /// No Metadata Documentation available.
         /// </summary>
         /// <param name="serviceProviderId">No Metadata Documentation available.</param>
-        public ObjectResult<ResourceWithLastPoint> GetResourcesWithLastPoint(Nullable<global::System.Guid> serviceProviderId)
+        /// <param name="serviceDateUtc">No Metadata Documentation available.</param>
+        public ObjectResult<ResourceWithLastPoint> GetResourcesWithLatestPoint(Nullable<global::System.Guid> serviceProviderId, Nullable<global::System.DateTime> serviceDateUtc)
         {
             ObjectParameter serviceProviderIdParameter;
             if (serviceProviderId.HasValue)
@@ -1550,7 +1551,17 @@ namespace FoundOps.Core.Models.CoreEntities
                 serviceProviderIdParameter = new ObjectParameter("serviceProviderId", typeof(global::System.Guid));
             }
     
-            return base.ExecuteFunction<ResourceWithLastPoint>("GetResourcesWithLastPoint", serviceProviderIdParameter);
+            ObjectParameter serviceDateUtcParameter;
+            if (serviceDateUtc.HasValue)
+            {
+                serviceDateUtcParameter = new ObjectParameter("serviceDateUtc", serviceDateUtc);
+            }
+            else
+            {
+                serviceDateUtcParameter = new ObjectParameter("serviceDateUtc", typeof(global::System.DateTime));
+            }
+    
+            return base.ExecuteFunction<ResourceWithLastPoint>("GetResourcesWithLatestPoint", serviceProviderIdParameter, serviceDateUtcParameter);
         }
 
         #endregion
@@ -5592,6 +5603,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.Guid _Id;
         partial void OnIdChanging(global::System.Guid value);
         partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Name
+        {
+            get
+            {
+                return _Name;
+            }
+            set
+            {
+                OnNameChanging(value);
+                ReportPropertyChanging("Name");
+                _Name = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Name");
+                OnNameChanged();
+            }
+        }
+        private global::System.String _Name = "";
+        partial void OnNameChanging(global::System.String value);
+        partial void OnNameChanged();
     
         /// <summary>
         /// No Metadata Documentation available.

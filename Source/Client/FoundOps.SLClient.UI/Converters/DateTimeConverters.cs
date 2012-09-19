@@ -17,7 +17,7 @@ namespace FoundOps.SLClient.UI.Converters
         {
             if (value != null)
             {
-                var date = Manager.Context.UserAccount.AdjustTimeForUserTimeZone(DateTime.UtcNow);
+                var date = Manager.Context.UserAccount.Now().Date;
 
                 var dateTime = (DateTime)value;
                 var currentDateTime = new DateTime(date.Year, date.Month, date.Day,
@@ -48,9 +48,8 @@ namespace FoundOps.SLClient.UI.Converters
         {
             var dateTime = (DateTime)value;
 
-            var date = Manager.Context.UserAccount.AdjustTimeForUserTimeZone(DateTime.UtcNow);
-
-            return dateTime.ToUniversalTime().Date >= date.Date;
+            var date = Manager.Context.UserAccount.Now();
+            return dateTime.Date >= date.Date;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

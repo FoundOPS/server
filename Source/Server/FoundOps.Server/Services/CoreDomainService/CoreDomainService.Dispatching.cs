@@ -13,7 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
-using System.Data.Objects;
 using System.Linq;
 using System.ServiceModel.DomainServices.EntityFramework;
 
@@ -31,15 +30,15 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// Gets the routes for a service provider on a date.
         /// </summary>
         /// <param name="roleId">The current role id.</param>
-        /// <param name="dateOfRoutes">The date of the routes.</param>
-        public IQueryable<Route> GetRoutesForServiceProviderOnDay(Guid roleId, DateTime dateOfRoutes)
+        /// <param name="date">The date of the routes.</param>
+        public IQueryable<Route> GetRoutesForServiceProviderOnDay(Guid roleId, DateTime date)
         {
             var businessAccount = ObjectContext.Owner(roleId).First();
 
-            var routesDateOnly = dateOfRoutes.ToUniversalTime().Date;
+            date = date.Date;
 
             var routes =
-                this.ObjectContext.Routes.Where(r => r.OwnerBusinessAccountId == businessAccount.Id && r.Date == routesDateOnly)
+                this.ObjectContext.Routes.Where(r => r.OwnerBusinessAccountId == businessAccount.Id && r.Date == date)
                 .Include(r => r.RouteDestinations).Include("RouteDestinations.Location").Include("RouteDestinations.RouteTasks").Include("RouteDestinations.RouteTasks.Client");
 
             return routes.OrderBy(r => r.Name);

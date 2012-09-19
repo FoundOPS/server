@@ -5,7 +5,7 @@
         <ListBox ItemsSource="{Binding Locations, ElementName=myLocationLinkSmall}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
-                    <TextBlock HorizontalAlignment="Center" Text="{Binding AddressCity}"/>
+                    <TextBlock HorizontalAlignment="Center" Text="{Binding Name}"/>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

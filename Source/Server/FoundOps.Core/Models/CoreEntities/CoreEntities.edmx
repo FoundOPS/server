@@ -331,14 +331,17 @@
             <End Role="VehicleMaintenanceLog" EntitySet="VehicleMaintenanceLog" />
           </AssociationSet>
         </EntityContainer>
-      <Function Name="GetResourcesWithLastPoint" IsComposable="false">
+      <Function Name="GetResourcesWithLatestPoint" IsComposable="false">
         <CommandText>
           SELECT EmployeeId, VehicleId, EntityName, Heading, Latitude, Longitude, CollectedTimeStamp, Speed, Source, RouteId, Accuracy
-          FROM dbo.GetResourcesWithLatestPoint (@serviceProviderId)
+          FROM dbo.GetResourcesWithLatestPoint (@serviceProviderId, @serviceDateUtc)
         </CommandText>
         <Parameter Name="serviceProviderId"
                Mode="In"
                Type="uniqueidentifier"/>
+        <Parameter Name="serviceDateUtc"
+           Mode="In"
+           Type="date"/>
       </Function>
         <EntityType Name="Blocks">
           <Key>
@@ -532,6 +535,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
           <Property Name="AddressLineOne" Type="nvarchar(max)" />
           <Property Name="Longitude" Type="decimal" Precision="11" Scale="8" />
           <Property Name="ZipCode" Type="nvarchar(max)" />
@@ -2144,8 +2148,9 @@
             <Parameter Name="serviceProviderIdContext" Mode="In" Type="Guid" />
             <Parameter Name="serviceDate" Mode="In" Type="DateTime" />
           </FunctionImport>
-          <FunctionImport Name="GetResourcesWithLastPoint" ReturnType="Collection(CoreEntities.ResourceWithLastPoint)">
+          <FunctionImport Name="GetResourcesWithLatestPoint" ReturnType="Collection(CoreEntities.ResourceWithLastPoint)">
             <Parameter Name="serviceProviderId" Mode="In" Type="Guid" />
+            <Parameter Name="serviceDateUtc" Mode="In" Type="DateTime" />
           </FunctionImport>
           </EntityContainer>
         <EntityType Name="Block">
@@ -2225,6 +2230,7 @@
           </Key>
           <NavigationProperty Name="ContactInfoSet" Relationship="CoreEntities.LocationContactInfo" FromRole="Location" ToRole="ContactInfo" />
           <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="String" Name="Name" Nullable="true" DefaultValue="" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="String" Name="AddressLineOne" Nullable="true" DefaultValue="" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="Decimal" Name="Longitude" Nullable="true" Precision="11" Scale="8" />
           <Property Type="String" Name="ZipCode" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
@@ -3502,6 +3508,7 @@
       <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Location)">
         <MappingFragment StoreEntitySet="Locations">
           <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="AddressLineOne" ColumnName="AddressLineOne" />
           <ScalarProperty Name="Longitude" ColumnName="Longitude" />
           <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
@@ -3903,7 +3910,7 @@
           <FunctionImportMapping FunctionImportName="PropagateNewFields" FunctionName="CoreEntities.Store.PropagateNewFields" />
           <FunctionImportMapping FunctionImportName="PropagateNewServiceTemplateToClients" FunctionName="CoreEntities.Store.PropagateNewServiceTemplateToClients" />
           <FunctionImportMapping FunctionImportName="sp_GetUnroutedServicesForDate" FunctionName="CoreEntities.Store.sp_GetUnroutedServicesForDate" />
-          <FunctionImportMapping FunctionImportName="GetResourcesWithLastPoint" FunctionName="CoreEntities.Store.GetResourcesWithLastPoint">
+          <FunctionImportMapping FunctionImportName="GetResourcesWithLatestPoint" FunctionName="CoreEntities.Store.GetResourcesWithLatestPoint">
             <ResultMapping>
               <ComplexTypeMapping TypeName="CoreEntities.ResourceWithLastPoint">
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />

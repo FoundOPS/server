@@ -201,7 +201,7 @@ namespace FoundOps.SLClient.UI.Controls.Services
                 return style;
             var serviceDate = ((ServiceHolder)item).OccurDate.Date;
 
-            var userTime = Manager.Context.UserAccount.AdjustTimeForUserTimeZone(DateTime.UtcNow);
+            var userTime = Manager.Context.UserAccount.Now();
 
             //If the service is in the past it should be grey.
             if (serviceDate < userTime.Date)

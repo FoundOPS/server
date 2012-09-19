@@ -121,7 +121,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             CreateNewItem = name =>
             {
                 //Set the Party to the current OwnerAccount
-                var newLocation = new Location { BusinessAccount = ContextManager.ServiceProvider };
+                var newLocation = new Location { Name = name, BusinessAccount = ContextManager.ServiceProvider };
 
                 //Add the entity to the EntitySet so it is tracked by the DomainContext
                 DomainContext.Locations.Add(newLocation);
@@ -132,6 +132,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                 if (client != null)
                 {
                     client.Locations.Add(newLocation);
+                    if (client.Locations.Count == 1)
+                        newLocation.Name = client.Name;
                 }
 
                 var region = ContextManager.GetContext<Region>();
@@ -158,7 +160,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                     if (recurringServiceContext != null && recurringServiceContext.ClientId != Guid.Empty)
                         query = query.Where(l => l.ClientId == recurringServiceContext.ClientId);
                     return query;
-                });
+                }, false);
 
             #endregion
         }
@@ -197,7 +199,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             DomainContext.GetLocationsCSVForRole(ContextManager.RoleId, clientContext != null ? clientContext.Id : new Guid(), regionContext != null ? regionContext.Id : new Guid(),
                 loadedCSV => csvLoadedObservable.OnNext(loadedCSV.Value), null);
 
-            var fileName = String.Format("LocationsExport {0}.csv", Manager.Context.UserAccount.AdjustTimeForUserTimeZone(DateTime.UtcNow).ToString("MM'-'dd'-'yyyy"));
+            var fileName = String.Format("LocationsExport {0}.csv", Manager.Context.UserAccount.Now().ToString("MM'-'dd'-'yyyy"));
             var saveFileDialog = new SaveFileDialog { DefaultFileName = fileName, DefaultExt = ".csv", Filter = "CSV File|*.csv" };
 
             if (saveFileDialog.ShowDialog() != true) return;

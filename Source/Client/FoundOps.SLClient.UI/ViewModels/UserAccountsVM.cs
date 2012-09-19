@@ -160,9 +160,13 @@ namespace FoundOps.SLClient.UI.ViewModels
                 NavigateToThis();
 
                 //Use Temp salt
-                var newUserAccount = new UserAccount { TemporaryPassword = PasswordTools.GeneratePassword(), PasswordSalt = new byte[]{65, 0 ,65}, DisplayName = name };
-
-                newUserAccount.CreationDate = Manager.Context.UserAccount.AdjustTimeForUserTimeZone(DateTime.UtcNow);
+                var newUserAccount = new UserAccount
+                    {
+                        TemporaryPassword = PasswordTools.GeneratePassword(),
+                        PasswordSalt = new byte[] {65, 0, 65},
+                        DisplayName = name,
+                        CreationDate = DateTime.UtcNow.Date
+                    };
 
                 //Add the new entity to the Context so it gets tracked/saved
                 DomainContext.Parties.Add(newUserAccount);

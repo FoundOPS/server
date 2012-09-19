@@ -57,7 +57,7 @@ namespace FoundOps.Core.Models.Import
 
             #region Location
 
-            //PropertyCategories.Add(new PropertyCategory<Location>(DataCategory.LocationName, (location, val) => location.Name = val));
+            PropertyCategories.Add(new PropertyCategory<Location>(DataCategory.LocationName, (location, val) => location.Name = val));
 
             PropertyCategories.Add(new PropertyCategory<Location>(DataCategory.LocationAddressLineOne, (location, val) => location.AddressLineOne = val));
             PropertyCategories.Add(new PropertyCategory<Location>(DataCategory.LocationAddressLineTwo, (location, val) => location.AddressLineTwo = val));
@@ -343,7 +343,7 @@ namespace FoundOps.Core.Models.Import
 
             var user = coreEntitiesContainer.CurrentUserAccount().First();
 
-            recurringService.Repeat.StartDate = user.AdjustTimeForUserTimeZone(DateTime.UtcNow);
+            recurringService.Repeat.StartDate = user.Now();
 
             if (locationAssociation != null)
                 recurringService.ServiceTemplate.SetDestination(locationAssociation);

@@ -278,7 +278,8 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             var businessAccount = ObjectContext.Owner(roleId).First();
 
-            var locations = ObjectContext.Locations.Where(loc => loc.BusinessAccountId == businessAccount.Id && !loc.BusinessAccountIdIfDepot.HasValue).OrderBy(l => l.AddressLineOne);
+            var locations = ObjectContext.Locations.Where(loc => loc.BusinessAccountId == businessAccount.Id && !loc.BusinessAccountIdIfDepot.HasValue)
+                .OrderBy(l => l.Name).ThenBy(l=>l.AddressLineOne);
             return locations;
         }
 
@@ -308,7 +309,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         }
 
         /// <summary>
-        /// Searches the locations for the current role. Uses a StartsWith search mode.
+        /// Searches the locations for the current role. Where the address line one starts with the search text.
         /// </summary>
         /// <param name="roleId">The role id.</param>
         /// <param name="searchText">The search text.</param>
@@ -317,7 +318,10 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             var locations = GetLocationsToAdministerForRole(roleId);
 
-            return locations;
+            if (!string.IsNullOrEmpty(searchText))
+                locations = locations.Where(l => l.Name.StartsWith(searchText));
+
+            return locations.OrderBy(l => l.Name).ThenBy(l => l.AddressLineOne);
         }
 
         /// <summary>
@@ -351,7 +355,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             var csvWriter = new CsvWriter(memoryStream);
 
-            csvWriter.WriteHeaderRecord("Client", "Address 1", "Address 2", "City", "State", "Zip Code",
+            csvWriter.WriteHeaderRecord("Client", "Location", "Address 1", "Address 2", "City", "State", "Zip Code",
                                         "Region", "Latitude", "Longitude");
 
             var locations = ObjectContext.Locations.Where(loc => loc.BusinessAccountId == businessAccount.Id && !loc.BusinessAccountIdIfDepot.HasValue);
@@ -372,6 +376,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                           select new
                           {
                               ClientName = c.Name,
+                              loc.Name,
                               loc.AddressLineOne,
                               loc.AddressLineTwo,
                               loc.City,
@@ -383,7 +388,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                           };
 
             foreach (var record in records.ToArray())
-                csvWriter.WriteDataRecord(record.ClientName, record.AddressLineOne, record.AddressLineTwo, record.City, record.State, record.ZipCode, record.RegionName,
+                csvWriter.WriteDataRecord(record.ClientName, record.Name, record.AddressLineOne, record.AddressLineTwo, record.City, record.State, record.ZipCode, record.RegionName,
                                        record.Latitude, record.Longitude);
 
             csvWriter.Close();

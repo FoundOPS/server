@@ -112,7 +112,8 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         private DateTime _selectedDate;
         /// <summary>
-        /// The SelectedDate.
+        /// The SelectedDate
+        /// NOTE: This must be in the current user's timezone because it is displayed to the user
         /// </summary>
         public DateTime SelectedDate
         {
@@ -249,10 +250,10 @@ namespace FoundOps.SLClient.UI.ViewModels
             _selectedRouteTaskHelper = _selectedRouteTaskSubject.ToProperty(this, x => x.SelectedRouteTask);
             _routeTypesHelper = RouteTypesObservable.ToProperty(this, x => x.RouteTypes);
 
-            //when the user account loads, adjust for time zone
+            //when the user account loads, get today in the users time zone
             DataManager.ContextManager.UserAccountObservable.WhereNotNull().Subscribe(ua =>
             {
-                SelectedDate = ua.AdjustTimeForUserTimeZone(DateTime.UtcNow).Date;
+                SelectedDate = ua.Now().Date;
             });
 
             //Update the SelectedRouteVM whenever the RouteDestination changes
@@ -506,7 +507,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             #region Date Modifiers
 
-            SetSelectedDayToToday = new RelayCommand(() => this.SelectedDate = Manager.Context.UserAccount.AdjustTimeForUserTimeZone(DateTime.UtcNow).Date);
+            SetSelectedDayToToday = new RelayCommand(() => this.SelectedDate = Manager.Context.UserAccount.Now().Date);
             SetSelectedDayOneDayPrevious = new RelayCommand(() => this.SelectedDate = SelectedDate.Date.AddDays(-1));
             SetSelectedDayOneDayForward = new RelayCommand(() => this.SelectedDate = SelectedDate.Date.AddDays(1));
 
@@ -691,6 +692,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 DetailsLoaded = true,
                 OwnerBusinessAccount = (BusinessAccount)ContextManager.OwnerAccount,
                 RouteType = VM.DispatcherFilter.ServiceTemplateOptions.Where(o => o.IsSelected).Select(o => ((ServiceTemplate)o.Entity).Name).First(),
+                //TODO?
                 Date = SelectedDate,
                 StartTime = SelectedDate.Date.AddHours(9),
                 EndTime = SelectedDate.Date.AddHours(17)
@@ -748,7 +750,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         protected override void CheckDelete(Action<bool> checkCompleted)
         {
             //Id the Route's date is in the past you can not delete
-            if (SelectedEntity.Date < Manager.Context.UserAccount.AdjustTimeForUserTimeZone(DateTime.UtcNow).Date)
+            if (SelectedEntity.Date < Manager.Context.UserAccount.Now().Date)
             {
                 MessageBox.Show("You cannot delete Routes in the past.");
                 checkCompleted(false);

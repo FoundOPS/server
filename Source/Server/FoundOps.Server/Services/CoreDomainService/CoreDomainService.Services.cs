@@ -98,7 +98,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             var user = ObjectContext.CurrentUserAccount().First();
 
             //If the original date was prior to today, throw an exception
-            if (originalService.ServiceDate < user.AdjustTimeForUserTimeZone(DateTime.UtcNow).Date)
+            if (originalService.ServiceDate < user.Now().Date)
                 throw new Exception("Cannot change the date of a Service in the past.");
 
             //Delete any associated route tasks (today/in the future) if the service date changed
@@ -240,7 +240,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             var user = ObjectContext.CurrentUserAccount().FirstOrDefault();
 
-            if(user == null)
+            if (user == null)
                 throw new Exception("No User logged in");
 
             using (var conn = new SqlConnection(ServerConstants.SqlConnectionString))
@@ -251,7 +251,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                 parameters.Add("@serviceProviderIdContext", serviceProviderContextId);
                 parameters.Add("@clientIdContext", clientContextId);
                 parameters.Add("@recurringServiceIdContext", recurringServiceContextId);
-                parameters.Add("@seedDate", user.AdjustTimeForUserTimeZone(DateTime.UtcNow));
+                parameters.Add("@seedDate", user.Now().Date);
                 parameters.Add("@frontBackMinimum", 50);
                 parameters.Add("@getPrevious", 1);
                 parameters.Add("@getNext", 1);
@@ -265,7 +265,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
                 var firstDate = data.Read<DateTime>().Single();
                 var lastDate = data.Read<DateTime>().Single();
-                
+
                 //Reset parameters
                 parameters = new DynamicParameters();
                 parameters.Add("@serviceProviderIdContext", serviceProviderContextId);
@@ -383,9 +383,11 @@ namespace FoundOps.Server.Services.CoreDomainService
             {
                 //Get destination information from LocationField
                 var destination = record.RecurringService.ServiceTemplate.GetDestination();
+                var locationName = "";
                 var address = "";
                 if (destination != null)
                 {
+                    locationName = destination.Name;
                     address = destination.AddressLineOne;
                 }
 
@@ -458,7 +460,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
                 //Convert frequency detail to:  day or date
                 //"Service Type", "Client", "Location", "Address", "Frequency"
-                csvWriter.WriteDataRecord(record.ServiceType, record.ClientName, address, frequency.ToString(),
+                csvWriter.WriteDataRecord(record.ServiceType, record.ClientName, locationName, address, frequency.ToString(),
                     //"Start Date", "End Date", "Repeat Every", "Repeat On"
                    repeat.StartDate.ToShortDateString(), endDate, repeat.RepeatEveryTimes.ToString(), repeatOn);
             }
@@ -490,9 +492,9 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             var user = ObjectContext.CurrentUserAccount().First();
 
-            var date = user.AdjustTimeForUserTimeZone(DateTime.UtcNow);
+            var date = user.Now().Date;
 
-            var newlyAddedFutureDatesToExclude = currentRecurringService.ExcludedDates.Except(originalRecurringService.ExcludedDates).Where(d => d >= date.Date).ToArray();
+            var newlyAddedFutureDatesToExclude = currentRecurringService.ExcludedDates.Except(originalRecurringService.ExcludedDates).Where(d => d >= date).ToArray();
             if (newlyAddedFutureDatesToExclude.Any())
             {
                 var routeTasksToDelete = this.ObjectContext.RouteTasks.Where(rt =>

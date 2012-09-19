@@ -40,10 +40,9 @@ namespace FoundOPS.API.Api
         /// </summary>
         /// <param name="roleId">Used to find the Business Account</param>
         /// <param name="routeId">The Id of the Route to pull Track Points for</param>
-        /// <param name="serviceDateUtc">The date of the Route to look for (in UTC).</param>
         /// <returns>A Queryable list of TrackPoints</returns>
         [AcceptVerbs("GET", "POST")]
-        public IQueryable<TrackPoint> GetTrackPoints(Guid roleId, Guid routeId, DateTime serviceDateUtc)
+        public IQueryable<TrackPoint> GetTrackPoints(Guid roleId, Guid routeId)
         {
             //Get the storage account from Azure
             var storageAccount = CloudStorageAccount.Parse(AzureServerHelpers.StorageConnectionString);
@@ -58,11 +57,9 @@ namespace FoundOPS.API.Api
             //Table Names must start with a letter. They also must be alphanumeric. http://msdn.microsoft.com/en-us/library/windowsazure/dd179338.aspx
             var tableName = businessAccount.Id.TrackPointTableName();
 
-            var trackPointsDate = serviceDateUtc.Date;
-
             //Gets all objects from the Azure table specified on the date requested and returns the result
             var trackPoints = serviceContext.CreateQuery<TrackPointsHistoryTableDataModel>(tableName)
-                .Where(tp => tp.CollectedDate == trackPointsDate && tp.RouteId == routeId)
+                .Where(tp => tp.RouteId == routeId)
                 //The following allows us to get more than 1000 rows at a time
                 .AsTableServiceQuery().Execute().ToArray();
 
@@ -74,7 +71,7 @@ namespace FoundOPS.API.Api
 
         //GET /api/trackpoint/GetResourcesWithLatestPoints?roleId={Guid}&date=Datetime
         /// <summary>
-        /// Gets all resources for a BusinessAccount and their last recorded location today.
+        /// Gets all resources for a BusinessAccount and their last recorded location on routes today
         /// </summary>
         /// <param name="roleId">Used to find the Business Account</param>
         /// <returns>A list of Resource (employees or vehicles) with their latest tracked point</returns>
@@ -89,10 +86,13 @@ namespace FoundOPS.API.Api
             SetupDesignDataForGetResourcesWithLatestPoints(currentBusinessAccount.Id);
 #endif
 
-            //Calls the sql function to pull all the necessary information for a ResourcesWithTrackPoint
-            var resourcesWithTrackPoint = _coreEntitiesContainer.GetResourcesWithLastPoint(currentBusinessAccount.Id);
+            //TODO make a sql/dapper function for adjusting timezones to users?
+            var currentUserAccount = _coreEntitiesContainer.CurrentUserAccount().First();
+            var userToday = currentUserAccount.Now().Date;
 
-            var modelResources = resourcesWithTrackPoint.Select(ResourceWithLastPoint.ConvertToModel);
+            var resourcesWithTrackPoints = _coreEntitiesContainer.GetResourcesWithLatestPoint(currentBusinessAccount.Id, userToday);
+
+            var modelResources = resourcesWithTrackPoints.Select(ResourceWithLastPoint.ConvertToModel);
             return modelResources.AsQueryable();
         }
 
@@ -104,10 +104,9 @@ namespace FoundOPS.API.Api
         /// <param name="currentBusinessAccountId">The business account to update the design data on.</param>
         private void SetupDesignDataForGetResourcesWithLatestPoints(Guid currentBusinessAccountId)
         {
-
             var user = _coreEntitiesContainer.CurrentUserAccount().First();
 
-            var serviceDate = user.AdjustTimeForUserTimeZone(DateTime.UtcNow).Date;
+            var serviceDate = user.Now().Date;
 
             var routes = _coreEntitiesContainer.Routes.Where(r => r.Date == serviceDate && r.OwnerBusinessAccountId == currentBusinessAccountId).OrderBy(r => r.Id);
             var numberOfRoutes = routes.Count();
@@ -124,7 +123,7 @@ namespace FoundOPS.API.Api
                 foreach (var employee in route.Employees)
                 {
                     employee.LastCompassDirection = (employee.LastCompassDirection + 15) % 360;
-                    employee.LastTimeStamp = user.AdjustTimeForUserTimeZone(DateTime.UtcNow);
+                    employee.LastTimeStamp = user.Now();
                     employee.LastSpeed = random.Next(30, 50);
 
                     switch (routeNumber)
@@ -171,6 +170,7 @@ namespace FoundOPS.API.Api
         /// <summary>
         /// Stores employee trackpoints.
         /// Used by the mobile phone application.
+        /// NOTE: TrackPoints CollectedTimeStamp should be in UTC.
         /// </summary>
         /// <param name="trackPoints">The list of TrackPoints being passed from an Employee's device</param>
         /// <returns>An Http response to the device signaling that the TrackPoint was successfully created</returns>

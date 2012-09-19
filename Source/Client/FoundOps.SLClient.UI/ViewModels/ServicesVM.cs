@@ -155,7 +155,7 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             #region Setup seed date
 
-            var seedDate = Manager.Context.UserAccount.AdjustTimeForUserTimeZone(DateTime.UtcNow).Date;
+            var seedDate = Manager.Context.UserAccount.Now().Date;
             switch (loadType)
             {
                 //If this is moving backwards set the seed date to the earliest occur date of the collection
@@ -369,7 +369,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             var newService = new Service
                 {
                     Id = Guid.NewGuid(),
-                    ServiceDate = Manager.Context.UserAccount.AdjustTimeForUserTimeZone(DateTime.UtcNow).Date
+                    ServiceDate = Manager.Context.UserAccount.Now().Date
                 };
 
             //The RecurringServices Add Button will pass a ServiceProviderLevel or ClientLevel ServiceTemplate (Available Service)

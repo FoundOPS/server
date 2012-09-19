@@ -30,9 +30,29 @@ namespace FoundOps.Core.Models.CoreEntities
         }
         #endregion
 
-        public DateTime AdjustTimeForUserTimeZone(DateTime systemTime)
+        /// <summary>
+        /// Converts UTC to the user's time zone
+        /// </summary>
+        public DateTime UtcToUserTime(DateTime utc)
         {
-            return systemTime.Add(UserTimeZoneOffset);
+            return utc.Add(UserTimeZoneOffset);
+        }
+
+        /// <summary>
+        /// Converts the user's time to Utc
+        /// </summary>
+        public DateTime UserTimeToUtc(DateTime userTime)
+        {
+            return userTime.Subtract(UserTimeZoneOffset);
+        }
+
+        /// <summary>
+        /// Now in the user's time zone
+        /// </summary>
+        /// <returns></returns>
+        public DateTime Now()
+        {
+            return UtcToUserTime(DateTime.UtcNow);
         }
 
         public override string DisplayName
