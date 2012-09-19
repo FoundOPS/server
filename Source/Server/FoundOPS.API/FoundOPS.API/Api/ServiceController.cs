@@ -205,32 +205,6 @@ namespace FoundOPS.API.Api
                 db.Database.Connection.Close();
             }
 
-            var command = new SqlCommand("GetServiceHoldersWithFields") { CommandType = CommandType.StoredProcedure };
-
-            var serviceProviderIdContext = command.Parameters.Add("@serviceProviderIdContext", SqlDbType.UniqueIdentifier);
-            serviceProviderIdContext.Value = currentBusinessAccount.Id;
-
-            var serviceTypeContext = command.Parameters.Add("@serviceTypeContext", SqlDbType.NVarChar);
-            serviceTypeContext.Value = serviceType;
-
-            var clientIdContext = command.Parameters.Add("@clientIdContext", SqlDbType.UniqueIdentifier);
-            if (clientContext.HasValue)
-                clientIdContext.Value = clientContext.Value;
-            else
-                clientIdContext.Value = DBNull.Value;
-
-            var recurringServiceIdContext = command.Parameters.Add("@recurringServiceIdContext", SqlDbType.UniqueIdentifier);
-            if (recurringServiceContext.HasValue)
-                recurringServiceIdContext.Value = recurringServiceContext.Value;
-            else
-                recurringServiceIdContext.Value = DBNull.Value;
-
-            var firstDate = command.Parameters.Add("@firstDate", SqlDbType.Date);
-            firstDate.Value = startDate;
-
-            var lastDate = command.Parameters.Add("@lastDate", SqlDbType.Date);
-            lastDate.Value = endDate;
-
             var result = serviceTemplates.AsParallel().Select(st =>
                 {
                     var dictionary = new Dictionary<string, Object>

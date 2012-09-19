@@ -5853,7 +5853,7 @@ END
 
 GO
 
-USE [Core]
+USE [LocalCore]
 GO
 /****** Object:  StoredProcedure [dbo].[PropagateNewFields]    Script Date: 6/19/2012 1:04:23 PM ******/
 SET ANSI_NULLS ON
@@ -5919,6 +5919,10 @@ CREATE PROCEDURE [dbo].[PropagateNewFields]
 		SELECT	TemplateRecurs.Id
 		FROM	TemplateRecurs		      
 		
+		--Remove top level Service Template from list, normal add functionality will take care of it
+		DELETE FROM @CopyOfNewServiceTemplates
+		WHERE Id = @serviceTemplateId
+
 		--Track the number of Service Templates left to be created
 		SET @serviceTemplateCount = (SELECT COUNT(*) FROM @CopyOfNewServiceTemplates)
         
