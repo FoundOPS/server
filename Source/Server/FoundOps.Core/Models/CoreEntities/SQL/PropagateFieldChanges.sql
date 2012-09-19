@@ -1,4 +1,4 @@
-USE [LocalCore]
+USE [Core]
 GO
 /****** Object:  StoredProcedure [dbo].[PropagateNewFields]    Script Date: 6/19/2012 1:04:23 PM ******/
 SET ANSI_NULLS ON
