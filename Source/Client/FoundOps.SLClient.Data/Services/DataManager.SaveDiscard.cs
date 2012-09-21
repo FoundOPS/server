@@ -34,6 +34,15 @@ namespace FoundOps.SLClient.Data.Services
         /// </summary>
         public event ChangesSavedHandler ChangesSaved;
 
+        private readonly Subject<bool> _changesSavedSubject = new Subject<bool>();
+        /// <summary>
+        /// Pushes whenever changes are saved.
+        /// </summary>
+        public IObservable<bool> ChangesSavedObservable
+        {
+            get { return _changesSavedSubject.AsObservable(); }
+        }
+
         private readonly Subject<bool> _rejectChangesDueToErrorSubject= new Subject<bool>(); 
         /// <summary>
         /// Pushes whenever rejects changes is called due to an error.
@@ -150,6 +159,8 @@ namespace FoundOps.SLClient.Data.Services
 
                     if (ChangesSaved != null)
                         ChangesSaved(submitOperationCallback);
+
+                    _changesSavedSubject.OnNext(true);
 
                     //Clear the _currentSubmitOperation
                     _currentSubmitOperation = null;

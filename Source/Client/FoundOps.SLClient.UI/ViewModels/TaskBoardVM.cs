@@ -1,4 +1,5 @@
-﻿using FoundOps.Common.Silverlight.Services;
+﻿using System.ComponentModel;
+using FoundOps.Common.Silverlight.Services;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
 using FoundOps.Common.Tools.ExtensionMethods;
@@ -79,8 +80,16 @@ namespace FoundOps.SLClient.UI.ViewModels
             SetupDataLoading();
         }
 
+        //resets on save
+        private bool _routeTaskDateChanged = false;
+
         private void SetupDataLoading()
         {
+            //update routeTaskDateChanged whenever a route task's date has changed
+            ViewObservable.SelectLatest(v =>
+                ((ObservableCollection<RouteTask>)((ICollectionView)v).SourceCollection).Select(rt => rt.FromPropertyChanged("Date")).Merge())
+                .AsGeneric().ObserveOnDispatcher().Subscribe(_ => _routeTaskDateChanged = true);
+
             #region Load Tasks
 
             //Load the Tasks whenever
@@ -88,17 +97,21 @@ namespace FoundOps.SLClient.UI.ViewModels
             //b) the current role changed, while the dispatcher was open
             //c) the SelectedDate changes
             //d) RejectChanges is called due to an error
+            //e) a RouteTask's date has changed and then a save was performed
             VM.Navigation.CurrentSectionObservable.Where(section => section == "Dispatcher").AsGeneric()
             .Merge(ContextManager.OwnerAccountObservable.Where(o => VM.Navigation.CurrentSection == "Dispatcher").AsGeneric())
             .Merge(VM.Routes.SelectedDateObservable.AsGeneric())
             .Merge(DataManager.RejectChangesDueToError)
             .Merge(_reloadTasks)
+            .Merge(DataManager.ChangesSavedObservable.Where(_ => _routeTaskDateChanged))
             .Throttle(TimeSpan.FromMilliseconds(100))
             .ObserveOnDispatcher().Subscribe(_ =>
             {
                 _cancelLastTasksLoad.OnNext(true);
 
-                if(VM.Routes.SelectedDate == new DateTime())
+                _routeTaskDateChanged = false;
+
+                if (VM.Routes.SelectedDate == new DateTime())
                     return;
 
                 Manager.CoreDomainContext.LoadAsync(DomainContext.GetUnroutedServicesQuery(ContextManager.RoleId, VM.Routes.SelectedDate), _cancelLastTasksLoad).ContinueWith(

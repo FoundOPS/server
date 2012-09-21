@@ -307,6 +307,27 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void UpdateRouteTask(RouteTask currentRouteTask)
         {
+            var original = this.ObjectContext.RouteTasks.Include("Service").First(rt => rt.Id == currentRouteTask.Id);
+            this.ObjectContext.Detach(original);
+
+            if (original.Date != currentRouteTask.Date)
+            {
+                var service = this.ObjectContext.Services.FirstOrDefault(s => s.Id == original.ServiceId);
+
+                if (service != null)
+                    service.ServiceDate = currentRouteTask.Date;
+
+                var recurringService = this.ObjectContext.RecurringServices.FirstOrDefault(rs => rs.Id == original.RecurringServiceId) 
+                                            ?? this.ObjectContext.RecurringServices.FirstOrDefault(rs => rs.Id == service.RecurringServiceId.Value);
+
+                if (recurringService != null)
+                {
+                    var excludedDates = recurringService.ExcludedDates.ToList();
+                    excludedDates.Add(original.Date);
+                    recurringService.ExcludedDates = excludedDates;
+                }
+            }
+
             this.ObjectContext.RouteTasks.AttachAsModified(currentRouteTask);
         }
 
