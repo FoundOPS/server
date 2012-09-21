@@ -281,7 +281,8 @@ namespace FoundOPS.API.Api
             {
                 service = new FoundOps.Core.Models.CoreEntities.Service
                 {
-                    ServiceDate = serviceDate.Value,
+                    Id = Guid.NewGuid(),
+                    ServiceDate = serviceDate.Value.Date,
                     ServiceProviderId = businessAccountId
                 };
 
@@ -292,6 +293,7 @@ namespace FoundOPS.API.Api
                 }
 
                 var template = serviceTemplate.MakeChild(ServiceTemplateLevel.ServiceDefined);
+
                 //TODO check if this is necessary
                 template.Id = service.Id;
                 service.ServiceTemplate = template;
@@ -383,7 +385,7 @@ namespace FoundOPS.API.Api
                 var generatedService = new FoundOps.Core.Models.CoreEntities.Service
                 {
                     Id = service.Id,
-                    ServiceDate = service.ServiceDate,
+                    ServiceDate = service.ServiceDate.Date,
                     ServiceProviderId = service.ServiceProviderId,
                     ClientId = service.ClientId,
                     RecurringServiceId = service.RecurringServiceId,
