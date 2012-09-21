@@ -414,6 +414,13 @@ namespace FoundOPS.API.Api
             if (businessAccount == null)
                 return Request.CreateResponse(HttpStatusCode.Unauthorized);
 
+            var routeTask = _coreEntitiesContainer.RouteTasks.Include("RouteDestination").Include("RouteDestination.Route").FirstOrDefault(rt => rt.ServiceId == service.Id);
+            if (routeTask != null)
+            {
+                _coreEntitiesContainer.RouteDestinations.DeleteObject(routeTask.RouteDestination);
+                _coreEntitiesContainer.RouteTasks.DeleteObject(routeTask);
+            }
+
             var existingService = _coreEntitiesContainer.Services.FirstOrDefault(s => s.Id == service.Id);
             if (existingService != null)
             {
