@@ -130,10 +130,7 @@
                     </toolkit:Expander.Header>
                     <Dispatcher:RoutesLogGrid MaxHeight="150"/>
                 </toolkit:Expander>
-                <!--Only show for if role has permission to be routes (technician/driver, operations manager) -->
-                <UserAccounts:UserAccountLinkLarge IsEnabled="{Binding DataContext.SelectedEntity.DetailsLoaded, ElementName=myEmployeeLarge}"
-                                                   SelectedUserAccount="{Binding DataContext.SelectedEntity.LinkedUserAccount, ElementName=myEmployeeLarge, Mode=TwoWay}"/>
-            </StackPanel>
+               </StackPanel>
         </ScrollViewer>
     </Grid>
 </UserControl>

@@ -40,17 +40,18 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             DesignEmployeeHistoryTwo = new EmployeeHistoryEntry
             {
                 Date = date,
-                Type = "Performance Review",
-                Summary = "Passed",
-                Notes = "No noteworthy complaints"
+                Type = "Termination",
+                Summary = "Moved away",
+                Notes = "Received severence pay"
+                
             };
 
             DesignEmployeeHistoryThree = new EmployeeHistoryEntry
             {
                 Date = date,
-                Type = "Termination",
-                Summary = "Moved away",
-                Notes = "Received severence pay"
+                Type = "Performance Review",
+                Summary = "Passed",
+                Notes = "No noteworthy complaints"
             };
 
             DesignEmployeeHistoryEnties = new List<EmployeeHistoryEntry> { DesignEmployeeHistory, DesignEmployeeHistoryTwo, DesignEmployeeHistoryThree };
