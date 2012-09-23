@@ -388,18 +388,6 @@
           <edmx:ConnectorPoint PointX="18.228461538461538" PointY="193.75" />
           <edmx:ConnectorPoint PointX="18.228461538461538" PointY="194" />
         </edmx:AssociationConnector>
-        <edmx:EntityTypeShape EntityType="CoreEntities.Option" Width="1.5" PointX="25.875" PointY="9.75" Height="2.364889322916639" />
-        <edmx:AssociationConnector Association="CoreEntities.OptionsFieldOption">
-          <edmx:ConnectorPoint PointX="20.0312525" PointY="197.5" />
-          <edmx:ConnectorPoint PointX="20.0312525" PointY="193.68244466145831" />
-          <edmx:ConnectorPoint PointX="22" PointY="193.68244466145831" />
-        </edmx:AssociationConnector>
-        <edmx:EntityTypeShape EntityType="CoreEntities.LocationOption" Width="1.5" PointX="25.875" PointY="12.5" Height="1.0187792968749818" />
-        <edmx:InheritanceConnector EntityType="CoreEntities.LocationOption" ManuallyRouted="false">
-          <edmx:ConnectorPoint PointX="25.875" PointY="12.114889322916639" />
-          <edmx:ConnectorPoint PointX="22.75" PointY="195.05744466145831" />
-          <edmx:ConnectorPoint PointX="25.875" PointY="12.5" />
-        </edmx:InheritanceConnector>
         <edmx:AssociationConnector Association="CoreEntities.ServiceTemplateField">
           <edmx:ConnectorPoint PointX="16.5" PointY="195.47089680989583" />
           <edmx:ConnectorPoint PointX="17.25" PointY="195.47089680989583" />

@@ -65,7 +65,7 @@ namespace FoundOps.SLClient.UI.Controls.CustomFields.Define
             if (currentOption == null)
                 return;
 
-            foreach (Option item in currentOption.OptionsField.Options.Where(item => item != currentOption))
+            foreach (Option item in currentOption.Parent.Options.Where(item => item != currentOption))
             {
                 item.IsChecked = false;
             }

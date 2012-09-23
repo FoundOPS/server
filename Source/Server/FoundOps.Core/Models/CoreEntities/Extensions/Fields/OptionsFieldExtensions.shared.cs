@@ -1,7 +1,14 @@
-﻿using System;
+﻿using System.Reactive.Linq;
+using System.Threading;
+using FoundOps.Common.Tools;
 using FoundOps.Common.Composite.Entities;
+using System;
+using System.Collections.ObjectModel;
+using System.Linq;
 
+// ReSharper disable CheckNamespace
 namespace FoundOps.Core.Models.CoreEntities
+// ReSharper restore CheckNamespace
 {
     public enum OptionsType
     {
@@ -12,7 +19,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
     public partial class OptionsField : IEntityDefaultCreation
     {
-            #region Implementation of IEntityDefaultCreation
+        #region Implementation of IEntityDefaultCreation
 
 #if SILVERLIGHT
         partial void OnCreated()
@@ -54,27 +61,38 @@ namespace FoundOps.Core.Models.CoreEntities
             this.CompositeRaiseEntityPropertyChanged("OptionsType");
         }
 
-               //The way to clone an entity on the server is different then the way to clone on the client
-        //That is why this is split into !SILVERLIGHT and SILVERLIGHT
-#if !SILVERLIGHT
-        public override Field MakeChild()
+        private ObservableCollection<Option> _options;
+        public ObservableCollection<Option> Options
         {
-            var child = (OptionsField) base.MakeChild();
-
-            foreach (var option in this.Options)
+            get
             {
-                //Clone with the reflection based extension method
-                var clonedOption = option.Clone();
+                if (_options == null)
+                {
+                    var names = this.OptionsString.Split(',').Select(CsvWriter.Unescape).ToList();
+                    var values = this.Value.Split(',').Select(CsvWriter.Unescape).Select(int.Parse).ToList();
 
-                //Update the Id
-                clonedOption.Id = Guid.NewGuid();
+                    var options = names.Select((t, i) => new Option { Name = t, IsChecked = values.Contains(i), Parent = this });
+                    _options = new ObservableCollection<Option>(options);
 
-                //Update the OptionsField the clonedOption belongs to
-                clonedOption.OptionsField = child;
-            }
-
-            return child;
-        }
+                    _options.FromCollectionChanged().SelectLatest(ops =>
+                        //whenever an option's property changes
+                        _options.Select(o => o.FromAnyPropertyChanged()).Merge().AsGeneric()
+                            //whenever the collection changes
+                        .AndNow())
+#if SILVERLIGHT
+.ObserveOnDispatcher()
+#else
+.ObserveOn(SynchronizationContext.Current)
 #endif
+.Subscribe(_ =>
+                    {
+                        OptionsString = "TODO";
+                        Value = "TODO";
+                    });
+                }
+
+                return _options;
+            }
+        }
     }
 }

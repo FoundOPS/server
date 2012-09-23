@@ -99,9 +99,6 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_LocationFile]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Files] DROP CONSTRAINT [FK_LocationFile];
 GO
-IF OBJECT_ID(N'[dbo].[FK_LocationOption_inherits_Option]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Options_LocationOption] DROP CONSTRAINT [FK_LocationOption_inherits_Option];
-GO
 IF OBJECT_ID(N'[dbo].[FK_LocationSubLocation]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[SubLocations] DROP CONSTRAINT [FK_LocationSubLocation];
 GO
@@ -110,9 +107,6 @@ IF OBJECT_ID(N'[dbo].[FK_NumericField_inherits_Field]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_OptionsField_inherits_Field]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Fields_OptionsField] DROP CONSTRAINT [FK_OptionsField_inherits_Field];
-GO
-IF OBJECT_ID(N'[dbo].[FK_OptionsFieldOption]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Options] DROP CONSTRAINT [FK_OptionsFieldOption];
 GO
 IF OBJECT_ID(N'[dbo].[FK_PartyImage_inherits_File]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Files_PartyImage] DROP CONSTRAINT [FK_PartyImage_inherits_File];
@@ -280,12 +274,6 @@ IF OBJECT_ID(N'[dbo].[LineItems]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[Locations]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Locations];
-GO
-IF OBJECT_ID(N'[dbo].[Options]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Options];
-GO
-IF OBJECT_ID(N'[dbo].[Options_LocationOption]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Options_LocationOption];
 GO
 IF OBJECT_ID(N'[dbo].[Parties]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Parties];
@@ -632,17 +620,6 @@ CREATE TABLE [dbo].[EmployeeHistoryEntries] (
 );
 GO
 
--- Creating table 'Options'
-CREATE TABLE [dbo].[Options] (
-    [Id] uniqueidentifier  NOT NULL,
-    [Name] nvarchar(max)  NOT NULL,
-    [IsChecked] bit  NOT NULL,
-    [OptionsFieldId] uniqueidentifier  NOT NULL,
-    [Index] int  NOT NULL,
-    [Tooltip] nvarchar(max)  NULL
-);
-GO
-
 -- Creating table 'Invoices'
 CREATE TABLE [dbo].[Invoices] (
     [Id] uniqueidentifier  NOT NULL,
@@ -765,7 +742,9 @@ GO
 CREATE TABLE [dbo].[Fields_OptionsField] (
     [AllowMultipleSelection] bit  NOT NULL,
     [TypeInt] smallint  NOT NULL,
-    [Id] uniqueidentifier  NOT NULL
+    [Id] uniqueidentifier  NOT NULL,
+    [OptionsString] nvarchar(max) NOT NULL,
+    [Value] nvarchar(max) NOT NULL
 );
 GO
 
@@ -808,12 +787,6 @@ CREATE TABLE [dbo].[Fields_DateTimeField] (
     [Latest] datetime  NOT NULL,
     [TypeInt] smallint  NOT NULL,
     [Value] datetime  NULL,
-    [Id] uniqueidentifier  NOT NULL
-);
-GO
-
--- Creating table 'Options_LocationOption'
-CREATE TABLE [dbo].[Options_LocationOption] (
     [Id] uniqueidentifier  NOT NULL
 );
 GO
@@ -982,12 +955,6 @@ ADD CONSTRAINT [PK_EmployeeHistoryEntries]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [Id] in table 'Options'
-ALTER TABLE [dbo].[Options]
-ADD CONSTRAINT [PK_Options]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
 -- Creating primary key on [Id] in table 'Invoices'
 ALTER TABLE [dbo].[Invoices]
 ADD CONSTRAINT [PK_Invoices]
@@ -1075,12 +1042,6 @@ GO
 -- Creating primary key on [Id] in table 'Fields_DateTimeField'
 ALTER TABLE [dbo].[Fields_DateTimeField]
 ADD CONSTRAINT [PK_Fields_DateTimeField]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
--- Creating primary key on [Id] in table 'Options_LocationOption'
-ALTER TABLE [dbo].[Options_LocationOption]
-ADD CONSTRAINT [PK_Options_LocationOption]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -1611,21 +1572,6 @@ ON [dbo].[Fields]
     ([ParentFieldId]);
 GO
 
--- Creating foreign key on [OptionsFieldId] in table 'Options'
-ALTER TABLE [dbo].[Options]
-ADD CONSTRAINT [FK_OptionsFieldOption]
-    FOREIGN KEY ([OptionsFieldId])
-    REFERENCES [dbo].[Fields_OptionsField]
-        ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
-GO
-
--- Creating non-clustered index for FOREIGN KEY 'FK_OptionsFieldOption'
-CREATE INDEX [IX_FK_OptionsFieldOption]
-ON [dbo].[Options]
-    ([OptionsFieldId]);
-GO
-
 -- Creating foreign key on [ServiceTemplateId] in table 'Fields'
 ALTER TABLE [dbo].[Fields]
 ADD CONSTRAINT [FK_ServiceTemplateField]
@@ -1990,15 +1936,6 @@ ALTER TABLE [dbo].[Fields_DateTimeField]
 ADD CONSTRAINT [FK_DateTimeField_inherits_Field]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Fields]
-        ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
-GO
-
--- Creating foreign key on [Id] in table 'Options_LocationOption'
-ALTER TABLE [dbo].[Options_LocationOption]
-ADD CONSTRAINT [FK_LocationOption_inherits_Option]
-    FOREIGN KEY ([Id])
-    REFERENCES [dbo].[Options]
         ([Id])
     ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
@@ -5183,8 +5120,6 @@ BEGIN
 	JOIN dbo.Fields_OptionsField t2 
 	ON t1.Id = t2.Id and t1.Id IN (SELECT Id FROM @fieldIds)
 
-	SELECT * FROM dbo.Options WHERE OptionsFieldId IN (SELECT Id FROM dbo.Fields_OptionsField WHERE Id IN (SELECT Id FROM @fieldIds))
-
 	SELECT t1.*, t2.* FROM dbo.Fields t1 
 	JOIN dbo.Fields_LocationField t2 
 	ON t1.Id = t2.Id and t1.Id IN (SELECT Id FROM @fieldIds)
@@ -5305,54 +5240,12 @@ AS
 		ON t1.LocationId = t3.Id AND t2.Id IN (SELECT Id FROM #FieldIds)
 		ORDER BY t2.ServiceTemplateId
 
-		CREATE TABLE #OptionsFields 
-				(
-				  AllowMultipleSelection BIT ,
-				  TypeInt SMALLINT ,
-				  Id UNIQUEIDENTIFIER,
-				  FieldType NVARCHAR(MAX) ,
-				  ServiceTemplateId UNIQUEIDENTIFIER ,
-				  FieldName NVARCHAR(MAX),
-				  [Value] NVARCHAR(MAX)
-				)    
-		
-		INSERT INTO #OptionsFields (AllowMultipleSelection, TypeInt, Id)
-			SELECT * FROM dbo.Fields_OptionsField
-			WHERE Id IN (SELECT Id FROM #FieldIds)
+		SELECT t2.Id, t2.ServiceTemplateId, t2.Name, t1.Value
+		FROM dbo.Fields_OptionsField t1
+		JOIN dbo.Fields t2
+		ON t2.Id = t1.Id AND t2.Id IN (SELECT Id FROM #FieldIds)
+		ORDER BY t2.ServiceTemplateId
 
-		DECLARE @CheckedOptions TABLE 
-		(
-			OptionsFieldId UNIQUEIDENTIFIER ,
-			[Name] NVARCHAR(MAX)
-		)
-
-		INSERT INTO @CheckedOptions
-		SELECT OptionsFieldId, Name FROM dbo.Options --OptionsFieldId, Name
-		WHERE IsChecked = 1 
-		AND OptionsFieldId IN (SELECT Id FROM #OptionsFields)
-			
-		--Concatinates all Options that were checked as follows: op1, op2, op3,
-		UPDATE #OptionsFields
-		SET Value = (SELECT Name + ', ' AS 'data()' 
-		FROM @CheckedOptions 
-		WHERE OptionsFieldId = [#OptionsFields].Id
-		ORDER BY Name
-		FOR XML PATH(''))
-
-		--Removes the extra comma inserted at the end of the Value string because of concatination
-		UPDATE #OptionsFields
-		SET Value = LEFT(Value, LEN(Value) -1)
-
-		UPDATE #OptionsFields
-			SET ServiceTemplateId = (SELECT ServiceTemplateId FROM dbo.Fields WHERE Id = [#OptionsFields].Id),
-				FieldName = (SELECT Name FROM dbo.Fields WHERE Id = [#OptionsFields].Id)
-
-		
-		SELECT Id, ServiceTemplateId, FieldName AS 'Name', Value  
-		FROM #OptionsFields
-		ORDER BY ServiceTemplateId
-
-		DROP TABLE #OptionsFields
 		DROP TABLE #FieldIds
 		DROP TABLE #ServiceTemplateIds
 		DROP TABLE #ServiceHolders
@@ -5852,7 +5745,7 @@ END
 
 GO
 
-USE [Core]
+USE Core
 GO
 /****** Object:  StoredProcedure [dbo].[PropagateNewFields]    Script Date: 6/19/2012 1:04:23 PM ******/
 SET ANSI_NULLS ON
@@ -5860,7 +5753,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 --This procedure deletes all the basic info held on a Party (Locations, Contacts, ContactInfoSet, Roles, Vehicles and Files)
-CREATE PROCEDURE [dbo].[PropagateNewFields]
+ALTER PROCEDURE [dbo].[PropagateNewFields]
 		(@FieldId uniqueidentifier)
 	AS
 	BEGIN
@@ -5881,16 +5774,8 @@ CREATE PROCEDURE [dbo].[PropagateNewFields]
 			DECLARE @CopyOfNewServiceTemplates TABLE
 			(
 				Id UNIQUEIDENTIFIER
-			)
-			DECLARE @OptionsCopies TABLE
-			(
-				Id UNIQUEIDENTIFIER,
-				NAME NVARCHAR(MAX),
-				IsChecked BIT,
-				OptionsFieldId UNIQUEIDENTIFIER,
-				[Index] INT,
-				ToolTip NVARCHAR(MAX)
-			)      
+			)    
+			  
 		END
 
 		BEGIN --Sets all variables to copy basic field data
@@ -5918,7 +5803,6 @@ CREATE PROCEDURE [dbo].[PropagateNewFields]
 		SELECT	TemplateRecurs.Id
 		FROM	TemplateRecurs		      
 		
-		--Remove top level Service Template from list, normal add functionality will take care of it
 		DELETE FROM @CopyOfNewServiceTemplates
 		WHERE Id = @serviceTemplateId
 
@@ -6013,29 +5897,20 @@ CREATE PROCEDURE [dbo].[PropagateNewFields]
 
 				IF @FieldId IN (SELECT Id FROM dbo.Fields_OptionsField) --Copy the Options field, set new Id's 
 				BEGIN
-					INSERT INTO Fields_OptionsField
+					
+					INSERT INTO dbo.Fields_OptionsField
 							( AllowMultipleSelection ,
-								TypeInt ,
-								Id
+							  TypeInt ,
+							  Value ,
+							  OptionsString ,
+							  Id
 							)
-					VALUES  ( (SELECT AllowMultipleSelection FROM dbo.Fields_OptionsField WHERE Id = @FieldId) , -- AllowMultipleSelection - bit
-								(SELECT TypeInt FROM dbo.Fields_OptionsField WHERE Id = @FieldId) , -- TypeInt - smallint
-								@newFieldId  -- Id - uniqueidentifier
+					VALUES	( (SELECT AllowMultipleSelection FROM dbo.Fields_OptionsField WHERE Id = @FieldId) , -- AllowMultipleSelection - bit
+							  (SELECT TypeInt FROM dbo.Fields_OptionsField WHERE Id = @FieldId), -- TypeInt - smallint
+							  (SELECT Value FROM dbo.Fields_OptionsField WHERE Id = @FieldId) , -- Value - nvarchar(max)
+							  (SELECT OptionsString FROM dbo.Fields_OptionsField WHERE Id = @FieldId) , -- OptionsString - nvarchar(max)
+							  @newFieldId  -- Id - uniqueidentifier
 							)
-						
-					INSERT INTO @OptionsCopies
-					SELECT * FROM Options
-					WHERE OptionsFieldId = @FieldId
-
-					UPDATE @OptionsCopies
-					SET Id = NEWID(),
-						OptionsFieldId = @newFieldId
-
-					INSERT INTO Options
-					SELECT * FROM @OptionsCopies
-
-					DELETE FROM @OptionsCopies
-
 				END  		
 			END
 			      

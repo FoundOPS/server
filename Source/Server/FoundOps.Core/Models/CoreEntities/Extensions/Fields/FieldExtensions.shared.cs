@@ -1,7 +1,9 @@
-﻿using System;
-using FoundOps.Common.Composite.Entities;
+﻿using FoundOps.Common.Composite.Entities;
+using System;
 
+// ReSharper disable CheckNamespace
 namespace FoundOps.Core.Models.CoreEntities
+// ReSharper restore CheckNamespace
 {
     /// <summary>
     /// A generic Field to be extended. Not intended to be created.

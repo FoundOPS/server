@@ -21,7 +21,6 @@ namespace FoundOps.Core.Tools
                 loadServiceTemplate.CommandText = "GetServiceTemplatesAndFields";
                 loadServiceTemplate.CommandType = CommandType.StoredProcedure;
 
-
                 #region Add Parameters
 
                 var parameter = new SqlParameter
@@ -66,7 +65,6 @@ namespace FoundOps.Core.Tools
 
                 #endregion
 
-
                 var reader = loadServiceTemplate.ExecuteReader();
 
                 var serviceTemplates = container.Translate<ServiceTemplate>(reader, "ServiceTemplates", MergeOption.AppendOnly).ToArray();
@@ -90,10 +88,6 @@ namespace FoundOps.Core.Tools
                 reader.NextResult();
 
                 var optionsFields = container.Translate<OptionsField>(reader, "Fields", MergeOption.AppendOnly).ToList();
-
-                reader.NextResult();
-
-                var options = container.Translate<Option>(reader, "Options", MergeOption.AppendOnly).ToList();
 
                 reader.NextResult();
 

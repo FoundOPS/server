@@ -118,9 +118,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                  AllowMultipleSelection = false,
                  OptionsType = OptionsType.Combobox
              };
-            designComboBoxField.Options.Add(new Option { Name = "Small", IsChecked = false, Index = 0 });
-            designComboBoxField.Options.Add(new Option { Name = "Medium", IsChecked = false, Index = 1 });
-            designComboBoxField.Options.Add(new Option { Name = "Large", IsChecked = true, Index = 2 });
+            designComboBoxField.Options.Add(new Option { Name = "Small", IsChecked = false});
+            designComboBoxField.Options.Add(new Option { Name = "Medium", IsChecked = false});
+            designComboBoxField.Options.Add(new Option { Name = "Large", IsChecked = true });
 
             var designCheckListField = new OptionsField
               {
@@ -133,9 +133,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
               };
 
 
-            designCheckListField.Options.Add(new Option { Name = "Empty Barrels", IsChecked = true, Index = 0 });
-            designCheckListField.Options.Add(new Option { Name = "Assess Oil Quantity", IsChecked = true, Index = 1 });
-            designCheckListField.Options.Add(new Option { Name = "Get Paperwork Signed", IsChecked = false, Index = 2 });
+            designCheckListField.Options.Add(new Option { Name = "Empty Barrels", IsChecked = true });
+            designCheckListField.Options.Add(new Option { Name = "Assess Oil Quantity", IsChecked = true });
+            designCheckListField.Options.Add(new Option { Name = "Get Paperwork Signed", IsChecked = false });
 
             var designLocationField = new LocationField
             {

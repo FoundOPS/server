@@ -328,7 +328,6 @@ namespace FoundOPS.API.Api
             {
                 var serviceTemplate = HardCodedLoaders.LoadServiceTemplateWithDetails(_coreEntitiesContainer, existingService.Id, null, null, null).First();
 
-
                 #region Update all Fields
 
                 foreach (var field in service.Fields)
@@ -362,17 +361,12 @@ namespace FoundOPS.API.Api
                     //If the field is a OptionsField, update the Options
                     if (optionsField != null)
                     {
-                        var foundOpsOptions = _coreEntitiesContainer.Options.Where(o => o.OptionsFieldId == optionsField.Id).ToArray();
-
-                        if (!foundOpsOptions.Any())
-                            continue;
-
                         //Cycle through each option and update the IsChecked value
                         foreach (var apiOption in ((Models.OptionsField)field).Options)
                         {
-                            var foundOpsOption = foundOpsOptions.FirstOrDefault(op => op.Id == apiOption.Id);
-                            if (foundOpsOption != null)
-                                foundOpsOption.IsChecked = apiOption.IsChecked;
+                            var modelOption = optionsField.Options.FirstOrDefault(op => op.Name == apiOption.Name);
+                            if (modelOption != null)
+                                modelOption.IsChecked = apiOption.IsChecked;
                         }
                     }
                 }

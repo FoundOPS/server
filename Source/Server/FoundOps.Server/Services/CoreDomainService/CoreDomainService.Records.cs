@@ -143,7 +143,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         /// <summary>
         /// Gets the employee details.
-        /// It includes the OwnedPerson, ContactInfoSet, LinkedUserAccount, and PartyImage.
+        /// It includes the OwnedPerson, ContactInfoSet, and PartyImage.
         /// </summary>
         /// <param name="roleId">The current role id.</param>
         /// <param name="employeeId">The employee id.</param>
@@ -156,9 +156,6 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             //Force load party image
             var partyImage = this.ObjectContext.Files.OfType<PartyImage>().FirstOrDefault(pi => pi.PartyId == employeeId);
-
-            //Force load linked user account
-            var linkedUserAccount = this.ObjectContext.Parties.OfType<UserAccount>().FirstOrDefault(ua => ua.LinkedEmployees.Any(le => le.Id == employeeId));
 
             return employee;
         }

@@ -1,23 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace FoundOPS.API.Models
 {
     public class Option
     {
-        public Guid Id { get; set; }
-
         public string Name { get; set; }
 
         public bool IsChecked { get; set; }
-
-        public Guid OptionsFieldId { get; set; }
-
-        public int Index { get; set; }
-
-        public string Tooltip { get; set; }
 
         /// <summary>
         /// Converts from the FoundOPS model to the API model
@@ -27,14 +16,10 @@ namespace FoundOPS.API.Models
         public static Option ConvertOptionModel(FoundOps.Core.Models.CoreEntities.Option modelOption)
         {
             var option = new Option
-                {
-                    Id = modelOption.Id,
-                    Name = modelOption.Name,
-                    IsChecked = modelOption.IsChecked,
-                    OptionsFieldId = modelOption.OptionsFieldId,
-                    Index = modelOption.Index,
-                    Tooltip = modelOption.Tooltip
-                };
+            {
+                Name = modelOption.Name,
+                IsChecked = modelOption.IsChecked
+            };
 
             return option;
         }
@@ -48,12 +33,8 @@ namespace FoundOPS.API.Models
         {
             var option = new FoundOps.Core.Models.CoreEntities.Option
             {
-                Id = modelOption.Id,
                 Name = modelOption.Name,
-                IsChecked = modelOption.IsChecked,
-                OptionsFieldId = modelOption.OptionsFieldId,
-                Index = modelOption.Index,
-                Tooltip = modelOption.Tooltip
+                IsChecked = modelOption.IsChecked
             };
 
             return option;

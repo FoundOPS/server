@@ -211,21 +211,6 @@ namespace FoundOps.Core.Models.CoreEntities
         }
     }
 
-    [MetadataTypeAttribute(typeof(OptionsField.OptionsFieldMetadata))]
-    public partial class OptionsField
-    {
-        internal sealed class OptionsFieldMetadata
-        {
-            // Metadata classes are not meant to be instantiated.
-            private OptionsFieldMetadata()
-            {
-            }
-
-            [Include]
-            public EntityCollection<Option> Options { get; set; }
-        }
-    }
-
     [MetadataTypeAttribute(typeof(NumericField.NumericFieldMetadata))]
     public partial class NumericField
     {

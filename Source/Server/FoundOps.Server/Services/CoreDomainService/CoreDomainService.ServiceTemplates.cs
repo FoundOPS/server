@@ -131,51 +131,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         private void DeleteOptionsField(OptionsField optionsField)
         {
             this.ObjectContext.DetachExistingAndAttach(optionsField);
-            optionsField.Options.Load();
-            var optionsToDelete = optionsField.Options.ToArray();
-            foreach (var option in optionsToDelete)
-                this.DeleteOption(option);
-
             this.ObjectContext.Fields.DeleteObject(optionsField);
-        }
-
-        #endregion
-
-        #region Option
-
-        public IQueryable<Option> GetOptions()
-        {
-            return this.ObjectContext.Options;
-        }
-
-        public void InsertOption(Option option)
-        {
-            if ((option.EntityState != EntityState.Detached))
-            {
-                this.ObjectContext.ObjectStateManager.ChangeObjectState(option, EntityState.Added);
-            }
-            else
-            {
-                this.ObjectContext.Options.AddObject(option);
-            }
-        }
-
-        public void UpdateOption(Option currentOption)
-        {
-            this.ObjectContext.Options.AttachAsModified(currentOption);
-        }
-
-        public void DeleteOption(Option option)
-        {
-            var loadedOption = this.ObjectContext.Options.FirstOrDefault(o => o.Id == option.Id);
-
-            if (loadedOption != null)
-                this.ObjectContext.Detach(loadedOption);
-
-            if (option.EntityState == EntityState.Detached)
-                this.ObjectContext.Options.Attach(option);
-
-            this.ObjectContext.Options.DeleteObject(option);
         }
 
         #endregion

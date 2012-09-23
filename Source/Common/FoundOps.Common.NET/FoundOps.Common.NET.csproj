@@ -84,6 +84,18 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Reactive.Core">
+      <HintPath>..\..\packages\Rx-Core.2.0.20823\lib\Net40\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces">
+      <HintPath>..\..\packages\Rx-Interfaces.2.0.20823\lib\Net40\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq">
+      <HintPath>..\..\packages\Rx-Linq.2.0.20823\lib\Net40\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices">
+      <HintPath>..\..\packages\Rx-PlatformServices.2.0.20823\lib\Net40\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -95,6 +107,9 @@
   <ItemGroup>
     <Compile Include="..\FoundOps.Common\Tools\AzureTools.cs">
       <Link>Silverlight\AzureTools.cs</Link>
+    </Compile>
+    <Compile Include="..\FoundOps.Common\Tools\CsvWriter.cs">
+      <Link>Silverlight\CsvWriter.cs</Link>
     </Compile>
     <Compile Include="..\FoundOps.Common\Tools\DateRange.cs">
       <Link>Silverlight\DateRange.cs</Link>
@@ -111,11 +126,14 @@
     <Compile Include="..\FoundOps.Common\Tools\ExtensionMethods\ReflectionExtensions.cs">
       <Link>Silverlight\ExtensionMethods\ReflectionExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\FoundOps.Common\Tools\FileTools.cs">
-      <Link>Silverlight\FileTools.cs</Link>
+    <Compile Include="..\FoundOps.Common\Tools\GeoLocationTools.cs">
+      <Link>Silverlight\GeoLocationTools.cs</Link>
     </Compile>
     <Compile Include="..\FoundOps.Common\Tools\PasswordTools.cs">
       <Link>Silverlight\PasswordTools.cs</Link>
+    </Compile>
+    <Compile Include="..\FoundOps.Common\Tools\Rxx2.cs">
+      <Link>Silverlight\Rxx2.cs</Link>
     </Compile>
     <Compile Include="..\FoundOps.Common\Tools\SerializationTools.cs">
       <Link>Silverlight\SerializationTools.cs</Link>

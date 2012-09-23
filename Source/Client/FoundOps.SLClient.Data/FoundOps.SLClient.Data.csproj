@@ -289,7 +289,6 @@
     <Compile Include="Extensions\FileExtensions.cs" />
     <Compile Include="Extensions\VehicleMaintenanceLogEntryExtensions.cs" />
     <Compile Include="Extensions\LocationFieldExtensions.cs" />
-    <Compile Include="Extensions\OptionsFieldExtensions.cs" />
     <Compile Include="Extensions\FieldExtensions.cs" />
     <Compile Include="Extensions\PartyExtensions.cs" />
     <Compile Include="Extensions\RecurringServiceExtensions.cs" />

@@ -53,7 +53,6 @@ using System.Xml.Serialization;
 [assembly: EdmRelationshipAttribute("CoreEntities", "EmployeeHistoryEntryEmployee", "EmployeeHistoryEntry", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.EmployeeHistoryEntry), "Employee", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.Employee), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "ServiceTemplateServiceTemplate", "ServiceTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.ServiceTemplate), "ServiceTemplate1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.ServiceTemplate), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "FieldField", "Field", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Field), "Field1", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Field), true)]
-[assembly: EdmRelationshipAttribute("CoreEntities", "OptionsFieldOption", "OptionsField", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(FoundOps.Core.Models.CoreEntities.OptionsField), "Option", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Option), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "ServiceTemplateField", "ServiceTemplate", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.ServiceTemplate), "Field", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Field), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "LocationFieldLocation", "LocationField", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.LocationField), "Location", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Location), true)]
 [assembly: EdmRelationshipAttribute("CoreEntities", "InvoiceLocation", "Invoice", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(FoundOps.Core.Models.CoreEntities.Invoice), "Location", System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(FoundOps.Core.Models.CoreEntities.Location), true)]
@@ -481,22 +480,6 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        public ObjectSet<Option> Options
-        {
-            get
-            {
-                if ((_Options == null))
-                {
-                    _Options = base.CreateObjectSet<Option>("Options");
-                }
-                return _Options;
-            }
-        }
-        private ObjectSet<Option> _Options;
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         public ObjectSet<Invoice> Invoices
         {
             get
@@ -784,14 +767,6 @@ namespace FoundOps.Core.Models.CoreEntities
         public void AddToEmployeeHistoryEntries(EmployeeHistoryEntry employeeHistoryEntry)
         {
             base.AddObject("EmployeeHistoryEntries", employeeHistoryEntry);
-        }
-    
-        /// <summary>
-        /// Deprecated Method for adding a new object to the Options EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
-        /// </summary>
-        public void AddToOptions(Option option)
-        {
-            base.AddObject("Options", option);
         }
     
         /// <summary>
@@ -4272,9 +4247,9 @@ namespace FoundOps.Core.Models.CoreEntities
     [EdmEntityTypeAttribute(NamespaceName="CoreEntities", Name="Field")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
-    [KnownTypeAttribute(typeof(OptionsField))]
     [KnownTypeAttribute(typeof(LocationField))]
     [KnownTypeAttribute(typeof(TextBoxField))]
+    [KnownTypeAttribute(typeof(OptionsField))]
     [KnownTypeAttribute(typeof(NumericField))]
     [KnownTypeAttribute(typeof(DateTimeField))]
     public partial class Field : EntityObject
@@ -6360,36 +6335,6 @@ namespace FoundOps.Core.Models.CoreEntities
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="CoreEntities", Name="LocationOption")]
-    [Serializable()]
-    [DataContractAttribute(IsReference=true)]
-    public partial class LocationOption : Option
-    {
-        #region Factory Method
-    
-        /// <summary>
-        /// Create a new LocationOption object.
-        /// </summary>
-        /// <param name="id">Initial value of the Id property.</param>
-        /// <param name="name">Initial value of the Name property.</param>
-        /// <param name="optionsFieldId">Initial value of the OptionsFieldId property.</param>
-        public static LocationOption CreateLocationOption(global::System.Guid id, global::System.String name, global::System.Guid optionsFieldId)
-        {
-            LocationOption locationOption = new LocationOption();
-            locationOption.Id = id;
-            locationOption.Name = name;
-            locationOption.OptionsFieldId = optionsFieldId;
-            return locationOption;
-        }
-
-        #endregion
-
-    
-    }
-    
-    /// <summary>
-    /// No Metadata Documentation available.
-    /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="CoreEntities", Name="NumericField")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
@@ -6552,230 +6497,6 @@ namespace FoundOps.Core.Models.CoreEntities
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
-    [EdmEntityTypeAttribute(NamespaceName="CoreEntities", Name="Option")]
-    [Serializable()]
-    [DataContractAttribute(IsReference=true)]
-    [KnownTypeAttribute(typeof(LocationOption))]
-    public partial class Option : EntityObject
-    {
-        #region Factory Method
-    
-        /// <summary>
-        /// Create a new Option object.
-        /// </summary>
-        /// <param name="id">Initial value of the Id property.</param>
-        /// <param name="name">Initial value of the Name property.</param>
-        /// <param name="optionsFieldId">Initial value of the OptionsFieldId property.</param>
-        public static Option CreateOption(global::System.Guid id, global::System.String name, global::System.Guid optionsFieldId)
-        {
-            Option option = new Option();
-            option.Id = id;
-            option.Name = name;
-            option.OptionsFieldId = optionsFieldId;
-            return option;
-        }
-
-        #endregion
-
-        #region Primitive Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Guid Id
-        {
-            get
-            {
-                return _Id;
-            }
-            set
-            {
-                if (_Id != value)
-                {
-                    OnIdChanging(value);
-                    ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
-                    ReportPropertyChanged("Id");
-                    OnIdChanged();
-                }
-            }
-        }
-        private global::System.Guid _Id;
-        partial void OnIdChanging(global::System.Guid value);
-        partial void OnIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.String Name
-        {
-            get
-            {
-                return _Name;
-            }
-            set
-            {
-                OnNameChanging(value);
-                ReportPropertyChanging("Name");
-                _Name = StructuralObject.SetValidValue(value, false);
-                ReportPropertyChanged("Name");
-                OnNameChanged();
-            }
-        }
-        private global::System.String _Name;
-        partial void OnNameChanging(global::System.String value);
-        partial void OnNameChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Boolean IsChecked
-        {
-            get
-            {
-                return _IsChecked;
-            }
-            set
-            {
-                OnIsCheckedChanging(value);
-                ReportPropertyChanging("IsChecked");
-                _IsChecked = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("IsChecked");
-                OnIsCheckedChanged();
-            }
-        }
-        private global::System.Boolean _IsChecked = false;
-        partial void OnIsCheckedChanging(global::System.Boolean value);
-        partial void OnIsCheckedChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Guid OptionsFieldId
-        {
-            get
-            {
-                return _OptionsFieldId;
-            }
-            set
-            {
-                OnOptionsFieldIdChanging(value);
-                ReportPropertyChanging("OptionsFieldId");
-                _OptionsFieldId = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("OptionsFieldId");
-                OnOptionsFieldIdChanged();
-            }
-        }
-        private global::System.Guid _OptionsFieldId;
-        partial void OnOptionsFieldIdChanging(global::System.Guid value);
-        partial void OnOptionsFieldIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.Int32 Index
-        {
-            get
-            {
-                return _Index;
-            }
-            set
-            {
-                OnIndexChanging(value);
-                ReportPropertyChanging("Index");
-                _Index = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Index");
-                OnIndexChanged();
-            }
-        }
-        private global::System.Int32 _Index = 0;
-        partial void OnIndexChanging(global::System.Int32 value);
-        partial void OnIndexChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
-        [DataMemberAttribute()]
-        public global::System.String Tooltip
-        {
-            get
-            {
-                return _Tooltip;
-            }
-            set
-            {
-                OnTooltipChanging(value);
-                ReportPropertyChanging("Tooltip");
-                _Tooltip = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("Tooltip");
-                OnTooltipChanged();
-            }
-        }
-        private global::System.String _Tooltip;
-        partial void OnTooltipChanging(global::System.String value);
-        partial void OnTooltipChanged();
-
-        #endregion
-
-    
-        #region Navigation Properties
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
-        [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "OptionsFieldOption", "OptionsField")]
-        public OptionsField OptionsField
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<OptionsField>("CoreEntities.OptionsFieldOption", "OptionsField").Value;
-            }
-            set
-            {
-                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<OptionsField>("CoreEntities.OptionsFieldOption", "OptionsField").Value = value;
-            }
-        }
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [BrowsableAttribute(false)]
-        [DataMemberAttribute()]
-        public EntityReference<OptionsField> OptionsFieldReference
-        {
-            get
-            {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<OptionsField>("CoreEntities.OptionsFieldOption", "OptionsField");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<OptionsField>("CoreEntities.OptionsFieldOption", "OptionsField", value);
-                }
-            }
-        }
-
-        #endregion
-
-    }
-    
-    /// <summary>
-    /// No Metadata Documentation available.
-    /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="CoreEntities", Name="OptionsField")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
@@ -6791,7 +6512,9 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <param name="required">Initial value of the Required property.</param>
         /// <param name="allowMultipleSelection">Initial value of the AllowMultipleSelection property.</param>
         /// <param name="typeInt">Initial value of the TypeInt property.</param>
-        public static OptionsField CreateOptionsField(global::System.Guid id, global::System.String name, global::System.Boolean required, global::System.Boolean allowMultipleSelection, global::System.Int16 typeInt)
+        /// <param name="optionsString">Initial value of the OptionsString property.</param>
+        /// <param name="value">Initial value of the Value property.</param>
+        public static OptionsField CreateOptionsField(global::System.Guid id, global::System.String name, global::System.Boolean required, global::System.Boolean allowMultipleSelection, global::System.Int16 typeInt, global::System.String optionsString, global::System.String value)
         {
             OptionsField optionsField = new OptionsField();
             optionsField.Id = id;
@@ -6799,6 +6522,8 @@ namespace FoundOps.Core.Models.CoreEntities
             optionsField.Required = required;
             optionsField.AllowMultipleSelection = allowMultipleSelection;
             optionsField.TypeInt = typeInt;
+            optionsField.OptionsString = optionsString;
+            optionsField.Value = value;
             return optionsField;
         }
 
@@ -6853,36 +6578,58 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.Int16 _TypeInt;
         partial void OnTypeIntChanging(global::System.Int16 value);
         partial void OnTypeIntChanged();
-
-        #endregion
-
-    
-        #region Navigation Properties
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [XmlIgnoreAttribute()]
-        [SoapIgnoreAttribute()]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        [EdmRelationshipNavigationPropertyAttribute("CoreEntities", "OptionsFieldOption", "Option")]
-        public EntityCollection<Option> Options
+        public global::System.String OptionsString
         {
             get
             {
-                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Option>("CoreEntities.OptionsFieldOption", "Option");
+                return _OptionsString;
             }
             set
             {
-                if ((value != null))
-                {
-                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Option>("CoreEntities.OptionsFieldOption", "Option", value);
-                }
+                OnOptionsStringChanging(value);
+                ReportPropertyChanging("OptionsString");
+                _OptionsString = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("OptionsString");
+                OnOptionsStringChanged();
             }
         }
+        private global::System.String _OptionsString;
+        partial void OnOptionsStringChanging(global::System.String value);
+        partial void OnOptionsStringChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Value
+        {
+            get
+            {
+                return _Value;
+            }
+            set
+            {
+                OnValueChanging(value);
+                ReportPropertyChanging("Value");
+                _Value = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Value");
+                OnValueChanged();
+            }
+        }
+        private global::System.String _Value;
+        partial void OnValueChanging(global::System.String value);
+        partial void OnValueChanged();
 
         #endregion
 
+    
     }
     
     /// <summary>

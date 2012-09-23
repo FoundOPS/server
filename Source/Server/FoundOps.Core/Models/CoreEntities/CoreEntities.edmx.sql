@@ -98,9 +98,6 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_LocationFile]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Files] DROP CONSTRAINT [FK_LocationFile];
 GO
-IF OBJECT_ID(N'[dbo].[FK_LocationOption_inherits_Option]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Options_LocationOption] DROP CONSTRAINT [FK_LocationOption_inherits_Option];
-GO
 IF OBJECT_ID(N'[dbo].[FK_LocationSubLocation]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[SubLocations] DROP CONSTRAINT [FK_LocationSubLocation];
 GO
@@ -109,9 +106,6 @@ IF OBJECT_ID(N'[dbo].[FK_NumericField_inherits_Field]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_OptionsField_inherits_Field]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Fields_OptionsField] DROP CONSTRAINT [FK_OptionsField_inherits_Field];
-GO
-IF OBJECT_ID(N'[dbo].[FK_OptionsFieldOption]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Options] DROP CONSTRAINT [FK_OptionsFieldOption];
 GO
 IF OBJECT_ID(N'[dbo].[FK_PartyImage_inherits_File]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Files_PartyImage] DROP CONSTRAINT [FK_PartyImage_inherits_File];
@@ -279,12 +273,6 @@ IF OBJECT_ID(N'[dbo].[LineItems]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[Locations]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Locations];
-GO
-IF OBJECT_ID(N'[dbo].[Options]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Options];
-GO
-IF OBJECT_ID(N'[dbo].[Options_LocationOption]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Options_LocationOption];
 GO
 IF OBJECT_ID(N'[dbo].[Parties]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Parties];
@@ -633,17 +621,6 @@ CREATE TABLE [dbo].[EmployeeHistoryEntries] (
 );
 GO
 
--- Creating table 'Options'
-CREATE TABLE [dbo].[Options] (
-    [Id] uniqueidentifier  NOT NULL,
-    [Name] nvarchar(max)  NOT NULL,
-    [IsChecked] bit  NOT NULL,
-    [OptionsFieldId] uniqueidentifier  NOT NULL,
-    [Index] int  NOT NULL,
-    [Tooltip] nvarchar(max)  NULL
-);
-GO
-
 -- Creating table 'Invoices'
 CREATE TABLE [dbo].[Invoices] (
     [Id] uniqueidentifier  NOT NULL,
@@ -766,7 +743,9 @@ GO
 CREATE TABLE [dbo].[Fields_OptionsField] (
     [AllowMultipleSelection] bit  NOT NULL,
     [TypeInt] smallint  NOT NULL,
-    [Id] uniqueidentifier  NOT NULL
+    [Id] uniqueidentifier  NOT NULL,
+    [OptionsString] nvarchar(max) NOT NULL,
+    [Value] nvarchar(max) NOT NULL
 );
 GO
 
@@ -809,12 +788,6 @@ CREATE TABLE [dbo].[Fields_DateTimeField] (
     [Latest] datetime  NOT NULL,
     [TypeInt] smallint  NOT NULL,
     [Value] datetime  NULL,
-    [Id] uniqueidentifier  NOT NULL
-);
-GO
-
--- Creating table 'Options_LocationOption'
-CREATE TABLE [dbo].[Options_LocationOption] (
     [Id] uniqueidentifier  NOT NULL
 );
 GO
@@ -983,12 +956,6 @@ ADD CONSTRAINT [PK_EmployeeHistoryEntries]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [Id] in table 'Options'
-ALTER TABLE [dbo].[Options]
-ADD CONSTRAINT [PK_Options]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
 -- Creating primary key on [Id] in table 'Invoices'
 ALTER TABLE [dbo].[Invoices]
 ADD CONSTRAINT [PK_Invoices]
@@ -1076,12 +1043,6 @@ GO
 -- Creating primary key on [Id] in table 'Fields_DateTimeField'
 ALTER TABLE [dbo].[Fields_DateTimeField]
 ADD CONSTRAINT [PK_Fields_DateTimeField]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
--- Creating primary key on [Id] in table 'Options_LocationOption'
-ALTER TABLE [dbo].[Options_LocationOption]
-ADD CONSTRAINT [PK_Options_LocationOption]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -1601,20 +1562,6 @@ ON [dbo].[Fields]
     ([ParentFieldId]);
 GO
 
--- Creating foreign key on [OptionsFieldId] in table 'Options'
-ALTER TABLE [dbo].[Options]
-ADD CONSTRAINT [FK_OptionsFieldOption]
-    FOREIGN KEY ([OptionsFieldId])
-    REFERENCES [dbo].[Fields_OptionsField]
-        ([Id])
-    ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- Creating non-clustered index for FOREIGN KEY 'FK_OptionsFieldOption'
-CREATE INDEX [IX_FK_OptionsFieldOption]
-ON [dbo].[Options]
-    ([OptionsFieldId]);
-GO
-
 -- Creating foreign key on [ServiceTemplateId] in table 'Fields'
 ALTER TABLE [dbo].[Fields]
 ADD CONSTRAINT [FK_ServiceTemplateField]
@@ -1976,15 +1923,6 @@ ALTER TABLE [dbo].[Fields_DateTimeField]
 ADD CONSTRAINT [FK_DateTimeField_inherits_Field]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Fields]
-        ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
-GO
-
--- Creating foreign key on [Id] in table 'Options_LocationOption'
-ALTER TABLE [dbo].[Options_LocationOption]
-ADD CONSTRAINT [FK_LocationOption_inherits_Option]
-    FOREIGN KEY ([Id])
-    REFERENCES [dbo].[Options]
         ([Id])
     ON DELETE CASCADE ON UPDATE NO ACTION;
 GO

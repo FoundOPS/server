@@ -60,14 +60,14 @@ namespace FoundOps.SLClient.UI.ViewModels
             AddCommand.Throttle(TimeSpan.FromMilliseconds(500)).ObserveOnDispatcher().Subscribe(param =>
             {
                 var newOption = new Option();
-                OptionsField.OptionsWrapper.Add(newOption);
+                OptionsField.Options.Add(newOption);
                 SelectedOption = newOption;
             });
 
             DeleteCommand = new ReactiveCommand();
             DeleteCommand.Throttle(TimeSpan.FromMilliseconds(500)).ObserveOnDispatcher().Subscribe(param =>
             {
-                OptionsField.OptionsWrapper.Remove(SelectedOption);
+                OptionsField.Options.Remove(SelectedOption);
                 SelectedOption = null;
             });
         }

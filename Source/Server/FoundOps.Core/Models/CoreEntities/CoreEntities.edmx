@@ -23,8 +23,6 @@
           <EntitySet Name="Invoices" EntityType="CoreEntities.Store.Invoices" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="LineItems" EntityType="CoreEntities.Store.LineItems" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Locations" EntityType="CoreEntities.Store.Locations" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Options" EntityType="CoreEntities.Store.Options" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Options_LocationOption" EntityType="CoreEntities.Store.Options_LocationOption" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Parties" EntityType="CoreEntities.Store.Parties" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Parties_BusinessAccount" EntityType="CoreEntities.Store.Parties_BusinessAccount" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Parties_UserAccount" EntityType="CoreEntities.Store.Parties_UserAccount" store:Type="Tables" Schema="dbo" />
@@ -166,10 +164,6 @@
             <End Role="Locations" EntitySet="Locations" />
             <End Role="Files" EntitySet="Files" />
           </AssociationSet>
-          <AssociationSet Name="FK_LocationOption_inherits_Option" Association="CoreEntities.Store.FK_LocationOption_inherits_Option">
-            <End Role="Options" EntitySet="Options" />
-            <End Role="Options_LocationOption" EntitySet="Options_LocationOption" />
-          </AssociationSet>
           <AssociationSet Name="FK_LocationSubLocation" Association="CoreEntities.Store.FK_LocationSubLocation">
             <End Role="Locations" EntitySet="Locations" />
             <End Role="SubLocations" EntitySet="SubLocations" />
@@ -181,10 +175,6 @@
           <AssociationSet Name="FK_OptionsField_inherits_Field" Association="CoreEntities.Store.FK_OptionsField_inherits_Field">
             <End Role="Fields" EntitySet="Fields" />
             <End Role="Fields_OptionsField" EntitySet="Fields_OptionsField" />
-          </AssociationSet>
-          <AssociationSet Name="FK_OptionsFieldOption" Association="CoreEntities.Store.FK_OptionsFieldOption">
-            <End Role="Fields_OptionsField" EntitySet="Fields_OptionsField" />
-            <End Role="Options" EntitySet="Options" />
           </AssociationSet>
           <AssociationSet Name="FK_PartyImage_inherits_File" Association="CoreEntities.Store.FK_PartyImage_inherits_File">
             <End Role="Files" EntitySet="Files" />
@@ -477,6 +467,8 @@
           <Property Name="AllowMultipleSelection" Type="bit" Nullable="false" />
           <Property Name="TypeInt" Type="smallint" Nullable="false" />
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="OptionsString" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Value" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="Fields_TextBoxField">
           <Key>
@@ -548,23 +540,6 @@
           <Property Name="BusinessAccountId" Type="uniqueidentifier" />
           <Property Name="ClientId" Type="uniqueidentifier" />
           <Property Name="IsDefaultBillingLocation" Type="bit" />
-        </EntityType>
-        <EntityType Name="Options">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="IsChecked" Type="bit" Nullable="false" />
-          <Property Name="OptionsFieldId" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="Index" Type="int" Nullable="false" />
-          <Property Name="Tooltip" Type="nvarchar(max)" />
-        </EntityType>
-        <EntityType Name="Options_LocationOption">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="Parties">
           <Key>
@@ -1185,20 +1160,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_LocationOption_inherits_Option">
-          <End Role="Options" Type="CoreEntities.Store.Options" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Options_LocationOption" Type="CoreEntities.Store.Options_LocationOption" Multiplicity="0..1" />
-          <ReferentialConstraint>
-            <Principal Role="Options">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Options_LocationOption">
-              <PropertyRef Name="Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_LocationSubLocation">
           <End Role="Locations" Type="CoreEntities.Store.Locations" Multiplicity="0..1">
             <OnDelete Action="Cascade" />
@@ -1238,20 +1199,6 @@
             </Principal>
             <Dependent Role="Fields_OptionsField">
               <PropertyRef Name="Id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_OptionsFieldOption">
-          <End Role="Fields_OptionsField" Type="CoreEntities.Store.Fields_OptionsField" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Options" Type="CoreEntities.Store.Options" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Fields_OptionsField">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Options">
-              <PropertyRef Name="OptionsFieldId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1966,11 +1913,6 @@
             <End Role="Field" EntitySet="Fields" />
             <End Role="Field1" EntitySet="Fields" />
           </AssociationSet>
-          <EntitySet Name="Options" EntityType="CoreEntities.Option" />
-          <AssociationSet Name="OptionsFieldOption" Association="CoreEntities.OptionsFieldOption">
-            <End Role="OptionsField" EntitySet="Fields" />
-            <End Role="Option" EntitySet="Options" />
-          </AssociationSet>
           <AssociationSet Name="ServiceTemplateField" Association="CoreEntities.ServiceTemplateField">
             <End Role="ServiceTemplate" EntitySet="ServiceTemplates" />
             <End Role="Field" EntitySet="Fields" />
@@ -2681,7 +2623,8 @@
         <EntityType Name="OptionsField" BaseType="CoreEntities.Field" >
           <Property Type="Boolean" Name="AllowMultipleSelection" Nullable="false" />
           <Property Type="Int16" Name="TypeInt" Nullable="false" />
-          <NavigationProperty Name="Options" Relationship="CoreEntities.OptionsFieldOption" FromRole="OptionsField" ToRole="Option" />
+          <Property Name="OptionsString" Type="String" Nullable="false" />
+          <Property Name="Value" Type="String" Nullable="false" />
         </EntityType>
         <EntityType Name="RecurringService">
           <Key>
@@ -2980,31 +2923,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="Option">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
-          <Property Type="String" Name="Name" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Type="Boolean" Name="IsChecked" Nullable="false" DefaultValue="false" />
-          <NavigationProperty Name="OptionsField" Relationship="CoreEntities.OptionsFieldOption" FromRole="Option" ToRole="OptionsField" />
-          <Property Type="Guid" Name="OptionsFieldId" Nullable="false" />
-          <Property Type="Int32" Name="Index" Nullable="false" DefaultValue="0" />
-          <Property Type="String" Name="Tooltip" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
-        </EntityType>
-        <Association Name="OptionsFieldOption">
-          <End Type="CoreEntities.OptionsField" Role="OptionsField" Multiplicity="1" />
-          <End Type="CoreEntities.Option" Role="Option" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="OptionsField">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Option">
-              <PropertyRef Name="OptionsFieldId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <EntityType Name="LocationOption" BaseType="CoreEntities.Option" />
         <Association Name="ServiceTemplateField">
           <End Type="CoreEntities.ServiceTemplate" Role="ServiceTemplate" Multiplicity="0..1" />
           <End Type="CoreEntities.Field" Role="Field" Multiplicity="*" />
@@ -3468,6 +3386,8 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="AllowMultipleSelection" ColumnName="AllowMultipleSelection" />
           <ScalarProperty Name="TypeInt" ColumnName="TypeInt" />
+          <ScalarProperty Name="OptionsString" ColumnName="OptionsString" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
         </MappingFragment>
       </EntityTypeMapping>
       <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.LocationField)">
@@ -3730,23 +3650,6 @@
           <ScalarProperty Name="Summary" ColumnName="Summary" />
           <ScalarProperty Name="Notes" ColumnName="Notes" />
           <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Options">
-      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Option)">
-        <MappingFragment StoreEntitySet="Options">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="Name" ColumnName="Name" />
-          <ScalarProperty Name="IsChecked" ColumnName="IsChecked" />
-          <ScalarProperty Name="OptionsFieldId" ColumnName="OptionsFieldId" />
-          <ScalarProperty Name="Index" ColumnName="Index" />
-          <ScalarProperty Name="Tooltip" ColumnName="Tooltip" />
-        </MappingFragment>
-      </EntityTypeMapping>
-      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.LocationOption)">
-        <MappingFragment StoreEntitySet="Options_LocationOption">
-          <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

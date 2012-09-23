@@ -135,7 +135,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             {
                 case "Checkbox":
                     fieldToAdd = new OptionsField { AllowMultipleSelection = false, OptionsType = OptionsType.Checkbox };
-                    ((OptionsField)fieldToAdd).OptionsWrapper.Add(new Option { Name = "Default" });
+                    ((OptionsField)fieldToAdd).Options.Add(new Option { Name = "" });
                     break;
                 case "Checklist":
                     fieldToAdd = new OptionsField { AllowMultipleSelection = true, OptionsType = OptionsType.Checklist };
@@ -157,9 +157,6 @@ namespace FoundOps.SLClient.UI.ViewModels
                     break;
                 case "Textbox Large":
                     fieldToAdd = new TextBoxField { IsMultiline = true };
-                    break;
-                case "Time":
-                    fieldToAdd = new DateTimeField { DateTimeType = DateTimeType.TimeOnly };
                     break;
                 //NOTE: For now this is only available on FoundOPS & ServiceProvider level service templates that do not have a destination field
                 case "Destination":

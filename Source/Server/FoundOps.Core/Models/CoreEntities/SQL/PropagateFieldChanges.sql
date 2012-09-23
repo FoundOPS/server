@@ -1,4 +1,4 @@
-USE [Core]
+USE Core
 GO
 /****** Object:  StoredProcedure [dbo].[PropagateNewFields]    Script Date: 6/19/2012 1:04:23 PM ******/
 SET ANSI_NULLS ON
@@ -6,7 +6,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 --This procedure deletes all the basic info held on a Party (Locations, Contacts, ContactInfoSet, Roles, Vehicles and Files)
-CREATE PROCEDURE [dbo].[PropagateNewFields]
+ALTER PROCEDURE [dbo].[PropagateNewFields]
 		(@FieldId uniqueidentifier)
 	AS
 	BEGIN
@@ -27,16 +27,8 @@ CREATE PROCEDURE [dbo].[PropagateNewFields]
 			DECLARE @CopyOfNewServiceTemplates TABLE
 			(
 				Id UNIQUEIDENTIFIER
-			)
-			DECLARE @OptionsCopies TABLE
-			(
-				Id UNIQUEIDENTIFIER,
-				NAME NVARCHAR(MAX),
-				IsChecked BIT,
-				OptionsFieldId UNIQUEIDENTIFIER,
-				[Index] INT,
-				ToolTip NVARCHAR(MAX)
-			)      
+			)    
+			  
 		END
 
 		BEGIN --Sets all variables to copy basic field data
@@ -64,7 +56,6 @@ CREATE PROCEDURE [dbo].[PropagateNewFields]
 		SELECT	TemplateRecurs.Id
 		FROM	TemplateRecurs		      
 		
-		--Remove top level Service Template from list, normal add functionality will take care of it
 		DELETE FROM @CopyOfNewServiceTemplates
 		WHERE Id = @serviceTemplateId
 
@@ -159,29 +150,20 @@ CREATE PROCEDURE [dbo].[PropagateNewFields]
 
 				IF @FieldId IN (SELECT Id FROM dbo.Fields_OptionsField) --Copy the Options field, set new Id's 
 				BEGIN
-					INSERT INTO Fields_OptionsField
+					
+					INSERT INTO dbo.Fields_OptionsField
 							( AllowMultipleSelection ,
-								TypeInt ,
-								Id
+							  TypeInt ,
+							  Value ,
+							  OptionsString ,
+							  Id
 							)
-					VALUES  ( (SELECT AllowMultipleSelection FROM dbo.Fields_OptionsField WHERE Id = @FieldId) , -- AllowMultipleSelection - bit
-								(SELECT TypeInt FROM dbo.Fields_OptionsField WHERE Id = @FieldId) , -- TypeInt - smallint
-								@newFieldId  -- Id - uniqueidentifier
+					VALUES	( (SELECT AllowMultipleSelection FROM dbo.Fields_OptionsField WHERE Id = @FieldId) , -- AllowMultipleSelection - bit
+							  (SELECT TypeInt FROM dbo.Fields_OptionsField WHERE Id = @FieldId), -- TypeInt - smallint
+							  (SELECT Value FROM dbo.Fields_OptionsField WHERE Id = @FieldId) , -- Value - nvarchar(max)
+							  (SELECT OptionsString FROM dbo.Fields_OptionsField WHERE Id = @FieldId) , -- OptionsString - nvarchar(max)
+							  @newFieldId  -- Id - uniqueidentifier
 							)
-						
-					INSERT INTO @OptionsCopies
-					SELECT * FROM Options
-					WHERE OptionsFieldId = @FieldId
-
-					UPDATE @OptionsCopies
-					SET Id = NEWID(),
-						OptionsFieldId = @newFieldId
-
-					INSERT INTO Options
-					SELECT * FROM @OptionsCopies
-
-					DELETE FROM @OptionsCopies
-
 				END  		
 			END
 			      

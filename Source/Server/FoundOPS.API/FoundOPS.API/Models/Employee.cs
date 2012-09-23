@@ -15,15 +15,15 @@ namespace FoundOPS.API.Models
         public string DisplayName { get { return FirstName + " " + LastName; }}
 
 
-        public static Employee ConvertModel(FoundOps.Core.Models.CoreEntities.Employee foundOpsEmployee)
+        public static Employee ConvertModel(FoundOps.Core.Models.CoreEntities.Employee model)
         {
             var employee = new Employee
             {
-                Id = foundOpsEmployee.Id,
-                LinkedUserAccountId = foundOpsEmployee.LinkedUserAccountId,
-                FirstName = foundOpsEmployee.FirstName,
-                MiddleInitial = foundOpsEmployee.MiddleInitial,
-                LastName = foundOpsEmployee.LastName
+                Id = model.Id,
+                LinkedUserAccountId = model.LinkedUserAccountId,
+                FirstName = model.FirstName,
+                MiddleInitial = model.MiddleInitial,
+                LastName = model.LastName
             };
 
             return employee;
