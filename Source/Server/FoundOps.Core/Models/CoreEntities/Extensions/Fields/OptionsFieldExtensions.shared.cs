@@ -69,11 +69,18 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 if (_options == null)
                 {
-                    var names = this.OptionsString.Split(',').Select(CsvWriter.Unescape).ToList();
-                    var values = this.Value.Split(',').Select(CsvWriter.Unescape).Select(int.Parse).ToList();
+                    if (OptionsString == null)
+                    {
+                        _options = new ObservableCollection<Option>();
+                    }
+                    else
+                    {
+                        var names = this.OptionsString.Split(',').Select(CsvWriter.Unescape).ToList();
+                        var values = this.Value.Split(',').Select(CsvWriter.Unescape).Select(int.Parse).ToList();
 
-                    var options = names.Select((t, i) => new Option { Name = t, IsChecked = values.Contains(i), Parent = this });
-                    _options = new ObservableCollection<Option>(options);
+                        var options = names.Select((t, i) => new Option { Name = t, IsChecked = values.Contains(i), Parent = this });
+                        _options = new ObservableCollection<Option>(options);
+                    }
 
                     _options.FromCollectionChanged().SelectLatest(ops =>
                         //whenever an option's property changes
@@ -98,6 +105,9 @@ namespace FoundOps.Core.Models.CoreEntities
 
         private string CreateOptionsString(IEnumerable<Option> optionsForField)
         {
+            if (optionsForField == null)
+                return "";
+
             //create an options string with the option's names alphabetically organized and CSVed
             //ex: "Option A,Option B,Option C"
             var optionsNames = optionsForField.Select(o => o.Name).OrderBy(name => name);
@@ -108,6 +118,9 @@ namespace FoundOps.Core.Models.CoreEntities
 
         private string CreateValueString(IEnumerable<Option> optionsForField)
         {
+            if (optionsForField == null)
+                return "";
+
             //the optionsfield value string is the indexes of the selected options concatenated
             //ex: "0,2" = First and third option are selected
             var orderedOptions = optionsForField.OrderBy(o => o.Name).ToArray();
