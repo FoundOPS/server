@@ -1,4 +1,5 @@
-﻿using System.Reactive.Linq;
+﻿using System.Collections.Generic;
+using System.Reactive.Linq;
 using System.Threading;
 using FoundOps.Common.Tools;
 using FoundOps.Common.Composite.Entities;
@@ -80,19 +81,42 @@ namespace FoundOps.Core.Models.CoreEntities
                             //whenever the collection changes
                         .AndNow())
 #if SILVERLIGHT
-.ObserveOnDispatcher()
+                        .ObserveOnDispatcher()
 #else
 .ObserveOn(SynchronizationContext.Current)
 #endif
 .Subscribe(_ =>
                     {
-                        OptionsString = "TODO";
-                        Value = "TODO";
+                        OptionsString = CreateOptionsString(Options);
+                        Value = CreateValueString(Options);
                     });
                 }
 
                 return _options;
             }
+        }
+
+        private string CreateOptionsString(IEnumerable<Option> optionsForField)
+        {
+            //create an options string with the option's names alphabetically organized and CSVed
+            //ex: "Option A,Option B,Option C"
+            var optionsNames = optionsForField.Select(o => o.Name).OrderBy(name => name);
+            var csv = string.Join(",", optionsNames.Select(CsvWriter.Escape));
+
+            return csv;
+        }
+
+        private string CreateValueString(IEnumerable<Option> optionsForField)
+        {
+            //the optionsfield value string is the indexes of the selected options concatenated
+            //ex: "0,2" = First and third option are selected
+            var orderedOptions = optionsForField.OrderBy(o => o.Name).ToArray();
+
+            var indexesChecked = orderedOptions.Where(o => o.IsChecked)
+                .Select(option => Array.IndexOf(orderedOptions, option).ToString());
+
+            var csv = string.Join(",", indexesChecked.Select(CsvWriter.Escape));
+            return csv;
         }
     }
 }
