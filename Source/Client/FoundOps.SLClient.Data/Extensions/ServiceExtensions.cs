@@ -29,7 +29,7 @@ namespace FoundOps.Core.Models.CoreEntities
         public EntityGraph<Entity> EntityGraph()
         {
             var graphShape = new EntityGraphShape().Edge<Service, ServiceTemplate>(service => service.ServiceTemplate)
-                .Edge<ServiceTemplate, Field>(st => st.Fields).Edge<OptionsField, Option>(of => of.Options);
+                .Edge<ServiceTemplate, Field>(st => st.Fields);
 
             return new EntityGraph<Entity>(this, graphShape);
         }

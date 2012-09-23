@@ -231,10 +231,6 @@
     <Content Include="app\img\google.png" />
     <Content Include="app\img\got-grease-logo.png" />
     <Content Include="app\img\highlight.png" />
-    <Content Include="app\img\Icon-36x36.png" />
-    <Content Include="app\img\Icon-48x48.png" />
-    <Content Include="app\img\Icon-72x72.png" />
-    <Content Include="app\img\Icon-96x96.png" />
     <Content Include="app\img\iconmasks.svg" />
     <Content Include="app\img\icons.png" />
     <Content Include="app\img\imgTags.png" />

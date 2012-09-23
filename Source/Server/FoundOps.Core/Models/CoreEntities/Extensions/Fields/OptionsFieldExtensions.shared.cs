@@ -89,8 +89,6 @@ namespace FoundOps.Core.Models.CoreEntities
                         .AndNow())
 #if SILVERLIGHT
                         .ObserveOnDispatcher()
-#else
-.ObserveOn(SynchronizationContext.Current)
 #endif
 .Subscribe(_ =>
                     {

@@ -40,7 +40,7 @@
             <AddEditDelete:AddDelete HorizontalAlignment="Right" Grid.Column="2" AddCommand="{Binding AddCommand}" DeleteCommand="{Binding DeleteCommand}"/>
         </Grid>
         <telerik:RadGridView x:Name="OptionsFieldRadGridView" Grid.ColumnSpan="3" Grid.Row="2" HorizontalAlignment="Center" AutoGenerateColumns="False" ShowGroupPanel="False" RowIndicatorVisibility="Collapsed"
-                                 SelectedItem="{Binding SelectedOption, Mode=TwoWay}" ItemsSource="{Binding OptionsField.OptionsWrapper}" SelectionMode="Single">
+                                 SelectedItem="{Binding SelectedOption, Mode=TwoWay}" ItemsSource="{Binding OptionsField.Options}" SelectionMode="Single">
             <!--bind to item source of checklist and default isselected values-->
             <telerik:RadGridView.Columns>
                 <telerik:GridViewDataColumn Header="Value" DataMemberBinding="{Binding Name, Mode=TwoWay}" />

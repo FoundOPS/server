@@ -1715,14 +1715,6 @@
           <Parameter Name="serviceTypeContext" Type="nvarchar(max)" Mode="In" />
           <Parameter Name="withFields" Type="bit" Mode="In" />
         </Function>
-        <Function Name="GetServiceHoldersWithFields" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="serviceProviderIdContext" Type="uniqueidentifier" Mode="In" />
-          <Parameter Name="clientIdContext" Type="uniqueidentifier" Mode="In" />
-          <Parameter Name="recurringServiceIdContext" Type="uniqueidentifier" Mode="In" />
-          <Parameter Name="firstDate" Type="date" Mode="In" />
-          <Parameter Name="lastDate" Type="date" Mode="In" />
-          <Parameter Name="serviceTypeContext" Type="nvarchar(max)" Mode="In" />
-        </Function>
         <Function Name="GetServiceTemplatesAndFields" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="serviceProviderContextId" Type="uniqueidentifier" Mode="In" />
           <Parameter Name="clientContextId" Type="uniqueidentifier" Mode="In" />
@@ -2054,14 +2046,6 @@
             <Parameter Name="lastDate" Mode="In" Type="DateTime" />
             <Parameter Name="serviceTypeContext" Mode="In" Type="String" />
             <Parameter Name="withFields" Mode="In" Type="Boolean" />
-          </FunctionImport>
-          <FunctionImport Name="GetServiceHoldersWithFields">
-            <Parameter Name="serviceProviderIdContext" Mode="In" Type="Guid" />
-            <Parameter Name="clientIdContext" Mode="In" Type="Guid" />
-            <Parameter Name="recurringServiceIdContext" Mode="In" Type="Guid" />
-            <Parameter Name="firstDate" Mode="In" Type="DateTime" />
-            <Parameter Name="lastDate" Mode="In" Type="DateTime" />
-            <Parameter Name="serviceTypeContext" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="GetServiceTemplatesAndFields">
             <Parameter Name="serviceProviderContextId" Mode="In" Type="Guid" />
@@ -3805,7 +3789,6 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetServiceHoldersWithFields" FunctionName="CoreEntities.Store.GetServiceHoldersWithFields" />
           <FunctionImportMapping FunctionImportName="GetServiceTemplatesAndFields" FunctionName="CoreEntities.Store.GetServiceTemplatesAndFields">
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GetServiceTemplatesWithDateAndDetails" FunctionName="CoreEntities.Store.GetServiceTemplatesWithDateAndDetails" />

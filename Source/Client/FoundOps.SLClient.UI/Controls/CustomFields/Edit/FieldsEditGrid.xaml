@@ -38,7 +38,7 @@
                     <TextBlock Text="{Binding Name}" ToolTipService.ToolTip="{Binding Tooltip}" TextWrapping="Wrap" MaxWidth="135"/>
                     <TextBlock Text=": " />
                 </StackPanel>
-                <ItemsControl Grid.Column="2" Grid.Row="4" ItemsSource="{Binding OptionsWrapper}">
+                <ItemsControl Grid.Column="2" Grid.Row="4" ItemsSource="{Binding Options}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
@@ -62,7 +62,7 @@
                     <TextBlock Text=": " />
                 </StackPanel>
                 <telerik:RadComboBox Grid.Column="2" SelectedValue="{Binding Path=ThisField, Mode=TwoWay, Converter={StaticResource ComboBoxSelectedItemConverter}}" 
-                                     ItemsSource="{Binding OptionsWrapper}" DisplayMemberPath="Name" IsReadOnly="True"/>
+                                     ItemsSource="{Binding Options}" DisplayMemberPath="Name" IsReadOnly="True"/>
                 <!--bind item source to possible items-->
             </Grid>
         </DataTemplate>

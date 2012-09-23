@@ -26,11 +26,6 @@ namespace FoundOps.Server.Services.CoreDomainService
             return this.ObjectContext.Fields;
         }
 
-        public IQueryable<OptionsField> GetOptionsField()
-        {
-            return this.ObjectContext.Fields.OfType<OptionsField>();
-        }
-
         public IQueryable<OptionsField> GetOptionsFields()
         {
             return this.ObjectContext.Fields.OfType<OptionsField>();

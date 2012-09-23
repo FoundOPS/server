@@ -20,7 +20,7 @@
         <DataTemplate x:Key="CheckListTemplate">
             <StackPanel HorizontalAlignment="Left" Width="245">
                 <TextBlock Text="{Binding Name}"/>
-                <ItemsControl ItemsSource="{Binding OptionsWrapper}">
+                <ItemsControl ItemsSource="{Binding Options}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" Margin="15,0,0,0">
@@ -39,7 +39,7 @@
                     <TextBlock Text="{Binding Name}" TextWrapping="Wrap" MaxWidth="200"/>
                     <TextBlock Text=" (Pick One)"/>
                 </StackPanel>
-                <ItemsControl ItemsSource="{Binding OptionsWrapper}">
+                <ItemsControl ItemsSource="{Binding Options}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal" Margin="15,0,0,0">

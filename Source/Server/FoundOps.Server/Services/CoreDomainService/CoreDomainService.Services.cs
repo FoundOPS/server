@@ -60,10 +60,9 @@ namespace FoundOps.Server.Services.CoreDomainService
             servicesForRole = servicesForRole.Include(s => s.Client).Include(s => s.Client).Include(s => s.RecurringServiceParent)
                 .Include(s => s.ServiceTemplate).Include(s => s.ServiceTemplate.Fields);
 
-            //Force Load LocationField's Location/OptionsField Options
+            //Force Load LocationField's Location
             //TODO: Optimize by IQueryable
             servicesForRole.SelectMany(s => s.ServiceTemplate.Fields).OfType<LocationField>().Select(lf => lf.Value).ToArray();
-            servicesForRole.SelectMany(s => s.ServiceTemplate.Fields).OfType<OptionsField>().SelectMany(of => of.Options).ToArray();
 
             return servicesForRole;
         }
@@ -323,9 +322,8 @@ namespace FoundOps.Server.Services.CoreDomainService
             var recurringServices = RecurringServicesForServiceProviderOptimized(roleId).Where(rs => rs.Id == recurringServiceId)
                 .Include(c => c.Client).Include(rs => rs.ServiceTemplate).Include(rs => rs.ServiceTemplate.Fields);
 
-            //Force Load LocationField's Location/OptionsField Options
+            //Force Load LocationField's Location/OptionsField
             recurringServices.SelectMany(s => s.ServiceTemplate.Fields).OfType<LocationField>().Select(lf => lf.Value).ToArray();
-            recurringServices.SelectMany(s => s.ServiceTemplate.Fields).OfType<OptionsField>().SelectMany(of => of.Options).ToArray();
 
             return recurringServices.FirstOrDefault();
         }
@@ -342,10 +340,9 @@ namespace FoundOps.Server.Services.CoreDomainService
             var recurringServices = RecurringServicesForServiceProviderOptimized(roleId)
                 .Where(rs => recurringServiceIds.Contains(rs.Id)).Include(c => c.Client).Include(rs => rs.ServiceTemplate).Include(rs => rs.ServiceTemplate.Fields);
 
-            //Force Load LocationField's Location/OptionsField Options
+            //Force Load LocationField's Location
             //TODO: Optimize by IQueryable
             recurringServices.SelectMany(rs => rs.ServiceTemplate.Fields).OfType<LocationField>().Select(lf => lf.Value).ToArray();
-            recurringServices.SelectMany(s => s.ServiceTemplate.Fields).OfType<OptionsField>().SelectMany(of => of.Options).ToArray();
 
             return recurringServices;
         }
