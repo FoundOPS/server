@@ -120,7 +120,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 foreach (var route in routesDesignData.DesignRoutes)
                     serviceProvider.Routes.Add(route);
 
-                container.SaveChanges();
+                //container.SaveChanges();
 
                 //Add Services
                 var servicesDesignData = new ServicesDesignData(serviceProvider, clientsDesignData.DesignClient, serviceProvider.ServiceTemplates);

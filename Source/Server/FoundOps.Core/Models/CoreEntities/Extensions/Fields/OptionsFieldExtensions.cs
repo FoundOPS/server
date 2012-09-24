@@ -1,8 +1,8 @@
-﻿using FoundOps.Common.Tools;
+﻿using System.Reactive.Linq;
+using FoundOps.Common.Tools;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reactive.Linq;
 
 //Need to manually link (share) this file, or else Option will be generated
 // ReSharper disable CheckNamespace
@@ -43,6 +43,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
             _options = result;
 
+            //Track changes to the Options and update the Options strings
             if (_optionsStringTracker != null)
                 _optionsStringTracker.Dispose();
 
@@ -50,15 +51,17 @@ namespace FoundOps.Core.Models.CoreEntities
                 //whenever an option's property changes
                        _options.Select(o => o.FromAnyPropertyChanged()).Merge().AsGeneric()
                            //whenever the collection changes
-                       .AndNow()).Throttle(TimeSpan.FromMilliseconds(150))
+                       .AndNow()).Synchronize()
 #if SILVERLIGHT
-.ObserveOnDispatcher()
+                       .ObserveOnDispatcher()
 #endif
+
 .Subscribe(_ => UpdateOptionStrings());
 
             if (notifyPropertyChanged)
                 this.CompositeRaiseEntityPropertyChanged("Options");
         }
+
         private void UpdateOptionStrings()
         {
             string optionsString = "";
