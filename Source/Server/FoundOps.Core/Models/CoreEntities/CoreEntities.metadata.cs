@@ -129,20 +129,6 @@ namespace FoundOps.Core.Models.CoreEntities
         }
     }
 
-    [MetadataTypeAttribute(typeof(EmployeeMetadata))]
-    public partial class Employee
-    {
-        internal sealed class EmployeeMetadata
-        {
-            private EmployeeMetadata()
-            {
-            }
-
-            [Include]
-            public UserAccount LinkedUserAccount { get; set; }
-        }
-    }
-
     [MetadataTypeAttribute(typeof(FieldMetadata))]
     public partial class Field
     {

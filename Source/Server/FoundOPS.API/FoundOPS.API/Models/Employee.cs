@@ -14,7 +14,6 @@ namespace FoundOPS.API.Models
 
         public string DisplayName { get { return FirstName + " " + LastName; }}
 
-
         public static Employee ConvertModel(FoundOps.Core.Models.CoreEntities.Employee model)
         {
             var employee = new Employee
