@@ -1,5 +1,6 @@
 ﻿CREATE TABLE [dbo].[Locations] (
     [Id]                       UNIQUEIDENTIFIER NOT NULL,
+    [Name]                     NVARCHAR (MAX)   NULL,
     [AddressLineOne]           NVARCHAR (MAX)   NULL,
     [Longitude]                DECIMAL (11, 8)  NULL,
     [ZipCode]                  NVARCHAR (MAX)   NULL,
@@ -18,6 +19,8 @@
     CONSTRAINT [FK_LocationBusinessAccount] FOREIGN KEY ([BusinessAccountId]) REFERENCES [dbo].[Parties_BusinessAccount] ([Id]),
     CONSTRAINT [FK_RegionLocation] FOREIGN KEY ([RegionId]) REFERENCES [dbo].[Regions] ([Id])
 );
+
+
 
 
 

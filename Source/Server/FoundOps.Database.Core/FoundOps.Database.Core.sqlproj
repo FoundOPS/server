@@ -171,10 +171,6 @@
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
     </Build>
-    <Build Include="dbo\Tables\Options_LocationOption.sql">
-      <AnsiNulls>On</AnsiNulls>
-      <QuotedIdentifier>On</QuotedIdentifier>
-    </Build>
     <Build Include="dbo\Tables\Fields_DateTimeField.sql">
       <AnsiNulls>On</AnsiNulls>
       <QuotedIdentifier>On</QuotedIdentifier>
@@ -360,7 +356,6 @@
     <Build Include="dbo\Stored Procedures\PropagateNameChange.sql" />
     <Build Include="dbo\Tables\TaskStatuses.sql" />
     <Build Include="dbo\Stored Procedures\sp_GetUnroutedServicesForDate.sql" />
-    <Build Include="dbo\Stored Procedures\GetServiceHoldersWithFields.sql" />
     <Build Include="dbo\Stored Procedures\GetServiceHolders.sql" />
     <Build Include="dbo\Stored Procedures\GetServiceTemplatesWithDateAndDetails_1.sql" />
     <Build Include="dbo\Stored Procedures\GetServiceTemplatesAndFields_1.sql" />

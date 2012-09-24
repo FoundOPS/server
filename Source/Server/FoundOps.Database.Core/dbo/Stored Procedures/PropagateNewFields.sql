@@ -20,16 +20,8 @@ CREATE PROCEDURE [dbo].[PropagateNewFields]
 			DECLARE @CopyOfNewServiceTemplates TABLE
 			(
 				Id UNIQUEIDENTIFIER
-			)
-			DECLARE @OptionsCopies TABLE
-			(
-				Id UNIQUEIDENTIFIER,
-				NAME NVARCHAR(MAX),
-				IsChecked BIT,
-				OptionsFieldId UNIQUEIDENTIFIER,
-				[Index] INT,
-				ToolTip NVARCHAR(MAX)
-			)      
+			)    
+			  
 		END
 
 		BEGIN --Sets all variables to copy basic field data
@@ -57,6 +49,9 @@ CREATE PROCEDURE [dbo].[PropagateNewFields]
 		SELECT	TemplateRecurs.Id
 		FROM	TemplateRecurs		      
 		
+		DELETE FROM @CopyOfNewServiceTemplates
+		WHERE Id = @serviceTemplateId
+
 		--Track the number of Service Templates left to be created
 		SET @serviceTemplateCount = (SELECT COUNT(*) FROM @CopyOfNewServiceTemplates)
         
@@ -148,29 +143,20 @@ CREATE PROCEDURE [dbo].[PropagateNewFields]
 
 				IF @FieldId IN (SELECT Id FROM dbo.Fields_OptionsField) --Copy the Options field, set new Id's 
 				BEGIN
-					INSERT INTO Fields_OptionsField
+					
+					INSERT INTO dbo.Fields_OptionsField
 							( AllowMultipleSelection ,
-								TypeInt ,
-								Id
+							  TypeInt ,
+							  Value ,
+							  OptionsString ,
+							  Id
 							)
-					VALUES  ( (SELECT AllowMultipleSelection FROM dbo.Fields_OptionsField WHERE Id = @FieldId) , -- AllowMultipleSelection - bit
-								(SELECT TypeInt FROM dbo.Fields_OptionsField WHERE Id = @FieldId) , -- TypeInt - smallint
-								@newFieldId  -- Id - uniqueidentifier
+					VALUES	( (SELECT AllowMultipleSelection FROM dbo.Fields_OptionsField WHERE Id = @FieldId) , -- AllowMultipleSelection - bit
+							  (SELECT TypeInt FROM dbo.Fields_OptionsField WHERE Id = @FieldId), -- TypeInt - smallint
+							  (SELECT Value FROM dbo.Fields_OptionsField WHERE Id = @FieldId) , -- Value - nvarchar(max)
+							  (SELECT OptionsString FROM dbo.Fields_OptionsField WHERE Id = @FieldId) , -- OptionsString - nvarchar(max)
+							  @newFieldId  -- Id - uniqueidentifier
 							)
-						
-					INSERT INTO @OptionsCopies
-					SELECT * FROM Options
-					WHERE OptionsFieldId = @FieldId
-
-					UPDATE @OptionsCopies
-					SET Id = NEWID(),
-						OptionsFieldId = @newFieldId
-
-					INSERT INTO Options
-					SELECT * FROM @OptionsCopies
-
-					DELETE FROM @OptionsCopies
-
 				END  		
 			END
 			      

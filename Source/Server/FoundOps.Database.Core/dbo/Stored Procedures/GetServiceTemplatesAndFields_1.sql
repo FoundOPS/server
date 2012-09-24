@@ -111,8 +111,6 @@ BEGIN
 	JOIN dbo.Fields_OptionsField t2 
 	ON t1.Id = t2.Id and t1.Id IN (SELECT Id FROM @fieldIds)
 
-	SELECT * FROM dbo.Options WHERE OptionsFieldId IN (SELECT Id FROM dbo.Fields_OptionsField WHERE Id IN (SELECT Id FROM @fieldIds))
-
 	SELECT t1.*, t2.* FROM dbo.Fields t1 
 	JOIN dbo.Fields_LocationField t2 
 	ON t1.Id = t2.Id and t1.Id IN (SELECT Id FROM @fieldIds)

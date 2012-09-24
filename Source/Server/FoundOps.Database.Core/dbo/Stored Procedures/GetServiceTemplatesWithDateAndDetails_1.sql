@@ -93,54 +93,12 @@ AS
 		ON t1.LocationId = t3.Id AND t2.Id IN (SELECT Id FROM #FieldIds)
 		ORDER BY t2.ServiceTemplateId
 
-		CREATE TABLE #OptionsFields 
-				(
-				  AllowMultipleSelection BIT ,
-				  TypeInt SMALLINT ,
-				  Id UNIQUEIDENTIFIER,
-				  FieldType NVARCHAR(MAX) ,
-				  ServiceTemplateId UNIQUEIDENTIFIER ,
-				  FieldName NVARCHAR(MAX),
-				  [Value] NVARCHAR(MAX)
-				)    
-		
-		INSERT INTO #OptionsFields (AllowMultipleSelection, TypeInt, Id)
-			SELECT * FROM dbo.Fields_OptionsField
-			WHERE Id IN (SELECT Id FROM #FieldIds)
+		SELECT t2.Id, t2.ServiceTemplateId, t2.Name, t1.Value
+		FROM dbo.Fields_OptionsField t1
+		JOIN dbo.Fields t2
+		ON t2.Id = t1.Id AND t2.Id IN (SELECT Id FROM #FieldIds)
+		ORDER BY t2.ServiceTemplateId
 
-		DECLARE @CheckedOptions TABLE 
-		(
-			OptionsFieldId UNIQUEIDENTIFIER ,
-			[Name] NVARCHAR(MAX)
-		)
-
-		INSERT INTO @CheckedOptions
-		SELECT OptionsFieldId, Name FROM dbo.Options --OptionsFieldId, Name
-		WHERE IsChecked = 1 
-		AND OptionsFieldId IN (SELECT Id FROM #OptionsFields)
-			
-		--Concatinates all Options that were checked as follows: op1, op2, op3,
-		UPDATE #OptionsFields
-		SET Value = (SELECT Name + ', ' AS 'data()' 
-		FROM @CheckedOptions 
-		WHERE OptionsFieldId = [#OptionsFields].Id
-		ORDER BY Name
-		FOR XML PATH(''))
-
-		--Removes the extra comma inserted at the end of the Value string because of concatination
-		UPDATE #OptionsFields
-		SET Value = LEFT(Value, LEN(Value) -1)
-
-		UPDATE #OptionsFields
-			SET ServiceTemplateId = (SELECT ServiceTemplateId FROM dbo.Fields WHERE Id = [#OptionsFields].Id),
-				FieldName = (SELECT Name FROM dbo.Fields WHERE Id = [#OptionsFields].Id)
-
-		
-		SELECT Id, ServiceTemplateId, FieldName AS 'Name', Value  
-		FROM #OptionsFields
-		ORDER BY ServiceTemplateId
-
-		DROP TABLE #OptionsFields
 		DROP TABLE #FieldIds
 		DROP TABLE #ServiceTemplateIds
 		DROP TABLE #ServiceHolders

@@ -83,7 +83,7 @@ namespace FoundOps.Core.Models.CoreEntities
             //Setup roles
             new RolesDesignData(businessAccountsDesignData, userAccountsDesignData);
 
-            container.SaveChanges();
+            //container.SaveChanges();
 
             //Populate ServiceProvider Design Data
             foreach (var serviceProvider in businessAccountsDesignData.DesignServiceProviders)
@@ -92,28 +92,28 @@ namespace FoundOps.Core.Models.CoreEntities
                 foreach (var employee in employeesDesignData.DesignEmployees)
                     serviceProvider.Employees.Add(employee);
 
-                container.SaveChanges();
+                //container.SaveChanges();
 
                 //Add Vehicles (and Vehicle Maintenance, and VehicleTypes)
                 var vehiclesDesignData = new VehiclesDesignData(serviceProvider);
                 foreach (var vehicle in vehiclesDesignData.DesignVehicles)
                     serviceProvider.Vehicles.Add(vehicle);
 
-                container.SaveChanges();
+                //container.SaveChanges();
 
                 //Add Regions
                 var regionsDesignData = new RegionsDesignData();
                 foreach (var region in regionsDesignData.DesignRegions)
                     serviceProvider.Regions.Add(region);
 
-                container.SaveChanges();
+                //container.SaveChanges();
 
                 //Add Clients (and ContactInfo, Locations, and RecurringServices)
                 var clientsDesignData = new ClientsDesignData(serviceProvider, regionsDesignData);
                 foreach (var client in clientsDesignData.DesignClients)
                     serviceProvider.Clients.Add(client);
 
-                container.SaveChanges();
+                //container.SaveChanges();
 
                 //Add Routes (with RouteTasks, Vehicles, Technicians)
                 var routesDesignData = new RoutesDesignData(serviceProvider, clientsDesignData, vehiclesDesignData, employeesDesignData);
@@ -127,8 +127,10 @@ namespace FoundOps.Core.Models.CoreEntities
                 foreach (var service in servicesDesignData.DesignServices)
                     serviceProvider.ServicesToProvide.Add(service);
 
-                container.SaveChanges();
+                //container.SaveChanges();
             }
+
+            container.SaveChanges();
         }
 
 
