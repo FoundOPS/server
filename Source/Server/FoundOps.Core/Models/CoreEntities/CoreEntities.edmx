@@ -467,8 +467,8 @@
           <Property Name="AllowMultipleSelection" Type="bit" Nullable="false" />
           <Property Name="TypeInt" Type="smallint" Nullable="false" />
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="OptionsString" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="Value" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="OptionsString" Type="nvarchar(max)" />
+          <Property Name="Value" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Fields_TextBoxField">
           <Key>
@@ -2607,8 +2607,8 @@
         <EntityType Name="OptionsField" BaseType="CoreEntities.Field" >
           <Property Type="Boolean" Name="AllowMultipleSelection" Nullable="false" />
           <Property Type="Int16" Name="TypeInt" Nullable="false" />
-          <Property Name="OptionsString" Type="String" Nullable="false" />
-          <Property Name="Value" Type="String" Nullable="false" />
+          <Property Name="OptionsString" Type="String" />
+          <Property Name="Value" Type="String" />
         </EntityType>
         <EntityType Name="RecurringService">
           <Key>

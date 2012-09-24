@@ -743,8 +743,8 @@ CREATE TABLE [dbo].[Fields_OptionsField] (
     [AllowMultipleSelection] bit  NOT NULL,
     [TypeInt] smallint  NOT NULL,
     [Id] uniqueidentifier  NOT NULL,
-    [OptionsString] nvarchar(max) NOT NULL,
-    [Value] nvarchar(max) NOT NULL
+    [OptionsString] nvarchar(max) NULL,
+    [Value] nvarchar(max) NULL
 );
 GO
 

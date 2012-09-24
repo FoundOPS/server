@@ -47,6 +47,8 @@ namespace FoundOps.Core.Models.CoreEntities
                        .AndNow()).Throttle(TimeSpan.FromMilliseconds(150))
 #if SILVERLIGHT
 .ObserveOnDispatcher()
+#else
+                       .ObserveOn(System.Threading.SynchronizationContext.Current)
 #endif
 .Subscribe(_ => UpdateOptionStrings());
 

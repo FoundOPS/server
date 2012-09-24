@@ -6438,9 +6438,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <param name="required">Initial value of the Required property.</param>
         /// <param name="allowMultipleSelection">Initial value of the AllowMultipleSelection property.</param>
         /// <param name="typeInt">Initial value of the TypeInt property.</param>
-        /// <param name="optionsString">Initial value of the OptionsString property.</param>
-        /// <param name="value">Initial value of the Value property.</param>
-        public static OptionsField CreateOptionsField(global::System.Guid id, global::System.String name, global::System.Boolean required, global::System.Boolean allowMultipleSelection, global::System.Int16 typeInt, global::System.String optionsString, global::System.String value)
+        public static OptionsField CreateOptionsField(global::System.Guid id, global::System.String name, global::System.Boolean required, global::System.Boolean allowMultipleSelection, global::System.Int16 typeInt)
         {
             OptionsField optionsField = new OptionsField();
             optionsField.Id = id;
@@ -6448,8 +6446,6 @@ namespace FoundOps.Core.Models.CoreEntities
             optionsField.Required = required;
             optionsField.AllowMultipleSelection = allowMultipleSelection;
             optionsField.TypeInt = typeInt;
-            optionsField.OptionsString = optionsString;
-            optionsField.Value = value;
             return optionsField;
         }
 
@@ -6508,7 +6504,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
         public global::System.String OptionsString
         {
@@ -6520,7 +6516,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnOptionsStringChanging(value);
                 ReportPropertyChanging("OptionsString");
-                _OptionsString = StructuralObject.SetValidValue(value, false);
+                _OptionsString = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("OptionsString");
                 OnOptionsStringChanged();
             }
@@ -6532,7 +6528,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
         public global::System.String Value
         {
@@ -6544,7 +6540,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnValueChanging(value);
                 ReportPropertyChanging("Value");
-                _Value = StructuralObject.SetValidValue(value, false);
+                _Value = StructuralObject.SetValidValue(value, true);
                 ReportPropertyChanged("Value");
                 OnValueChanged();
             }
