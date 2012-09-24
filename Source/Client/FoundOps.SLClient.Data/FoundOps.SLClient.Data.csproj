@@ -266,6 +266,12 @@
     <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\VehiclesDesignData.cs">
       <Link>DesignData\VehiclesDesignData.cs</Link>
     </Compile>
+    <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\Extensions\Fields\Option.cs">
+      <Link>Extensions\Option.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\Extensions\Fields\OptionsFieldExtensions.cs">
+      <Link>Extensions\OptionsFieldExtensions.cs</Link>
+    </Compile>
     <Compile Include="..\..\Server\FoundOps.Core\Models\Import\DataCategory.cs">
       <Link>Models\DataCategory.cs</Link>
     </Compile>

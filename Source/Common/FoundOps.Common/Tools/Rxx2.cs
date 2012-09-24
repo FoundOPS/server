@@ -187,7 +187,7 @@ namespace FoundOps.Common.Tools
         /// <param name="selector">The selector.</param>
         /// <returns></returns>
         /// 
-        public static System.IObservable<TResult> SelectLatest<TSource, TResult>(this System.IObservable<TSource> source, System.Func<TSource, IObservable<TResult>> selector)
+        public static IObservable<TResult> SelectLatest<TSource, TResult>(this IObservable<TSource> source, Func<TSource, IObservable<TResult>> selector)
         {
             var selectLatestSubject = new Subject<TResult>();
 

@@ -1,14 +1,15 @@
 ﻿using System.ComponentModel;
-using System.Runtime.Serialization;
 
+//Manually share this class to prevent problems with RIA services complex type generation
 // ReSharper disable CheckNamespace
 namespace FoundOps.Core.Models.CoreEntities
 // ReSharper restore CheckNamespace
 {
     public partial class Option : INotifyPropertyChanged
     {
+        public OptionsField Parent { get; set; }
+
         private string _name;
-        [DataMember]
         public string Name
         {
             get { return _name; }
@@ -20,7 +21,6 @@ namespace FoundOps.Core.Models.CoreEntities
         }
 
         private bool _isChecked;
-        [DataMember]
         public bool IsChecked
         {
             get { return _isChecked; }
@@ -33,18 +33,10 @@ namespace FoundOps.Core.Models.CoreEntities
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected virtual void RaisePropertyChanged(string propertyName)
+        private void RaisePropertyChanged(string propertyName)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-#if SILVERLIGHT
-                handler(propertyName);
-#else
-                handler(this, new PropertyChangedEventArgs(propertyName));
-#endif
-            }
-
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

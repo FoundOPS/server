@@ -125,7 +125,8 @@
     <Compile Include="Models\Azure\InvoiceTableDataModel.cs" />
     <Compile Include="Models\Azure\InvoiceDataServiceContext.cs" />
     <Compile Include="Models\CoreEntities\DesignData\ServicesDesignData.cs" />
-    <Compile Include="Models\CoreEntities\Extensions\Fields\OptionExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Fields\Option.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Fields\OptionsFieldExtensions.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Parties\BusinessAccountExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\ServiceEntites\ISimpleField.cs" />
     <Compile Include="Models\CoreEntities\ServiceEntites\ServiceTemplateWithDate.cs" />
@@ -175,7 +176,6 @@
     <Compile Include="Models\CoreEntities\Extensions\Fields\DateTimeFieldExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Fields\FieldExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Fields\LocationFieldExtensions.shared.cs" />
-    <Compile Include="Models\CoreEntities\Extensions\Fields\Option.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Fields\OptionsFieldExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Core\FileExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\ICompositeRaiseEntityPropertyChanged.shared.cs" />
