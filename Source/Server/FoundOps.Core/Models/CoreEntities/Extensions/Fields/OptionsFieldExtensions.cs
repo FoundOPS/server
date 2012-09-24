@@ -1,5 +1,4 @@
-﻿using System.Reactive.Subjects;
-using FoundOps.Common.Tools;
+﻿using FoundOps.Common.Tools;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -22,16 +21,23 @@ namespace FoundOps.Core.Models.CoreEntities
         {
             ObservableCollection<Option> result;
 
-            if (OptionsString == null)
+            if (String.IsNullOrEmpty(OptionsString))
             {
                 result = new ObservableCollection<Option>();
             }
             else
             {
                 var names = this.OptionsString.Split(',').Select(CsvWriter.Unescape).ToList();
-                var values = this.Value.Split(',').Select(CsvWriter.Unescape).Select(int.Parse).ToList();
 
-                var options = names.Select((t, i) => new Option { Name = t, IsChecked = values.Contains(i), Parent = this });
+                var options = names.Select((t, i) => new Option { Name = t, Parent = this }).ToArray();
+
+                if (!String.IsNullOrEmpty(Value))
+                {
+                    var selectedIndexes = this.Value.Split(',').Select(CsvWriter.Unescape).Select(int.Parse);
+                    foreach (var index in selectedIndexes)
+                        options.ElementAt(index).IsChecked = true;
+                }
+
                 result = new ObservableCollection<Option>(options);
             }
 
@@ -47,8 +53,6 @@ namespace FoundOps.Core.Models.CoreEntities
                        .AndNow()).Throttle(TimeSpan.FromMilliseconds(150))
 #if SILVERLIGHT
 .ObserveOnDispatcher()
-#else
-                       .ObserveOn(System.Threading.SynchronizationContext.Current)
 #endif
 .Subscribe(_ => UpdateOptionStrings());
 
