@@ -27,9 +27,11 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
                 return;
 
             var status = selectedRouteTask.TaskStatus;
-            if (status != null && !status.RouteRequired && e.RemovedItems.Count > 0)// This would mean that the status requires the task to be out of a route
+
+            //This will also remove the task from its RouteDestination 
+            if (status != null && status.RemoveFromRoute && e.RemovedItems.Count > 0)
             {
-                //This will also remove the task from its RouteDestination and delete the Destination if there are no other tasks for that Destination
+                //and delete the Destination if there are no other tasks for that Destination
                 DragDropTools.RemoveFromRoute(selectedRouteTask);
 
                 ((ObservableCollection<RouteTask>)VM.TaskBoard.CollectionView.SourceCollection).Add(selectedRouteTask);

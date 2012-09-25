@@ -118,11 +118,9 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             base.RejectChanges();
 
-            //update all options fields's options that had changed rejected
+            //find all OptionFields with rejected changes, then reset their options
             foreach(var optionsField in changes.Where(c => c as OptionsField != null))
-            {
-                ((OptionsField)optionsField).UpdateOptions();
-            }
+                ((OptionsField)optionsField).SetOptions();
 
             _changesRejectedSubject.OnNext(changesRejectedArgs);
 

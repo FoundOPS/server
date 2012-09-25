@@ -10315,12 +10315,12 @@ namespace FoundOps.Core.Models.CoreEntities
         /// Create a new TaskStatus object.
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
-        /// <param name="routeRequired">Initial value of the RouteRequired property.</param>
-        public static TaskStatus CreateTaskStatus(global::System.Guid id, global::System.Boolean routeRequired)
+        /// <param name="removeFromRoute">Initial value of the RemoveFromRoute property.</param>
+        public static TaskStatus CreateTaskStatus(global::System.Guid id, global::System.Boolean removeFromRoute)
         {
             TaskStatus taskStatus = new TaskStatus();
             taskStatus.Id = id;
-            taskStatus.RouteRequired = routeRequired;
+            taskStatus.RemoveFromRoute = removeFromRoute;
             return taskStatus;
         }
 
@@ -10432,24 +10432,24 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
         [DataMemberAttribute()]
-        public global::System.Boolean RouteRequired
+        public global::System.Boolean RemoveFromRoute
         {
             get
             {
-                return _RouteRequired;
+                return _RemoveFromRoute;
             }
             set
             {
-                OnRouteRequiredChanging(value);
-                ReportPropertyChanging("RouteRequired");
-                _RouteRequired = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("RouteRequired");
-                OnRouteRequiredChanged();
+                OnRemoveFromRouteChanging(value);
+                ReportPropertyChanging("RemoveFromRoute");
+                _RemoveFromRoute = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("RemoveFromRoute");
+                OnRemoveFromRouteChanged();
             }
         }
-        private global::System.Boolean _RouteRequired;
-        partial void OnRouteRequiredChanging(global::System.Boolean value);
-        partial void OnRouteRequiredChanged();
+        private global::System.Boolean _RemoveFromRoute;
+        partial void OnRemoveFromRouteChanging(global::System.Boolean value);
+        partial void OnRemoveFromRouteChanged();
     
         /// <summary>
         /// No Metadata Documentation available.

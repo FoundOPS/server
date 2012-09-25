@@ -1,5 +1,4 @@
-﻿using FoundOps.Common.Composite.Tools;
-using FoundOps.Common.Tools.ExtensionMethods;
+﻿using FoundOps.Common.Tools.ExtensionMethods;
 using FoundOps.Core.Models.CoreEntities.Extensions.Services;
 using System;
 using System.Linq;
@@ -18,16 +17,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
         private readonly Random _random = new Random();
         private readonly string[] _routeNames = { "SF Bay Area", "Shelter Island", "North Side", "South Side" };
-
-        public RoutesDesignData()
-            : this(new BusinessAccountsDesignData().GotGrease)
-        {
-        }
-
-        public RoutesDesignData(BusinessAccount ownerBusinessAccount)
-            : this(ownerBusinessAccount, new ClientsDesignData(), new VehiclesDesignData(), new EmployeesDesignData())
-        {
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RoutesDesignData"/> class.

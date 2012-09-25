@@ -68,8 +68,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             foreach (var serviceProvider in new[] { GotGrease, ABCouriers, GenericOilCollector })
             {
                 //Add task statuses
-                var taskStatusDesignData = new TaskStatusDesignData();
-                foreach (var taskStatus in taskStatusDesignData.DesignStatus)
+                var defaultStatuses = TaskStatuses.CreateDefaultTaskStatuses();
+                foreach (var taskStatus in defaultStatuses)
                     serviceProvider.TaskStatuses.Add(taskStatus);
 
                 //Add depot

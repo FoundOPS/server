@@ -110,6 +110,28 @@ namespace FoundOPS.API.Api
             //status is the only thing that can change
             routeTaskModel.TaskStatusId = routeTask.TaskStatusId;
 
+            var taskStatus = _coreEntitiesContainer.TaskStatuses.FirstOrDefault(ts => ts.Id == routeTask.TaskStatusId);
+            if (taskStatus == null)
+                return Request.CreateResponse(HttpStatusCode.NotFound, "Task statuses have been changed. Please reload Routes");
+
+            //Remove the task from the route if the task status says to
+            if (taskStatus.RemoveFromRoute && routeTaskModel.RouteDestinationId.HasValue)
+            {
+                routeTaskModel.RouteDestinationReference.Load();
+                routeTaskModel.RouteDestination.RouteTasks.Load();
+
+                //if this is the only task, delete the route destination
+                if (routeTaskModel.RouteDestination.RouteTasks.Count() == 1)
+                {
+                    _coreEntitiesContainer.RouteDestinations.DeleteObject(routeTaskModel.RouteDestination);
+                }
+                //otherwise just remove this task
+                else
+                {
+                    routeTaskModel.RouteDestinationId = null;
+                }
+            }
+
             _coreEntitiesContainer.SaveChanges();
 
             return Request.CreateResponse(HttpStatusCode.Accepted);

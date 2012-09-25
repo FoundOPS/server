@@ -117,7 +117,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         private void InsertBusinessAccount(BusinessAccount account)
         {
-            var defaultStatuses = AddDefaultTaskStatuses();
+            var defaultStatuses = TaskStatuses.CreateDefaultTaskStatuses();
 
             //Add the default statuses to the BusinessAccount
             foreach (var status in defaultStatuses)
@@ -131,46 +131,6 @@ namespace FoundOps.Server.Services.CoreDomainService
             {
                 this.ObjectContext.Parties.AddObject(account);
             }
-        }
-
-        private IEnumerable<TaskStatus> AddDefaultTaskStatuses()
-        {
-            var taskStatuses = new List<TaskStatus> { };
-
-            var taskStatus = new TaskStatus
-            {
-                Id = Guid.NewGuid(),
-                Name = "Created",
-                Color = "FFFFFF",
-                DefaultTypeInt = ((int)StatusDetail.CreatedDefault),
-                RouteRequired = false
-            };
-
-            taskStatuses.Add(taskStatus);
-
-            taskStatus = new TaskStatus
-            {
-                Id = Guid.NewGuid(),
-                Name = "Routed",
-                Color = "0D9EFF",
-                DefaultTypeInt = ((int)StatusDetail.RoutedDefault),
-                RouteRequired = true
-            };
-
-            taskStatuses.Add(taskStatus);
-
-            taskStatus = new TaskStatus
-            {
-                Id = Guid.NewGuid(),
-                Name = "Completed",
-                Color = "32CD32",
-                DefaultTypeInt = ((int)StatusDetail.CompletedDefault),
-                RouteRequired = true
-            };
-
-            taskStatuses.Add(taskStatus);
-
-            return taskStatuses.ToArray();
         }
 
         private void UpdateBusinessAccount(BusinessAccount account)

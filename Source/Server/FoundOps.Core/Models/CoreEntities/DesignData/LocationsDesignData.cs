@@ -15,11 +15,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
         /// </summary>
         public IEnumerable<Location> DesignLocations { get { return _designLocations; } }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="LocationsDesignData"/> class.
-        /// </summary>
-        public LocationsDesignData()
-            : this(new ClientsDesignData().DesignClient, new RegionsDesignData().DesignRegions, 0, 5)
+        public LocationsDesignData(Client client)
+            : this(client, new RegionsDesignData().DesignRegions, 0, 5)
         { }
 
         /// <summary>
@@ -251,6 +248,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             _designLocations.Add(new Location
             {
+                Name = "Campbell's On Main Street",
                 AddressLineOne = "101 E Main St",
                 City = "Crawfordsville",
                 State = "IN",
@@ -262,7 +260,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             _designLocations.Add(new Location
             {
-                Name = "Campbell's On Main Street",
+                Name = "Buca di Beppo - Downtown Indianapolis",
                 AddressLineOne = "35 N Illinois St",
                 City = "Indianapolis",
                 State = "IN",

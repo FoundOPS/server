@@ -123,7 +123,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 //container.SaveChanges();
 
                 //Add Services
-                var servicesDesignData = new ServicesDesignData(serviceProvider, clientsDesignData.DesignClient, serviceProvider.ServiceTemplates);
+                var servicesDesignData = new ServicesDesignData(serviceProvider, clientsDesignData.DesignClients.ElementAt(0), serviceProvider.ServiceTemplates);
                 foreach (var service in servicesDesignData.DesignServices)
                     serviceProvider.ServicesToProvide.Add(service);
 

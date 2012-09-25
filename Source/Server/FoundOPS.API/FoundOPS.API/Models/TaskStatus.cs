@@ -1,5 +1,4 @@
 using System;
-using FoundOps.Core.Models.CoreEntities;
 
 namespace FoundOPS.API.Models
 {
@@ -10,34 +9,34 @@ namespace FoundOPS.API.Models
         public string Color { get; set; }
         public Guid? BusinessAccountId { get; set; }
         public int? DefaultTypeInt { get; set; }
-        public bool RouteRequired { get; set; }
+        public bool RemoveFromRoute { get; set; }
 
-        public static TaskStatus ConvertModel(FoundOps.Core.Models.CoreEntities.TaskStatus modelStatus)
+        public static TaskStatus ConvertModel(FoundOps.Core.Models.CoreEntities.TaskStatus model)
         {
             var status = new TaskStatus
-                             {
-                                 Id = modelStatus.Id,
-                                 Name = modelStatus.Name,
-                                 Color = modelStatus.Color,
-                                 DefaultTypeInt = modelStatus.DefaultTypeInt,
-                                 RouteRequired = modelStatus.RouteRequired,
-                                 BusinessAccountId = modelStatus.BusinessAccountId
-                             };
+            {
+                Id = model.Id,
+                Name = model.Name,
+                Color = model.Color,
+                DefaultTypeInt = model.DefaultTypeInt,
+                RemoveFromRoute = model.RemoveFromRoute,
+                BusinessAccountId = model.BusinessAccountId
+            };
 
             return status;
         }
 
-        public static FoundOps.Core.Models.CoreEntities.TaskStatus ConvertFromModel(TaskStatus taskStatus)
+        public static FoundOps.Core.Models.CoreEntities.TaskStatus CreateFromModel(TaskStatus taskStatus)
         {
             var status = new FoundOps.Core.Models.CoreEntities.TaskStatus
-                             {
-                                 Id = taskStatus.Id,
-                                 Name = taskStatus.Name,
-                                 Color = taskStatus.Color,
-                                 DefaultTypeInt = taskStatus.DefaultTypeInt,
-                                 RouteRequired = taskStatus.RouteRequired,
-                                 BusinessAccountId = taskStatus.BusinessAccountId
-                             };
+            {
+                Id = taskStatus.Id,
+                Name = taskStatus.Name,
+                Color = taskStatus.Color,
+                DefaultTypeInt = taskStatus.DefaultTypeInt,
+                RemoveFromRoute = taskStatus.RemoveFromRoute,
+                BusinessAccountId = taskStatus.BusinessAccountId
+            };
 
             return status;
         }

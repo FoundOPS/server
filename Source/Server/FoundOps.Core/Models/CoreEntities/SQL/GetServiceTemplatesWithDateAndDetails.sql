@@ -99,18 +99,18 @@ AS
 		ON t2.Id = t1.Id AND t2.Id IN (SELECT Id FROM #FieldIds)
 		ORDER BY t2.ServiceTemplateId
 
-		SELECT t2.Id, t2.ServiceTemplateId, t2.Name, t3.AddressLineOne + ' ' + t3.AddressLineTwo AS 'Value'
+		SELECT t2.Id, t2.ServiceTemplateId, t2.Name, t1.OptionsString, t1.Value
+		FROM dbo.Fields_OptionsField t1
+		JOIN dbo.Fields t2
+		ON t2.Id = t1.Id AND t2.Id IN (SELECT Id FROM #FieldIds)
+		ORDER BY t2.ServiceTemplateId
+
+		SELECT t2.Id, t2.ServiceTemplateId, t2.Name, t3.Name + ', ' + t3.AddressLineOne + ' ' + t3.AddressLineTwo AS 'Value'
 		FROM dbo.Fields_LocationField t1
 		JOIN dbo.Fields t2
 		ON t2.Id = t1.Id
 		JOIN dbo.Locations t3
 		ON t1.LocationId = t3.Id AND t2.Id IN (SELECT Id FROM #FieldIds)
-		ORDER BY t2.ServiceTemplateId
-
-		SELECT t2.Id, t2.ServiceTemplateId, t2.Name, t1.Value
-		FROM dbo.Fields_OptionsField t1
-		JOIN dbo.Fields t2
-		ON t2.Id = t1.Id AND t2.Id IN (SELECT Id FROM #FieldIds)
 		ORDER BY t2.ServiceTemplateId
 
 		DROP TABLE #FieldIds

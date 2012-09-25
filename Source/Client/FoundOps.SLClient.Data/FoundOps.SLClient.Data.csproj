@@ -254,9 +254,6 @@
     <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\SubLocationsDesignData.cs">
       <Link>DesignData\SubLocationsDesignData.cs</Link>
     </Compile>
-    <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\TaskStatusDesignData.cs">
-      <Link>DesignData\TaskStatusDesignData.cs</Link>
-    </Compile>
     <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\DesignData\UserAccountsDesignData.cs">
       <Link>DesignData\UserAccountsDesignData.cs</Link>
     </Compile>
@@ -271,6 +268,9 @@
     </Compile>
     <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\Extensions\Fields\OptionsFieldExtensions.cs">
       <Link>Extensions\OptionsFieldExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Server\FoundOps.Core\Models\CoreEntities\TaskStatuses.cs">
+      <Link>Models\TaskStatuses.cs</Link>
     </Compile>
     <Compile Include="..\..\Server\FoundOps.Core\Models\Import\DataCategory.cs">
       <Link>Models\DataCategory.cs</Link>

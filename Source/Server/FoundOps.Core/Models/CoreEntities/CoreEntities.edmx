@@ -743,7 +743,7 @@
           <Property Name="Color" Type="nvarchar(max)" />
           <Property Name="Name" Type="nvarchar(max)" />
           <Property Name="DefaultTypeInt" Type="int" />
-          <Property Name="RouteRequired" Type="bit" Nullable="false" />
+          <Property Name="RemoveFromRoute" Type="bit" Nullable="false" />
           <Property Name="BusinessAccountId" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="UserAccountLog">
@@ -3216,7 +3216,7 @@
           <Property Type="String" Name="Color" Nullable="true" FixedLength="false" MaxLength="Max" Unicode="true" />
           <Property Type="String" Name="Name" Nullable="true" FixedLength="false" MaxLength="Max" Unicode="true" />
           <Property Type="Int32" Name="DefaultTypeInt" Nullable="true" />
-          <Property Type="Boolean" Name="RouteRequired" Nullable="false" />
+          <Property Type="Boolean" Name="RemoveFromRoute" Nullable="false" />
           <NavigationProperty Name="BusinessAccount" Relationship="CoreEntities.TaskStatusBusinessAccount" FromRole="TaskStatus" ToRole="BusinessAccount" />
           <Property Type="Guid" Name="BusinessAccountId" Nullable="true" />
           <NavigationProperty Name="RouteTasks" Relationship="CoreEntities.TaskStatusRouteTask" FromRole="TaskStatus" ToRole="RouteTask" />
@@ -3724,7 +3724,7 @@
           <ScalarProperty Name="Color" ColumnName="Color" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="DefaultTypeInt" ColumnName="DefaultTypeInt" />
-          <ScalarProperty Name="RouteRequired" ColumnName="RouteRequired" />
+          <ScalarProperty Name="RemoveFromRoute" ColumnName="RemoveFromRoute" />
           <ScalarProperty Name="BusinessAccountId" ColumnName="BusinessAccountId" />
         </MappingFragment>
       </EntityTypeMapping>

@@ -128,6 +128,7 @@
     <Compile Include="Models\CoreEntities\Extensions\Fields\Option.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Fields\OptionsFieldExtensions.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Parties\BusinessAccountExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\ServiceEntites\SimpleOptionsField.cs" />
     <Compile Include="Models\CoreEntities\ServiceEntites\ISimpleField.cs" />
     <Compile Include="Models\CoreEntities\ServiceEntites\ServiceTemplateWithDate.cs" />
     <Compile Include="Models\CoreEntities\ServiceEntites\SimpleDateField.cs" />
@@ -158,7 +159,7 @@
     <Compile Include="Models\CoreEntities\DesignData\SalesTermsDesignData.cs" />
     <Compile Include="Models\CoreEntities\DesignData\ServiceTemplatesDesignData.cs" />
     <Compile Include="Models\CoreEntities\DesignData\SubLocationsDesignData.cs" />
-    <Compile Include="Models\CoreEntities\DesignData\TaskStatusDesignData.cs" />
+    <Compile Include="Models\CoreEntities\TaskStatuses.cs" />
     <Compile Include="Models\CoreEntities\DesignData\UserAccountsDesignData.cs" />
     <Compile Include="Models\CoreEntities\DesignData\VehicleMaintenanceDesignData.cs" />
     <Compile Include="Models\CoreEntities\DesignData\VehiclesDesignData.cs" />

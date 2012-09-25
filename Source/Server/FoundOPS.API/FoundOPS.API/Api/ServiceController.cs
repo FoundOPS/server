@@ -196,7 +196,7 @@ namespace FoundOPS.API.Api
 
                 reader.NextResult();
 
-                simpleOptionsFields = _coreEntitiesContainer.Translate<SimpleTextField>(reader).AsParallel().ToLookup(f => f.ServiceTemplateId, f => (ISimpleField)f);
+                simpleOptionsFields = _coreEntitiesContainer.Translate<SimpleOptionsField>(reader).AsParallel().ToLookup(f => f.ServiceTemplateId, f => (ISimpleField)f);
 
                 reader.NextResult();
 
@@ -220,7 +220,7 @@ namespace FoundOPS.API.Api
                     var fields = simpleDateFields[id].Union(simpleNumericFields[id]).Union(simpleTextFields[id]).Union(
                             simpleOptionsFields[id]).Union(simpleLocationFields[id]).ToDictionary(f => f.Name);
 
-                    foreach (var name in javaScriptFields.Select(f => f.Name.Replace("_", " ")))
+                    foreach (var name in javaScriptFields.Select(f => f.Name))
                         dictionary.Add(name, fields.ContainsKey(name) ? fields[name].ObjectValue : null);
 
                     return dictionary;

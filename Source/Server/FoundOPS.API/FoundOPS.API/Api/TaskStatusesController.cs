@@ -1,12 +1,12 @@
-﻿using System;
+﻿using FoundOps.Common.NET;
+using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Core.Tools;
+using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using FoundOps.Common.NET;
-using FoundOps.Core.Models.CoreEntities;
-using FoundOps.Core.Tools;
 using TaskStatus = FoundOPS.API.Models.TaskStatus;
 
 namespace FoundOPS.API.Api
@@ -21,12 +21,10 @@ namespace FoundOPS.API.Api
             _coreEntitiesContainer.ContextOptions.LazyLoadingEnabled = false;
         }
 
-        #region INSERT
-
         [AcceptVerbs("POST")]
         public HttpResponseMessage InsertTaskStatus(TaskStatus taskStatus, Guid roleId)
         {
-            var status = TaskStatus.ConvertFromModel(taskStatus);
+            var status = TaskStatus.CreateFromModel(taskStatus);
 
             var businessAccount = _coreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator }).Include(ba => ba.TaskStatuses).FirstOrDefault();
 
@@ -45,12 +43,7 @@ namespace FoundOPS.API.Api
             }
 
             return Request.CreateResponse(HttpStatusCode.Accepted);
-
         }
-
-        #endregion
-
-        #region UPDATE
 
         [AcceptVerbs("POST")]
         public HttpResponseMessage UpdateTaskStatus(TaskStatus taskStatus, Guid roleId)
@@ -65,22 +58,12 @@ namespace FoundOPS.API.Api
             if (original == null)
                 return Request.CreateResponse(HttpStatusCode.BadRequest, "You are trying to update an object the does not exist yet!");
 
-            var convertedTaskStatus = TaskStatus.ConvertFromModel(taskStatus);
+            //update the original
+            original.Color = taskStatus.Color;
+            original.DefaultTypeInt = taskStatus.DefaultTypeInt;
+            original.Name = taskStatus.Name;
+            original.RemoveFromRoute = taskStatus.RemoveFromRoute;
 
-            original.BusinessAccountId = convertedTaskStatus.BusinessAccountId;
-            original.Color = convertedTaskStatus.Color;
-            original.DefaultTypeInt = convertedTaskStatus.DefaultTypeInt;
-            original.Name = convertedTaskStatus.Name;
-            original.RouteRequired = convertedTaskStatus.RouteRequired;
-
-            if (convertedTaskStatus.RouteTasks != original.RouteTasks)
-            {
-                original.RouteTasks.Clear();
-
-                foreach (var routeTask in convertedTaskStatus.RouteTasks)
-                    original.RouteTasks.Add(routeTask);
-
-            }
             try
             {
                 _coreEntitiesContainer.SaveChanges();
@@ -93,10 +76,6 @@ namespace FoundOPS.API.Api
             return Request.CreateResponse(HttpStatusCode.Accepted);
         }
 
-        #endregion
-
-        #region DELETE
-
         [AcceptVerbs("POST")]
         public HttpResponseMessage DeleteTaskStatus(TaskStatus taskStatus, Guid roleId)
         {
@@ -105,7 +84,7 @@ namespace FoundOPS.API.Api
             if (businessAccount == null)
                 return Request.CreateResponse(HttpStatusCode.Unauthorized, "User does not have Admin abilities");
 
-            var status = TaskStatus.ConvertFromModel(taskStatus);
+            var status = TaskStatus.CreateFromModel(taskStatus);
 
             _coreEntitiesContainer.DetachExistingAndAttach(status);
             _coreEntitiesContainer.TaskStatuses.DeleteObject(status);
@@ -122,10 +101,6 @@ namespace FoundOPS.API.Api
             return Request.CreateResponse(HttpStatusCode.Accepted);
         }
 
-        #endregion
-
-        #region GET
-
         [AcceptVerbs("GET", "POST")]
         public IQueryable<TaskStatus> GetStatuses(Guid? roleId, Guid? businessAccountId)
         {
@@ -139,7 +114,5 @@ namespace FoundOPS.API.Api
 
             return statuses;
         }
-
-        #endregion
     }
 }

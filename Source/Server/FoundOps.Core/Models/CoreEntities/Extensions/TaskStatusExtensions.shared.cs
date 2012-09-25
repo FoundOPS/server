@@ -2,7 +2,9 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 
+// ReSharper disable CheckNamespace
 namespace FoundOps.Core.Models.CoreEntities
+// ReSharper restore CheckNamespace
 {
     public partial class TaskStatus
     {

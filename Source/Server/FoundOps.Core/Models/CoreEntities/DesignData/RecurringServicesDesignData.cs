@@ -14,11 +14,6 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
         public ObservableCollection<RecurringService> DesignRecurringServices { get; private set; }
 
-        public RecurringServicesDesignData()
-            : this(new ClientsDesignData().DesignClient)
-        {
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="RecurringServicesDesignData"/> class.
         /// </summary>

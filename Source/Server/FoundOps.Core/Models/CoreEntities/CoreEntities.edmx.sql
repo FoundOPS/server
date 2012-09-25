@@ -701,7 +701,7 @@ CREATE TABLE [dbo].[TaskStatuses] (
     [Color] nvarchar(max)  NULL,
     [Name] nvarchar(max)  NULL,
     [DefaultTypeInt] int  NULL,
-    [RouteRequired] bit  NOT NULL,
+    [RemoveFromRoute] bit  NOT NULL,
     [BusinessAccountId] uniqueidentifier  NULL
 );
 GO
