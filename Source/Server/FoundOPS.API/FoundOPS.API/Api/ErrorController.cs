@@ -6,6 +6,13 @@ using FoundOps.Core.Tools;
 
 namespace FoundOPS.API.Api
 {
+    public class ErrorEntry
+    {
+        public string Business { get; set; }
+        public string Message { get; set; }
+        public string Url { get; set; }
+    }
+
     /// <summary>
     /// An api controller to track errors.
     /// </summary>
@@ -24,7 +31,7 @@ namespace FoundOPS.API.Api
         /// Stores an error.
         /// </summary>
         [AcceptVerbs("GET", "POST")]
-        public void Track([FromBody]string error, [FromUri] string business, [FromUri] string section)
+        public void Track(ErrorEntry errorEntry)
         {
             var currentUser = _coreEntitiesContainer.CurrentUserAccount().First();
 
@@ -32,10 +39,10 @@ namespace FoundOPS.API.Api
                 {
                     Id = Guid.NewGuid(),
                     Date = DateTime.UtcNow,
-                    ErrorText = error,
+                    ErrorText = errorEntry.Message,
                     UserEmail = currentUser.EmailAddress,
-                    BusinessName = business,
-                    InnerException = section
+                    BusinessName = errorEntry.Business,
+                    InnerException = errorEntry.Url
                 });
 
             _coreEntitiesContainer.SaveChanges();
