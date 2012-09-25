@@ -1,4 +1,5 @@
 ﻿using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
+using FoundOps.SLClient.UI.Tools;
 using Analytics = FoundOps.SLClient.Data.Services.Analytics;
 using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
 using FoundOps.Core.Models.CoreEntities;
@@ -91,6 +92,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             Rxx3.RunDelayed(TimeSpan.FromMilliseconds(100), () => NavigateToView("Infinite Accordion"));
         }
 
+        private readonly UserControl _emptySection = new UserControl();
+
         /// <summary>
         /// Navigate to a view
         /// </summary>
@@ -98,8 +101,15 @@ namespace FoundOps.SLClient.UI.ViewModels
         [ScriptableMember]
         public void NavigateToView(string name)
         {
-            if (string.IsNullOrEmpty(name))
+            if (string.IsNullOrEmpty(name) || CurrentSection == name)
                 return;
+
+            if (name == "Empty")
+            {
+                CurrentSection = "Empty";
+                SelectedView = _emptySection;
+                return;
+            }
 
             //if this is an infiniteAccordionSection
             //a) load the Infinite Accordion View (instead of the view with this name)
@@ -117,6 +127,19 @@ namespace FoundOps.SLClient.UI.ViewModels
             CurrentSection = name;
 
             TrackChosenSection(name);
+        }
+
+        /// <summary>
+        /// Called before the silverlight application is hidden
+        /// </summary>
+        [ScriptableMember]
+        public void BeforeHide()
+        {
+            //prevents crashing bug
+            if (CurrentSection == "Clients")
+            {
+                VM.Clients.SelectedEntity = null;
+            }
         }
 
         /// <summary>
