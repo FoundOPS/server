@@ -81,8 +81,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// </summary>
         [ImportingConstructor]
         public LocationsVM()
-            //WORKAROUND TO BE FIXED: Prevent null selection because unsaved entities will not show up
-            : base(new[] { typeof(Client), typeof(Region) }, true, true)
+            : base(new[] { typeof(Client), typeof(Region) }, true)
         {
             SetupDataLoading();
 

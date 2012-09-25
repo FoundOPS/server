@@ -135,10 +135,26 @@ namespace FoundOps.SLClient.UI.ViewModels
         [ScriptableMember]
         public void BeforeHide()
         {
+            //TODO: Consider prevents navigation if there are unsaved changes
+            //or not worry about it because switching to HTML5
             //prevents crashing bug
-            if (CurrentSection == "Clients")
+            switch (CurrentSection)
             {
-                VM.Clients.SelectedEntity = null;
+                case "Clients":
+                    VM.Clients.SelectedEntity = null;
+                    break;
+                case "Employees":
+                    VM.Employees.SelectedEntity = null;
+                    break;
+                case "Locations":
+                    VM.Locations.SelectedEntity = null;
+                    break;
+                case "Regions":
+                    VM.Regions.SelectedEntity = null;
+                    break;
+                case "Vehicles":
+                    VM.Vehicles.SelectedEntity = null;
+                    break;
             }
         }
 
