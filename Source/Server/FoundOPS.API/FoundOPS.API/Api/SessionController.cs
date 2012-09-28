@@ -56,7 +56,8 @@ namespace FoundOPS.API.Api
                 return Request.CreateResponse(HttpStatusCode.Accepted, true);
             }
 
-            return Request.CreateResponse(HttpStatusCode.Unauthorized, false);
+            //return status code accepted to ajax jquery can get the false response
+            return Request.CreateResponse(HttpStatusCode.Accepted, false);
         }
 
         /// <summary>
@@ -72,6 +73,15 @@ namespace FoundOPS.API.Api
         #endregion
 
         #region User Information
+
+        /// <summary>
+        /// Check if the user is logged on
+        /// </summary>
+        [AcceptVerbs("GET", "POST")]
+        public bool Authenticated()
+        {
+            return _coreEntitiesContainer.CurrentUserAccount() != null;
+        }
 
         /// <summary>
         /// Gets the session information for the user
