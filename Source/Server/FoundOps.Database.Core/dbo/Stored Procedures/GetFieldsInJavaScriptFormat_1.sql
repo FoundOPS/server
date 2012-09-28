@@ -17,7 +17,7 @@ BEGIN
 	SET @serviceTemplateId = (SELECT Id FROM dbo.ServiceTemplates WHERE OwnerServiceProviderId = @businessAccountId AND Name = @serviceType AND LevelInt = 1)
 
 	INSERT INTO @fields (Id, Name)
-	SELECT Id, REPLACE(Name, ' ', '_') FROM dbo.Fields WHERE ServiceTemplateId = @serviceTemplateId
+	SELECT Id, Name FROM dbo.Fields WHERE ServiceTemplateId = @serviceTemplateId
 
 	UPDATE @fields
 	SET [Type] = 'string'

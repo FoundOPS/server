@@ -21,7 +21,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <returns></returns>
         public static string SimpleValue(string optionsString, string value)
         {
-            if (optionsString == null || value == null)
+            if (String.IsNullOrEmpty(optionsString) || String.IsNullOrEmpty(value))
                 return "";
 
             var names = optionsString.Split(',').Select(CsvWriter.Unescape).ToList();
