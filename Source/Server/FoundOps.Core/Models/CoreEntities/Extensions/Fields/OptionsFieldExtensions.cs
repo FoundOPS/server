@@ -18,7 +18,6 @@ namespace FoundOps.Core.Models.CoreEntities
         /// Convert an OptionsString and Value to a concatenated string.
         /// For toString()
         /// </summary>
-        /// <returns></returns>
         public static string SimpleValue(string optionsString, string value)
         {
             if (String.IsNullOrEmpty(optionsString) || String.IsNullOrEmpty(value))
@@ -26,7 +25,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
             var names = optionsString.Split(',').Select(CsvWriter.Unescape).ToList();
             var options = names.Select((t, i) => new Option { Name = t }).ToArray();
-
             var selectedIndexes = value.Split(',').Select(CsvWriter.Unescape).Select(int.Parse);
 
             bool first = true;
@@ -69,7 +67,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         private static IEnumerable<Option> GetOptions(string optionsString, string value, OptionsField parent)
         {
-            if (String.IsNullOrEmpty(optionsString) || String.IsNullOrEmpty(value))
+            if (String.IsNullOrEmpty(optionsString))
             {
                 return new List<Option>();
             }
@@ -78,9 +76,12 @@ namespace FoundOps.Core.Models.CoreEntities
 
             var options = names.Select((t, i) => new Option { Name = t, Parent = parent }).ToArray();
 
-            var selectedIndexes = value.Split(',').Select(CsvWriter.Unescape).Select(int.Parse);
-            foreach (var index in selectedIndexes)
-                options.ElementAt(index).IsChecked = true;
+            if (!String.IsNullOrEmpty(value))
+            {
+                var selectedIndexes = value.Split(',').Select(CsvWriter.Unescape).Select(int.Parse);
+                foreach (var index in selectedIndexes)
+                    options.ElementAt(index).IsChecked = true;
+            }
 
             return options;
         }
