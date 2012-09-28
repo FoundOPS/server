@@ -42,10 +42,10 @@ namespace FoundOPS.API.Models
                 userSettings.Employee = Employee.ConvertModel(foundOpsEmployee);
             }
 
+            //TODO CLEAN THIS, it's gross
             var controller = new SettingsController();
 
             var timeZoneinfo = controller.GetTimeZones().FirstOrDefault(tz => tz.TimeZoneId == userAccount.TimeZone);
-
             userSettings.TimeZoneInfo = timeZoneinfo;
 
             return userSettings;

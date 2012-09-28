@@ -1,4 +1,6 @@
 using System.Text;
+using System.Text.RegularExpressions;
+using System.Web;
 using FoundOPS.API.Models;
 using FoundOPS.API.Tools;
 using FoundOps.Common.NET;
@@ -240,9 +242,12 @@ namespace FoundOPS.API.Api
                 LastName = settings.LastName,
                 PasswordHash = EncryptionTools.Hash(temporaryPassword, salt),
                 PasswordSalt = salt,
-                TimeZone = settings.TimeZoneInfo.TimeZoneId
+                TimeZone = "Eastern Standard Time"
             };
 
+            //TODO?
+            //TimeZone = settings.TimeZoneInfo.TimeZoneId
+            
             //Find the role in the BusinessAccount that matches the name of the one passed in
             var role = _coreEntitiesContainer.Roles.FirstOrDefault(r => r.OwnerBusinessAccountId == businessAccount.Id && r.Name == settings.Role);
             user.RoleMembership.Add(role);
@@ -285,7 +290,6 @@ namespace FoundOPS.API.Api
                         "Click here to accept the invite: \r\n " + @"{0}" + "\r\n\r\n" +
                         "If you have any difficulty accepting the invitation, email us at support@foundops.com. This invitation expires in 7 days. \r\n\r\n\r\n" +
                         "The FoundOPS Team";
-
 
             _coreEntitiesMembershipProvider.ResetAccount(user.EmailAddress, subject, body, TimeSpan.FromDays(7));
 
@@ -577,7 +581,6 @@ namespace FoundOPS.API.Api
 
             return readOnlyUrl;
         }
-
 
         #endregion
 

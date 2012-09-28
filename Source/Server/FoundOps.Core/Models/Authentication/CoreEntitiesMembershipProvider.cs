@@ -1,3 +1,5 @@
+using System.IO;
+using System.Xml;
 using FoundOps.Common.NET;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
