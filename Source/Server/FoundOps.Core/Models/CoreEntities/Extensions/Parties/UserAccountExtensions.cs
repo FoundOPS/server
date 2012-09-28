@@ -62,7 +62,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 else
                 {
                     var tst = TimeZoneInfo.FindSystemTimeZoneById(TimeZone);
-                    _userTimeZoneOffset = tst.BaseUtcOffset;
+                    _userTimeZoneOffset = tst.GetUtcOffset(DateTime.UtcNow);
                 }
 #endif
                 return _userTimeZoneOffset;

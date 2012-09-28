@@ -1,5 +1,3 @@
-using System.Net;
-using System.Net.Mail;
 using FoundOps.Common.NET;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
@@ -83,9 +81,13 @@ namespace FoundOps.Core.Models.Authentication
 
         /// <summary>
         /// Set the password using a (one-time) reset code.
+        /// Also authenticates the user.
         /// </summary>
+        /// <param name="resetCode">The reset code</param>
+        /// <param name="newPassword">The new password</param>
+        /// <param name="autoLogin">(Optional) Defaults to true. Set the authentication cookie</param>
         /// <returns>True if succesful, or false if it failed</returns>
-        public bool SetPassword(string resetCode, string newPassword)
+        public bool SetPassword(string resetCode, string newPassword, bool autoLogin = true)
         {
             var account = _coreEntitiesContainer.Parties.OfType<UserAccount>().First(ua => ua.TempResetToken == resetCode);
 
@@ -96,6 +98,9 @@ namespace FoundOps.Core.Models.Authentication
             account.PasswordHash = EncryptionTools.Hash(newPassword, account.PasswordSalt);
 
             _coreEntitiesContainer.SaveChanges();
+
+            if (autoLogin)
+                FormsAuthentication.SetAuthCookie(account.EmailAddress, true);
 
             return true;
         }

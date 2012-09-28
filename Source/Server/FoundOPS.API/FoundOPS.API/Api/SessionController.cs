@@ -1,4 +1,3 @@
-using System.Web.Security;
 using FoundOPS.API.Models;
 using FoundOps.Common.Tools;
 using FoundOps.Core.Models.Authentication;
@@ -13,6 +12,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Security;
 
 namespace FoundOPS.API.Api
 {

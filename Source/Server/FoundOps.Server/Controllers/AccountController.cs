@@ -194,23 +194,19 @@ namespace FoundOps.Server.Controllers
         /// </summary>
         public ActionResult ResetPassword()
         {
+            //sign out first, in case they are logged in
+            FormsAuthentication.SignOut();
             return View();
         }
 
         /// <summary>
-        /// Will send an email with a reset password link
+        /// Sets the password
         /// </summary>
-        /// <param name="model"></param>
-        /// <param name="resetCode"></param>
-        /// <returns></returns>
         [HttpPost]
         public ActionResult ResetPassword(ResetPasswordModel model, string resetCode)
         {
-            if (ModelState.IsValid)
-            {
-                if (_coreEntitiesMembershipProvider.SetPassword(resetCode, model.NewPassword))
-                    return RedirectToAction("ResetPasswordSuccess", "Account");
-            }
+            if (ModelState.IsValid && _coreEntitiesMembershipProvider.SetPassword(resetCode, model.NewPassword))
+                return RedirectToAction("ResetPasswordSuccess", "Account");
 
             // If we got this far, something failed, redisplay form
             ModelState.AddModelError("", "");
