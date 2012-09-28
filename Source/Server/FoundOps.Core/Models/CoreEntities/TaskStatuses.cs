@@ -47,7 +47,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 Name = "Completed",
                 Color = "#32CD32",
                 DefaultTypeInt = ((int)StatusDetail.CompletedDefault),
-                RemoveFromRoute = true
+                RemoveFromRoute = false
             };
 
             taskStatuses.Add(taskStatus);
