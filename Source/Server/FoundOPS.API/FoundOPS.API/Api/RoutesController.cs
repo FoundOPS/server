@@ -29,20 +29,17 @@ namespace FoundOPS.API.Api
 
         #region Get
 
-        // GET /api/route <- User must be authenticated and have Routes for today
         // GET /api/route?roleId={Guid}
         /// <summary>
-        /// Returns Routes & RouteDestinations & RouteDestinations.Client & Client.OwnedParty.ContactInfoSet
-        /// & RouteDestinations.Location & Location.ContactInfoSet.
-        /// Ordered by name.
+        /// Returns Routes, RouteDestinations and their Client and Location
+        /// Ordered by name
         /// </summary>
+        /// <param name="roleId">Find routes for a business account</param>
         /// <param name="serviceDateUtc">The date of the service (in UTC). If null it will return todays routes.</param>
-        /// <param name="roleId">If the roleId has a value, it will find routes for a business account. Otherwise it will find routes for the current user account.</param>
+        /// <param name="deep">Load the RouteTasks and contact info for the RouteDestination's Clients and Locations</param>
         [AcceptVerbs("GET", "POST")]
-        public IQueryable<Route> GetRoutes(DateTime? serviceDateUtc, Guid? roleId)
+        public IQueryable<Route> GetRoutes(Guid roleId, DateTime? serviceDateUtc, bool deep = false)
         {
-            var apiRoutes = new List<Route>();
-
             //Find routes for the passed service date
             //if the date is null use today (adjusted for the user)
             var date = _coreEntitiesContainer.CurrentUserAccount().First().Now().Date;
@@ -50,34 +47,19 @@ namespace FoundOPS.API.Api
             if (serviceDateUtc.HasValue)
                 date = serviceDateUtc.Value.Date;
 
-            IEnumerable<FoundOps.Core.Models.CoreEntities.Route> loadedRoutes;
-
-            //If there is a roleId: return the Routes for the role's BusinessAccount (Map View)
-            //Otherwise: return the current user account's Routes (Mobile Application)
-            if (roleId.HasValue)
+            var loadedRoutes = _coreEntitiesContainer.Owner(roleId).Include(ba => ba.Routes)
+                            .SelectMany(ba => ba.Routes).Where(r => r.Date == date)
+                            .Include(r => r.RouteDestinations)
+                            .Include("RouteDestinations.Client").Include("RouteDestinations.Location");
+            if (deep)
             {
-                loadedRoutes = _coreEntitiesContainer.Owner(roleId.Value).Include(ba => ba.Routes)
-                                .SelectMany(ba => ba.Routes).Where(r => r.Date == date)
-                                .Include(r => r.RouteDestinations).Include("RouteDestinations.Client").Include("RouteDestinations.Location");
-            }
-            else
-            {
-                //Finds all LinkedEmployees for the CurrentUserAccount
-                //Finds all Routes (today) associated with those Employees
-                loadedRoutes = _coreEntitiesContainer.CurrentUserAccount()
-                                .SelectMany(cu => cu.LinkedEmployees)
-                                .SelectMany(e => e.Routes).Where(r => r.Date == date)
-                                .Include(r => r.RouteDestinations).Include("RouteDestinations.RouteTasks")
-                                .Include("RouteDestinations.Client").Include("RouteDestinations.Client.ContactInfoSet")
-                                .Include("RouteDestinations.Location").Include("RouteDestinations.Location.ContactInfoSet");
+                loadedRoutes = loadedRoutes.Include("RouteDestinations.RouteTasks").Include("RouteDestinations.Client.ContactInfoSet")
+                            .Include("RouteDestinations.Location.ContactInfoSet");
             }
 
-            //Converts the FoundOPS model Routes to the API model Routes
-            //Adds those APIRoutes to the list of APIRoutes to return
-            apiRoutes.AddRange(loadedRoutes.Select(Route.ConvertModel));
 
             //Order the routes by name
-            return apiRoutes.OrderBy(r => r.Name).AsQueryable();
+            return loadedRoutes.OrderBy(r => r.Name).Select(Route.ConvertModel).AsQueryable();
         }
 
         /// <summary>
