@@ -247,7 +247,7 @@ namespace FoundOPS.API.Api
 
             //TODO?
             //TimeZone = settings.TimeZoneInfo.TimeZoneId
-            
+
             //Find the role in the BusinessAccount that matches the name of the one passed in
             var role = _coreEntitiesContainer.Roles.FirstOrDefault(r => r.OwnerBusinessAccountId == businessAccount.Id && r.Name == settings.Role);
             user.RoleMembership.Add(role);
@@ -318,7 +318,8 @@ namespace FoundOPS.API.Api
             if (businessAccount == null)
                 return Request.CreateResponse(HttpStatusCode.Unauthorized);
 
-            var user = _coreEntitiesContainer.Parties.OfType<UserAccount>().Where(ua => ua.Id == settings.Id).Include(ua => ua.RoleMembership).Include(ua => ua.LinkedEmployees).First();
+            var user = _coreEntitiesContainer.Parties.OfType<UserAccount>().Include(ua => ua.RoleMembership).Include(ua => ua.LinkedEmployees).First(ua => ua.Id == settings.Id);
+
             if (UserExistsConflict(settings.EmailAddress, user.EmailAddress))
                 return UserExistsResponse();
 
