@@ -25,11 +25,9 @@ namespace FoundOps.SLClient.Data.Services
         DispatcherChangeDate,
         DispatcherNextDay,
         DispatcherPreviousDay,
-        FirstSectionChosen,
         //Only tracked on Google Analytics
         ManifestOption,
         PrintedManifest,
-        SectionChosen,
         ServerError
     }
 
@@ -123,8 +121,6 @@ namespace FoundOps.SLClient.Data.Services
             SectionNames.Add(Section.Vehicles, "Vehicles");
 
             //Set the string value of each Event's name
-            EventNames.Add(Event.FirstSectionChosen, "First Section Chosen");
-            EventNames.Add(Event.SectionChosen, "Section Chosen");
             EventNames.Add(Event.ServerError, "Server Error");
             EventNames.Add(Event.AddRoute, "Add Route");
             EventNames.Add(Event.AutoAssignJobs, "Auto-Assign Jobs");

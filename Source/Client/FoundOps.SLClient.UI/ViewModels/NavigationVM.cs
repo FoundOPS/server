@@ -125,8 +125,6 @@ namespace FoundOps.SLClient.UI.ViewModels
             SelectedView = view;
 
             CurrentSection = name;
-
-            TrackChosenSection(name);
         }
 
         /// <summary>
@@ -166,33 +164,6 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             var roleGuid = new Guid(roleId);
             Manager.Context.RoleIdObserver.OnNext(roleGuid);
-        }
-
-        /// <summary>
-        /// Tracks chosen section analytics
-        /// </summary>
-        private void TrackChosenSection(string name)
-        {
-            Section section;
-            switch (name)
-            {
-                case "Infinite Accordion": //The initial load
-                    return;
-                case "Business Accounts":
-                    section = Section.BusinessAccounts;
-                    break;
-                default:
-                    section = (Section)Enum.Parse(typeof(Section), name, true);
-                    break;
-            }
-
-            if (!_firstBlockChosen)
-            {
-                Analytics.Track(Event.FirstSectionChosen, section);
-                _firstBlockChosen = true;
-            }
-
-            Analytics.Track(Event.SectionChosen, section);
         }
 
         private UserControl GetView(string contractName)
