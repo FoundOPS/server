@@ -241,7 +241,9 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="serviceTemplate"></param>
         public void DeleteServiceTemplate(ServiceTemplate serviceTemplate)
         {
-            //TODO cannot delete if it has children
+            //change timeout from 30 to 600 to prevent timeout
+            ObjectContext.CommandTimeout = 600;
+
             //Stored procedure that will find all the children of this ServiceTemplate
             //Then it will delete all of them
             //Cascades will take care of all associations
