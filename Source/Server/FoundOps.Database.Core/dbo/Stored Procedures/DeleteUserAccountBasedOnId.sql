@@ -11,7 +11,14 @@ CREATE PROCEDURE dbo.DeleteUserAccountBasedOnId
 	BEGIN
 
 	EXECUTE [dbo].[DeleteBasicPartyBasedOnId] @providerId
-	
+
+	DELETE FROM dbo.UserAccountLog
+	WHERE UserAccountId = @providerId
+
+	UPDATE dbo.Employees
+	SET LinkedUserAccountId = NULL
+	WHERE LinkedUserAccountId = @providerId
+
 	DELETE FROM Parties_UserAccount
 	WHERE Id = @providerId
 

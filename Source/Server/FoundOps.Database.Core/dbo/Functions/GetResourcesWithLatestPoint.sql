@@ -32,56 +32,22 @@ RETURNS @EmployeeVehicleTableToReturn TABLE
 AS
 BEGIN
 
-	DECLARE @RoutesForDate TABLE
-	(
-		RouteId uniqueidentifier
-	)
+	INSERT INTO @EmployeeVehicleTableToReturn (EmployeeId, RouteId)
+	SELECT Employees_Id, Routes_Id FROM dbo.RouteEmployee WHERE Routes_Id IN (SELECT Id FROM dbo.Routes WHERE Date = @serviceDateUtc AND OwnerBusinessAccountId = @serviceProviderId)
 
-	--Finds all Routes for the ServiceProvider on the given date
-	INSERT INTO @RoutesForDate
-	SELECT Id FROM Routes
-	WHERE OwnerBusinessAccountId = @serviceProviderId AND Date = @serviceDateUtc
+	UPDATE @EmployeeVehicleTableToReturn
+	SET EntityName = FirstName + ' ' + LastName,
+		Heading = LastCompassDirection,
+		Latitude = LastLatitude,
+		Longitude = LastLongitude,
+		CollectedTimeStamp = LastTimeStamp,
+		Speed = LastSpeed,
+		[Source] = LastSource,
+		Accuracy = LastAccuracy
+	FROM dbo.Employees t1 WHERE EmployeeId = t1.Id
 
-	DECLARE @EmployeesForRoutesForDate TABLE
-	(
-		EmployeeId uniqueidentifier,
-		EmployeeName nvarchar(max),
-		RouteId uniqueidentifier
-	)
-
-	DECLARE @VehiclesForRoutesForDate TABLE
-	(
-		VehicleId uniqueidentifier,
-		RouteId uniqueidentifier
-	)
-
-	--Pull all employees that are in a Route for the specified day. Keep the EmployeeId and RouteId
-	INSERT INTO @EmployeesForRoutesForDate (EmployeeId, RouteId)
-	SELECT t1.Employees_Id, t2.RouteId FROM RouteEmployee t1, @RoutesForDate t2
-	WHERE t1.Routes_Id = t2.RouteId
-
-	--Fill in the Employee Name based on the Id
-	UPDATE @EmployeesForRoutesForDate
-	SET EmployeeName = (SELECT FirstName + ' ' + LastName FROM Employees WHERE Id = EmployeeId)
-	FROM @EmployeesForRoutesForDate
-
-
-	--Pull all vehicles that are in a Route for the specified day. Keep the VehicleId and RouteId
-	INSERT INTO @VehiclesForRoutesForDate
-	SELECT t1.Vehicles_Id, t2.RouteId FROM RouteVehicle t1, @RoutesForDate t2
-	WHERE t1.Routes_Id = t2.RouteId
-
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---Combine @EmployeesForRoutesForDate and @VehiclesForRoutesForDate into the final output table
---Most of the data for the output table needs to be pulled from either the Employees or Vehicles tables, this requires a simple combination of INSERT, SELECT and WHERE
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-	INSERT INTO @EmployeeVehicleTableToReturn (VehicleId, EntityName, Heading, Latitude, Longitude, CollectedTimeStamp, Speed, Source, RouteId, Accuracy)
-	SELECT t1.Id, t1.VehicleId, t1.LastCompassDirection, t1.LastLatitude, t1.LastLongitude, t1.LastTimeStamp, t1.LastSpeed, t1.LastSource, t2.RouteId, t1.LastAccuracy FROM Vehicles t1, @VehiclesForRoutesForDate t2 
-	WHERE t1.Id = t2.VehicleId
-
-	INSERT INTO @EmployeeVehicleTableToReturn (EmployeeId, EntityName, Heading, Latitude, Longitude, CollectedTimeStamp, Speed, Source, RouteId, Accuracy)
-	SELECT t1.Id, t2.EmployeeName, t1.LastCompassDirection, t1.LastLatitude, t1.LastLongitude, t1.LastTimeStamp, t1.LastSpeed, t1.LastSource, t2.RouteId, t1.LastAccuracy FROM Employees t1, @EmployeesForRoutesForDate t2 
-	WHERE t1.Id = t2.EmployeeId
+	DELETE FROM @EmployeeVehicleTableToReturn
+	WHERE CollectedTimeStamp < @serviceDateUtc OR CollectedTimeStamp IS NULL
 
 RETURN 
 END

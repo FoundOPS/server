@@ -22,39 +22,8 @@ namespace FoundOps.Server.Controllers
         //#endif
         public ActionResult Index()
         {
-#if DEBUG
-            var random = new System.Random();
-            var version = random.Next(10000).ToString();
-#else
-            var request = (HttpWebRequest)WebRequest.Create(SharedConstants.BlobStorageUrl + "xaps/version.txt");
-
-            // *** Retrieve request info headers
-            var response = (HttpWebResponse)request.GetResponse();
-            var stream = new StreamReader(response.GetResponseStream());
-
-            var version = stream.ReadToEnd();
-            response.Close();
-            stream.Close();
-#endif
-
-#if DEBUG
-            var splashSource = Url.Content("/ClientBin/SplashScreen.xaml");
-            var xapSource = Url.Content("/ClientBin/FoundOps.SLClient.Navigator.xap");
-#elif TESTRELEASE
-            var splashSource = Url.Content(SharedConstants.BlobStorageUrl + "xaps/SplashScreen.xaml");
-            var xapSource = Url.Content(SharedConstants.BlobStorageUrl + "xaps/FoundOps.SLClient.Navigator.xap");
-#elif RELEASE
-            var splashSource = Url.Content(SharedConstants.BlobStorageUrl + "xaps/SplashScreen.xaml");
-            var xapSource = Url.Content(SharedConstants.BlobStorageUrl + "xaps/FoundOps.SLClient.Navigator.xap");
-#endif
-
-            //Setup version
-            var sourceParam = xapSource + "?ignore=" + version;
-
             var model = new Dictionary<string, object>
                 {
-                    {"SplashSource", splashSource},
-                    {"XapSource", sourceParam},
                     {"BlobRoot", SharedConstants.BlobStorageUrl + "app/"}
                 };
 

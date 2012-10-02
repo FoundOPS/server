@@ -128,6 +128,8 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 -------------------------------------------------------------------------------------------------------------------------
 --Delete the BusinessAccount itself
 -------------------------------------------------------------------------------------------------------------------------
+	DELETE FROM Roles
+	WHERE	OwnerBusinessAccountId = @providerId
 	
 	DELETE FROM Parties_BusinessAccount
 	WHERE Id = @providerId

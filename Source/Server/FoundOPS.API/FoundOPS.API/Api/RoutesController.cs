@@ -38,7 +38,7 @@ namespace FoundOPS.API.Api
         /// <param name="serviceDateUtc">The date of the service (in UTC). If null it will return todays routes.</param>
         /// <param name="deep">Load the RouteTasks and contact info for the RouteDestination's Clients and Locations. TODO: Change to default to false</param>
         [AcceptVerbs("GET", "POST")]
-        public IQueryable<Route> GetRoutes(Guid? roleId, DateTime? serviceDateUtc, bool deep = true)
+        public IQueryable<Route> GetRoutes(Guid? roleId, DateTime? serviceDateUtc, bool? deep)
         {
             //TODO remove following two lines once mobile app is updated (and change deep to false)
             var userAccount = _coreEntitiesContainer.CurrentUserAccount().Include(ua => ua.RoleMembership).First();
@@ -59,7 +59,7 @@ namespace FoundOPS.API.Api
                             .Include(r => r.RouteDestinations)
                             .Include("RouteDestinations.Client").Include("RouteDestinations.Location");
 
-            if (deep)
+            if (!deep.HasValue || deep.Value)
             {
                 loadedRoutes = loadedRoutes.Include("RouteDestinations.RouteTasks")
                     .Include("RouteDestinations.Client.ContactInfoSet")

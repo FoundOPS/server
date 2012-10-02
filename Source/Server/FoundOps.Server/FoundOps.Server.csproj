@@ -302,7 +302,6 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="ClientBin\FoundOps.SLClient.Navigator.xap" />
-    <Content Include="ClientBin\version.txt" />
     <Content Include="Content\android.png" />
     <Content Include="Content\apple.png" />
     <Content Include="Content\bgGradient.png" />
