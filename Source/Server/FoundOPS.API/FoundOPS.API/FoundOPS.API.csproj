@@ -270,7 +270,6 @@
     <Compile Include="Models\TrackPoint.cs" />
     <Compile Include="Models\UserSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TechnicianDomainService.cs" />
     <Compile Include="Tools\FormTools.cs" />
     <Compile Include="Tools\JsonpMediaTypeFormatter.cs" />
   </ItemGroup>
