@@ -21,16 +21,31 @@ namespace FoundOPS.API.Api
             _coreEntitiesContainer.ContextOptions.LazyLoadingEnabled = false;
         }
 
+        //TODO replace below with this after mobile app is updated
+        //[AcceptVerbs("GET", "POST")]
+        //public IQueryable<TaskStatus> GetStatuses(Guid roleId)
+        //{
+        //    var currentBusinessAccount = _coreEntitiesContainer.Owner(roleId).Include(ba => ba.TaskStatuses).FirstOrDefault();
+
+        //    if (currentBusinessAccount == null)
+        //        ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
+
+        //    var statuses = currentBusinessAccount.TaskStatuses.OrderBy(s => s.Name)
+        //        .Select(TaskStatus.ConvertModel).AsQueryable();
+
+        //    return statuses;
+        //}
+
         [AcceptVerbs("GET", "POST")]
-        public IQueryable<TaskStatus> GetStatuses(Guid roleId)
+        public IQueryable<TaskStatus> GetStatuses(Guid? roleId, Guid? businessAccountId)
         {
-            var currentBusinessAccount = _coreEntitiesContainer.Owner(roleId).Include(ba => ba.TaskStatuses).FirstOrDefault();
+            var currentBusinessAccount = roleId != null && roleId.HasValue ? _coreEntitiesContainer.Owner(roleId.Value).Include(ba => ba.TaskStatuses).FirstOrDefault() :
+                _coreEntitiesContainer.BusinessAccount(businessAccountId.Value).Include(ba => ba.TaskStatuses).FirstOrDefault();
 
             if (currentBusinessAccount == null)
                 ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
 
-            var statuses = currentBusinessAccount.TaskStatuses.OrderBy(s => s.Name)
-                .Select(TaskStatus.ConvertModel).AsQueryable();
+            var statuses = currentBusinessAccount.TaskStatuses.Select(TaskStatus.ConvertModel).AsQueryable();
 
             return statuses;
         }

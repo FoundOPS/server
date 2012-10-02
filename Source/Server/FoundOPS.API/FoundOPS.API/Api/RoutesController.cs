@@ -34,29 +34,37 @@ namespace FoundOPS.API.Api
         /// Returns Routes, RouteDestinations and their Client and Location
         /// Ordered by name
         /// </summary>
-        /// <param name="roleId">Find routes for a business account</param>
+        /// <param name="roleId">Find routes for a business account. TODO Remove: if null it will return the first business the user has access to.</param>
         /// <param name="serviceDateUtc">The date of the service (in UTC). If null it will return todays routes.</param>
-        /// <param name="deep">Load the RouteTasks and contact info for the RouteDestination's Clients and Locations</param>
+        /// <param name="deep">Load the RouteTasks and contact info for the RouteDestination's Clients and Locations. TODO: Change to default to false</param>
         [AcceptVerbs("GET", "POST")]
-        public IQueryable<Route> GetRoutes(Guid roleId, DateTime? serviceDateUtc, bool deep = false)
+        public IQueryable<Route> GetRoutes(Guid? roleId, DateTime? serviceDateUtc, bool deep = true)
         {
+            //TODO remove following two lines once mobile app is updated (and change deep to false)
+            var userAccount = _coreEntitiesContainer.CurrentUserAccount().Include(ua => ua.RoleMembership).First();
+            var role = roleId.HasValue
+                           ? roleId.Value
+                           : userAccount.RoleMembership.First().Id;
+
             //Find routes for the passed service date
             //if the date is null use today (adjusted for the user)
-            var date = _coreEntitiesContainer.CurrentUserAccount().First().Now().Date;
+            var date = serviceDateUtc.HasValue
+                           ? serviceDateUtc.Value.Date
+                           : userAccount.Now().Date;
+            //TODO replace above with when mobile app is updated
+            //: _coreEntitiesContainer.CurrentUserAccount().First().Now().Date;
 
-            if (serviceDateUtc.HasValue)
-                date = serviceDateUtc.Value.Date;
-
-            var loadedRoutes = _coreEntitiesContainer.Owner(roleId).Include(ba => ba.Routes)
+            var loadedRoutes = _coreEntitiesContainer.Owner(role).Include(ba => ba.Routes)
                             .SelectMany(ba => ba.Routes).Where(r => r.Date == date)
                             .Include(r => r.RouteDestinations)
                             .Include("RouteDestinations.Client").Include("RouteDestinations.Location");
+
             if (deep)
             {
-                loadedRoutes = loadedRoutes.Include("RouteDestinations.RouteTasks").Include("RouteDestinations.Client.ContactInfoSet")
-                            .Include("RouteDestinations.Location.ContactInfoSet");
+                loadedRoutes = loadedRoutes.Include("RouteDestinations.RouteTasks")
+                    .Include("RouteDestinations.Client.ContactInfoSet")
+                    .Include("RouteDestinations.Location.ContactInfoSet");
             }
-
 
             //Order the routes by name
             return loadedRoutes.OrderBy(r => r.Name).Select(Route.ConvertModel).AsQueryable();
