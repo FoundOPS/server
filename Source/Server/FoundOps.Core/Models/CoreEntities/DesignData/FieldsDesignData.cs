@@ -92,10 +92,10 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                   Name = "Percent Full",
                   Required = false,
                   Tooltip = "How full is the barrel?",
-                  Maximum = 100,
+                  Maximum = 1,
                   Minimum = 0,
                   Mask = "p",
-                  Value = 25
+                  Value = (decimal?) 0.25
               };
 
             var designCheckBoxField = new OptionsField

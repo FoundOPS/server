@@ -37,8 +37,9 @@ namespace FoundOPS.API.Api
         /// <param name="roleId">Find routes for a business account. TODO Remove: if null it will return the first business the user has access to.</param>
         /// <param name="serviceDateUtc">The date of the service (in UTC). If null it will return todays routes.</param>
         /// <param name="deep">Load the RouteTasks and contact info for the RouteDestination's Clients and Locations. TODO: Change to default to false</param>
+        /// <param name="assigned">Defaults to false. Only return routes the current user is assigned to</param>
         [AcceptVerbs("GET", "POST")]
-        public IQueryable<Route> GetRoutes(Guid? roleId, DateTime? serviceDateUtc, bool? deep)
+        public IQueryable<Route> GetRoutes(Guid? roleId, DateTime? serviceDateUtc, bool? deep, bool? assigned)
         {
             //TODO remove following two lines once mobile app is updated (and change deep to false)
             var userAccount = _coreEntitiesContainer.CurrentUserAccount().Include(ua => ua.RoleMembership).First();
@@ -58,6 +59,11 @@ namespace FoundOPS.API.Api
                             .SelectMany(ba => ba.Routes).Where(r => r.Date == date)
                             .Include(r => r.RouteDestinations)
                             .Include("RouteDestinations.Client").Include("RouteDestinations.Location");
+
+            if (assigned.HasValue && assigned.Value)
+            {
+                loadedRoutes = loadedRoutes.Where(r => r.Employees.Any(e => e.LinkedUserAccountId == userAccount.Id));
+            }
 
             if (!deep.HasValue || deep.Value)
             {
