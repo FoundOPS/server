@@ -248,29 +248,19 @@ BEGIN
 
 					IF @currentId IN (SELECT Id FROM dbo.Fields_OptionsField) --Copy the Options field, set new Id's 
 					BEGIN
-						INSERT INTO Fields_OptionsField
+						INSERT INTO dbo.Fields_OptionsField
 								( AllowMultipleSelection ,
-								  TypeInt ,
-								  Id
+									TypeInt ,
+									Value ,
+									OptionsString ,
+									Id
 								)
-						VALUES  ( (SELECT AllowMultipleSelection FROM dbo.Fields_OptionsField WHERE Id = @currentId) , -- AllowMultipleSelection - bit
-								  (SELECT TypeInt FROM dbo.Fields_OptionsField WHERE Id = @currentId) , -- TypeInt - smallint
-								  @newFieldId  -- Id - uniqueidentifier
+						VALUES	( (SELECT AllowMultipleSelection FROM dbo.Fields_OptionsField WHERE Id = @currentId) , -- AllowMultipleSelection - bit
+									(SELECT TypeInt FROM dbo.Fields_OptionsField WHERE Id = @currentId), -- TypeInt - smallint
+									(SELECT Value FROM dbo.Fields_OptionsField WHERE Id = @currentId) , -- Value - nvarchar(max)
+									(SELECT OptionsString FROM dbo.Fields_OptionsField WHERE Id = @currentId) , -- OptionsString - nvarchar(max)
+									@newFieldId  -- Id - uniqueidentifier
 								)
-						
-						INSERT INTO @OptionsCopies
-						SELECT * FROM Options
-						WHERE OptionsFieldId = @currentId
-
-						UPDATE @OptionsCopies
-						SET Id = NEWID(),
-							OptionsFieldId = @newFieldId
-
-						INSERT INTO Options
-						SELECT * FROM @OptionsCopies
-
-						DELETE FROM @OptionsCopies
-
 					END  		
 				END
 			      
