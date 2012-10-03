@@ -11,8 +11,8 @@
             <telerik:GridViewDataColumn Header="Name" DataMemberBinding="{Binding Name}" Width="*"/>
             <telerik:GridViewDataColumn Header="Address" DataMemberBinding="{Binding AddressLineOne}" Width="*"/>
             <telerik:GridViewDataColumn Header="Line 2" DataMemberBinding="{Binding AddressLineTwo}" Width="*"/>
-            <telerik:GridViewDataColumn Header="City" DataMemberBinding="{Binding City}" Width="*"/>
-            <telerik:GridViewDataColumn Header="State" DataMemberBinding="{Binding State}" Width="*"/>
+            <telerik:GridViewDataColumn Header="City" DataMemberBinding="{Binding AdminDistrictTwo}" Width="*"/>
+            <telerik:GridViewDataColumn Header="State" DataMemberBinding="{Binding AdminDistrictOne}" Width="*"/>
         </telerik:RadGridView.Columns>
     </telerik:RadGridView>
 </UserControl>

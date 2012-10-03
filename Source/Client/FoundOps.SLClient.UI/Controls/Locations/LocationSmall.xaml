@@ -42,11 +42,11 @@
                     <TextBlock Text="{Binding AddressLineTwo}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="{Binding City}" />
+                    <TextBlock Text="{Binding AdminDistrictTwo}" />
                     <TextBlock Text=", " />
-                    <TextBlock Text="{Binding State}" />
+                    <TextBlock Text="{Binding AdminDistrictOne}" />
                     <TextBlock Text=" " />
-                    <TextBlock Text="{Binding ZipCode}" />
+                    <TextBlock Text="{Binding PostalCode}" />
                 </StackPanel>
             </StackPanel>
             <TextBlock Text="Clients" Grid.Row="3" HorizontalAlignment="Center" Grid.ColumnSpan="2" FontWeight="Bold" />

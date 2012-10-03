@@ -95,7 +95,7 @@ namespace FoundOps.Core.Models.QuickBooks
                         writer.CreateElement("ZipCode", invoice.BillToLocation.PostalCode);
                     });
 
-                    //writer.CreateElement("SalesTermId", invoiceToCreate.BillToLocation.City);
+                    //writer.CreateElement("SalesTermId", invoiceToCreate.BillToLocation.AdminDistrictTwo);
                     //writer.CreateElement("DueDate", invoiceToCreate.DueDate.ToString());
                 });
 

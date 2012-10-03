@@ -98,11 +98,11 @@
                             Value="{Binding AddressLineTwo, Mode=TwoWay}" />
                             <StackPanel Orientation="Horizontal" Margin="0,2.5,0,0">
                                 <Telerik:RadMaskedTextBox MaskType="None" EmptyContent="City" MinWidth="100" Margin="0,0,2.5,0"
-                                Value="{Binding City, Mode=TwoWay}" />
+                                Value="{Binding AdminDistrictTwo, Mode=TwoWay}" />
                                 <Telerik:RadMaskedTextBox Mask="ll" EmptyContent="State" Margin="0,0,2.5,0" Placeholder=" "
-                                Value="{Binding State, Mode=TwoWay}" />
+                                Value="{Binding AdminDistrictOne, Mode=TwoWay}" />
                                 <Telerik:RadMaskedTextBox Mask="##########" EmptyContent="Zip Code" MinWidth="97" Placeholder=" "
-                                Value="{Binding ZipCode, Mode=TwoWay}" />
+                                Value="{Binding PostalCode, Mode=TwoWay}" />
                             </StackPanel>
                         </StackPanel>
                         <TextBlock Text="Hire Date:" Grid.Row="6" TextAlignment="Right"/>
