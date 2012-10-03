@@ -62,9 +62,9 @@ namespace FoundOps.Core.Models.Import
             PropertyCategories.Add(new PropertyCategory<Location>(DataCategory.LocationAddressLineOne, (location, val) => location.AddressLineOne = val));
             PropertyCategories.Add(new PropertyCategory<Location>(DataCategory.LocationAddressLineTwo, (location, val) => location.AddressLineTwo = val));
 
-            PropertyCategories.Add(new PropertyCategory<Location>(DataCategory.LocationCity, (location, val) => location.City = val));
-            PropertyCategories.Add(new PropertyCategory<Location>(DataCategory.LocationState, (location, val) => location.State = val));
-            PropertyCategories.Add(new PropertyCategory<Location>(DataCategory.LocationZipCode, (location, val) => location.ZipCode = val));
+            PropertyCategories.Add(new PropertyCategory<Location>(DataCategory.LocationCity, (location, val) => location.AdminDistrictTwo = val));
+            PropertyCategories.Add(new PropertyCategory<Location>(DataCategory.LocationState, (location, val) => location.AdminDistrictOne = val));
+            PropertyCategories.Add(new PropertyCategory<Location>(DataCategory.LocationZipCode, (location, val) => location.PostalCode = val));
 
             PropertyCategories.Add(new PropertyCategory<Location>(DataCategory.LocationLatitude, (location, val) =>
             {

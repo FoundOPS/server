@@ -70,9 +70,9 @@ namespace FoundOPS.API.Models
                 AddressLineTwo = locationModel.AddressLineTwo,
                 Longitude = locationModel.Longitude.ToString(),
                 Latitude = locationModel.Latitude.ToString(),
-                City = locationModel.City,
-                State = locationModel.State,
-                ZipCode = locationModel.ZipCode
+                City = locationModel.AdminDistrictTwo,
+                State = locationModel.AdminDistrictOne,
+                ZipCode = locationModel.PostalCode
             };
 
             foreach (var contactInfo in locationModel.ContactInfoSet)

@@ -56,9 +56,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             {
                 Name = "Adelino's Old World Kitchen",
                 AddressLineOne = "112 N 3rd St",
-                City = "Lafayette",
-                State = "IN",
-                ZipCode = "47901",
+                AdminDistrictTwo = "Lafayette",
+                AdminDistrictOne = "IN",
+                PostalCode = "47901",
                 Latitude = (decimal?)40.418414,
                 Longitude = (decimal?)-86.894219,
                 BusinessAccountId = businessAccountId
@@ -68,9 +68,10 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             {
                 Name = "Apollo Lounge",
                 AddressLineOne = "1758 N Lancer St",
-                City = "Peru",
-                State = "IN",
-                ZipCode = "46970-3668",
+                AdminDistrictTwo = "Peru",
+                AdminDistrictOne = "IN",
+                PostalCode = "46970-3668",
+                CountryCode = "US",
                 Latitude = (decimal?)40.671159,
                 Longitude = (decimal?)-86.145577,
                 BusinessAccountId = businessAccountId
@@ -81,9 +82,10 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             {
                 Name = "Arctic White Soft Serve Ice",
                 AddressLineOne = "1108 E Markland Ave",
-                City = "Kokomo",
-                State = "IN",
-                ZipCode = "46901-6220",
+                AdminDistrictTwo = "Kokomo",
+                AdminDistrictOne = "IN",
+                PostalCode = "46901-6220",
+                CountryCode = "US",
                 Latitude = (decimal?)40.476616,
                 Longitude = (decimal?)-86.119251,
                 BusinessAccountId = businessAccountId
@@ -93,9 +95,10 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             {
                 Name = "Akropolis Restaraunt",
                 AddressLineOne = "3311 South St",
-                City = "Lafayette",
-                State = "IN",
-                ZipCode = "47904-3158",
+                AdminDistrictTwo = "Lafayette",
+                AdminDistrictOne = "IN",
+                PostalCode = "47904-3158",
+                CountryCode = "US",
                 Latitude = (decimal?)40.417552,
                 Longitude = (decimal?)-86.859526,
                 BusinessAccountId = businessAccountId
@@ -105,9 +108,10 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             {
                 Name = "Arby's",
                 AddressLineOne = "2219 Sagamore Pky S",
-                City = "Lafayette",
-                State = "IN",
-                ZipCode = "47905-5111",
+                AdminDistrictTwo = "Lafayette",
+                AdminDistrictOne = "IN",
+                PostalCode = "47905-5111",
+                CountryCode = "US",
                 Latitude = (decimal?)40.3955,
                 Longitude = (decimal?)-86.855914,
                 BusinessAccountId = businessAccountId
@@ -117,9 +121,10 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             {
                 Name = "Applebee's Neighborhood Grill",
                 AddressLineOne = "2432 E Wabash St",
-                City = "Frankfort",
-                State = "IN",
-                ZipCode = "46041-9429",
+                AdminDistrictTwo = "Frankfort",
+                AdminDistrictOne = "IN",
+                PostalCode = "46041-9429",
+                CountryCode = "US",
                 Latitude = (decimal?)40.278846,
                 Longitude = (decimal?)-86.479537,
                 BusinessAccountId = businessAccountId
@@ -129,9 +134,10 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             {
                 Name = "Black Sparrow",
                 AddressLineOne = "223 Main St",
-                City = "Lafayette",
-                State = "IN",
-                ZipCode = "47901-1261",
+                AdminDistrictTwo = "Lafayette",
+                AdminDistrictOne = "IN",
+                PostalCode = "47901-1261",
+                CountryCode = "US",
                 Latitude = (decimal?)40.419119,
                 Longitude = (decimal?)-86.894604,
                 BusinessAccountId = businessAccountId
@@ -141,9 +147,10 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             {
                 Name = "Artie's Tenderloin",
                 AddressLineOne = "922 S Main St",
-                City = "Kokomo",
-                State = "IN",
-                ZipCode = "46901-5457",
+                AdminDistrictTwo = "Kokomo",
+                AdminDistrictOne = "IN",
+                PostalCode = "46901-5457",
+                CountryCode = "US",
                 Latitude = (decimal?)40.477384,
                 Longitude = (decimal?)-86.131005,
                 BusinessAccountId = businessAccountId
@@ -153,9 +160,10 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             {
                 Name = "Bistro 501",
                 AddressLineOne = "501 Main St",
-                City = "Lafayette",
-                State = "IN",
-                ZipCode = "47901-1446",
+                AdminDistrictTwo = "Lafayette",
+                AdminDistrictOne = "IN",
+                PostalCode = "47901-1446",
+                CountryCode = "US",
                 Latitude = (decimal?)40.419142,
                 Longitude = (decimal?)-86.891727,
                 BusinessAccountId = businessAccountId
@@ -165,9 +173,10 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             {
                 Name = "Blue Fin Bistro Sushi Lafayette",
                 AddressLineOne = "2 S 4th St",
-                City = "Lafayette",
-                State = "IN",
-                ZipCode = "47901-1603",
+                AdminDistrictTwo = "Lafayette",
+                AdminDistrictOne = "IN",
+                PostalCode = "47901-1603",
+                CountryCode = "US",
                 Latitude = (decimal?)40.417224,
                 Longitude = (decimal?)-86.893046,
                 BusinessAccountId = businessAccountId
@@ -178,9 +187,10 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Name = "Arthur's",
                 AddressLineOne = "111 E Main St",
                 AddressLineTwo = "Crawfordsville",
-                City = "Lafayette",
-                State = "IN",
-                ZipCode = "47933-1710",
+                AdminDistrictTwo = "Lafayette",
+                AdminDistrictOne = "IN",
+                PostalCode = "47933-1710",
+                CountryCode = "US",
                 Latitude = (decimal?)40.041696,
                 Longitude = (decimal?)-86.901095,
                 BusinessAccountId = businessAccountId
@@ -190,9 +200,10 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             {
                 Name = "Barcelona Tapas",
                 AddressLineOne = "201 N Delaware St",
-                City = "Indianapolis",
-                State = "IN",
-                ZipCode = "46204-2127",
+                AdminDistrictTwo = "Indianapolis",
+                AdminDistrictOne = "IN",
+                PostalCode = "46204-2127",
+                CountryCode = "US",
                 Latitude = (decimal?)39.769887,
                 Longitude = (decimal?)-86.154359,
                 BusinessAccountId = businessAccountId
@@ -202,9 +213,10 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             {
                 Name = "Bruno's Pizza and Big O's Sports Room",
                 AddressLineOne = "212 Brown St",
-                City = "West Lafayette",
-                State = "IN",
-                ZipCode = "47906-3210",
+                AdminDistrictTwo = "West Lafayette",
+                AdminDistrictOne = "IN",
+                PostalCode = "47906-3210",
+                CountryCode = "US",
                 Latitude = (decimal?)40.422081,
                 Longitude = (decimal?)-86.903569,
                 BusinessAccountId = businessAccountId
@@ -214,9 +226,10 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             {
                 Name = "Bob Evans Restaurant",
                 AddressLineOne = "4300 State Road 26 E",
-                City = "Lafayette",
-                State = "IN",
-                ZipCode = "47905-4819",
+                AdminDistrictTwo = "Lafayette",
+                AdminDistrictOne = "IN",
+                PostalCode = "47905-4819",
+                CountryCode = "US",
                 Latitude = (decimal?)40.417733,
                 Longitude = (decimal?)-86.824187,
                 BusinessAccountId = businessAccountId
@@ -226,9 +239,10 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             {
                 Name = "Burger King",
                 AddressLineOne = "2338 Teal Rd",
-                City = "Lafayette",
-                State = "IN",
-                ZipCode = "47905-2219",
+                AdminDistrictTwo = "Lafayette",
+                AdminDistrictOne = "IN",
+                PostalCode = "47905-2219",
+                CountryCode = "US",
                 Latitude = (decimal?)40.395504,
                 Longitude = (decimal?)-86.868527,
                 BusinessAccountId = businessAccountId
@@ -238,9 +252,10 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             {
                 Name = "Buffalo Wild Wings Grill & Bar",
                 AddressLineOne = "2715 S Creasy Ln",
-                City = "Lafayette",
-                State = "IN",
-                ZipCode = "47905-5201",
+                AdminDistrictTwo = "Lafayette",
+                AdminDistrictOne = "IN",
+                PostalCode = "47905-5201",
+                CountryCode = "US",
                 Latitude = (decimal?)40.388618,
                 Longitude = (decimal?)-86.838981,
                 BusinessAccountId = businessAccountId
@@ -250,9 +265,10 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             {
                 Name = "Campbell's On Main Street",
                 AddressLineOne = "101 E Main St",
-                City = "Crawfordsville",
-                State = "IN",
-                ZipCode = "47933-1710",
+                AdminDistrictTwo = "Crawfordsville",
+                AdminDistrictOne = "IN",
+                PostalCode = "47933-1710",
+                CountryCode = "US",
                 Latitude = (decimal?)40.041694,
                 Longitude = (decimal?)-86.901216,
                 BusinessAccountId = businessAccountId
@@ -262,9 +278,10 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             {
                 Name = "Buca di Beppo - Downtown Indianapolis",
                 AddressLineOne = "35 N Illinois St",
-                City = "Indianapolis",
-                State = "IN",
-                ZipCode = "46204-2803",
+                AdminDistrictTwo = "Indianapolis",
+                AdminDistrictOne = "IN",
+                PostalCode = "46204-2803",
+                CountryCode = "US",
                 Latitude = (decimal?)39.768098,
                 Longitude = (decimal?)-86.159864,
                 BusinessAccountId = businessAccountId
@@ -274,9 +291,10 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             {
                 Name = "Covered Bridge Restaurant",
                 AddressLineOne = "5787 N Main St",
-                City = "Cayuga",
-                State = "IN",
-                ZipCode = "47928-8024",
+                AdminDistrictTwo = "Cayuga",
+                AdminDistrictOne = "IN",
+                PostalCode = "47928-8024",
+                CountryCode = "US",
                 Latitude = (decimal?)39.968641,
                 Longitude = (decimal?)-87.472417,
                 BusinessAccountId = businessAccountId
@@ -286,9 +304,10 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             {
                 Name = "El Rodeo",
                 AddressLineOne = "140 Howard Ave",
-                City = "West Lafayette",
-                State = "IN",
-                ZipCode = "47906-3218",
+                AdminDistrictTwo = "West Lafayette",
+                AdminDistrictOne = "IN",
+                PostalCode = "47906-3218",
+                CountryCode = "US",
                 Latitude = (decimal?)40.422733,
                 Longitude = (decimal?)-86.902758,
                 BusinessAccountId = businessAccountId
@@ -298,9 +317,10 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             {
                 Name = "Dairy Queen",
                 AddressLineOne = "3949 State Road 38 E",
-                City = "Lafayette",
-                State = "IN",
-                ZipCode = "47905-9464",
+                AdminDistrictTwo = "Lafayette",
+                AdminDistrictOne = "IN",
+                PostalCode = "47905-9464",
+                CountryCode = "US",
                 Latitude = (decimal?)40.388141,
                 Longitude = (decimal?)-86.837137,
                 BusinessAccountId = businessAccountId
@@ -310,9 +330,10 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             {
                 Name = "Diamond Coffee Company",
                 AddressLineOne = "3107 Builder Dr",
-                City = "Lafayette",
-                State = "IN",
-                ZipCode = "47909",
+                AdminDistrictTwo = "Lafayette",
+                AdminDistrictOne = "IN",
+                PostalCode = "47909",
+                CountryCode = "US",
                 Latitude = (decimal?)40.368191,
                 Longitude = (decimal?)-86.860466,
                 BusinessAccountId = businessAccountId
@@ -322,9 +343,10 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             {
                 Name = "Crawfordsville Forum Family",
                 AddressLineOne = "1410 Darlington Ave",
-                City = "Crawfordsville",
-                State = "IN",
-                ZipCode = "47933-2007",
+                AdminDistrictTwo = "Crawfordsville",
+                AdminDistrictOne = "IN",
+                PostalCode = "47933-2007",
+                CountryCode = "US",
                 Latitude = (decimal?)40.046804,
                 Longitude = (decimal?)-86.879933,
                 BusinessAccountId = businessAccountId
@@ -334,9 +356,10 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             {
                 Name = "Culver's",
                 AddressLineOne = "1855 S Us-231",
-                City = "Crawfordsville",
-                State = "IN",
-                ZipCode = "47933-9424",
+                AdminDistrictTwo = "Crawfordsville",
+                AdminDistrictOne = "IN",
+                PostalCode = "47933-9424",
+                CountryCode = "US",
                 Latitude = (decimal?)40.012145,
                 Longitude = (decimal?)-86.903825,
                 BusinessAccountId = businessAccountId

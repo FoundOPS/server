@@ -3237,24 +3237,24 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String City
+        public global::System.String AdminDistrictTwo
         {
             get
             {
-                return _City;
+                return _AdminDistrictTwo;
             }
             set
             {
-                OnCityChanging(value);
-                ReportPropertyChanging("City");
-                _City = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("City");
-                OnCityChanged();
+                OnAdminDistrictTwoChanging(value);
+                ReportPropertyChanging("AdminDistrictTwo");
+                _AdminDistrictTwo = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("AdminDistrictTwo");
+                OnAdminDistrictTwoChanged();
             }
         }
-        private global::System.String _City;
-        partial void OnCityChanging(global::System.String value);
-        partial void OnCityChanged();
+        private global::System.String _AdminDistrictTwo;
+        partial void OnAdminDistrictTwoChanging(global::System.String value);
+        partial void OnAdminDistrictTwoChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -3285,48 +3285,48 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String State
+        public global::System.String AdminDistrictOne
         {
             get
             {
-                return _State;
+                return _AdminDistrictOne;
             }
             set
             {
-                OnStateChanging(value);
-                ReportPropertyChanging("State");
-                _State = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("State");
-                OnStateChanged();
+                OnAdminDistrictOneChanging(value);
+                ReportPropertyChanging("AdminDistrictOne");
+                _AdminDistrictOne = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("AdminDistrictOne");
+                OnAdminDistrictOneChanged();
             }
         }
-        private global::System.String _State;
-        partial void OnStateChanging(global::System.String value);
-        partial void OnStateChanged();
+        private global::System.String _AdminDistrictOne;
+        partial void OnAdminDistrictOneChanging(global::System.String value);
+        partial void OnAdminDistrictOneChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String ZipCode
+        public global::System.String PostalCode
         {
             get
             {
-                return _ZipCode;
+                return _PostalCode;
             }
             set
             {
-                OnZipCodeChanging(value);
-                ReportPropertyChanging("ZipCode");
-                _ZipCode = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("ZipCode");
-                OnZipCodeChanged();
+                OnPostalCodeChanging(value);
+                ReportPropertyChanging("PostalCode");
+                _PostalCode = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("PostalCode");
+                OnPostalCodeChanged();
             }
         }
-        private global::System.String _ZipCode;
-        partial void OnZipCodeChanging(global::System.String value);
-        partial void OnZipCodeChanged();
+        private global::System.String _PostalCode;
+        partial void OnPostalCodeChanging(global::System.String value);
+        partial void OnPostalCodeChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -3639,6 +3639,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private Nullable<global::System.Int32> _LastAccuracy;
         partial void OnLastAccuracyChanging(Nullable<global::System.Int32> value);
         partial void OnLastAccuracyChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String CountryCode
+        {
+            get
+            {
+                return _CountryCode;
+            }
+            set
+            {
+                OnCountryCodeChanging(value);
+                ReportPropertyChanging("CountryCode");
+                _CountryCode = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("CountryCode");
+                OnCountryCodeChanged();
+            }
+        }
+        private global::System.String _CountryCode;
+        partial void OnCountryCodeChanging(global::System.String value);
+        partial void OnCountryCodeChanged();
 
         #endregion
 
@@ -5582,24 +5606,24 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String ZipCode
+        public global::System.String PostalCode
         {
             get
             {
-                return _ZipCode;
+                return _PostalCode;
             }
             set
             {
-                OnZipCodeChanging(value);
-                ReportPropertyChanging("ZipCode");
-                _ZipCode = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("ZipCode");
-                OnZipCodeChanged();
+                OnPostalCodeChanging(value);
+                ReportPropertyChanging("PostalCode");
+                _PostalCode = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("PostalCode");
+                OnPostalCodeChanged();
             }
         }
-        private global::System.String _ZipCode;
-        partial void OnZipCodeChanging(global::System.String value);
-        partial void OnZipCodeChanged();
+        private global::System.String _PostalCode;
+        partial void OnPostalCodeChanging(global::System.String value);
+        partial void OnPostalCodeChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -5630,24 +5654,24 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String State
+        public global::System.String AdminDistrictOne
         {
             get
             {
-                return _State;
+                return _AdminDistrictOne;
             }
             set
             {
-                OnStateChanging(value);
-                ReportPropertyChanging("State");
-                _State = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("State");
-                OnStateChanged();
+                OnAdminDistrictOneChanging(value);
+                ReportPropertyChanging("AdminDistrictOne");
+                _AdminDistrictOne = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("AdminDistrictOne");
+                OnAdminDistrictOneChanged();
             }
         }
-        private global::System.String _State;
-        partial void OnStateChanging(global::System.String value);
-        partial void OnStateChanged();
+        private global::System.String _AdminDistrictOne;
+        partial void OnAdminDistrictOneChanging(global::System.String value);
+        partial void OnAdminDistrictOneChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -5678,24 +5702,24 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.String City
+        public global::System.String AdminDistrictTwo
         {
             get
             {
-                return _City;
+                return _AdminDistrictTwo;
             }
             set
             {
-                OnCityChanging(value);
-                ReportPropertyChanging("City");
-                _City = StructuralObject.SetValidValue(value, true);
-                ReportPropertyChanged("City");
-                OnCityChanged();
+                OnAdminDistrictTwoChanging(value);
+                ReportPropertyChanging("AdminDistrictTwo");
+                _AdminDistrictTwo = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("AdminDistrictTwo");
+                OnAdminDistrictTwoChanged();
             }
         }
-        private global::System.String _City;
-        partial void OnCityChanging(global::System.String value);
-        partial void OnCityChanged();
+        private global::System.String _AdminDistrictTwo;
+        partial void OnAdminDistrictTwoChanging(global::System.String value);
+        partial void OnAdminDistrictTwoChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -5816,6 +5840,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private Nullable<global::System.Boolean> _IsDefaultBillingLocation;
         partial void OnIsDefaultBillingLocationChanging(Nullable<global::System.Boolean> value);
         partial void OnIsDefaultBillingLocationChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String CountryCode
+        {
+            get
+            {
+                return _CountryCode;
+            }
+            set
+            {
+                OnCountryCodeChanging(value);
+                ReportPropertyChanging("CountryCode");
+                _CountryCode = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("CountryCode");
+                OnCountryCodeChanged();
+            }
+        }
+        private global::System.String _CountryCode;
+        partial void OnCountryCodeChanging(global::System.String value);
+        partial void OnCountryCodeChanged();
 
         #endregion
 

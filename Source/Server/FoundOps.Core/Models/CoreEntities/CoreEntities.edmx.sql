@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 09/11/2012 19:46:20
+-- Date Created: 10/02/2012 20:24:41
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -37,6 +37,9 @@ IF OBJECT_ID(N'[dbo].[FK_BusinessAccountRouteTask]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_BusinessAccountService]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Services] DROP CONSTRAINT [FK_BusinessAccountService];
+GO
+IF OBJECT_ID(N'[dbo].[FK_BusinessAccountVehicle]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Vehicles] DROP CONSTRAINT [FK_BusinessAccountVehicle];
 GO
 IF OBJECT_ID(N'[dbo].[FK_ClientBusinessAccount]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Clients] DROP CONSTRAINT [FK_ClientBusinessAccount];
@@ -214,9 +217,6 @@ IF OBJECT_ID(N'[dbo].[FK_VehicleMaintenanceLogEntryLineItem]', 'F') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[FK_VehicleMaintenanceLogEntryVehicle]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[VehicleMaintenanceLog] DROP CONSTRAINT [FK_VehicleMaintenanceLogEntryVehicle];
-GO
-IF OBJECT_ID(N'[dbo].[FK_VehicleParty]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Vehicles] DROP CONSTRAINT [FK_VehicleParty];
 GO
 
 -- --------------------------------------------------
@@ -416,19 +416,20 @@ GO
 -- Creating table 'Locations'
 CREATE TABLE [dbo].[Locations] (
     [Id] uniqueidentifier  NOT NULL,
-    [Name] nvarchar(max) NULL,
+    [Name] nvarchar(max)  NULL,
     [AddressLineOne] nvarchar(max)  NULL,
     [Longitude] decimal(11,8)  NULL,
-    [ZipCode] nvarchar(max)  NULL,
+    [PostalCode] nvarchar(max)  NULL,
     [AddressLineTwo] nvarchar(max)  NULL,
-    [State] nvarchar(max)  NULL,
+    [AdminDistrictOne] nvarchar(max)  NULL,
     [Latitude] decimal(11,8)  NULL,
-    [City] nvarchar(max)  NULL,
+    [AdminDistrictTwo] nvarchar(max)  NULL,
     [RegionId] uniqueidentifier  NULL,
     [BusinessAccountIdIfDepot] uniqueidentifier  NULL,
     [BusinessAccountId] uniqueidentifier  NULL,
     [ClientId] uniqueidentifier  NULL,
-    [IsDefaultBillingLocation] bit  NULL
+    [IsDefaultBillingLocation] bit  NULL,
+    [CountryCode] nvarchar(max)  NULL
 );
 GO
 
@@ -590,10 +591,10 @@ CREATE TABLE [dbo].[Employees] (
     [DateOfBirth] datetime  NULL,
     [AddressLineOne] nvarchar(max)  NULL,
     [AddressLineTwo] nvarchar(max)  NULL,
-    [City] nvarchar(max)  NULL,
+    [AdminDistrictTwo] nvarchar(max)  NULL,
     [Comments] nvarchar(max)  NULL,
-    [State] nvarchar(max)  NULL,
-    [ZipCode] nvarchar(max)  NULL,
+    [AdminDistrictOne] nvarchar(max)  NULL,
+    [PostalCode] nvarchar(max)  NULL,
     [Permissions] nvarchar(max)  NULL,
     [HireDate] datetime  NULL,
     [SSN] nvarchar(max)  NULL,
@@ -606,7 +607,8 @@ CREATE TABLE [dbo].[Employees] (
     [LastSpeed] float  NULL,
     [LastSource] nvarchar(max)  NULL,
     [LastPushToAzureTimeStamp] datetime  NULL,
-    [LastAccuracy] int  NULL
+    [LastAccuracy] int  NULL,
+    [CountryCode] nvarchar(max)  NULL
 );
 GO
 
@@ -739,16 +741,6 @@ CREATE TABLE [dbo].[Parties_UserAccount] (
 );
 GO
 
--- Creating table 'Fields_OptionsField'
-CREATE TABLE [dbo].[Fields_OptionsField] (
-    [AllowMultipleSelection] bit  NOT NULL,
-    [TypeInt] smallint  NOT NULL,
-    [Id] uniqueidentifier  NOT NULL,
-    [OptionsString] nvarchar(max) NULL,
-    [Value] nvarchar(max) NULL
-);
-GO
-
 -- Creating table 'Fields_LocationField'
 CREATE TABLE [dbo].[Fields_LocationField] (
     [LocationId] uniqueidentifier  NULL,
@@ -766,6 +758,16 @@ GO
 -- Creating table 'Fields_TextBoxField'
 CREATE TABLE [dbo].[Fields_TextBoxField] (
     [IsMultiline] bit  NOT NULL,
+    [Value] nvarchar(max)  NULL,
+    [Id] uniqueidentifier  NOT NULL
+);
+GO
+
+-- Creating table 'Fields_OptionsField'
+CREATE TABLE [dbo].[Fields_OptionsField] (
+    [AllowMultipleSelection] bit  NOT NULL,
+    [TypeInt] smallint  NOT NULL,
+    [OptionsString] nvarchar(max)  NULL,
     [Value] nvarchar(max)  NULL,
     [Id] uniqueidentifier  NOT NULL
 );
@@ -1010,12 +1012,6 @@ ADD CONSTRAINT [PK_Parties_UserAccount]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
--- Creating primary key on [Id] in table 'Fields_OptionsField'
-ALTER TABLE [dbo].[Fields_OptionsField]
-ADD CONSTRAINT [PK_Fields_OptionsField]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
 -- Creating primary key on [Id] in table 'Fields_LocationField'
 ALTER TABLE [dbo].[Fields_LocationField]
 ADD CONSTRAINT [PK_Fields_LocationField]
@@ -1031,6 +1027,12 @@ GO
 -- Creating primary key on [Id] in table 'Fields_TextBoxField'
 ALTER TABLE [dbo].[Fields_TextBoxField]
 ADD CONSTRAINT [PK_Fields_TextBoxField]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'Fields_OptionsField'
+ALTER TABLE [dbo].[Fields_OptionsField]
+ADD CONSTRAINT [PK_Fields_OptionsField]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -1873,15 +1875,6 @@ ADD CONSTRAINT [FK_UserAccount_inherits_Party]
     ON DELETE CASCADE ON UPDATE NO ACTION;
 GO
 
--- Creating foreign key on [Id] in table 'Fields_OptionsField'
-ALTER TABLE [dbo].[Fields_OptionsField]
-ADD CONSTRAINT [FK_OptionsField_inherits_Field]
-    FOREIGN KEY ([Id])
-    REFERENCES [dbo].[Fields]
-        ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
-GO
-
 -- Creating foreign key on [Id] in table 'Fields_LocationField'
 ALTER TABLE [dbo].[Fields_LocationField]
 ADD CONSTRAINT [FK_LocationField_inherits_Field]
@@ -1903,6 +1896,15 @@ GO
 -- Creating foreign key on [Id] in table 'Fields_TextBoxField'
 ALTER TABLE [dbo].[Fields_TextBoxField]
 ADD CONSTRAINT [FK_TextBoxField_inherits_Field]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[Fields]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO
+
+-- Creating foreign key on [Id] in table 'Fields_OptionsField'
+ALTER TABLE [dbo].[Fields_OptionsField]
+ADD CONSTRAINT [FK_OptionsField_inherits_Field]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Fields]
         ([Id])

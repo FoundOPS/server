@@ -77,9 +77,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 {
                     Name = "Depot",
                     AddressLineOne = "1305 Cumberland Ave",
-                    City = "West Lafayette",
-                    State = "IN",
-                    ZipCode = "47906",
+                    AdminDistrictTwo = "West Lafayette",
+                    AdminDistrictOne = "IN",
+                    PostalCode = "47906",
                     BusinessAccount = serviceProvider,
                     Latitude = (decimal?)40.460335,
                     Longitude = (decimal?)(-86.929840)

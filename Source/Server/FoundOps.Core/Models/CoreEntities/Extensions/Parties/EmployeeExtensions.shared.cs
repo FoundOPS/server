@@ -33,10 +33,10 @@ namespace FoundOps.Core.Models.CoreEntities
             Id = Guid.NewGuid();
             AddressLineOne = "";
             AddressLineTwo = "";
-            City = "";
+            AdminDistrictTwo = "";
             Comments = "";
-            State = "";
-            ZipCode = "";
+            AdminDistrictOne = "";
+            PostalCode = "";
             SSN = "";
             OnCreation();
         }

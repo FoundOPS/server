@@ -330,8 +330,8 @@
                Mode="In"
                Type="uniqueidentifier"/>
         <Parameter Name="serviceDateUtc"
-           Mode="In"
-           Type="date"/>
+                   Mode="In"
+                   Type="date"/>
       </Function>
         <EntityType Name="Blocks">
           <Key>
@@ -391,10 +391,10 @@
           <Property Name="DateOfBirth" Type="datetime" />
           <Property Name="AddressLineOne" Type="nvarchar(max)" />
           <Property Name="AddressLineTwo" Type="nvarchar(max)" />
-          <Property Name="City" Type="nvarchar(max)" />
+          <Property Name="AdminDistrictTwo" Type="nvarchar(max)" />
           <Property Name="Comments" Type="nvarchar(max)" />
-          <Property Name="State" Type="nvarchar(max)" />
-          <Property Name="ZipCode" Type="nvarchar(max)" />
+          <Property Name="AdminDistrictOne" Type="nvarchar(max)" />
+          <Property Name="PostalCode" Type="nvarchar(max)" />
           <Property Name="Permissions" Type="nvarchar(max)" />
           <Property Name="HireDate" Type="datetime" />
           <Property Name="SSN" Type="nvarchar(max)" />
@@ -408,6 +408,7 @@
           <Property Name="LastSource" Type="nvarchar(max)" />
           <Property Name="LastPushToAzureTimeStamp" Type="datetime" />
           <Property Name="LastAccuracy" Type="int" />
+          <Property Name="CountryCode" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Errors">
           <Key>
@@ -466,9 +467,9 @@
           </Key>
           <Property Name="AllowMultipleSelection" Type="bit" Nullable="false" />
           <Property Name="TypeInt" Type="smallint" Nullable="false" />
-          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="OptionsString" Type="nvarchar(max)" />
           <Property Name="Value" Type="nvarchar(max)" />
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="Fields_TextBoxField">
           <Key>
@@ -530,16 +531,17 @@
           <Property Name="Name" Type="nvarchar(max)" />
           <Property Name="AddressLineOne" Type="nvarchar(max)" />
           <Property Name="Longitude" Type="decimal" Precision="11" Scale="8" />
-          <Property Name="ZipCode" Type="nvarchar(max)" />
+          <Property Name="PostalCode" Type="nvarchar(max)" />
           <Property Name="AddressLineTwo" Type="nvarchar(max)" />
-          <Property Name="State" Type="nvarchar(max)" />
+          <Property Name="AdminDistrictOne" Type="nvarchar(max)" />
           <Property Name="Latitude" Type="decimal" Precision="11" Scale="8" />
-          <Property Name="City" Type="nvarchar(max)" />
+          <Property Name="AdminDistrictTwo" Type="nvarchar(max)" />
           <Property Name="RegionId" Type="uniqueidentifier" />
           <Property Name="BusinessAccountIdIfDepot" Type="uniqueidentifier" />
           <Property Name="BusinessAccountId" Type="uniqueidentifier" />
           <Property Name="ClientId" Type="uniqueidentifier" />
           <Property Name="IsDefaultBillingLocation" Type="bit" />
+          <Property Name="CountryCode" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Parties">
           <Key>
@@ -2159,11 +2161,11 @@
           <Property Type="String" Name="Name" Nullable="true" DefaultValue="" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="String" Name="AddressLineOne" Nullable="true" DefaultValue="" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="Decimal" Name="Longitude" Nullable="true" Precision="11" Scale="8" />
-          <Property Type="String" Name="ZipCode" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Type="String" Name="PostalCode" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="String" Name="AddressLineTwo" Nullable="true" DefaultValue="" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Type="String" Name="State" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Type="String" Name="AdminDistrictOne" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="Decimal" Name="Latitude" Nullable="true" Precision="11" Scale="8" />
-          <Property Type="String" Name="City" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Type="String" Name="AdminDistrictTwo" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="RouteTasks" Relationship="CoreEntities.RouteTaskLocation" FromRole="Location" ToRole="RouteTask" />
           <NavigationProperty Name="RouteDestinations" Relationship="CoreEntities.RouteDestinationLocation" FromRole="Location" ToRole="RouteDestination" />
           <NavigationProperty Name="Region" Relationship="CoreEntities.RegionLocation" FromRole="Location" ToRole="Regions" />
@@ -2179,6 +2181,7 @@
           <NavigationProperty Name="Client" Relationship="CoreEntities.ClientLocation1" FromRole="Location" ToRole="Client" />
           <Property Type="Guid" Name="ClientId" Nullable="true" />
           <Property Type="Boolean" Name="IsDefaultBillingLocation" Nullable="true" />
+          <Property Type="String" Name="CountryCode" Nullable="true" FixedLength="false" MaxLength="Max" Unicode="true" />
         </EntityType>
         <EntityType Name="Service">
           <Key>
@@ -2607,8 +2610,8 @@
         <EntityType Name="OptionsField" BaseType="CoreEntities.Field" >
           <Property Type="Boolean" Name="AllowMultipleSelection" Nullable="false" />
           <Property Type="Int16" Name="TypeInt" Nullable="false" />
-          <Property Name="OptionsString" Type="String" />
-          <Property Name="Value" Type="String" />
+          <Property Name="OptionsString" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Name="Value" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
         </EntityType>
         <EntityType Name="RecurringService">
           <Key>
@@ -2788,10 +2791,10 @@
           <Property Type="DateTime" Name="DateOfBirth" Nullable="true" Precision="3" />
           <Property Type="String" Name="AddressLineOne" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="String" Name="AddressLineTwo" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Type="String" Name="City" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Type="String" Name="AdminDistrictTwo" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="String" Name="Comments" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Type="String" Name="State" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Type="String" Name="ZipCode" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Type="String" Name="AdminDistrictOne" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Type="String" Name="PostalCode" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="String" Name="Permissions" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="DateTime" Name="HireDate" Nullable="true" Precision="3" />
           <Property Type="String" Name="SSN" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
@@ -2809,6 +2812,7 @@
           <Property Type="DateTime" Name="LastPushToAzureTimeStamp" Nullable="true" Precision="3" />
           <Property Type="Int32" Name="LastAccuracy" Nullable="true" />
           <NavigationProperty Name="Routes" Relationship="CoreEntities.RouteEmployee" FromRole="Employee" ToRole="Route" />
+          <Property Type="String" Name="CountryCode" Nullable="true" FixedLength="false" MaxLength="Max" Unicode="true" />
         </EntityType>
         <Association Name="EmployeeUserAccount">
           <End Type="CoreEntities.Employee" Role="Employee" Multiplicity="*" />
@@ -3365,15 +3369,6 @@
           <ScalarProperty Name="ServiceTemplateId" ColumnName="ServiceTemplateId" />
         </MappingFragment>
       </EntityTypeMapping>
-      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.OptionsField)">
-        <MappingFragment StoreEntitySet="Fields_OptionsField">
-          <ScalarProperty Name="Id" ColumnName="Id" />
-          <ScalarProperty Name="AllowMultipleSelection" ColumnName="AllowMultipleSelection" />
-          <ScalarProperty Name="TypeInt" ColumnName="TypeInt" />
-          <ScalarProperty Name="OptionsString" ColumnName="OptionsString" />
-          <ScalarProperty Name="Value" ColumnName="Value" />
-        </MappingFragment>
-      </EntityTypeMapping>
       <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.LocationField)">
         <MappingFragment StoreEntitySet="Fields_LocationField">
           <ScalarProperty Name="Id" ColumnName="Id" />
@@ -3385,6 +3380,15 @@
         <MappingFragment StoreEntitySet="Fields_TextBoxField">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="IsMultiline" ColumnName="IsMultiline" />
+          <ScalarProperty Name="Value" ColumnName="Value" />
+        </MappingFragment>
+      </EntityTypeMapping>
+      <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.OptionsField)">
+        <MappingFragment StoreEntitySet="Fields_OptionsField">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="AllowMultipleSelection" ColumnName="AllowMultipleSelection" />
+          <ScalarProperty Name="TypeInt" ColumnName="TypeInt" />
+          <ScalarProperty Name="OptionsString" ColumnName="OptionsString" />
           <ScalarProperty Name="Value" ColumnName="Value" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -3415,16 +3419,17 @@
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="AddressLineOne" ColumnName="AddressLineOne" />
           <ScalarProperty Name="Longitude" ColumnName="Longitude" />
-          <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+          <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
           <ScalarProperty Name="AddressLineTwo" ColumnName="AddressLineTwo" />
-          <ScalarProperty Name="State" ColumnName="State" />
+          <ScalarProperty Name="AdminDistrictOne" ColumnName="AdminDistrictOne" />
           <ScalarProperty Name="Latitude" ColumnName="Latitude" />
-          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="AdminDistrictTwo" ColumnName="AdminDistrictTwo" />
           <ScalarProperty Name="RegionId" ColumnName="RegionId" />
           <ScalarProperty Name="BusinessAccountIdIfDepot" ColumnName="BusinessAccountIdIfDepot" />
           <ScalarProperty Name="BusinessAccountId" ColumnName="BusinessAccountId" />
           <ScalarProperty Name="ClientId" ColumnName="ClientId" />
           <ScalarProperty Name="IsDefaultBillingLocation" ColumnName="IsDefaultBillingLocation" />
+          <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -3605,10 +3610,10 @@
           <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
           <ScalarProperty Name="AddressLineOne" ColumnName="AddressLineOne" />
           <ScalarProperty Name="AddressLineTwo" ColumnName="AddressLineTwo" />
-          <ScalarProperty Name="City" ColumnName="City" />
+          <ScalarProperty Name="AdminDistrictTwo" ColumnName="AdminDistrictTwo" />
           <ScalarProperty Name="Comments" ColumnName="Comments" />
-          <ScalarProperty Name="State" ColumnName="State" />
-          <ScalarProperty Name="ZipCode" ColumnName="ZipCode" />
+          <ScalarProperty Name="AdminDistrictOne" ColumnName="AdminDistrictOne" />
+          <ScalarProperty Name="PostalCode" ColumnName="PostalCode" />
           <ScalarProperty Name="Permissions" ColumnName="Permissions" />
           <ScalarProperty Name="HireDate" ColumnName="HireDate" />
           <ScalarProperty Name="SSN" ColumnName="SSN" />
@@ -3622,6 +3627,7 @@
           <ScalarProperty Name="LastSource" ColumnName="LastSource" />
           <ScalarProperty Name="LastPushToAzureTimeStamp" ColumnName="LastPushToAzureTimeStamp" />
           <ScalarProperty Name="LastAccuracy" ColumnName="LastAccuracy" />
+          <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -3772,7 +3778,7 @@
           <FunctionImportMapping FunctionImportName="DeleteUserAccountBasedOnId" FunctionName="CoreEntities.Store.DeleteUserAccountBasedOnId" />
           <FunctionImportMapping FunctionImportName="GetDateRangeForServices" FunctionName="CoreEntities.Store.GetDateRangeForServices" />
           <FunctionImportMapping FunctionImportName="GetFieldsInJavaScriptFormat" FunctionName="CoreEntities.Store.GetFieldsInJavaScriptFormat">
-            <ResultMapping>
+          <ResultMapping>
               <ComplexTypeMapping TypeName="CoreEntities.FieldJavaScript">
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
@@ -3780,7 +3786,7 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GetServiceHolders" FunctionName="CoreEntities.Store.GetServiceHolders">
-            <ResultMapping>
+          <ResultMapping>
               <ComplexTypeMapping TypeName="CoreEntities.ServiceHolder">
                 <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
                 <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
