@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using FoundOps.Common.NET;
+using System;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Text;
-using System.Web;
 using System.Web.Mvc;
-using FoundOps.Common.NET;
 
-namespace FoundOPS.Api.Controllers
+namespace FoundOps.Api.Controllers.Mvc
 {
     public class ServiceController : Controller
     {
@@ -26,7 +22,7 @@ namespace FoundOPS.Api.Controllers
         public ActionResult GetServicesHoldersWithFieldsCsv(Guid roleId, string serviceType, Guid? clientContext,
             Guid? recurringServiceContext, DateTime startDate, DateTime endDate, bool single = false)
         {
-            var serviceController = new Api.ServiceController();
+            var serviceController = new Rest.ServiceController();
             var response = serviceController.GetServicesHoldersWithFields(roleId, serviceType, clientContext, recurringServiceContext, startDate, endDate);
 
             var ignore = new[] { "ServiceId", "ClientId", "RecurringServiceId" };

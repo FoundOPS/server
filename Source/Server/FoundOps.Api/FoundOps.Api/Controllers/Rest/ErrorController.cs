@@ -3,7 +3,7 @@ using FoundOps.Core.Tools;
 using System;
 using System.Linq;
 
-namespace FoundOps.Api.ApiControllers
+namespace FoundOps.Api.Controllers.Rest
 {
     public class ErrorEntry
     {

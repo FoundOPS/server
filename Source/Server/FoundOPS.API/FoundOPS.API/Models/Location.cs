@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace FoundOPS.Api.Models
+namespace FoundOps.Api.Models
 {
     public class Location
     {

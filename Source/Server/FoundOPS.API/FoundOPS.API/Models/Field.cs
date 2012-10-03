@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using FoundOps.Core.Models.CoreEntities;
 
-namespace FoundOPS.Api.Models
+namespace FoundOps.Api.Models
 {
     public abstract class Field
     {

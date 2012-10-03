@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.Web.Mvc;
 
-namespace FoundOPS.Api.Controllers
+namespace FoundOps.Api.Controllers.Mvc
 {
     public class HelperController : Controller
     {

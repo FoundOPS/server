@@ -1,7 +1,9 @@
 ﻿using System.Net;
 using System.Net.Http;
+using System.Web;
+using System.Web.Http;
 
-namespace FoundOPS.Api.Tools
+namespace FoundOps.Api.Tools
 {
     public static class ApiExceptions
     {
@@ -23,8 +25,20 @@ namespace FoundOPS.Api.Tools
         /// <param name="request">The request to respond to</param>
         public static HttpResponseMessage NotAuthorized(this HttpRequestMessage request)
         {
-            //no need to be descriptive yet
-            return request.CreateResponse(HttpStatusCode.Forbidden, "Not authorized");
+            HttpResponseMessage response = request.CreateResponse(HttpStatusCode.Forbidden, "Not authorized");
+            throw new HttpResponseException(response);
+        }
+
+        /// <summary>
+        /// Check if the user is authenticated. Throw an exception if they are not
+        /// </summary>
+        public static HttpResponseMessage CheckAuthentication(this HttpRequestMessage request)
+        {
+            if (string.IsNullOrEmpty(HttpContext.Current.User.Identity.Name))
+            {
+                HttpResponseMessage response = request.CreateResponse(HttpStatusCode.Forbidden, "Not authenticated");
+                throw new HttpResponseException(response);
+            }
         }
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace FoundOPS.Api.Models
+namespace FoundOps.Api.Models
 {
     public class ServiceType
     {

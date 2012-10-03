@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoundOps.Common.NET", "..\.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{430BF178-8BEF-403E-B053-3F8A6F15EF8F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoundOps.Api.Tests", "API.Tests\FoundOps.Api.Tests.csproj", "{41CC16C3-EDF7-4534-AD5C-0968F45309F7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoundOps.Api.Tests", "FoundOps.Api.Tests\FoundOps.Api.Tests.csproj", "{41CC16C3-EDF7-4534-AD5C-0968F45309F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

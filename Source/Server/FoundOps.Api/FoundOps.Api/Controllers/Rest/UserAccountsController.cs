@@ -1,12 +1,12 @@
-﻿using FoundOPS.Api.Api;
+﻿using FoundOps.Api.ApiControllers;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
 using System;
 using System.Linq;
 using System.Web.Http;
-using UserAccount = FoundOPS.Api.Models.UserAccount;
+using UserAccount = FoundOps.Api.Models.UserAccount;
 
-namespace FoundOps.Api.ApiControllers
+namespace FoundOps.Api.Controllers.Rest
 {
     public class UserAccountsController : BaseApiController
     {
@@ -18,11 +18,11 @@ namespace FoundOps.Api.ApiControllers
         /// <param name="roleId"></param>
         /// <returns></returns>
         [Queryable]
-        public IQueryable<UserAccount> Get(Guid roleId)
+        public IQueryable<UserAccount> GetAllUserAccounts(Guid roleId)
         {
             var business = GetBusinessAccount(roleId, new[] { RoleType.Administrator}, new[] { "Employees", "OwnedRoles", "MemberParties" });
 
-            var userAccounts = business.OwnedRoles.SelectMany(r => r.MemberParties).OfType<FoundOps.Core.Models.CoreEntities.UserAccount>();
+            var userAccounts = business.OwnedRoles.SelectMany(r => r.MemberParties).OfType<Core.Models.CoreEntities.UserAccount>();
 
             //if the user is not a foundops user, do not return FoundOPS accounts
             if (!CoreEntitiesContainer.CanAdministerFoundOPS())

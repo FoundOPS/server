@@ -1,4 +1,4 @@
-using FoundOPS.Api.Models;
+using FoundOps.Api.Models;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
 using FoundOps.Core.Models.Azure;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using ResourceWithLastPoint = FoundOPS.Api.Models.ResourceWithLastPoint;
+using ResourceWithLastPoint = FoundOps.Api.Models.ResourceWithLastPoint;
 
 namespace FoundOps.Api.ApiControllers
 {

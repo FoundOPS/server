@@ -1,7 +1,7 @@
 ﻿using FoundOps.Core.Models.Azure;
 using System;
 
-namespace FoundOPS.Api.Models
+namespace FoundOps.Api.Models
 {
     public class TrackPoint
     {

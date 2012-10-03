@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using FoundOPS.Api.Controllers;
-using FoundOPS.Api.Api;
+using FoundOps.Api.Controllers;
+using FoundOps.Api.Api;
 using FoundOps.Api.ApiControllers;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
@@ -9,7 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Net;
 using System.Net.Http;
-using TrackPoint = FoundOPS.Api.Models.TrackPoint;
+using TrackPoint = FoundOps.Api.Models.TrackPoint;
 
 namespace API.Tests.Controllers
 {

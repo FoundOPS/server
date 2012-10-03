@@ -1,11 +1,11 @@
-using FoundOPS.Api.Models;
+using FoundOps.Api.Models;
 using FoundOps.Core.Tools;
 using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Web.Http;
 
-namespace FoundOps.Api.ApiControllers
+namespace FoundOps.Api.Controllers.Rest
 {
     /// <summary>
     /// An api controller which exposes Routes.

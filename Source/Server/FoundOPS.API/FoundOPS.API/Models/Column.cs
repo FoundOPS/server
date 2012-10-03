@@ -1,4 +1,4 @@
-﻿namespace FoundOPS.Api.Models
+﻿namespace FoundOps.Api.Models
 {
     /// <summary>
     /// An individual column

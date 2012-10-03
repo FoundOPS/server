@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 
-namespace FoundOPS.Api.Tools
+namespace FoundOps.Api.Tools
 {
     public static class FormTools
     {

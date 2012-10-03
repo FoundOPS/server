@@ -1,5 +1,5 @@
-using FoundOPS.Api.Models;
-using FoundOPS.Api.Tools;
+using FoundOps.Api.Models;
+using FoundOps.Api.Tools;
 using FoundOps.Core.Models.Authentication;
 using FoundOps.Core.Models.Azure;
 using FoundOps.Core.Models.CoreEntities;
@@ -11,11 +11,11 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using Employee = FoundOPS.Api.Models.Employee;
+using Employee = FoundOps.Api.Models.Employee;
 
-namespace FoundOPS.Api.Api
+namespace FoundOps.Api.ApiControllers
 {
-    [FoundOps.Core.Tools.Authorize]
+    [Core.Tools.Authorize]
     public class SettingsController : ApiController
     {
         private readonly CoreEntitiesContainer _coreEntitiesContainer;
@@ -414,7 +414,7 @@ namespace FoundOPS.Api.Api
 
         #region Business Settings
 
-        [System.Web.Http.AcceptVerbs("GET", "POST")]
+        [AcceptVerbs("GET", "POST")]
         public BusinessSettings GetBusinessSettings(Guid roleId)
         {
             var businessAccount = _coreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator }).FirstOrDefault();
@@ -436,7 +436,7 @@ namespace FoundOPS.Api.Api
             return businessSettings;
         }
 
-        [System.Web.Http.AcceptVerbs("POST")]
+        [AcceptVerbs("POST")]
         public HttpResponseMessage UpdateBusinessSettings(BusinessSettings settings, Guid roleId)
         {
             var businessAccount = _coreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator }).FirstOrDefault();
@@ -457,7 +457,7 @@ namespace FoundOPS.Api.Api
         /// x, y, w, h: for cropping
         /// </summary>
         /// <returns>The image url, expiring in 3 hours</returns>
-        [System.Web.Http.AcceptVerbs("POST")]
+        [AcceptVerbs("POST")]
         public string UpdateBusinessImage(Guid roleId)
         {
             var businessAccount = _coreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator }).FirstOrDefault();

@@ -1,8 +1,5 @@
-﻿using System.Data.EntityClient;
-using System.Data.Objects;
-using System.Threading.Tasks;
-using Dapper;
-using FoundOps.Common.NET;
+﻿using Dapper;
+using FoundOps.Api.Models;
 using FoundOps.Core.Models;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.ServiceEntites;
@@ -16,17 +13,16 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using Service = FoundOPS.Api.Models.Service;
-using ServiceType = FoundOPS.Api.Models.ServiceType;
 using DateTimeField = FoundOps.Core.Models.CoreEntities.DateTimeField;
 using LocationField = FoundOps.Core.Models.CoreEntities.LocationField;
 using NumericField = FoundOps.Core.Models.CoreEntities.NumericField;
 using OptionsField = FoundOps.Core.Models.CoreEntities.OptionsField;
+using Service = FoundOps.Api.Models.Service;
 using TextBoxField = FoundOps.Core.Models.CoreEntities.TextBoxField;
 
-namespace FoundOPS.Api.Api
+namespace FoundOps.Api.Controllers.Rest
 {
-    [FoundOps.Core.Tools.Authorize]
+    [Core.Tools.Authorize]
     public class ServiceController : ApiController
     {
         private readonly CoreEntitiesContainer _coreEntitiesContainer;

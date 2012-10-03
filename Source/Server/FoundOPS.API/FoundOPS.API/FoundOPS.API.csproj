@@ -229,21 +229,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApiControllers\BaseApiController.cs" />
-    <Compile Include="ApiControllers\ClientsController.cs" />
-    <Compile Include="ApiControllers\LocationsController.cs" />
-    <Compile Include="ApiControllers\ErrorController.cs" />
-    <Compile Include="ApiControllers\RouteTasksController.cs" />
-    <Compile Include="ApiControllers\SessionController.cs" />
-    <Compile Include="ApiControllers\TaskStatusesController.cs" />
-    <Compile Include="ApiControllers\UserAccountsController.cs" />
-    <Compile Include="Controllers\HelperController.cs" />
-    <Compile Include="ApiControllers\SettingsController.cs" />
-    <Compile Include="ApiControllers\ServiceController.cs" />
-    <Compile Include="ApiControllers\ToolsController.cs" />
-    <Compile Include="ApiControllers\RoutesController.cs" />
-    <Compile Include="ApiControllers\TrackPointController.cs" />
-    <Compile Include="Controllers\ServiceController.cs" />
+    <Compile Include="Controllers\Rest\BaseApiController.cs" />
+    <Compile Include="Controllers\Rest\ClientsController.cs" />
+    <Compile Include="Controllers\Rest\LocationsController.cs" />
+    <Compile Include="Controllers\Rest\ErrorController.cs" />
+    <Compile Include="Controllers\Rest\RouteTasksController.cs" />
+    <Compile Include="Controllers\Rest\SessionController.cs" />
+    <Compile Include="Controllers\Rest\ColumnsController.cs" />
+    <Compile Include="Controllers\Rest\TaskStatusesController.cs" />
+    <Compile Include="Controllers\Rest\UserAccountsController.cs" />
+    <Compile Include="Controllers\Mvc\HelperController.cs" />
+    <Compile Include="Controllers\Rest\SettingsController.cs" />
+    <Compile Include="Controllers\Rest\ServiceController.cs" />
+    <Compile Include="Controllers\Rest\ToolsController.cs" />
+    <Compile Include="Controllers\Rest\RoutesController.cs" />
+    <Compile Include="Controllers\Rest\TrackPointController.cs" />
+    <Compile Include="Controllers\Mvc\ServiceController.cs" />
     <Compile Include="CoreDomainContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

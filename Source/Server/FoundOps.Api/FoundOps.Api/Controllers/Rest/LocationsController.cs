@@ -1,10 +1,9 @@
-﻿using FoundOPS.Api.Api;
-using FoundOPS.Api.Models;
+﻿using FoundOps.Api.Models;
 using FoundOps.Core.Tools;
 using System;
 using System.Linq;
 
-namespace FoundOps.Api.ApiControllers
+namespace FoundOps.Api.Controllers.Rest
 {
     [Authorize]
     public class LocationsController : BaseApiController

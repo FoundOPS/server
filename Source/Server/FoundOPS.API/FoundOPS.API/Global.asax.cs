@@ -1,11 +1,11 @@
+using FoundOps.Api.Tools;
+using FoundOps.Core.Models;
 using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Routing;
-using FoundOPS.Api.Tools;
-using FoundOps.Core.Models;
 using Thinktecture.IdentityModel.Http.Cors.WebApi;
 
-namespace FoundOPS.Api
+namespace FoundOps.Api
 {
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
     // visit http://go.microsoft.com/?LinkId=9394801
@@ -17,24 +17,11 @@ namespace FoundOPS.Api
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            //routes.MapHttpRoute(
-            //    name: "API Default",
-            //    routeTemplate: "api/{controller}"
-            //    );
+            var apiRoute = routes.MapHttpRoute("RestApiRoute", "api/{controller}/{id}", new {id = RouteParameter.Optional});
+            apiRoute.DataTokens["Namespaces"] = new[] { "FoundOps.Api.Controllers.Rest" };
 
-            var apiRoute = routes.MapHttpRoute(
-                name: "ActionApi",
-                routeTemplate: "api/{controller}/{action}"
-                );
-
-            apiRoute.DataTokens["Namespaces"] = new[] { "FoundOPS.API.Api" };
-
-            var mvcRoute = routes.MapRoute(
-                 "Default", // Route name
-                 "{controller}/{action}"
-                 );
-
-            mvcRoute.DataTokens["Namespaces"] = new[] { "FoundOPS.API.Controllers" };
+            var mvcRoute = routes.MapRoute("MvcRoute", "{controller}/{action}");
+            mvcRoute.DataTokens["Namespaces"] = new[] { "FoundOps.Api.Controllers.Mvc" };
         }
 
         protected void Application_Start()
@@ -63,11 +50,11 @@ namespace FoundOPS.Api
             // this allow all CORS requests
             corsConfig.ForAllResources()
 #if DEBUG
-            .ForOrigins(AppConstants.RootApplicationUrl, "http://localhost:8000")
+.ForOrigins(AppConstants.RootApplicationUrl, "http://localhost:8000")
 #else
             .ForOrigins(AppConstants.RootApplicationUrl)
 #endif
-            .AllowAll();
+.AllowAll();
         }
     }
 }

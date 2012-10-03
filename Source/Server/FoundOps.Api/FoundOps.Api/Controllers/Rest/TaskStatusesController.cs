@@ -1,4 +1,4 @@
-﻿using FoundOPS.Api.Tools;
+﻿using FoundOps.Api.Tools;
 using FoundOps.Common.NET;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
@@ -8,9 +8,9 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using TaskStatus = FoundOPS.Api.Models.TaskStatus;
+using TaskStatus = FoundOps.Api.Models.TaskStatus;
 
-namespace FoundOPS.Api.Api
+namespace FoundOps.Api.Api
 {
     public class TaskStatusesController : ApiController
     {
