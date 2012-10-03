@@ -37,6 +37,7 @@ namespace FoundOps.Core.Models.CoreEntities
             Comments = "";
             AdminDistrictOne = "";
             PostalCode = "";
+            CountryCode = "";
             SSN = "";
             OnCreation();
         }

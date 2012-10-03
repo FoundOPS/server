@@ -28,7 +28,7 @@ namespace FoundOPS.API.Models
         /// <summary>
         /// The City of this Location
         /// </summary>
-        public string City { get; set; }
+        public string AdminDistrictTwo { get; set; }
 
         /// <summary>
         /// The latitude of this Location
@@ -43,12 +43,17 @@ namespace FoundOPS.API.Models
         /// <summary>
         /// The State of this location
         /// </summary>
-        public string State { get; set; }
+        public string AdminDistrictOne { get; set; }
 
         /// <summary>
         /// The Zipcode of this location
         /// </summary>
-        public string ZipCode { get; set; }
+        public string PostalCode { get; set; }
+
+        /// <summary>
+        /// The Country code of this location
+        /// </summary>
+        public string CountryCode { get; set; }
 
         /// <summary>
         /// The list of ContactInfo associated with this Location 
@@ -70,9 +75,10 @@ namespace FoundOPS.API.Models
                 AddressLineTwo = locationModel.AddressLineTwo,
                 Longitude = locationModel.Longitude.ToString(),
                 Latitude = locationModel.Latitude.ToString(),
-                City = locationModel.AdminDistrictTwo,
-                State = locationModel.AdminDistrictOne,
-                ZipCode = locationModel.PostalCode
+                AdminDistrictTwo = locationModel.AdminDistrictTwo,
+                AdminDistrictOne = locationModel.AdminDistrictOne,
+                CountryCode = locationModel.CountryCode,
+                PostalCode = locationModel.PostalCode
             };
 
             foreach (var contactInfo in locationModel.ContactInfoSet)

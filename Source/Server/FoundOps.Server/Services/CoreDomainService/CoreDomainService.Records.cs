@@ -379,13 +379,14 @@ namespace FoundOps.Server.Services.CoreDomainService
                               loc.AdminDistrictTwo,
                               loc.AdminDistrictOne,
                               loc.PostalCode,
+                              loc.CountryCode,
                               RegionName = loc.Region.Name,
                               loc.Latitude,
                               loc.Longitude
                           };
 
             foreach (var record in records.ToArray())
-                csvWriter.WriteDataRecord(record.ClientName, record.Name, record.AddressLineOne, record.AddressLineTwo, record.AdminDistrictTwo, record.AdminDistrictOne, record.PostalCode, record.RegionName,
+                csvWriter.WriteDataRecord(record.ClientName, record.Name, record.AddressLineOne, record.AddressLineTwo, record.AdminDistrictTwo, record.AdminDistrictOne, record.PostalCode, record.CountryCode, record.RegionName,
                                        record.Latitude, record.Longitude);
 
             csvWriter.Close();

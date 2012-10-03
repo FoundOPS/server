@@ -30,6 +30,7 @@ namespace FoundOps.Core.Models.CoreEntities
             this.AddressLineTwo = "";
             this.AdminDistrictTwo = "";
             this.AdminDistrictOne = "";
+            this.CountryCode = "";
             OnCreation();
         }
 

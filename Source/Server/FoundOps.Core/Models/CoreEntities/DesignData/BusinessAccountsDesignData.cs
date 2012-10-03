@@ -80,6 +80,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                     AdminDistrictTwo = "West Lafayette",
                     AdminDistrictOne = "IN",
                     PostalCode = "47906",
+                    CountryCode = "US",
                     BusinessAccount = serviceProvider,
                     Latitude = (decimal?)40.460335,
                     Longitude = (decimal?)(-86.929840)
