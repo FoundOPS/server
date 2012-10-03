@@ -1,34 +1,18 @@
-using FoundOps.Core.Models.CoreEntities;
+using FoundOPS.Api.Models;
 using FoundOps.Core.Tools;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
-using Location = FoundOPS.API.Models.Location;
-using Route = FoundOPS.API.Models.Route;
-using RouteTask = FoundOPS.API.Models.RouteTask;
 
-namespace FoundOPS.API.Api
+namespace FoundOps.Api.ApiControllers
 {
     /// <summary>
     /// An api controller which exposes Routes.
     /// </summary>
     [FoundOps.Core.Tools.Authorize]
-    public class RoutesController : ApiController
+    public class RoutesController : BaseApiController
     {
-        private readonly CoreEntitiesContainer _coreEntitiesContainer;
-
-        public RoutesController()
-        {
-            _coreEntitiesContainer = new CoreEntitiesContainer();
-            _coreEntitiesContainer.ContextOptions.LazyLoadingEnabled = false;
-        }
-
-        #region Get
-
         // GET /api/route?roleId={Guid}
         /// <summary>
         /// Returns Routes, RouteDestinations and their Client and Location
@@ -42,7 +26,7 @@ namespace FoundOPS.API.Api
         public IQueryable<Route> GetRoutes(Guid? roleId, DateTime? serviceDateUtc, bool? deep, bool? assigned)
         {
             //TODO remove following two lines once mobile app is updated (and change deep to false)
-            var userAccount = _coreEntitiesContainer.CurrentUserAccount().Include(ua => ua.RoleMembership).First();
+            var userAccount = CoreEntitiesContainer.CurrentUserAccount().Include(ua => ua.RoleMembership).First();
             var role = roleId.HasValue
                            ? roleId.Value
                            : userAccount.RoleMembership.First().Id;
@@ -55,7 +39,7 @@ namespace FoundOPS.API.Api
             //TODO replace above with when mobile app is updated
             //: _coreEntitiesContainer.CurrentUserAccount().First().Now().Date;
 
-            var loadedRoutes = _coreEntitiesContainer.Owner(role).Include(ba => ba.Routes)
+            var loadedRoutes = CoreEntitiesContainer.Owner(role).Include(ba => ba.Routes)
                             .SelectMany(ba => ba.Routes).Where(r => r.Date == date)
                             .Include(r => r.RouteDestinations)
                             .Include("RouteDestinations.Client").Include("RouteDestinations.Location");
@@ -83,56 +67,8 @@ namespace FoundOPS.API.Api
         [AcceptVerbs("GET", "POST")]
         public IQueryable<Location> GetDepots(Guid roleId)
         {
-            var currentBusinessAccount = _coreEntitiesContainer.Owner(roleId).Include(ba => ba.Depots).FirstOrDefault();
-
-            if (currentBusinessAccount == null)
-                ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
-
-            return currentBusinessAccount.Depots.Select(Location.ConvertModel).AsQueryable();
+            var businessAccount = GetBusinessAccount(roleId, null, new[] { "Depots" });
+            return businessAccount.Depots.Select(Location.ConvertModel).AsQueryable();
         }
-        #endregion
-
-        #region Post
-
-        /// <summary>
-        /// Pushes changes made to a RouteTask from the API model to the FoundOPS model
-        /// </summary>
-        /// <param name="routeTask">The API model of a RouteTask</param>
-        [AcceptVerbs("POST")]
-        public HttpResponseMessage UpdateRouteTask(RouteTask routeTask)
-        {
-            var routeTaskModel = _coreEntitiesContainer.RouteTasks.First(rt => rt.Id == routeTask.Id);
-
-            //status is the only thing that can change
-            routeTaskModel.TaskStatusId = routeTask.TaskStatusId;
-
-            var taskStatus = _coreEntitiesContainer.TaskStatuses.FirstOrDefault(ts => ts.Id == routeTask.TaskStatusId);
-            if (taskStatus == null)
-                return Request.CreateResponse(HttpStatusCode.NotFound, "Task statuses have been changed. Please reload Routes");
-
-            //Remove the task from the route if the task status says to
-            if (taskStatus.RemoveFromRoute && routeTaskModel.RouteDestinationId.HasValue)
-            {
-                routeTaskModel.RouteDestinationReference.Load();
-                routeTaskModel.RouteDestination.RouteTasks.Load();
-
-                //if this is the only task, delete the route destination
-                if (routeTaskModel.RouteDestination.RouteTasks.Count() == 1)
-                {
-                    _coreEntitiesContainer.RouteDestinations.DeleteObject(routeTaskModel.RouteDestination);
-                }
-                //otherwise just remove this task
-                else
-                {
-                    routeTaskModel.RouteDestinationId = null;
-                }
-            }
-
-            _coreEntitiesContainer.SaveChanges();
-
-            return Request.CreateResponse(HttpStatusCode.Accepted);
-        }
-
-        #endregion
     }
 }

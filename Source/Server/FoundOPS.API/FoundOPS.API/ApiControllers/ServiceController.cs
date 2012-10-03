@@ -16,15 +16,15 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using Service = FoundOPS.API.Models.Service;
-using ServiceType = FoundOPS.API.Models.ServiceType;
+using Service = FoundOPS.Api.Models.Service;
+using ServiceType = FoundOPS.Api.Models.ServiceType;
 using DateTimeField = FoundOps.Core.Models.CoreEntities.DateTimeField;
 using LocationField = FoundOps.Core.Models.CoreEntities.LocationField;
 using NumericField = FoundOps.Core.Models.CoreEntities.NumericField;
 using OptionsField = FoundOps.Core.Models.CoreEntities.OptionsField;
 using TextBoxField = FoundOps.Core.Models.CoreEntities.TextBoxField;
 
-namespace FoundOPS.API.Api
+namespace FoundOPS.Api.Api
 {
     [FoundOps.Core.Tools.Authorize]
     public class ServiceController : ApiController

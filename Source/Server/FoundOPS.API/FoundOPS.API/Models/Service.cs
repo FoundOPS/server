@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
-namespace FoundOPS.API.Models
+namespace FoundOPS.Api.Models
 {
     public class Service
     {

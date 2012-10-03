@@ -1,4 +1,4 @@
-using FoundOPS.API.Models;
+using FoundOPS.Api.Models;
 using FoundOps.Common.Tools;
 using FoundOps.Core.Models.Authentication;
 using FoundOps.Core.Models.Azure;
@@ -14,7 +14,7 @@ using System.Net.Http;
 using System.Web.Http;
 using System.Web.Security;
 
-namespace FoundOPS.API.Api
+namespace FoundOps.Api.ApiControllers
 {
     /// <summary>
     /// An API controller which allows users to authenticate.

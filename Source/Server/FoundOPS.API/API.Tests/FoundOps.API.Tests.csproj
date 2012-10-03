@@ -6,8 +6,8 @@
     <ProjectGuid>{41CC16C3-EDF7-4534-AD5C-0968F45309F7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>API.Tests</RootNamespace>
-    <AssemblyName>API.Tests</AssemblyName>
+    <RootNamespace>FoundOps.Api.Tests</RootNamespace>
+    <AssemblyName>FoundOps.Api.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -52,7 +52,6 @@
   <ItemGroup>
     <Compile Include="Controllers\ServiceControllerTest.cs" />
     <Compile Include="Controllers\TrackPointControllerTest.cs" />
-    <Compile Include="Controllers\UserSettingsControllerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -64,9 +63,9 @@
       <Project>{c5170a8a-cad2-47e2-8552-fef87c771c03}</Project>
       <Name>FoundOps.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\FoundOPS.API\FoundOPS.API.csproj">
+    <ProjectReference Include="..\FoundOPS.API\FoundOps.Api.csproj">
       <Project>{8be952e2-f077-42d0-a4ad-704eec696840}</Project>
-      <Name>FoundOPS.API</Name>
+      <Name>FoundOps.Api</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,5 @@
-﻿using FoundOps.Common.NET;
+﻿using FoundOPS.Api.Tools;
+using FoundOps.Common.NET;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
 using System;
@@ -7,9 +8,9 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using TaskStatus = FoundOPS.API.Models.TaskStatus;
+using TaskStatus = FoundOPS.Api.Models.TaskStatus;
 
-namespace FoundOPS.API.Api
+namespace FoundOPS.Api.Api
 {
     public class TaskStatusesController : ApiController
     {
@@ -25,8 +26,8 @@ namespace FoundOPS.API.Api
         //[AcceptVerbs("GET", "POST")]
         //public IQueryable<TaskStatus> GetStatuses(Guid roleId)
         //{
+        //TODO replace below with base controller's method
         //    var currentBusinessAccount = _coreEntitiesContainer.Owner(roleId).Include(ba => ba.TaskStatuses).FirstOrDefault();
-
         //    if (currentBusinessAccount == null)
         //        ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
 
@@ -43,7 +44,7 @@ namespace FoundOPS.API.Api
                 _coreEntitiesContainer.BusinessAccount(businessAccountId.Value).Include(ba => ba.TaskStatuses).FirstOrDefault();
 
             if (currentBusinessAccount == null)
-                ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
+                throw CommonExceptions.NotAuthorizedBusinessAccount;
 
             var statuses = currentBusinessAccount.TaskStatuses.Select(TaskStatus.ConvertModel).AsQueryable();
 

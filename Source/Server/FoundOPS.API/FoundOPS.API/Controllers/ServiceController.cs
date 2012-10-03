@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using FoundOps.Common.NET;
 
-namespace FoundOPS.API.Controllers
+namespace FoundOPS.Api.Controllers
 {
     public class ServiceController : Controller
     {

@@ -1,4 +1,4 @@
-using FoundOPS.API.Models;
+using FoundOPS.Api.Models;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
 using FoundOps.Core.Models.Azure;
@@ -9,9 +9,9 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using ResourceWithLastPoint = FoundOPS.API.Models.ResourceWithLastPoint;
+using ResourceWithLastPoint = FoundOPS.Api.Models.ResourceWithLastPoint;
 
-namespace FoundOPS.API.Api
+namespace FoundOps.Api.ApiControllers
 {
     [FoundOps.Core.Tools.Authorize]
     public class TrackPointController : ApiController
@@ -52,7 +52,7 @@ namespace FoundOPS.API.Api
 
             var businessAccount = _coreEntitiesContainer.Owner(roleId).FirstOrDefault();
             if (businessAccount == null)
-                ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
+                throw CommonExceptions.NotAuthorizedBusinessAccount;
 
             //Table Names must start with a letter. They also must be alphanumeric. http://msdn.microsoft.com/en-us/library/windowsazure/dd179338.aspx
             var tableName = businessAccount.Id.TrackPointTableName();

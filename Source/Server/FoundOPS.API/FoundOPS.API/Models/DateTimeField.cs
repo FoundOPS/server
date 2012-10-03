@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FoundOPS.API.Models
+namespace FoundOPS.Api.Models
 {
     public class DateTimeField : Field
     {

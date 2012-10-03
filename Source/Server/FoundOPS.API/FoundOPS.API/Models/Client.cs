@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace FoundOPS.API.Models
+namespace FoundOPS.Api.Models
 {
     public class Client
     {

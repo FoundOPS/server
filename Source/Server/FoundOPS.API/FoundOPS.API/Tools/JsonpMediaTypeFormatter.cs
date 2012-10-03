@@ -8,7 +8,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace FoundOPS.API.Tools
+namespace FoundOPS.Api.Tools
 {
     public class JsonpMediaTypeFormatter : JsonMediaTypeFormatter
     {

@@ -29,8 +29,8 @@
     <ProjectTypeGuids>{E3E379DF-F4C6-4180-9B81-6769533ABE47};{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FoundOPS.API</RootNamespace>
-    <AssemblyName>FoundOPS.API</AssemblyName>
+    <RootNamespace>FoundOps.Api</RootNamespace>
+    <AssemblyName>FoundOps.Api</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
@@ -229,17 +229,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Api\ClientsController.cs" />
-    <Compile Include="Api\LocationsController.cs" />
-    <Compile Include="Api\ErrorController.cs" />
-    <Compile Include="Api\SessionController.cs" />
-    <Compile Include="Api\TaskStatusesController.cs" />
+    <Compile Include="ApiControllers\BaseApiController.cs" />
+    <Compile Include="ApiControllers\ClientsController.cs" />
+    <Compile Include="ApiControllers\LocationsController.cs" />
+    <Compile Include="ApiControllers\ErrorController.cs" />
+    <Compile Include="ApiControllers\RouteTasksController.cs" />
+    <Compile Include="ApiControllers\SessionController.cs" />
+    <Compile Include="ApiControllers\TaskStatusesController.cs" />
+    <Compile Include="ApiControllers\UserAccountsController.cs" />
     <Compile Include="Controllers\HelperController.cs" />
-    <Compile Include="Api\SettingsController.cs" />
-    <Compile Include="Api\ServiceController.cs" />
-    <Compile Include="Api\ToolsController.cs" />
-    <Compile Include="Api\RoutesController.cs" />
-    <Compile Include="Api\TrackPointController.cs" />
+    <Compile Include="ApiControllers\SettingsController.cs" />
+    <Compile Include="ApiControllers\ServiceController.cs" />
+    <Compile Include="ApiControllers\ToolsController.cs" />
+    <Compile Include="ApiControllers\RoutesController.cs" />
+    <Compile Include="ApiControllers\TrackPointController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="CoreDomainContext.cs" />
     <Compile Include="Global.asax.cs">
@@ -250,6 +253,7 @@
     <Compile Include="Models\ContactInfo.cs" />
     <Compile Include="Models\BusinessSettings.cs" />
     <Compile Include="Models\Column.cs" />
+    <Compile Include="Models\UserAccount.cs" />
     <Compile Include="Models\ServiceType.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\RouteTask.cs" />
@@ -266,10 +270,9 @@
     <Compile Include="Models\Route.cs" />
     <Compile Include="Models\RouteDestination.cs" />
     <Compile Include="Models\Service.cs" />
-    <Compile Include="Models\TimeZoneInfo.cs" />
     <Compile Include="Models\TrackPoint.cs" />
-    <Compile Include="Models\UserSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools\ApiExceptions.cs" />
     <Compile Include="Tools\FormTools.cs" />
     <Compile Include="Tools\JsonpMediaTypeFormatter.cs" />
   </ItemGroup>

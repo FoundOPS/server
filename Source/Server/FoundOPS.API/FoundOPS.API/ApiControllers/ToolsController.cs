@@ -1,11 +1,11 @@
 ﻿using FoundOps.Core.Models.CoreEntities;
 using System.Web.Http;
 
-namespace FoundOPS.API.Api
+namespace FoundOps.Api.ApiControllers
 {
 #if DEBUG
 
-    public class ToolsController : ApiController
+    public class ToolsController : BaseApiController
     {
         //GET /api/tools/CCDAPDD
         /// <summary>
