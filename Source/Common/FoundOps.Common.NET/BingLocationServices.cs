@@ -116,6 +116,10 @@ namespace FoundOps.Common.NET
                             if (state != null)
                                 geocoderResult.State = state.Value;
 
+                            var countryCode = addressElement.Element(xmlns + "CountryRegion");
+                            if (countryCode != null)
+                                geocoderResult.CountryCode = countryCode.Value;
+
                             var zipCode = addressElement.Element(xmlns + "PostalCode");
                             if (zipCode != null)
                                 geocoderResult.ZipCode = zipCode.Value;

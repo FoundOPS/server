@@ -335,8 +335,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 AdminDistrictOne = "IN",
                 PostalCode = "47909",
                 CountryCode = "US",
-                Latitude = (decimal?)40.368191,
-                Longitude = (decimal?)-86.860466,
+                Latitude = (decimal?)40.367866516113281,
+                Longitude = (decimal?)-86.8621826171875,
                 BusinessAccountId = businessAccountId
             });
 

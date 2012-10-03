@@ -86,6 +86,7 @@ namespace FoundOps.Common.NET
         public string ZipCode { get; set; }
         public string Latitude { get; set; }
         public string Longitude { get; set; }
+        public string CountryCode { get; set; }
     }
 
     public class GeocoderResult : Address

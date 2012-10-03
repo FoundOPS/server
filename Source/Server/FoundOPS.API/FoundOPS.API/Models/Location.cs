@@ -14,7 +14,7 @@ namespace FoundOPS.API.Models
         /// The name given to this Location
         /// </summary>
         public string Name { get; set; }
-        
+
         /// <summary>
         /// The first line of the Address of this Location
         /// </summary>
@@ -85,6 +85,45 @@ namespace FoundOPS.API.Models
                 location.ContactInfoSet.Add(ContactInfo.Convert(contactInfo));
 
             return location;
+        }
+
+        public static Location ConvertGeocode(FoundOps.Common.NET.GeocoderResult geocoderResult)
+        {
+            var location = new Location
+            {
+                AddressLineOne = geocoderResult.AddressLineOne,
+                AddressLineTwo = geocoderResult.AddressLineTwo,
+                AdminDistrictTwo = geocoderResult.City,
+                AdminDistrictOne = geocoderResult.State,
+                CountryCode = geocoderResult.CountryCode,
+                PostalCode = geocoderResult.ZipCode,
+                Latitude = Decimal.Round(Convert.ToDecimal(geocoderResult.Latitude), 8).ToString(),
+                Longitude = Decimal.Round(Convert.ToDecimal(geocoderResult.Longitude), 8).ToString()
+            };
+
+            if (location.CountryCode == "United States")
+                location.CountryCode = "US";
+
+            return location;
+        }
+
+        public static FoundOps.Core.Models.CoreEntities.Location ConvertBack(Location location)
+        {
+            var newLocation = new FoundOps.Core.Models.CoreEntities.Location
+                {
+                    Id = location.Id,
+                    AddressLineOne = location.AddressLineOne,
+                    AddressLineTwo = location.AddressLineTwo,
+                    Name = location.Name,
+                    AdminDistrictOne = location.AdminDistrictOne,
+                    AdminDistrictTwo = location.AdminDistrictTwo,
+                    PostalCode = location.PostalCode,
+                    CountryCode = location.CountryCode,
+                    Latitude = Convert.ToDecimal(location.Latitude),
+                    Longitude = Convert.ToDecimal(location.Longitude)
+                };
+
+            return newLocation;
         }
     }
 }
