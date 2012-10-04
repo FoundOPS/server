@@ -76,7 +76,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             };
 
             //Add employees to the Route
-            newRoute.Employees.Add(_employeesDesignData.DesignEmployees.RandomItem());
+            newRoute.Employees.Add(_employeesDesignData.DesignEmployees.FirstOrDefault(e => e.FirstName == "Jon"));
 
             //Add vehicles to the Route
             newRoute.Vehicles.Add(_vehiclesDesignData.DesignVehicles.RandomItem());

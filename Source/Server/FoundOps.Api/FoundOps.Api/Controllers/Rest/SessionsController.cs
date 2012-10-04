@@ -10,7 +10,6 @@ using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Web;
 using System.Web.Security;
 
 namespace FoundOps.Api.Controllers.Rest
@@ -33,12 +32,12 @@ namespace FoundOps.Api.Controllers.Rest
         public HttpResponseMessage Get(bool isMobile = false)
         {
             //if the user is not expecting a detailed response, return whether the user is authenticated currently or not
-            if (!Request.Headers.Contains("ops:details") || !Request.Headers.GetValues("ops:details").Contains("true"))
+            if (!Request.Headers.Contains("ops-details") || !Request.Headers.GetValues("ops-details").Contains("true"))
             {
-                var isAuthenticated = !string.IsNullOrEmpty(HttpContext.Current.User.Identity.Name);
+                var isAuthenticated = !string.IsNullOrEmpty(AuthenticationLogic.CurrentUsersEmail());
                 return Request.CreateResponse(HttpStatusCode.Accepted, isAuthenticated);
             }
-
+            
             Request.CheckAuthentication();
 
             var user = CoreEntitiesContainer.CurrentUserAccount().Include(ua => ua.RoleMembership)

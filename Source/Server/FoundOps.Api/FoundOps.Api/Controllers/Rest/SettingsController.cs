@@ -420,7 +420,7 @@ namespace FoundOps.Api.ApiControllers
             var businessAccount = _coreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator }).FirstOrDefault();
 
             if (businessAccount == null)
-                throw CommonExceptions.NotAuthorizedBusinessAccount;
+                throw Request.NotAuthorized();
 
             businessAccount.PartyImageReference.Load();
 
@@ -463,7 +463,7 @@ namespace FoundOps.Api.ApiControllers
             var businessAccount = _coreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator }).FirstOrDefault();
 
             if (businessAccount == null)
-                throw CommonExceptions.NotAuthorizedBusinessAccount;
+                throw Request.NotAuthorized();
 
             businessAccount.PartyImageReference.Load();
 
@@ -485,13 +485,13 @@ namespace FoundOps.Api.ApiControllers
         {
             //If there is no RoleId passed, we can assume that the user is not authorized to see all the User Settings
             if (!roleId.HasValue)
-                throw CommonExceptions.NotAuthorizedBusinessAccount;
+                throw Request.NotAuthorized();
 
             var businessAccount = _coreEntitiesContainer.Owner(roleId.Value).FirstOrDefault();
 
             //If they are not an admin, they do not have the ability to view Users
             if (businessAccount == null)
-                throw CommonExceptions.NotAuthorizedBusinessAccount;
+                throw Request.NotAuthorized();
 
             var employees = _coreEntitiesContainer.Employees.Where(e => e.EmployerId == businessAccount.Id).ToList();
 

@@ -233,7 +233,7 @@
     <Compile Include="Controllers\Rest\ClientsController.cs" />
     <Compile Include="Controllers\Rest\ColumnConfigurationsController.cs" />
     <Compile Include="Controllers\Rest\LocationsController.cs" />
-    <Compile Include="Controllers\Rest\ErrorController.cs" />
+    <Compile Include="Controllers\Rest\ErrorsController.cs" />
     <Compile Include="Controllers\Rest\RouteTasksController.cs" />
     <Compile Include="Controllers\Rest\SessionsController.cs" />
     <Compile Include="Controllers\Rest\TaskStatusesController.cs" />
@@ -254,6 +254,7 @@
     <Compile Include="Models\ContactInfo.cs" />
     <Compile Include="Models\BusinessSettings.cs" />
     <Compile Include="Models\Column.cs" />
+    <Compile Include="Models\ErrorEntry.cs" />
     <Compile Include="Models\UserAccount.cs" />
     <Compile Include="Models\ServiceType.cs" />
     <Compile Include="Models\Employee.cs" />

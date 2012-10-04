@@ -1,5 +1,4 @@
-﻿using System.Net;
-using System.Net.Http;
+﻿using FoundOps.Api.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
 using System;
@@ -31,7 +30,7 @@ namespace FoundOps.Api.Controllers.Rest
 
             //If there is no RoleId passed, we can assume that the user is not authorized to see all the User Settings
             if (!roleId.HasValue || roleId.Value == Guid.Empty)
-                throw CommonExceptions.NotAuthorizedBusinessAccount;
+                throw Request.NotAuthorized();
 
             var businessAccountQuery = CoreEntitiesContainer.Owner(roleId.Value, roleTypes);
 
@@ -40,9 +39,29 @@ namespace FoundOps.Api.Controllers.Rest
 
             var businessAccount = businessAccountQuery.FirstOrDefault();
             if (businessAccount == null)
-                throw CommonExceptions.NotAuthorizedBusinessAccount;
+                throw Request.NotAuthorized();
 
             return businessAccount;
+        }
+
+        protected void SaveWithRetry()
+        {
+            try
+            {
+                CoreEntitiesContainer.SaveChanges();
+            }
+            catch (Exception)
+            {
+                try
+                {
+                    //try one more time
+                    CoreEntitiesContainer.SaveChanges();
+                }
+                catch (Exception)
+                {
+                    throw Request.NotSaving();
+                }
+            }
         }
     }
 }

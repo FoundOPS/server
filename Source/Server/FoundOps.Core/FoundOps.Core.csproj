@@ -234,7 +234,6 @@
     <Compile Include="Tools\AuthenticationLogic.cs" />
     <Compile Include="Tools\Authorize.cs" />
     <Compile Include="Tools\EmailPasswordTools.cs" />
-    <Compile Include="Tools\CommonExceptions.cs" />
     <Compile Include="Tools\HardCodedLoaders.cs" />
     <Compile Include="Tools\ServerManagement.cs" />
     <Compile Include="Tools\TimeZoneTools.cs" />

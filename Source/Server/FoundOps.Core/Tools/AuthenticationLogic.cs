@@ -110,13 +110,16 @@ namespace FoundOps.Core.Tools
         }
 
         /// <summary>
-        /// Gets the current user account in a queryable format.
+        /// The current user's email
         /// </summary>
-        /// <param name="coreEntitiesContainer">The core entities container.</param>
         /// <returns></returns>
-        public static IQueryable<UserAccount> CurrentUserAccount(this CoreEntitiesContainer coreEntitiesContainer)
+        public static string CurrentUsersEmail()
         {
-            var currentUsersEmail = HttpContext.Current.User.Identity.Name;
+            var currentUsersEmail = "";
+            if (HttpContext.Current != null)
+            {
+                currentUsersEmail = HttpContext.Current.User.Identity.Name;
+            }
 
 #if DEBUG
             switch (ServerConstants.LoginMode)
@@ -130,6 +133,18 @@ namespace FoundOps.Core.Tools
             }
 #endif
             currentUsersEmail = currentUsersEmail.Trim();
+
+            return currentUsersEmail;
+        }
+
+        /// <summary>
+        /// Gets the current user account in a queryable format.
+        /// </summary>
+        /// <param name="coreEntitiesContainer">The core entities container.</param>
+        /// <returns></returns>
+        public static IQueryable<UserAccount> CurrentUserAccount(this CoreEntitiesContainer coreEntitiesContainer)
+        {
+            var currentUsersEmail = CurrentUsersEmail();
             return coreEntitiesContainer.Parties.OfType<UserAccount>().Where(userAccount => userAccount.EmailAddress == currentUsersEmail);
         }
 

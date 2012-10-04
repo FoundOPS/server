@@ -1,4 +1,5 @@
 using FoundOps.Api.Models;
+using FoundOps.Api.Tools;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
 using FoundOps.Core.Models.Azure;
@@ -52,7 +53,7 @@ namespace FoundOps.Api.ApiControllers
 
             var businessAccount = _coreEntitiesContainer.Owner(roleId).FirstOrDefault();
             if (businessAccount == null)
-                throw CommonExceptions.NotAuthorizedBusinessAccount;
+                throw Request.NotAuthorized();
 
             //Table Names must start with a letter. They also must be alphanumeric. http://msdn.microsoft.com/en-us/library/windowsazure/dd179338.aspx
             var tableName = businessAccount.Id.TrackPointTableName();

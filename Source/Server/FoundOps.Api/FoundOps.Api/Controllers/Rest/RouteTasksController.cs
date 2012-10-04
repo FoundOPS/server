@@ -1,10 +1,9 @@
-﻿using FoundOps.Api.Tools;
-using FoundOps.Core.Models.CoreEntities;
+﻿using FoundOps.Api.Models;
+using FoundOps.Api.Tools;
 using FoundOps.Core.Tools;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Web.Http;
 
 namespace FoundOps.Api.Controllers.Rest
 {
@@ -17,7 +16,7 @@ namespace FoundOps.Api.Controllers.Rest
         /// </summary>
         /// <param name="routeTask">The task to update</param>
         /// <returns>The result</returns>
-        public HttpResponseMessage Put([FromBody]RouteTask routeTask)
+        public HttpResponseMessage Put(RouteTask routeTask)
         {
             var routeTaskModel = CoreEntitiesContainer.RouteTasks.FirstOrDefault(rt => rt.Id == routeTask.Id);
             if (routeTaskModel == null)
@@ -25,7 +24,7 @@ namespace FoundOps.Api.Controllers.Rest
 
             //Check the user has access to the
             if (!CoreEntitiesContainer.BusinessAccount(routeTaskModel.BusinessAccountId).Any())
-                return Request.NotAuthorized();
+                throw Request.NotAuthorized();
 
             //status is the only thing that can change
             routeTaskModel.TaskStatusId = routeTask.TaskStatusId;
@@ -53,7 +52,7 @@ namespace FoundOps.Api.Controllers.Rest
                 }
             }
 
-            CoreEntitiesContainer.SaveChanges();
+            SaveWithRetry();
             return Request.CreateResponse(HttpStatusCode.Accepted);
         }
     }

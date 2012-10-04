@@ -44,7 +44,7 @@ namespace FoundOps.Api.Api
                 _coreEntitiesContainer.BusinessAccount(businessAccountId.Value).Include(ba => ba.TaskStatuses).FirstOrDefault();
 
             if (currentBusinessAccount == null)
-                throw CommonExceptions.NotAuthorizedBusinessAccount;
+                throw Request.NotAuthorized();
 
             var statuses = currentBusinessAccount.TaskStatuses.Select(TaskStatus.ConvertModel).AsQueryable();
 
