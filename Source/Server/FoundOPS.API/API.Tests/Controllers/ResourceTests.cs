@@ -66,6 +66,10 @@ namespace API.Tests.Controllers
             Assert.AreEqual(postResponse.StatusCode, HttpStatusCode.Accepted);
 
             newLocation.CountryCode = "WK";
+            newLocation.AdminDistrictTwo = "I Have Changed";
+            newLocation.AddressLineOne = "Not The Same as I Was";
+            newLocation.AddressLineTwo = "Different";
+            newLocation.PostalCode = "Not Even Postal Code";
 
             var putResponse = controller.Put(RoleId, newLocation);
 
