@@ -23,7 +23,7 @@ namespace API.Tests.Controllers
             var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost");
             var controller = new LocationsController() { Request = request };
 
-            var getResponseFromId = controller.Get(RoleId, new Guid("C0FA60DA-F736-455B-B9A1-9EB7D8E07769"));
+            var getResponseFromId = controller.Get(RoleId, new Guid("C0FA60DA-F736-455B-B9A1-9EB7D8E07769"), null);
 
             FoundOps.Core.Models.CoreEntities.Location location;
 
@@ -44,7 +44,7 @@ namespace API.Tests.Controllers
 
             var searchText = convertedLocation.AddressLineOne + ' ' + convertedLocation.AdminDistrictTwo + ' ' + convertedLocation.AdminDistrictOne + ' ' + convertedLocation.CountryCode;
 
-            var getResponseFromSearch = controller.Get(RoleId, searchText).FirstOrDefault();
+            var getResponseFromSearch = controller.GetAllLocations(RoleId, searchText).FirstOrDefault();
 
             if (!Tools.AreObjectsEqual(getResponseFromSearch, convertedLocation, new []{"Id", "Name", "AddressLineTwo"}))
                 throw new Exception("Objects are not equal. Check output window for details");

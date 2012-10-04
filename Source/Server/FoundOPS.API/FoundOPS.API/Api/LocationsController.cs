@@ -32,7 +32,7 @@ namespace FoundOPS.API.Api
         /// <param name="roleId">The current roleId</param>
         /// <param name="locationId">The Id of the location to be returned</param>
         /// <returns>A location converted to the API model with the desired Id</returns>
-        public Location Get(Guid roleId, Guid locationId)
+        public Location[] Get(Guid roleId, Guid? locationId, Guid? clientId)
         {
 #if !DEBUG
             //Check to be sure the user has correct abilities
@@ -40,22 +40,25 @@ namespace FoundOPS.API.Api
             if (currentBusinessAccount == null)
                 throw new HttpException(((int)HttpStatusCode.Unauthorized), "User is mobile only");
 #endif
+            FoundOps.Core.Models.CoreEntities.Location[] locations;
 
+            var sql = "SELECT * FROM Locations WHERE Id = @Id";
 
-            FoundOps.Core.Models.CoreEntities.Location location;
+            if (clientId != null)
+                sql = "SELECT * FROM Locations WHERE ClientId = @Id";
 
             using (var conn = new SqlConnection(ServerConstants.SqlConnectionString))
             {
                 conn.Open();
 
                 //Find the location with the desired Id
-                location = conn.Query<FoundOps.Core.Models.CoreEntities.Location>("SELECT * FROM Locations WHERE Id = @Id", new {Id = locationId}).FirstOrDefault();
+                locations = conn.Query<FoundOps.Core.Models.CoreEntities.Location>(sql, new {Id = clientId ?? locationId}).ToArray();
 
                 conn.Close();
             }
             
             //Convert the FoundOPS model to the API model
-            return Location.ConvertModel(location);
+            return locations.Select(Location.ConvertModel).ToArray();
         }
 
         /// <summary>
@@ -64,8 +67,9 @@ namespace FoundOPS.API.Api
         /// <param name="roleId">The current roleId</param>
         /// <param name="search">String to be geocoded</param>
         /// <returns>A list of high confidence geocoded locations based on the search string</returns>
-        public IEnumerable<Location> Get(Guid roleId, string search)
+        public IEnumerable<Location> GetAllLocations(Guid roleId, string search)
         {
+
 #if !DEBUG
             //Check to be sure the user has correct abilities
             var currentBusinessAccount = _coreEntitiesContainer.Owner(roleId).FirstOrDefault();
