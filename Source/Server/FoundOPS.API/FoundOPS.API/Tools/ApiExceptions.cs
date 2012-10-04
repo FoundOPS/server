@@ -32,7 +32,7 @@ namespace FoundOps.Api.Tools
         /// <summary>
         /// Check if the user is authenticated. Throw an exception if they are not
         /// </summary>
-        public static HttpResponseMessage CheckAuthentication(this HttpRequestMessage request)
+        public static void CheckAuthentication(this HttpRequestMessage request)
         {
             if (string.IsNullOrEmpty(HttpContext.Current.User.Identity.Name))
             {

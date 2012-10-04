@@ -1,5 +1,4 @@
-﻿using FoundOps.Api.ApiControllers;
-using FoundOps.Core.Models.CoreEntities;
+﻿using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
 using System;
 using System.Linq;
@@ -10,17 +9,15 @@ namespace FoundOps.Api.Controllers.Rest
 {
     public class UserAccountsController : BaseApiController
     {
-        // GET api/userAccounts
         /// <summary>
-        /// Return the UserAccount's with access to this role's business account.
         /// REQUIRES: Admin access to the role.
         /// </summary>
-        /// <param name="roleId"></param>
-        /// <returns></returns>
+        /// <param name="roleId">The role</param>
+        /// <returns>UserAccounts with access to the role's business account</returns>
         [Queryable]
         public IQueryable<UserAccount> GetAllUserAccounts(Guid roleId)
         {
-            var business = GetBusinessAccount(roleId, new[] { RoleType.Administrator}, new[] { "Employees", "OwnedRoles", "MemberParties" });
+            var business = GetBusinessAccount(roleId, new[] { RoleType.Administrator }, new[] { "Employees", "OwnedRoles", "MemberParties" });
 
             var userAccounts = business.OwnedRoles.SelectMany(r => r.MemberParties).OfType<Core.Models.CoreEntities.UserAccount>();
 

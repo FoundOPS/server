@@ -11,15 +11,14 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web;
-using System.Web.Http;
 using System.Web.Security;
 
 namespace FoundOps.Api.Controllers.Rest
 {
-    public class SessionController : BaseApiController
+    public class SessionsController : BaseApiController
     {
         private readonly CoreEntitiesMembershipProvider _coreEntitiesMembershipProvider;
-        public SessionController()
+        public SessionsController()
         {
             _coreEntitiesMembershipProvider = new CoreEntitiesMembershipProvider(CoreEntitiesContainer);
         }
@@ -27,12 +26,19 @@ namespace FoundOps.Api.Controllers.Rest
         // GET api/session
         /// <summary>
         /// Gets the session information for the user
-        /// It will default to returning true if authenticated, and false if not authenticated.
+        /// It will default to returning true if authenticated, and false if not authenticated
+        /// Accepts header: OpsDetails: "True". This will return the entire session object, or throw an unauthorized exception
         /// </summary>
         /// <param name="isMobile">(Optional) Whether or not the user is on a mobile devic which affects urls. Defaults to false</param>
-        [AcceptVerbs("GET", "POST")]
         public HttpResponseMessage Get(bool isMobile = false)
         {
+            //if the user is not expecting a detailed response, return whether the user is authenticated currently or not
+            if (!Request.Headers.Contains("ops:details") || !Request.Headers.GetValues("ops:details").Contains("true"))
+            {
+                var isAuthenticated = !string.IsNullOrEmpty(HttpContext.Current.User.Identity.Name);
+                return Request.CreateResponse(HttpStatusCode.Accepted, isAuthenticated);
+            }
+
             Request.CheckAuthentication();
 
             var user = CoreEntitiesContainer.CurrentUserAccount().Include(ua => ua.RoleMembership)

@@ -231,11 +231,11 @@
   <ItemGroup>
     <Compile Include="Controllers\Rest\BaseApiController.cs" />
     <Compile Include="Controllers\Rest\ClientsController.cs" />
+    <Compile Include="Controllers\Rest\ColumnConfigurationsController.cs" />
     <Compile Include="Controllers\Rest\LocationsController.cs" />
     <Compile Include="Controllers\Rest\ErrorController.cs" />
     <Compile Include="Controllers\Rest\RouteTasksController.cs" />
-    <Compile Include="Controllers\Rest\SessionController.cs" />
-    <Compile Include="Controllers\Rest\ColumnsController.cs" />
+    <Compile Include="Controllers\Rest\SessionsController.cs" />
     <Compile Include="Controllers\Rest\TaskStatusesController.cs" />
     <Compile Include="Controllers\Rest\UserAccountsController.cs" />
     <Compile Include="Controllers\Mvc\HelperController.cs" />

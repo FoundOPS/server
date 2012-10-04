@@ -36,7 +36,6 @@ namespace FoundOps.Api.Controllers.Rest
             var date = serviceDateUtc.HasValue
                            ? serviceDateUtc.Value.Date
                            : userAccount.Now().Date;
-            //TODO replace above with when mobile app is updated
             //: _coreEntitiesContainer.CurrentUserAccount().First().Now().Date;
 
             var loadedRoutes = CoreEntitiesContainer.Owner(role).Include(ba => ba.Routes)

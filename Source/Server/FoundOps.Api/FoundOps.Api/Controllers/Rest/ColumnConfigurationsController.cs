@@ -1,21 +1,19 @@
-using FoundOps.Api.Models;
+﻿using FoundOps.Api.Models;
 using FoundOps.Common.Tools;
 using FoundOps.Core.Tools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 
 namespace FoundOps.Api.Controllers.Rest
 {
-    public class ColumnsController : BaseApiController
+    public class ColumnConfigurationsController : BaseApiController
     {
         /// <summary>
-        /// Get the column configurations of a user for a role.
+        /// Get the user's column configurations for a role
         /// </summary>
         /// <param name="roleId">The role</param>
-        public IEnumerable<ColumnConfiguration> GetColumnConfigurations(Guid roleId)
+        public IEnumerable<ColumnConfiguration> Get(Guid roleId)
         {
             var userAccount = CoreEntitiesContainer.CurrentUserAccount().First();
 
@@ -36,11 +34,11 @@ namespace FoundOps.Api.Controllers.Rest
         }
 
         /// <summary>
-        /// Update the column configurations for a user for a role.
+        /// Update the column configurations for a user for a role
         /// </summary>
         /// <param name="roleId">The role</param>
         /// <param name="columnConfigurations">The new column configurations</param>
-        public HttpResponseMessage UpdateColumnConfigurations(Guid roleId, List<ColumnConfiguration> columnConfigurations)
+        public void Put(Guid roleId, List<ColumnConfiguration> columnConfigurations)
         {
             var userAccount = CoreEntitiesContainer.CurrentUserAccount().First();
 
@@ -61,8 +59,6 @@ namespace FoundOps.Api.Controllers.Rest
 
             userAccount.ColumnConfigurations = SerializationTools.Serialize(configurations);
             CoreEntitiesContainer.SaveChanges();
-
-            return Request.CreateResponse(HttpStatusCode.Accepted);
         }
     }
 }
