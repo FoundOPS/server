@@ -21,6 +21,8 @@ namespace FoundOps.Api.Models
         /// </summary>
         public string Role { get; set; }
 
+        public string ImageUrl { get; set; }
+
         public static UserAccount Convert(FoundOps.Core.Models.CoreEntities.UserAccount model)
         {
             return new UserAccount

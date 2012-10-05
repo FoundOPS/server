@@ -1,4 +1,5 @@
 ﻿using FoundOps.Api.Tools;
+using FoundOps.Core.Models.Authentication;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
 using System;
@@ -11,10 +12,12 @@ namespace FoundOps.Api.Controllers.Rest
     public abstract class BaseApiController : ApiController
     {
         protected readonly CoreEntitiesContainer CoreEntitiesContainer;
+        protected readonly CoreEntitiesMembershipProvider CoreEntitiesMembershipProvider;
         protected BaseApiController()
         {
             CoreEntitiesContainer = new CoreEntitiesContainer();
             CoreEntitiesContainer.ContextOptions.LazyLoadingEnabled = false;
+            CoreEntitiesMembershipProvider = new CoreEntitiesMembershipProvider(CoreEntitiesContainer);
         }
 
         /// <summary>

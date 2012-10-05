@@ -1,4 +1,7 @@
-﻿using FoundOps.Api.Models;
+﻿using System.Data.SqlClient;
+using Dapper;
+using FoundOps.Api.Models;
+using FoundOps.Core.Models;
 using FoundOps.Core.Tools;
 using System;
 using System.Linq;

@@ -17,17 +17,21 @@ namespace FoundOps.Api.Controllers.Rest
         {
             var userAccount = CoreEntitiesContainer.CurrentUserAccount().First();
 
-            List<ColumnConfiguration> columnConfigurations;
+            var columnConfigurations = new List<ColumnConfiguration>();
 
-            try
+            if (!string.IsNullOrEmpty(userAccount.ColumnConfigurations))
             {
-                columnConfigurations = SerializationTools.Deserialize<List<ColumnConfiguration>>(userAccount.ColumnConfigurations);
-            }
-            catch
-            {
-                columnConfigurations = new List<ColumnConfiguration>();
-                userAccount.ColumnConfigurations = SerializationTools.Serialize(columnConfigurations);
-                SaveWithRetry();
+                try
+                {
+                    columnConfigurations = SerializationTools.Deserialize<List<ColumnConfiguration>>(userAccount.ColumnConfigurations);
+                }
+                catch
+                {
+                    columnConfigurations = new List<ColumnConfiguration>();
+                    //if there is a problem with deserializing the column configurations (the xml got corrupt somehow): reset them
+                    userAccount.ColumnConfigurations = SerializationTools.Serialize(columnConfigurations);
+                    SaveWithRetry();
+                }
             }
 
             return columnConfigurations.Where(c => c.RoleId == roleId);

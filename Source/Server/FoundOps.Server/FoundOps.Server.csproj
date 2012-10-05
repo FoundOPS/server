@@ -405,6 +405,7 @@
     <Content Include="ClientBin\Microsoft.CSharp.zip" />
     <Content Include="ClientBin\Telerik.Windows.Controls.DomainServices.zip" />
     <Content Include="ClientBin\Telerik.Windows.Controls.ImageEditor.zip" />
+    <Content Include="ClientBin\System.ComponentModel.DataAnnotations.zip" />
     <None Include="Content\PTS55F.eot" />
     <None Include="Content\PTS55F.ttf" />
     <None Include="disableTimeout.cmd">

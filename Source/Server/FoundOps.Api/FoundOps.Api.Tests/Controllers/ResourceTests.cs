@@ -70,6 +70,17 @@ namespace FoundOps.Api.Tests.Controllers
         }
 
         [TestMethod]
+        public void ClientsTests()
+        {
+            DetachAllEntities();
+            var controller = TestTools.CreateRequest<ClientsController>(HttpMethod.Get);
+
+            var getResponse = controller.Get(_roleId, "Apollo");
+
+            Assert.IsNotNull(getResponse.FirstOrDefault());
+        }
+
+        [TestMethod]
         public void ErrorsTests()
         {
             DetachAllEntities();
