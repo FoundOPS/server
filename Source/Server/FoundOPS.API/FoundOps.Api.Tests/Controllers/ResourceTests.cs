@@ -261,6 +261,15 @@ namespace FoundOps.Api.Tests.Controllers
         }
 
         [TestMethod]
+        public void ResourceWithLastPointsTests()
+        {
+            var controller = TestTools.CreateRequest<ResourceWithLastPointsController>(HttpMethod.Get);
+
+            var getResponse = controller.Get(_roleId);
+            Assert.IsNotNull(getResponse.FirstOrDefault());
+        }
+
+        [TestMethod]
         public void RouteTasksTest()
         {
             DetachAllEntities();
@@ -336,6 +345,8 @@ namespace FoundOps.Api.Tests.Controllers
 
                 trackPoints.Add(trackPoint);
             }
+
+            controller = TestTools.CreateRequest<TrackPointsController>(HttpMethod.Post);
 
             var response = controller.Post(_roleId, trackPoints.ToArray());
 

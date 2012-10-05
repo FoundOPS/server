@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
 using FoundOps.Api.Models;
+using FoundOps.Api.Tools;
 using FoundOps.Core.Tools;
 
 namespace FoundOps.Api.Controllers.Rest
@@ -19,6 +20,8 @@ namespace FoundOps.Api.Controllers.Rest
         public IQueryable<ResourceWithLastPoint> Get(Guid roleId)
         {
             var currentBusinessAccount = CoreEntitiesContainer.Owner(roleId).First();
+            if (currentBusinessAccount == null)
+                throw Request.NotAuthorized();
 
 #if DEBUG
             //Setup the design data

@@ -258,6 +258,7 @@
     <Compile Include="Models\BusinessSettings.cs" />
     <Compile Include="Models\Column.cs" />
     <Compile Include="Models\ErrorEntry.cs" />
+    <Compile Include="Models\Option.cs" />
     <Compile Include="Models\UserAccount.cs" />
     <Compile Include="Models\ServiceType.cs" />
     <Compile Include="Models\Employee.cs" />

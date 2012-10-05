@@ -145,11 +145,16 @@ namespace FoundOps.Api.Controllers.Rest
                         locationField.LocationId = ((Models.LocationField)field).LocationId;
 
                     //If the field is a OptionsField, update the Options
-                    if (optionsField == null) 
-                        continue;
-
-                    optionsField.OptionsString = ((Models.OptionsField) field).OptionsString;
-                    optionsField.Value= ((Models.OptionsField)field).Value;
+                    if (optionsField != null)
+                    {
+                        //Cycle through each option and update the IsChecked value
+                        foreach (var apiOption in ((Models.OptionsField)field).Options)
+                        {
+                            var modelOption = optionsField.Options.FirstOrDefault(op => op.Name == apiOption.Name);
+                            if (modelOption != null)
+                                modelOption.IsChecked = apiOption.IsChecked;
+                        }
+                    }
                 }
 
                 #endregion

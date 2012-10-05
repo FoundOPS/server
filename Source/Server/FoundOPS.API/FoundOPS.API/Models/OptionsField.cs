@@ -1,4 +1,7 @@
-﻿namespace FoundOps.Api.Models
+using System.Collections.Generic;
+using System.Linq;
+
+namespace FoundOps.Api.Models
 {
     public class OptionsField : Field
     {
@@ -6,9 +9,12 @@
 
         public short TypeInt { get; set; }
 
-        public string OptionsString { get; set; }
+        public List<Option> Options { get; set; }
 
-        public string Value { get; set; }
+        public OptionsField()
+        {
+            Options = new List<Option>();
+        }
 
         /// <summary>
         /// Converts from the FoundOPS model to the API model
@@ -26,10 +32,11 @@
                 ParentFieldId = fieldModel.ParentFieldId,
                 ServiceTemplateId = fieldModel.ServiceTemplateId,
                 AllowMultipleSelection = fieldModel.AllowMultipleSelection,
-                TypeInt = fieldModel.TypeInt,
-                OptionsString = fieldModel.OptionsString,
-                Value = fieldModel.Value
+                TypeInt = fieldModel.TypeInt
             };
+
+            foreach (var option in fieldModel.Options.OrderBy(o => o.Name))
+                field.Options.Add(Option.ConvertOptionModel(option));
 
             return field;
         }
@@ -50,10 +57,11 @@
                 ParentFieldId = optionsField.ParentFieldId,
                 ServiceTemplateId = optionsField.ServiceTemplateId,
                 AllowMultipleSelection = optionsField.AllowMultipleSelection,
-                TypeInt = optionsField.TypeInt,
-                OptionsString = optionsField.OptionsString,
-                Value = optionsField.Value
+                TypeInt = optionsField.TypeInt
             };
+
+            foreach (var option in optionsField.Options)
+                field.Options.Add(Option.ConvertBackOption(option));
 
             return field;
         }
