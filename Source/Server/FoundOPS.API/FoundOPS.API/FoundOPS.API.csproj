@@ -232,6 +232,7 @@
     <Compile Include="Controllers\Rest\BaseApiController.cs" />
     <Compile Include="Controllers\Rest\ClientsController.cs" />
     <Compile Include="Controllers\Rest\ColumnConfigurationsController.cs" />
+    <Compile Include="Controllers\Rest\ResourceWithLastPointsController.cs" />
     <Compile Include="Controllers\Rest\LocationsController.cs" />
     <Compile Include="Controllers\Rest\ErrorsController.cs" />
     <Compile Include="Controllers\Rest\RouteTasksController.cs" />
@@ -245,7 +246,7 @@
     <Compile Include="Controllers\Rest\ServiceController.cs" />
     <Compile Include="Controllers\Mvc\ToolsController.cs" />
     <Compile Include="Controllers\Rest\RoutesController.cs" />
-    <Compile Include="Controllers\Rest\TrackPointController.cs" />
+    <Compile Include="Controllers\Rest\TrackPointsController.cs" />
     <Compile Include="Controllers\Mvc\ServiceController.cs" />
     <Compile Include="CoreDomainContext.cs" />
     <Compile Include="Global.asax.cs">

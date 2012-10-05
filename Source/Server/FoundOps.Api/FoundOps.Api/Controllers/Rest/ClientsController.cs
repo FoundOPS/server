@@ -11,7 +11,7 @@ namespace FoundOps.Api.Controllers.Rest
         /// <summary>
         /// Gets the clients for the business account.
         /// </summary>
-        public IQueryable<Client> GetAllClients(Guid roleId, string search = "", int skip = 0, int take = 10)
+        public IQueryable<Client> Get(Guid roleId, string search = "", int skip = 0, int take = 10)
         {
             return CoreEntitiesContainer.Owner(roleId).SelectMany(ba => ba.Clients)
                 .OrderBy(c => c.Name).Where(c => c.Name.ToLower().StartsWith(search.ToLower()))

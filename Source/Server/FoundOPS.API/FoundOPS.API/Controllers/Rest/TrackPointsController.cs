@@ -10,12 +10,11 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using ResourceWithLastPoint = FoundOps.Api.Models.ResourceWithLastPoint;
 
-namespace FoundOps.Api.ApiControllers
+namespace FoundOps.Api.Controllers.Rest
 {
     [FoundOps.Core.Tools.Authorize]
-    public class TrackPointController : ApiController
+    public class TrackPointsController : BaseApiController
     {
         public struct UpdateConstants
         {
@@ -25,33 +24,22 @@ namespace FoundOps.Api.ApiControllers
             public static readonly int SecondsBetweenHistoricalTrackPoints = 30;
         }
 
-        private readonly CoreEntitiesContainer _coreEntitiesContainer;
-
-        public TrackPointController()
-        {
-            _coreEntitiesContainer = new CoreEntitiesContainer();
-            _coreEntitiesContainer.ContextOptions.LazyLoadingEnabled = false;
-        }
-
-        #region GET
-
-        // GET /api/trackpoint/GetTrackPoints?roleId={Guid}&date=Datetime
         /// <summary>
         /// Used to pull all TrackPoints that are assigned to a Route on a specific date
         /// </summary>
         /// <param name="roleId">Used to find the Business Account</param>
         /// <param name="routeId">The Id of the Route to pull Track Points for</param>
         /// <returns>A Queryable list of TrackPoints</returns>
-        [AcceptVerbs("GET", "POST")]
-        public IQueryable<TrackPoint> GetTrackPoints(Guid roleId, Guid routeId)
+        public IQueryable<TrackPoint> Get(Guid roleId, Guid routeId)
         {
+            var connectionString = AzureServerHelpers.StorageConnectionString;
             //Get the storage account from Azure
-            var storageAccount = CloudStorageAccount.Parse(AzureServerHelpers.StorageConnectionString);
+            var storageAccount = CloudStorageAccount.Parse(connectionString);
 
             //Setup the service context for the TrackPointsHistory tables
             var serviceContext = new TrackPointsHistoryContext(storageAccount.TableEndpoint.ToString(), storageAccount.Credentials);
 
-            var businessAccount = _coreEntitiesContainer.Owner(roleId).FirstOrDefault();
+            var businessAccount = CoreEntitiesContainer.Owner(roleId).FirstOrDefault();
             if (businessAccount == null)
                 throw Request.NotAuthorized();
 
@@ -70,135 +58,34 @@ namespace FoundOps.Api.ApiControllers
             return modelTrackPoints.OrderBy(tp => tp.CollectedTimeStamp).AsQueryable();
         }
 
-        //GET /api/trackpoint/GetResourcesWithLatestPoints?roleId={Guid}&date=Datetime
-        /// <summary>
-        /// Gets all resources for a BusinessAccount and their last recorded location on routes today
-        /// </summary>
-        /// <param name="roleId">Used to find the Business Account</param>
-        /// <returns>A list of Resource (employees or vehicles) with their latest tracked point</returns>
-        [AcceptVerbs("GET", "POST")]
-        public IQueryable<ResourceWithLastPoint> GetResourcesWithLatestPoints(Guid roleId)
-        {
-            var currentBusinessAccount = _coreEntitiesContainer.Owner(roleId).First();
-
-#if DEBUG
-            //Setup the design data
-            //Makes it seem like each resource being tracked on a Route is moving
-            SetupDesignDataForGetResourcesWithLatestPoints(currentBusinessAccount.Id);
-#endif
-
-            //TODO make a sql/dapper function for adjusting timezones to users?
-            var currentUserAccount = _coreEntitiesContainer.CurrentUserAccount().First();
-            var userToday = currentUserAccount.Now().Date;
-
-            var resourcesWithTrackPoints = _coreEntitiesContainer.GetResourcesWithLatestPoint(currentBusinessAccount.Id, userToday);
-
-            var modelResources = resourcesWithTrackPoints.Select(ResourceWithLastPoint.ConvertToModel);
-            return modelResources.AsQueryable();
-        }
-
-#if DEBUG
-
-        /// <summary>
-        /// Sets up the design data for GetResourcesWithLatestPoints. Makes it seem like the resource is actually moving
-        /// </summary>
-        /// <param name="currentBusinessAccountId">The business account to update the design data on.</param>
-        private void SetupDesignDataForGetResourcesWithLatestPoints(Guid currentBusinessAccountId)
-        {
-            var user = _coreEntitiesContainer.CurrentUserAccount().First();
-
-            var serviceDate = user.Now().Date;
-
-            var routes = _coreEntitiesContainer.Routes.Where(r => r.Date == serviceDate && r.OwnerBusinessAccountId == currentBusinessAccountId).OrderBy(r => r.Id);
-            var numberOfRoutes = routes.Count();
-
-            var count = 1;
-
-            var random = new Random();
-            foreach (var route in routes)
-            {
-                var routeNumber = count % numberOfRoutes;
-
-                #region Adjust Technician Location, Speed and Heading
-
-                foreach (var employee in route.Employees)
-                {
-                    employee.LastCompassDirection = (employee.LastCompassDirection + 15) % 360;
-                    employee.LastTimeStamp = user.Now();
-                    employee.LastSpeed = random.Next(30, 50);
-
-                    switch (routeNumber)
-                    {
-                        //This would be the 4th, 8th, etc
-                        case 0:
-                            employee.LastLatitude = employee.LastLatitude + .005;
-                            employee.LastLongitude = employee.LastLongitude + .007;
-                            break;
-                        //This would be the 1st, 5th, etc
-                        case 1:
-                            employee.LastLatitude = employee.LastLatitude - .005;
-                            employee.LastLongitude = employee.LastLongitude + .003;
-                            break;
-                        //This would be the 2nd, 6th, etc
-                        case 2:
-                            employee.LastLatitude = employee.LastLatitude + .002;
-                            employee.LastLongitude = employee.LastLongitude - .005;
-                            break;
-                        //This would be the 3rd, 7th, etc
-                        case 3:
-                            employee.LastLatitude = employee.LastLatitude - .006;
-                            employee.LastLongitude = employee.LastLongitude - .005;
-                            break;
-                    }
-
-                    employee.LastSource = random.Next(0, 1) == 0 ? "iPhone" : "Android";
-                }
-
-                #endregion
-
-                count++;
-            }
-
-            _coreEntitiesContainer.SaveChanges();
-        }
-
-#endif
-
-        #endregion
-
-        #region POST
-
         /// <summary>
         /// Stores employee trackpoints.
         /// Used by the mobile phone application.
         /// NOTE: TrackPoints CollectedTimeStamp should be in UTC.
         /// </summary>
+        /// <param name="roleId">Current roleId </param>
         /// <param name="trackPoints">The list of TrackPoints being passed from an Employee's device</param>
         /// <returns>An Http response to the device signaling that the TrackPoint was successfully created</returns>
-        [AcceptVerbs("POST")]
-        public HttpResponseMessage PostEmployeeTrackPoint(TrackPoint[] trackPoints)
+        public HttpResponseMessage Post(Guid roleId, TrackPoint[] trackPoints)
         {
             if (!trackPoints.Any() || !trackPoints.First().RouteId.HasValue)
                 return Request.CreateResponse(HttpStatusCode.BadRequest);
 
             var routeId = trackPoints.First().RouteId.Value;
 
-            var currentUserAccount = _coreEntitiesContainer.CurrentUserAccount().First();
-            var currentBusinessAccount =
-                _coreEntitiesContainer.Parties.OfType<BusinessAccount>().FirstOrDefault(
-                    ba =>
-                    ba.Routes.Any(r => r.Id == routeId && r.Employees.Any(e => e.LinkedUserAccountId == currentUserAccount.Id)));
+            var currentUserAccount = CoreEntitiesContainer.CurrentUserAccount().First();
+            var currentBusinessAccount = CoreEntitiesContainer.Owner(roleId).FirstOrDefault();
 
             //Return an Unauthorized Status Code if
             //a) there is no UserAccount
             //b) the user does not have access to the route (currentBusinessAccount == null)
             if (currentUserAccount == null || currentBusinessAccount == null)
-                return Request.CreateResponse(HttpStatusCode.Unauthorized);
+                throw Request.NotAuthorized();
 
-            var employee = _coreEntitiesContainer.Employees.FirstOrDefault(e => e.LinkedUserAccount.Id == currentUserAccount.Id
+            var employee = CoreEntitiesContainer.Employees.FirstOrDefault(e => e.LinkedUserAccount.Id == currentUserAccount.Id
                                                                                 && e.EmployerId == currentBusinessAccount.Id);
             if (employee == null)
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                throw Request.NotFound("Employee");
 
             //order the new track points by their TimeStamps
             var orderedModelTrackPoints = trackPoints.OrderBy(tp => tp.CollectedTimeStamp).ToArray();
@@ -235,7 +122,7 @@ namespace FoundOps.Api.ApiControllers
             employee.LastPushToAzureTimeStamp = lastPushToAzureTimeStamp;
 
             //Save all the changes that have been made in the Database
-            _coreEntitiesContainer.SaveChanges();
+            SaveWithRetry();
 
             //Create the Http response 
             var response = Request.CreateResponse(HttpStatusCode.Created, trackPoints);
@@ -266,7 +153,10 @@ namespace FoundOps.Api.ApiControllers
             {
                 tableClient.CreateTableIfNotExist(tableName);
             }
-            catch { }
+            catch (Exception)
+            {
+                throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, "Table was not created"));
+            }
 
             return tableName;
         }
@@ -308,6 +198,5 @@ namespace FoundOps.Api.ApiControllers
 
         #endregion
 
-        #endregion
     }
 }

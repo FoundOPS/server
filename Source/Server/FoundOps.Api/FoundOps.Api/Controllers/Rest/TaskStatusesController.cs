@@ -1,4 +1,5 @@
-﻿using FoundOps.Api.Tools;
+﻿using FoundOps.Api.Controllers.Rest;
+using FoundOps.Api.Tools;
 using FoundOps.Common.NET;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
@@ -10,9 +11,9 @@ using System.Net.Http;
 using System.Web.Http;
 using TaskStatus = FoundOps.Api.Models.TaskStatus;
 
-namespace FoundOps.Api.Api
+namespace FoundOps.Api.Controllers.Rest
 {
-    public class TaskStatusesController : ApiController
+    public class TaskStatusesController : BaseApiController
     {
         private readonly CoreEntitiesContainer _coreEntitiesContainer;
 
@@ -22,27 +23,9 @@ namespace FoundOps.Api.Api
             _coreEntitiesContainer.ContextOptions.LazyLoadingEnabled = false;
         }
 
-        //TODO replace below with this after mobile app is updated
-        //[AcceptVerbs("GET", "POST")]
-        //public IQueryable<TaskStatus> GetStatuses(Guid roleId)
-        //{
-        //TODO replace below with base controller's method
-        //    var currentBusinessAccount = _coreEntitiesContainer.Owner(roleId).Include(ba => ba.TaskStatuses).FirstOrDefault();
-        //    if (currentBusinessAccount == null)
-        //        ExceptionHelper.ThrowNotAuthorizedBusinessAccount();
-
-        //    var statuses = currentBusinessAccount.TaskStatuses.OrderBy(s => s.Name)
-        //        .Select(TaskStatus.ConvertModel).AsQueryable();
-
-        //    return statuses;
-        //}
-
-        [AcceptVerbs("GET", "POST")]
-        public IQueryable<TaskStatus> GetStatuses(Guid? roleId, Guid? businessAccountId)
+        public IQueryable<TaskStatus> GetStatuses(Guid roleId)
         {
-            var currentBusinessAccount = roleId != null && roleId.HasValue ? _coreEntitiesContainer.Owner(roleId.Value).Include(ba => ba.TaskStatuses).FirstOrDefault() :
-                _coreEntitiesContainer.BusinessAccount(businessAccountId.Value).Include(ba => ba.TaskStatuses).FirstOrDefault();
-
+            var currentBusinessAccount =  _coreEntitiesContainer.Owner(roleId).Include(ba => ba.TaskStatuses).FirstOrDefault();
             if (currentBusinessAccount == null)
                 throw Request.NotAuthorized();
 
@@ -51,7 +34,6 @@ namespace FoundOps.Api.Api
             return statuses;
         }
 
-        [AcceptVerbs("POST")]
         public HttpResponseMessage InsertTaskStatus(TaskStatus taskStatus, Guid roleId)
         {
             var status = TaskStatus.CreateFromModel(taskStatus);
@@ -75,7 +57,6 @@ namespace FoundOps.Api.Api
             return Request.CreateResponse(HttpStatusCode.Accepted);
         }
 
-        [AcceptVerbs("POST")]
         public HttpResponseMessage UpdateTaskStatus(TaskStatus taskStatus, Guid roleId)
         {
             var businessAccount = _coreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator }).Include(ba => ba.TaskStatuses).FirstOrDefault();

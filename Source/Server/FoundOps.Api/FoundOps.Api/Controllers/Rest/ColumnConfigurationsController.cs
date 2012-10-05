@@ -27,7 +27,7 @@ namespace FoundOps.Api.Controllers.Rest
             {
                 columnConfigurations = new List<ColumnConfiguration>();
                 userAccount.ColumnConfigurations = SerializationTools.Serialize(columnConfigurations);
-                CoreEntitiesContainer.SaveChanges();
+                SaveWithRetry();
             }
 
             return columnConfigurations.Where(c => c.RoleId == roleId);
@@ -58,7 +58,7 @@ namespace FoundOps.Api.Controllers.Rest
             configurations.AddRange(columnConfigurations);
 
             userAccount.ColumnConfigurations = SerializationTools.Serialize(configurations);
-            CoreEntitiesContainer.SaveChanges();
+            SaveWithRetry();
         }
     }
 }

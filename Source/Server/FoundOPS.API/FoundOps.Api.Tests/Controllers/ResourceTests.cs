@@ -268,9 +268,9 @@ namespace FoundOps.Api.Tests.Controllers
             //update a route task's status to one that remove's it from a route
             var routeTask = CoreEntitiesContainer.RouteTasks.First(rt => rt.RouteDestinationId.HasValue && rt.BusinessAccountId == _gotGreaseId);
             var unroutedStatus = CoreEntitiesContainer.TaskStatuses.First(ts => ts.BusinessAccountId == _gotGreaseId && ts.RemoveFromRoute);
+            routeTask.TaskStatus = unroutedStatus;
 
             var controller = TestTools.CreateRequest<RouteTasksController>(HttpMethod.Get);
-            routeTask.TaskStatus = unroutedStatus;
 
             var putResponse = controller.Put(RouteTask.ConvertModel(routeTask));
             //check it worked
@@ -281,19 +281,65 @@ namespace FoundOps.Api.Tests.Controllers
             var updatedRouteTask = CoreEntitiesContainer.RouteTasks.Where(rt => rt.Id == routeTask.Id).Include(rt => rt.RouteDestination).First();
             Assert.IsNull(updatedRouteTask.RouteDestinationId);
 
+            //update a route task's status to one that will not remove it from a route
             routeTask = CoreEntitiesContainer.RouteTasks.First(rt => rt.RouteDestinationId.HasValue && rt.BusinessAccountId == _gotGreaseId);
             var routedStatus = CoreEntitiesContainer.TaskStatuses.First(ts => ts.BusinessAccountId == _gotGreaseId && !ts.RemoveFromRoute);
+            routeTask.TaskStatus = routedStatus;
 
             putResponse = controller.Put(RouteTask.ConvertModel(routeTask));
             //check it worked
             Assert.AreEqual(HttpStatusCode.Accepted, putResponse.StatusCode);
 
-            //make sure the route task is no longer in a route
+            //make sure the route task is still in a route
             DetachAllEntities();
             updatedRouteTask = CoreEntitiesContainer.RouteTasks.Where(rt => rt.Id == routeTask.Id).Include(rt => rt.RouteDestination).First();
             Assert.IsNotNull(updatedRouteTask.RouteDestinationId);
 
             Debug.WriteLine("All RouteTasks Controller Tests Passed");
+        }
+
+        [TestMethod]
+        public void TrackPointsTests()
+        {
+            //CoreEntitiesServerManagement.ClearHistoricalTrackPoints();
+            //CoreEntitiesServerManagement.CreateHistoricalTrackPoints();
+
+            DetachAllEntities();
+            var controller = TestTools.CreateRequest<TrackPointsController>(HttpMethod.Get);
+            var date = DateTime.UtcNow.Date;
+            var routeId = CoreEntitiesContainer.Routes.First(r => r.Date == date).Id;
+
+            var getResponse = controller.Get(_roleId, routeId);
+
+            Assert.IsNotNull(getResponse.FirstOrDefault());
+
+            var trackPoints = new List<TrackPoint>();
+            var fakeRouteId = Guid.NewGuid();
+
+            //Create the test TrackPoints with random numbers as properties
+            for (int i = 0; i < 10; i++)
+            {
+                var random = new Random();
+
+                var trackPoint = new TrackPoint
+                {
+                    Id = Guid.NewGuid(),
+                    Heading = random.Next(0, 359),
+                    Latitude = random.Next(-90, 90),
+                    Longitude = random.Next(-180, 180),
+                    CollectedTimeStamp = DateTime.Now.AddSeconds(10 * i),
+                    Speed = random.Next(20, 60),
+                    RouteId = fakeRouteId,
+                    Source = "Testing",
+                    Accuracy = 1
+                };
+
+                trackPoints.Add(trackPoint);
+            }
+
+            var response = controller.Post(_roleId, trackPoints.ToArray());
+
+            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
         }
     }
 }

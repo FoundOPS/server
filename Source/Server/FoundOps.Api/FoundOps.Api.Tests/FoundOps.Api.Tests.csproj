@@ -55,7 +55,6 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Controllers\ResourceTests.cs" />
-    <Compile Include="Controllers\ServiceControllerTest.cs" />
     <Compile Include="Controllers\TrackPointControllerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
