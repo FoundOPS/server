@@ -1,40 +1,34 @@
 ﻿using FoundOps.Core.Models.CoreEntities;
-using System.Web.Http;
+using System.Web.Mvc;
 
-namespace FoundOps.Api.Controllers.Rest
+namespace FoundOps.Api.Controllers.Mvc
 {
 #if DEBUG
 
-    public class ToolsController : BaseApiController
+    public class ToolsController : Controller
     {
-        //GET /api/tools/CCDAPDD
         /// <summary>
         /// Clears and creates the database and populates design data.
         /// </summary>
-        [AcceptVerbs("GET", "POST")]
-        public bool CCDAPDD()
+        public bool Ccdapdd()
         {
             CoreEntitiesServerManagement.ClearCreateCoreEntitiesDatabaseAndPopulateDesignData();
             return true;
         }
 
-        //GET /api/tools/ClearHistoricalTrackPoints
         /// <summary>
         /// Deletes the HistoricalTrackPoints tables.
         /// Must do this seperately from Create, because deleting tables takes time.
         /// </summary>
-        [AcceptVerbs("GET", "POST")]
         public bool ClearHistoricalTrackPoints()
         {
             CoreEntitiesServerManagement.ClearHistoricalTrackPoints();
             return true;
         }
 
-        //GET /api/tools/CreateHistoricalTrackPoints
         /// <summary>
         /// Populates HistoricalTrackPoints design data on the Azure tables.
         /// </summary>
-        [AcceptVerbs("GET", "POST")]
         public bool CreateHistoricalTrackPoints()
         {
             CoreEntitiesServerManagement.CreateHistoricalTrackPoints();

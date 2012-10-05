@@ -235,13 +235,15 @@
     <Compile Include="Controllers\Rest\LocationsController.cs" />
     <Compile Include="Controllers\Rest\ErrorsController.cs" />
     <Compile Include="Controllers\Rest\RouteTasksController.cs" />
+    <Compile Include="Controllers\Rest\ServiceHoldersController.cs" />
+    <Compile Include="Controllers\Rest\ServiceTemplatesController.cs" />
     <Compile Include="Controllers\Rest\SessionsController.cs" />
     <Compile Include="Controllers\Rest\TaskStatusesController.cs" />
     <Compile Include="Controllers\Rest\UserAccountsController.cs" />
     <Compile Include="Controllers\Mvc\HelperController.cs" />
     <Compile Include="Controllers\Rest\SettingsController.cs" />
     <Compile Include="Controllers\Rest\ServiceController.cs" />
-    <Compile Include="Controllers\Rest\ToolsController.cs" />
+    <Compile Include="Controllers\Mvc\ToolsController.cs" />
     <Compile Include="Controllers\Rest\RoutesController.cs" />
     <Compile Include="Controllers\Rest\TrackPointController.cs" />
     <Compile Include="Controllers\Mvc\ServiceController.cs" />
@@ -260,7 +262,6 @@
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\RouteTask.cs" />
     <Compile Include="Models\LocationField.cs" />
-    <Compile Include="Models\Option.cs" />
     <Compile Include="Models\OptionsField.cs" />
     <Compile Include="Models\TaskStatus.cs" />
     <Compile Include="Models\TextBoxField.cs" />

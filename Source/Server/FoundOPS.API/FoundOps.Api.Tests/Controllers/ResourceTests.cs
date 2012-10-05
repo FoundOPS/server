@@ -1,7 +1,9 @@
-﻿using FoundOps.Api.Controllers.Rest;
+﻿using System.Collections.Generic;
+using FoundOps.Api.Controllers.Rest;
 using FoundOps.Api.Models;
 using System.Data;
 using System.Data.Entity;
+using FoundOps.Core.Models.CoreEntities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Diagnostics;
@@ -10,19 +12,49 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Hosting;
+using RouteTask = FoundOps.Api.Models.RouteTask;
 
 namespace FoundOps.Api.Tests.Controllers
 {
+    public static class TestTools
+    {
+        /// <summary>
+        /// Creates a controller of type TController with a request
+        /// </summary>
+        /// <typeparam name="TController">The type of controller</typeparam>
+        /// <param name="method">The type of request</param>
+        /// <param name="headers">Optional headers to add to the request </param>
+        public static TController CreateRequest<TController>(HttpMethod method, Dictionary<string, string> headers = null) where TController : BaseApiController
+        {
+            var request = new HttpRequestMessage(method, "http://localhost");
+
+            //Add headers to the request if they exist
+            if(headers != null)
+            {
+                foreach (var header in headers)
+                    request.Headers.Add(header.Key, header.Value);
+            }
+
+            //sometimes this is necessary to work http://stackoverflow.com/questions/11053598/how-to-mock-the-createresponset-extension-method-on-httprequestmessage
+            request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
+            
+            var controller = (TController)Activator.CreateInstance(typeof(TController));
+            controller.Request = request;
+
+            return controller;
+        }
+    }
+
     [TestClass]
     public class ResourceTests
     {
-        protected readonly Core.Models.CoreEntities.CoreEntitiesContainer CoreEntitiesContainer;
+        protected readonly CoreEntitiesContainer CoreEntitiesContainer;
         private readonly Guid _roleId;
         private readonly Guid _gotGreaseId = new Guid("8528E50D-E2B9-4779-9B29-759DBEA53B61");
 
         public ResourceTests()
         {
-            CoreEntitiesContainer = new Core.Models.CoreEntities.CoreEntitiesContainer();
+            CoreEntitiesContainer = new CoreEntitiesContainer();
             CoreEntitiesContainer.ContextOptions.LazyLoadingEnabled = false;
 
             //Admin role on GotGrease?
@@ -41,9 +73,7 @@ namespace FoundOps.Api.Tests.Controllers
         public void ErrorsTests()
         {
             DetachAllEntities();
-            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost");
-
-            var controller = new ErrorsController { Request = request };
+            var controller = TestTools.CreateRequest<ErrorsController>(HttpMethod.Get);
 
             var newError = new ErrorEntry
             {
@@ -66,8 +96,7 @@ namespace FoundOps.Api.Tests.Controllers
             var locationId = CoreEntitiesContainer.Locations.First(l => l.BusinessAccountId == _gotGreaseId).Id;
             var clientId = CoreEntitiesContainer.Clients.First(c => c.BusinessAccountId == _gotGreaseId).Id;
 
-            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost");
-            var controller = new LocationsController { Request = request };
+            var controller = TestTools.CreateRequest<LocationsController>(HttpMethod.Get);
 
             //Testing getting one location
             var getResponse = controller.Get(_roleId, locationId, null, false);
@@ -88,8 +117,7 @@ namespace FoundOps.Api.Tests.Controllers
         public void RoutesTests()
         {
             DetachAllEntities();
-            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost");
-            var controller = new RoutesController { Request = request };
+            var controller = TestTools.CreateRequest<RoutesController>(HttpMethod.Get);
 
             //Testing deep and assigned
             var getResponse = controller.Get(_roleId, DateTime.UtcNow.Date, true, true);
@@ -114,27 +142,122 @@ namespace FoundOps.Api.Tests.Controllers
         public void SessionsTests()
         {
             DetachAllEntities();
-            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost");
-            request.Headers.Add("ops-details", "true");
-            //this is necessary to work http://stackoverflow.com/questions/11053598/how-to-mock-the-createresponset-extension-method-on-httprequestmessage
-            request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
-
-            var controller = new SessionsController { Request = request };
+            var headers = new Dictionary<string, string> {{"ops-details", "true"}};
+            var controller = TestTools.CreateRequest<SessionsController>(HttpMethod.Get, headers);
 
             var getResponseWithHeader = controller.Get();
 
             Assert.AreEqual(HttpStatusCode.OK, getResponseWithHeader.StatusCode);
 
             //now test simple response
-            request.Headers.Remove("ops-details");
-
-            controller.Request = request;
+            controller = TestTools.CreateRequest<SessionsController>(HttpMethod.Get);
 
             var getResponseWithoutHeader = controller.Get();
 
             Assert.AreEqual(HttpStatusCode.Accepted, getResponseWithoutHeader.StatusCode);
 
             Debug.WriteLine("All Sessions Controller Tests Passed");
+        }
+
+        [TestMethod]
+        public void ServicesTests()
+        {
+            var service = CoreEntitiesContainer.Services.Include(s => s.ServiceTemplate).Include(s => s.ServiceTemplate.Fields).First();
+            var recurringService = CoreEntitiesContainer.RecurringServices.Include(rs => rs.Repeat).First();
+            var serviceDate = recurringService.Repeat.StartDate;
+            var serviceTemplate = CoreEntitiesContainer.ServiceTemplates.First(st => st.OwnerServiceProviderId != null);
+
+            //Tests getting a service from an Id
+            var controller = TestTools.CreateRequest<ServicesController>(HttpMethod.Get);
+            var getResponse = controller.Get(service.Id, null, null, null);
+            Assert.AreEqual(HttpStatusCode.OK, getResponse.StatusCode);
+
+            //Tests getting a service from a recurring service and a date
+            getResponse = controller.Get(null, serviceDate, recurringService.Id, null);
+            Assert.AreEqual(HttpStatusCode.OK, getResponse.StatusCode);
+
+            //Tests getting a service from a service template Id
+            getResponse = controller.Get(null, serviceDate, null, serviceTemplate.Id);
+            Assert.AreEqual(HttpStatusCode.OK, getResponse.StatusCode);
+
+            controller = TestTools.CreateRequest<ServicesController>(HttpMethod.Put);
+            //fake generate a service by setting an Id and clearing the recurring service id
+            var modelService = Models.Service.ConvertModel(service);
+            modelService.Id = Guid.NewGuid();
+            foreach (var field in modelService.Fields)
+                field.Id = Guid.NewGuid();
+
+            //Tests generating a service when one does not exist
+            var putResponse = controller.Put(modelService);
+            Assert.AreEqual(HttpStatusCode.Accepted, putResponse.StatusCode);
+
+            controller = TestTools.CreateRequest<ServicesController>(HttpMethod.Delete);
+            
+            //Tests deleting a service
+            var deleteResponse = controller.Delete(modelService);
+            Assert.AreEqual(HttpStatusCode.Accepted, deleteResponse.StatusCode);
+
+            //Tests updating an existing service
+            controller = TestTools.CreateRequest<ServicesController>(HttpMethod.Put);
+
+            modelService = Models.Service.ConvertModel(service);
+            modelService.Name = "I have changed";
+
+            putResponse = controller.Put(modelService);
+            Assert.AreEqual(HttpStatusCode.Accepted, putResponse.StatusCode);
+
+            Debug.WriteLine("All Services Controller Tests Passed");
+        }
+
+        [TestMethod]
+        public void ServiceHoldersTests()
+        {
+            var clientId = CoreEntitiesContainer.Clients.First().Id;
+            var recurringServiceId = CoreEntitiesContainer.RecurringServices.First().Id;
+
+            var controller = TestTools.CreateRequest<ServiceHoldersController>(HttpMethod.Get);
+
+            //Tests no service type and no context
+            var getResponse = controller.Get(_roleId, null, null, null, new DateTime(2012, 9, 1), new DateTime(2012, 10, 31));
+            Assert.IsNotNull(getResponse.FirstOrDefault());
+
+            //Tests service type with no context
+            getResponse = controller.Get(_roleId, "WVO Collection", null, null, new DateTime(2012, 9, 1), new DateTime(2012, 10, 31));
+            Assert.IsNotNull(getResponse.FirstOrDefault());
+
+            //Tests no service type with client context
+            getResponse = controller.Get(_roleId, null, clientId, null, new DateTime(2012, 9, 1), new DateTime(2012, 10, 31));
+            Assert.IsNotNull(getResponse.FirstOrDefault());
+
+            //Tests service type with client context
+            getResponse = controller.Get(_roleId, "WVO Collection", null, clientId, new DateTime(2012, 9, 1), new DateTime(2012, 10, 31));
+            Assert.IsNotNull(getResponse.FirstOrDefault());
+
+            //Tests no service type with recurring service context
+            getResponse = controller.Get(_roleId, null, null, recurringServiceId, new DateTime(2012, 9, 1), new DateTime(2012, 10, 31));
+            Assert.IsNotNull(getResponse.FirstOrDefault());
+
+            //Tests service type with recurring service context
+            getResponse = controller.Get(_roleId, "WVO Collection", null, recurringServiceId, new DateTime(2012, 9, 1), new DateTime(2012, 10, 31));
+            Assert.IsNotNull(getResponse.FirstOrDefault());
+
+            //Tests just returning the column headers
+            getResponse = controller.Get(_roleId, null, null, null, new DateTime(2012, 9, 1), new DateTime(2012, 10, 31), true);
+            Assert.IsNotNull(getResponse.FirstOrDefault());
+
+            Debug.WriteLine("All Service Holders Controller Tests Passed");
+        }
+
+        [TestMethod]
+        public void ServiceTemplatesTests()
+        {
+            var controller = TestTools.CreateRequest<ServiceTemplatesController>(HttpMethod.Get);
+
+            var getResponse = controller.Get(_roleId);
+
+            Assert.IsNotNull(getResponse.FirstOrDefault());
+
+            Debug.WriteLine("All Service Templates Controller Tests Passed");
         }
 
         [TestMethod]
@@ -146,8 +269,7 @@ namespace FoundOps.Api.Tests.Controllers
             var routeTask = CoreEntitiesContainer.RouteTasks.First(rt => rt.RouteDestinationId.HasValue && rt.BusinessAccountId == _gotGreaseId);
             var unroutedStatus = CoreEntitiesContainer.TaskStatuses.First(ts => ts.BusinessAccountId == _gotGreaseId && ts.RemoveFromRoute);
 
-            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost");
-            var controller = new RouteTasksController { Request = request };
+            var controller = TestTools.CreateRequest<RouteTasksController>(HttpMethod.Get);
             routeTask.TaskStatus = unroutedStatus;
 
             var putResponse = controller.Put(RouteTask.ConvertModel(routeTask));

@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace FoundOps.Api.Controllers.Mvc
 {
-    public class ServiceController : Controller
+    public class ServiceHoldersController : Controller
     {
         /// <summary>
         /// Get service holders with fields 
@@ -19,11 +19,11 @@ namespace FoundOps.Api.Controllers.Mvc
         /// <param name="serviceType">The service type to filter by</param>
         /// <param name="single">Only return the types</param>
         /// <returns>A queryable of dictionaries that resemble record type javascript objects when serialized</returns>
-        public ActionResult GetServicesHoldersWithFieldsCsv(Guid roleId, string serviceType, Guid? clientContext,
+        public ActionResult GetCsv(Guid roleId, string serviceType, Guid? clientContext,
             Guid? recurringServiceContext, DateTime startDate, DateTime endDate, bool single = false)
         {
-            var serviceController = new Rest.ServiceController();
-            var response = serviceController.GetServicesHoldersWithFields(roleId, serviceType, clientContext, recurringServiceContext, startDate, endDate);
+            var serviceHolderController = new Rest.ServiceHoldersController();
+            var response = serviceHolderController.Get(roleId, serviceType, clientContext, recurringServiceContext, startDate, endDate);
 
             var ignore = new[] { "ServiceId", "ClientId", "RecurringServiceId" };
 

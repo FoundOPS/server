@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace FoundOps.Api.Models
 {
-    public class ServiceType
+    public class ServiceTemplate
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
@@ -12,9 +10,9 @@ namespace FoundOps.Api.Models
         /// <summary>
         /// Converts from the FoundOPS model to the API model
         /// </summary>
-        public static ServiceType ConvertModel(FoundOps.Core.Models.CoreEntities.ServiceTemplate model)
+        public static ServiceTemplate ConvertModel(FoundOps.Core.Models.CoreEntities.ServiceTemplate model)
         {
-            var serviceType = new ServiceType
+            var serviceType = new ServiceTemplate
             {
                 Id = model.Id,
                 Name = model.Name

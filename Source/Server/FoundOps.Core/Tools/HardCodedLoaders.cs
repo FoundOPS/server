@@ -1,16 +1,25 @@
-﻿using System;
+﻿using FoundOps.Core.Models;
+using FoundOps.Core.Models.CoreEntities;
+using System;
 using System.Data;
 using System.Data.Entity;
 using System.Data.Objects;
 using System.Data.SqlClient;
 using System.Linq;
-using FoundOps.Core.Models;
-using FoundOps.Core.Models.CoreEntities;
 
 namespace FoundOps.Core.Tools
 {
     public static class HardCodedLoaders
     {
+        /// <summary>
+        /// Loads a service template
+        /// </summary>
+        /// <param name="container">The container to attach it to</param>
+        /// <param name="serviceTemplateId">Optional filter parameter</param>
+        /// <param name="clientId">Optional filter parameter</param>
+        /// <param name="serviceProviderId">Optional filter parameter</param>
+        /// <param name="levelInt">Optional filter parameter</param>
+        /// <returns>The applicable service templates</returns>
         public static ServiceTemplate[] LoadServiceTemplateWithDetails(CoreEntitiesContainer container, Guid? serviceTemplateId, Guid? clientId, Guid? serviceProviderId, int? levelInt)
         {
             using (var db = new DbContext(ServerConstants.SqlConnectionString))

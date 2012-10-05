@@ -20,7 +20,7 @@ namespace FoundOps.Api.Controllers.Rest
         {
             var routeTaskModel = CoreEntitiesContainer.RouteTasks.FirstOrDefault(rt => rt.Id == routeTask.Id);
             if (routeTaskModel == null)
-                return Request.NotFound();
+                throw Request.NotFound();
 
             //Check the user has access to the
             if (!CoreEntitiesContainer.BusinessAccount(routeTaskModel.BusinessAccountId).Any())
@@ -32,7 +32,7 @@ namespace FoundOps.Api.Controllers.Rest
             //find the status
             var taskStatus = CoreEntitiesContainer.TaskStatuses.FirstOrDefault(ts => ts.Id == routeTask.TaskStatusId);
             if (taskStatus == null)
-                return Request.NotFound("Status");
+                throw Request.NotFound("Status");
 
             //Remove the task from the route if the task status says to
             if (taskStatus.RemoveFromRoute && routeTaskModel.RouteDestinationId.HasValue)

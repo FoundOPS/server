@@ -26,9 +26,9 @@ namespace FoundOps.Api.Tools
         /// <param name="missingEntityName">The entity type that could not be found, ex: Status. 
         /// Defaults to Entity which should be assumed to be the current serviced entity
         /// </param>
-        public static HttpResponseMessage NotFound(this HttpRequestMessage request, string missingEntityName = "Entity")
+        public static HttpResponseException NotFound(this HttpRequestMessage request, string missingEntityName = "Entity")
         {
-            return request.CreateResponse(HttpStatusCode.NotFound, missingEntityName + " not found");
+            return new HttpResponseException(request.CreateResponse(HttpStatusCode.NotFound, missingEntityName + " not found"));
         }
 
         /// <summary>
