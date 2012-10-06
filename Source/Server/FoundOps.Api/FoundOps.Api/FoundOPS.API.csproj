@@ -230,20 +230,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\Rest\BaseApiController.cs" />
+    <Compile Include="Controllers\Rest\BusinessAccountsController.cs" />
     <Compile Include="Controllers\Rest\ClientsController.cs" />
     <Compile Include="Controllers\Rest\ColumnConfigurationsController.cs" />
+    <Compile Include="Controllers\Rest\EmployeesController.cs" />
     <Compile Include="Controllers\Rest\ResourceWithLastPointsController.cs" />
     <Compile Include="Controllers\Rest\LocationsController.cs" />
     <Compile Include="Controllers\Rest\ErrorsController.cs" />
     <Compile Include="Controllers\Rest\RouteTasksController.cs" />
     <Compile Include="Controllers\Rest\ServiceHoldersController.cs" />
+    <Compile Include="Controllers\Rest\ServicesController.cs" />
     <Compile Include="Controllers\Rest\ServiceTemplatesController.cs" />
     <Compile Include="Controllers\Rest\SessionsController.cs" />
     <Compile Include="Controllers\Rest\TaskStatusesController.cs" />
     <Compile Include="Controllers\Rest\UserAccountsController.cs" />
     <Compile Include="Controllers\Mvc\HelperController.cs" />
-    <Compile Include="Controllers\Rest\SettingsController.cs" />
-    <Compile Include="Controllers\Rest\ServiceController.cs" />
     <Compile Include="Controllers\Mvc\ToolsController.cs" />
     <Compile Include="Controllers\Rest\RoutesController.cs" />
     <Compile Include="Controllers\Rest\TrackPointsController.cs" />
@@ -252,13 +253,14 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\BusinessAccount.cs" />
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\ColumnConfiguration.cs" />
     <Compile Include="Models\ContactInfo.cs" />
-    <Compile Include="Models\BusinessSettings.cs" />
     <Compile Include="Models\Column.cs" />
     <Compile Include="Models\ErrorEntry.cs" />
     <Compile Include="Models\Option.cs" />
+    <Compile Include="Models\TimeZone.cs" />
     <Compile Include="Models\UserAccount.cs" />
     <Compile Include="Models\ServiceType.cs" />
     <Compile Include="Models\Employee.cs" />
@@ -280,6 +282,7 @@
     <Compile Include="Tools\ApiExceptions.cs" />
     <Compile Include="Tools\FormTools.cs" />
     <Compile Include="Tools\JsonpMediaTypeFormatter.cs" />
+    <Compile Include="Tools\PartyTools.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />

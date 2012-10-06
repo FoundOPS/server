@@ -1,57 +1,38 @@
-﻿using System;
+﻿using FoundOps.Core.Models.Azure;
+using FoundOps.Core.Models.CoreEntities;
+using Microsoft.WindowsAzure.StorageClient;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Web;
 using System.Web.Http;
-using FoundOps.Core.Models.Azure;
-using FoundOps.Core.Models.CoreEntities;
-using Microsoft.WindowsAzure.StorageClient;
 
 namespace FoundOps.Api.Tools
 {
-    public static class SettingsTools
+    public static class PartyTools
     {
-        private static readonly CoreEntitiesContainer CoreEntitiesContainer;
-
-        static SettingsTools()
-        {
-            CoreEntitiesContainer = new CoreEntitiesContainer();
-            CoreEntitiesContainer.ContextOptions.LazyLoadingEnabled = false;
-        }
-
         /// <summary>
-        /// Will return true if the email already exists.
+        /// Returns the US time zones
         /// </summary>
-        /// <param name="newEmail">The new email address</param>
-        /// <param name="oldEmail">If the oldEmail and newEmail match this will return no conflict.</param>
-        public static bool UserExistsConflict(string newEmail, string oldEmail)
+        /// <returns></returns>
+        public static IEnumerable<Models.TimeZone> GetTimeZones()
         {
-            return oldEmail != newEmail && UserExistsConflict(newEmail);
-        }
+            var allTimeZones = TimeZoneInfo.GetSystemTimeZones();
+            var usTimeZones = allTimeZones.Where(tz => tz.DisplayName.Contains("US") || tz.Id == "Hawaiian Standard Time" || tz.Id == "Alaskan Standard Time");
 
-        public static bool UserExistsConflict(string newEmail)
-        {
-            return CoreEntitiesContainer.Parties.OfType<FoundOps.Core.Models.CoreEntities.UserAccount>().Any(ua => ua.EmailAddress.Trim() == newEmail.Trim());
-        }
-
-        /// <summary>
-        /// The user exists response.
-        /// </summary>
-        public static HttpResponseMessage UserExistsResponse(HttpRequestMessage request)
-        {
-            return request.CreateResponse(HttpStatusCode.Conflict, "This email address already exists");
+            return usTimeZones.Select(Models.TimeZone.ConvertModel);
         }
 
         /// <summary>
         /// Updates a party's image.
         /// The Request should send a form with 6 inputs: imageData, imageFileName, x, y, w, h
         /// </summary>
+        /// <param name="coreEntitiesContainer">The entity container to user</param>
         /// <param name="partyToUpdate">The party to update</param>
         /// <returns>The image url, expiring in 1 hour</returns>
-        public static string UpdatePartyImageHelper(Party partyToUpdate, HttpRequestMessage request)
+        public static string UpdatePartyImageHelper(CoreEntitiesContainer coreEntitiesContainer, Party partyToUpdate, HttpRequestMessage request)
         {
             var formDataTask = request.ReadMultipartAsync(new[] { "imageFileName", "imageData" });
             formDataTask.Wait();
@@ -98,14 +79,14 @@ namespace FoundOps.Api.Tools
 
             try
             {
-                CoreEntitiesContainer.SaveChanges();
+                coreEntitiesContainer.SaveChanges();
             }
             catch (Exception)
             {
                 try
                 {
                     //try one more time
-                    CoreEntitiesContainer.SaveChanges();
+                    coreEntitiesContainer.SaveChanges();
                 }
                 catch (Exception)
                 {

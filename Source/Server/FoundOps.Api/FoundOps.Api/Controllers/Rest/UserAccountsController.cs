@@ -1,15 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Data.Entity;
-using System.Net;
-using System.Net.Http;
-using FoundOps.Api.Tools;
+﻿using FoundOps.Api.Tools;
 using FoundOps.Common.NET;
 using FoundOps.Core.Models.Azure;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
+using System.Collections.Generic;
+using System.Data.Entity;
+using System.Net;
+using System.Net.Http;
 using System;
 using System.Linq;
-using System.Web.Http;
 using UserAccount = FoundOps.Api.Models.UserAccount;
 
 namespace FoundOps.Api.Controllers.Rest
@@ -27,10 +26,10 @@ namespace FoundOps.Api.Controllers.Rest
         {
             return oldEmail != newEmail && UserExistsConflict(newEmail);
         }
-
+        
         private bool UserExistsConflict(string newEmail)
         {
-            return CoreEntitiesContainer.Parties.OfType<FoundOps.Core.Models.CoreEntities.UserAccount>().Any(ua => ua.EmailAddress.Trim() == newEmail.Trim());
+            return CoreEntitiesContainer.Parties.OfType<Core.Models.CoreEntities.UserAccount>().Any(ua => ua.EmailAddress.Trim() == newEmail.Trim());
         }
 
         /// <summary>
@@ -47,12 +46,12 @@ namespace FoundOps.Api.Controllers.Rest
         /// REQUIRES: Admin access to the role.
         /// </summary>
         /// <param name="roleId">The role</param>
-        /// <param name="getCurrentUserSettings">Set to true if you want the current users settings instead of all users </param>
+        /// <param name="currentUserOnly">Set to true if you want the current users settings instead of all users</param>
         /// <returns>UserAccounts with access to the role's business account</returns>
-        public IQueryable<UserAccount> Get(Guid roleId, bool getCurrentUserSettings = false)
+        public IQueryable<UserAccount> Get(Guid roleId, bool currentUserOnly = false)
         {
             //Contents of If statment are used for Personal Settings
-            if(getCurrentUserSettings)
+            if(currentUserOnly)
             {
                 var user = CoreEntitiesContainer.CurrentUserAccount().First();
                 user.PartyImageReference.Load();
@@ -75,7 +74,9 @@ namespace FoundOps.Api.Controllers.Rest
                     account.ImageUrl = imageUrl;
                 }
                 else
+                {
                     account.ImageUrl = "img/emptyPerson.png";
+                }
 
                 var currentUserAccounts = new List<UserAccount> {account};
                 return currentUserAccounts.AsQueryable();
@@ -91,8 +92,7 @@ namespace FoundOps.Api.Controllers.Rest
             if (!CoreEntitiesContainer.CanAdministerFoundOPS())
                 userAccounts = userAccounts.Where(ua => !ua.EmailAddress.Contains("foundops.com"));
 
-            var apiUserAccounts = userAccounts.OrderBy(ua => ua.LastName + " " + ua.FirstName)
-                .Select(UserAccount.Convert).ToList();
+            var apiUserAccounts = userAccounts.OrderBy(ua => ua.LastName + " " + ua.FirstName).Select(UserAccount.Convert).ToList();
 
             //find the employee id for each user account
             foreach (var ua in apiUserAccounts)
@@ -110,14 +110,10 @@ namespace FoundOps.Api.Controllers.Rest
         /// </summary>
         /// <param name="account">new user account to create</param>
         /// <param name="roleId">the role</param>
-        public HttpResponseMessage Post(UserAccount account, Guid? roleId)
+        public HttpResponseMessage Post(Guid roleId, UserAccount account)
         {
-            if (!roleId.HasValue)
-                return Request.CreateResponse(HttpStatusCode.NotAcceptable);
-
-            //User must be in an admin role to Create new Users
             //Check for admin abilities
-            var businessAccount = CoreEntitiesContainer.Owner(roleId.Value, new[] { RoleType.Administrator }).Include(ba => ba.OwnedRoles).FirstOrDefault();
+            var businessAccount = CoreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator }).Include(ba => ba.OwnedRoles).FirstOrDefault();
             if (businessAccount == null)
                 throw Request.NotAuthorized();
 
@@ -199,15 +195,9 @@ namespace FoundOps.Api.Controllers.Rest
         /// <param name="updateUserImage">Set to true if you would like to update the Users image</param>
         /// <param name="newPass">Users new password</param>
         /// <param name="oldPass">Users old password</param>
-        public HttpResponseMessage Put(Guid? roleId, UserAccount account, bool updateUserImage = false, string newPass = null, string oldPass = null)
+        public HttpResponseMessage Put(Guid roleId, UserAccount account, bool updateUserImage = false, string newPass = null, string oldPass = null)
         {
-            //if role has value, means that they are editing as a admin -> find business off that role
-            //only under that scenario will they be able to edit the role type
-            //Remove them from any roles they are in in the BA and set to the new role
-            if (!roleId.HasValue)
-                return Request.CreateResponse(HttpStatusCode.NotAcceptable);
-
-            var businessAccount = CoreEntitiesContainer.Owner(roleId.Value, new[] { RoleType.Administrator }).FirstOrDefault();
+            var businessAccount = CoreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator }).FirstOrDefault();
 
             if (businessAccount == null)
                 return Request.CreateResponse(HttpStatusCode.Unauthorized);
@@ -278,7 +268,7 @@ namespace FoundOps.Api.Controllers.Rest
                     user.PartyImage = partyImage;
                 }
 
-                value = SettingsTools.UpdatePartyImageHelper(user, Request);
+                value = PartyTools.UpdatePartyImageHelper(user, Request);
             }
             //Will only be set to false if there is a problem changing the users password
             var changeSuccessful = true;
@@ -296,17 +286,14 @@ namespace FoundOps.Api.Controllers.Rest
         /// </summary>
         /// <param name="roleId">The role</param>
         /// <param name="accountId">The Id of the account to be deleted</param>
-        public HttpResponseMessage Delete(Guid? roleId, Guid accountId)
+        public HttpResponseMessage Delete(Guid roleId, Guid accountId)
         {
-            if (!roleId.HasValue)
-                throw Request.NotAuthorized();
-
             //If they are not an admin, they do not have the ability to insert new Users
-            var businessAccount = CoreEntitiesContainer.Owner(roleId.Value, new[] { RoleType.Administrator }).FirstOrDefault();
+            var businessAccount = CoreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator }).FirstOrDefault();
             if (businessAccount == null)
                 throw Request.NotAuthorized();
 
-            var user = CoreEntitiesContainer.Parties.OfType<FoundOps.Core.Models.CoreEntities.UserAccount>().First(ua => ua.Id == accountId);
+            var user = CoreEntitiesContainer.Parties.OfType<Core.Models.CoreEntities.UserAccount>().First(ua => ua.Id == accountId);
 
             //Remove employees from the user account
             foreach (var employee in user.LinkedEmployees)
@@ -320,7 +307,7 @@ namespace FoundOps.Api.Controllers.Rest
         #region Helper Methods
 
         //This will link the employee to the user account. If there is no employee, it will create a new one
-        private void LinkEmployeeToUser(UserAccount account, FoundOps.Core.Models.CoreEntities.UserAccount user, BusinessAccount businessAccount)
+        private void LinkEmployeeToUser(UserAccount account, Core.Models.CoreEntities.UserAccount user, BusinessAccount businessAccount)
         {
             var employee = CoreEntitiesContainer.Employees.FirstOrDefault(e => e.Id == account.EmployeeId);
 
@@ -328,7 +315,7 @@ namespace FoundOps.Api.Controllers.Rest
                 user.LinkedEmployees.Add(employee);
             else
             {
-                employee = new FoundOps.Core.Models.CoreEntities.Employee
+                employee = new Employee
                 {
                     Id = Guid.NewGuid(),
                     FirstName = account.EmailAddress,

@@ -55,7 +55,7 @@ namespace FoundOps.Api.Controllers.Rest
                     businessAccount.PartyImage = partyImage;
                 }
 
-                value = SettingsTools.UpdatePartyImageHelper(businessAccount, Request);
+                value = PartyTools.UpdatePartyImageHelper(businessAccount, Request);
             }
 
             SaveWithRetry();

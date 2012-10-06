@@ -1,12 +1,10 @@
-﻿using FoundOps.Api.ApiControllers;
-using FoundOps.Api.Controllers.Rest;
+﻿using FoundOps.Api.Controllers.Rest;
 using FoundOps.Api.Models;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
 
 namespace FoundOps.Api.Tests.Controllers
@@ -53,7 +51,7 @@ namespace FoundOps.Api.Tests.Controllers
         {
             var coreEntitiesContainer = new CoreEntitiesContainer();
 
-            var currentUser = AuthenticationLogic.CurrentUserAccount(coreEntitiesContainer);
+            var currentUser = coreEntitiesContainer.CurrentUserAccount();
 
             var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost");
             //var controller = new TrackPointController { Request = request };

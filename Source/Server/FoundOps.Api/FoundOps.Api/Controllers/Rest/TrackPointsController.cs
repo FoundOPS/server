@@ -1,10 +1,9 @@
 using FoundOps.Api.Models;
 using FoundOps.Api.Tools;
+using FoundOps.Core.Models.Azure;
+using FoundOps.Core.Tools;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
-using FoundOps.Core.Models.Azure;
-using FoundOps.Core.Models.CoreEntities;
-using FoundOps.Core.Tools;
 using System;
 using System.Linq;
 using System.Net;
@@ -141,7 +140,7 @@ namespace FoundOps.Api.Controllers.Rest
         /// <param name="storageAccount">The storage account.</param>
         /// <param name="businessAccount">The business account.</param>
         /// <returns></returns>
-        private string CheckCreateTrackPointTable(CloudStorageAccount storageAccount, BusinessAccount businessAccount)
+        private string CheckCreateTrackPointTable(CloudStorageAccount storageAccount, Core.Models.CoreEntities.BusinessAccount businessAccount)
         {
             //Create the Tables Client -> Used to Check if the table exists and to create it if it doesnt already exist
             var tableClient = storageAccount.CreateCloudTableClient();
@@ -168,7 +167,7 @@ namespace FoundOps.Api.Controllers.Rest
         /// <param name="trackPoint">The Model TrackPoint to be pushed to AzureTables</param>
         /// <param name="employee">The employee</param>
         /// <param name="routeId">The Id of the Route that the vehicle or employee are currently on</param>
-        private void PushTrackPointToAzure(BusinessAccount currentBusinessAccount, TrackPoint trackPoint, FoundOps.Core.Models.CoreEntities.Employee employee, Guid routeId)
+        private void PushTrackPointToAzure(Core.Models.CoreEntities.BusinessAccount currentBusinessAccount, TrackPoint trackPoint, Core.Models.CoreEntities.Employee employee, Guid routeId)
         {
             //Get the storage account information from Azure
             var storageAccount = CloudStorageAccount.Parse(AzureServerHelpers.StorageConnectionString);

@@ -17,6 +17,11 @@ namespace FoundOps.Api.Models
         public Guid? EmployeeId { get; set; }
 
         /// <summary>
+        /// The time zone information
+        /// </summary>
+        public TimeZoneInfo TimeZoneInfo { get; set; }
+
+        /// <summary>
         /// Administrator, Mobile, Regular
         /// </summary>
         public string Role { get; set; }
