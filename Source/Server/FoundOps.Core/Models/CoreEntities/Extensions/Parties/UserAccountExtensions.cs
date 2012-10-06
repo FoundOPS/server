@@ -3,7 +3,9 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Web.Security;
 
+// ReSharper disable CheckNamespace
 namespace FoundOps.Core.Models.CoreEntities
+// ReSharper restore CheckNamespace
 {
     public partial class UserAccount
     {
@@ -44,6 +46,18 @@ namespace FoundOps.Core.Models.CoreEntities
         [DataMember]
         public string TemporaryPassword { get; set; }
 
+        /// <summary>
+        /// Get the system's TimeZoneInfo for the current users TimeZone
+        /// </summary>
+        public TimeZoneInfo TimeZoneInfo
+        {
+            get
+            {
+                var timeZone = string.IsNullOrEmpty(TimeZone) ? "Eastern Standard Time" : TimeZone;
+                return TimeZoneInfo.FindSystemTimeZoneById(timeZone);
+            }
+        }
+
         private TimeSpan _userTimeZoneOffset;
         /// <summary>
         /// The user's timezone offset (depends on their TimeZone settings)
@@ -55,15 +69,8 @@ namespace FoundOps.Core.Models.CoreEntities
             get
             {
 #if !SILVERLIGHT
-                if (TimeZone == null)
-                {
-                    _userTimeZoneOffset = new TimeSpan(0, 0, 0, 0);
-                }
-                else
-                {
-                    var tst = TimeZoneInfo.FindSystemTimeZoneById(TimeZone);
-                    _userTimeZoneOffset = tst.GetUtcOffset(DateTime.UtcNow);
-                }
+                //get the timezone offset (pass UtcNow so it considers daylight savings)
+                _userTimeZoneOffset = TimeZoneInfo.GetUtcOffset(DateTime.UtcNow);
 #endif
                 return _userTimeZoneOffset;
             }

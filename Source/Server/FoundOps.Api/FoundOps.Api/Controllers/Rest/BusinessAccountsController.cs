@@ -1,14 +1,11 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using FoundOps.Api.Tools;
+﻿using FoundOps.Api.Tools;
 using FoundOps.Core.Models.Azure;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
-using Microsoft.WindowsAzure.StorageClient;
+using System;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
 using BusinessAccount = FoundOps.Api.Models.BusinessAccount;
 
 namespace FoundOps.Api.Controllers.Rest
@@ -55,7 +52,7 @@ namespace FoundOps.Api.Controllers.Rest
                     businessAccount.PartyImage = partyImage;
                 }
 
-                value = PartyTools.UpdatePartyImageHelper(businessAccount, Request);
+                value = PartyTools.UpdatePartyImageHelper(CoreEntitiesContainer, businessAccount, Request);
             }
 
             SaveWithRetry();

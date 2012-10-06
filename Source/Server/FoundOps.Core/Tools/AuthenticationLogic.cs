@@ -74,7 +74,7 @@ namespace FoundOps.Core.Tools
 
         /// <summary>
         /// Gets the roles the current user has access to
-        /// NOTE: Role includes MemberParties, and OwnerParty
+        /// NOTE: Role includes MemberParties, and OwnerBusinessAccount
         /// </summary>
         /// <param name="coreEntitiesContainer">The core entities container.</param>
         /// <param name="allowedRoleTypes">Return null if the user does not have access to one of these role types.</param>

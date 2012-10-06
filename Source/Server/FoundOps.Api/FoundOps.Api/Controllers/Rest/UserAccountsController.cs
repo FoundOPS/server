@@ -1,6 +1,5 @@
 ﻿using FoundOps.Api.Tools;
 using FoundOps.Common.NET;
-using FoundOps.Core.Models.Azure;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
 using System.Collections.Generic;
@@ -26,7 +25,7 @@ namespace FoundOps.Api.Controllers.Rest
         {
             return oldEmail != newEmail && UserExistsConflict(newEmail);
         }
-        
+
         private bool UserExistsConflict(string newEmail)
         {
             return CoreEntitiesContainer.Parties.OfType<Core.Models.CoreEntities.UserAccount>().Any(ua => ua.EmailAddress.Trim() == newEmail.Trim());
@@ -43,63 +42,61 @@ namespace FoundOps.Api.Controllers.Rest
         #endregion
 
         /// <summary>
-        /// REQUIRES: Admin access to the role.
+        /// onlyCurrentUser
+        /// False (default):
+        /// REQUIRES admin access to the role.
+        /// Returns the role's UserAccounts their EmployeeId  
+        /// True: 
+        /// Returns the current user account with it's image, (no EmployeeId)
         /// </summary>
         /// <param name="roleId">The role</param>
-        /// <param name="currentUserOnly">Set to true if you want the current users settings instead of all users</param>
-        /// <returns>UserAccounts with access to the role's business account</returns>
-        public IQueryable<UserAccount> Get(Guid roleId, bool currentUserOnly = false)
+        /// <param name="onlyCurrentUser">Defaults to false</param>
+        /// <returns>UserAccounts with access to the role role</returns>
+        public IQueryable<UserAccount> Get(Guid roleId, bool onlyCurrentUser = false)
         {
-            //Contents of If statment are used for Personal Settings
-            if(currentUserOnly)
+            IEnumerable<Core.Models.CoreEntities.UserAccount> userAccounts;
+
+            //for use below to find the employees
+            BusinessAccount businessAccount = null;
+            if (!onlyCurrentUser)
             {
-                var user = CoreEntitiesContainer.CurrentUserAccount().First();
-                user.PartyImageReference.Load();
+                businessAccount = CoreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator })
+                    //need to include employee's for the Id
+                    .Include(ba => ba.Employees).FirstOrDefault();
 
-                //var timezone = GetTimeZones().FirstOrDefault(tz => tz.TimeZoneId == user.TimeZone);
+                if (businessAccount == null)
+                    throw Request.NotAuthorized();
 
-                var account = new UserAccount
-                {
-                    Id = user.Id,
-                    FirstName = user.FirstName,
-                    LastName = user.LastName,
-                    EmailAddress = user.EmailAddress.Trim()
-                    //TimeZoneInfo = timezone
-                };
+                userAccounts = businessAccount.OwnedRoles.SelectMany(r => r.MemberParties).OfType<Core.Models.CoreEntities.UserAccount>();
 
-                //Load image url
-                if (user.PartyImage != null)
-                {
-                    var imageUrl = user.PartyImage.RawUrl + AzureServerHelpers.GetBlobUrlHelper(user.Id, user.PartyImage.Id);
-                    account.ImageUrl = imageUrl;
-                }
-                else
-                {
-                    account.ImageUrl = "img/emptyPerson.png";
-                }
-
-                var currentUserAccounts = new List<UserAccount> {account};
-                return currentUserAccounts.AsQueryable();
+                //if the user is not a foundops user, do not return FoundOPS accounts
+                if (!CoreEntitiesContainer.CanAdministerFoundOPS())
+                    userAccounts = userAccounts.Where(ua => !ua.EmailAddress.Contains("foundops.com"));
+            }
+            else
+            {
+                userAccounts = CoreEntitiesContainer.CurrentUserAccount();
             }
 
-            //Begin code to get all users for a business account
-            //Used in User Settings
-            var business = GetBusinessAccount(roleId, new[] { RoleType.Administrator }, new[] { "Employees", "OwnedRoles", "MemberParties" });
+            var enumerated = userAccounts.OrderBy(ua => ua.LastName + " " + ua.FirstName).ToList();
 
-            var userAccounts = business.OwnedRoles.SelectMany(r => r.MemberParties).OfType<Core.Models.CoreEntities.UserAccount>();
-
-            //if the user is not a foundops user, do not return FoundOPS accounts
-            if (!CoreEntitiesContainer.CanAdministerFoundOPS())
-                userAccounts = userAccounts.Where(ua => !ua.EmailAddress.Contains("foundops.com"));
-
-            var apiUserAccounts = userAccounts.OrderBy(ua => ua.LastName + " " + ua.FirstName).Select(UserAccount.Convert).ToList();
-
-            //find the employee id for each user account
-            foreach (var ua in apiUserAccounts)
+            if (onlyCurrentUser)
             {
-                var employee = business.Employees.FirstOrDefault(e => e.LinkedUserAccountId == ua.Id);
-                if (employee != null)
-                    ua.EmployeeId = employee.Id;
+                //load the party image so it gets included in the convert below
+                enumerated.First().PartyImageReference.Load();
+            }
+
+            var apiUserAccounts = enumerated.Select(UserAccount.Convert).ToList();
+
+            //find and set the employee id for each user account
+            if (!onlyCurrentUser)
+            {
+                foreach (var userAccount in apiUserAccounts)
+                {
+                    var employee = businessAccount.Employees.FirstOrDefault(e => e.LinkedUserAccountId == userAccount.Id);
+                    if (employee != null)
+                        userAccount.EmployeeId = employee.Id;
+                }
             }
 
             return apiUserAccounts.AsQueryable();
@@ -154,7 +151,7 @@ namespace FoundOps.Api.Controllers.Rest
             }
             else if (account.FirstName == "Create")
             {
-                var newEmployee = new FoundOps.Core.Models.CoreEntities.Employee
+                var newEmployee = new Employee
                 {
                     Id = Guid.NewGuid(),
                     FirstName = account.FirstName,
@@ -197,6 +194,8 @@ namespace FoundOps.Api.Controllers.Rest
         /// <param name="oldPass">Users old password</param>
         public HttpResponseMessage Put(Guid roleId, UserAccount account, bool updateUserImage = false, string newPass = null, string oldPass = null)
         {
+            //TODO if onlyCurrentUser no worries
+
             var businessAccount = CoreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator }).FirstOrDefault();
 
             if (businessAccount == null)
@@ -214,7 +213,7 @@ namespace FoundOps.Api.Controllers.Rest
             //user.TimeZone = account.TimeZoneInfo.TimeZoneId;
 
             //Get the users current role for this business account
-            var userRole = CoreEntitiesContainer.Roles.FirstOrDefault(r => r.OwnerBusinessAccountId == businessAccount.Id 
+            var userRole = CoreEntitiesContainer.Roles.FirstOrDefault(r => r.OwnerBusinessAccountId == businessAccount.Id
                 && r.MemberParties.Any(p => p.Id == user.Id));
 
             //If a new role has been selected for the user, remove all old ones and assign the new one
@@ -249,7 +248,7 @@ namespace FoundOps.Api.Controllers.Rest
                 user.LinkedEmployees.Remove(employee);
             }
             //Changing a user from no employee to an employee
-            else if (employee == null &&  account.EmployeeId != Guid.Empty)
+            else if (employee == null && account.EmployeeId != Guid.Empty)
             {
                 LinkEmployeeToUser(account, user, businessAccount);
             }
@@ -264,11 +263,11 @@ namespace FoundOps.Api.Controllers.Rest
                 user.PartyImageReference.Load();
                 if (user.PartyImage == null)
                 {
-                    var partyImage = new PartyImage {OwnerParty = user};
+                    var partyImage = new PartyImage { OwnerParty = user };
                     user.PartyImage = partyImage;
                 }
 
-                value = PartyTools.UpdatePartyImageHelper(user, Request);
+                value = PartyTools.UpdatePartyImageHelper(CoreEntitiesContainer, user, Request);
             }
             //Will only be set to false if there is a problem changing the users password
             var changeSuccessful = true;
