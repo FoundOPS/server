@@ -51,11 +51,15 @@ namespace FoundOps.Api.Controllers.Rest
                 businessAccountId = recurringService.Client.BusinessAccountId.Value;
             }
             //generate it from the service provider service template
-            else
+            else if(serviceTemplateId.HasValue)
             {
                 serviceTemplateIdToLoad = serviceTemplateId.Value;
                 var template = CoreEntitiesContainer.ServiceTemplates.First(s => s.Id == serviceTemplateId.Value);
                 businessAccountId = template.OwnerServiceProviderId.Value;
+            }
+            else
+            {
+                throw ApiExceptions.Create(Request.CreateResponse(HttpStatusCode.BadRequest));
             }
 
             //check the current user has access to the business account

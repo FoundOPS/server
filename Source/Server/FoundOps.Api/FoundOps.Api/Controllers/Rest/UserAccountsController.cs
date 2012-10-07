@@ -22,25 +22,26 @@ namespace FoundOps.Api.Controllers.Rest
         }
 
         /// <summary>
-        /// onlyCurrentUser
-        /// False (default):
-        /// REQUIRES admin access to the role.
-        /// Returns the role's UserAccounts their EmployeeId  
-        /// True: 
-        /// Returns the current user account with it's image, (no EmployeeId)
+        /// If a role id is passed:
+        /// REQUIRES admin access to the role
+        /// Return the role's UserAccounts their EmployeeIds 
+        /// 
+        /// If the role id is null:
+        /// Return the current user account with it's image url (no EmployeeId)
         /// </summary>
         /// <param name="roleId">The role</param>
-        /// <param name="onlyCurrentUser">Defaults to false</param>
         /// <returns>UserAccounts with access to the role role</returns>
-        public IQueryable<UserAccount> Get(Guid roleId, bool onlyCurrentUser = false)
+        public IQueryable<UserAccount> Get(Guid? roleId)
         {
+            var onlyCurrentUser = !roleId.HasValue;
+
             IEnumerable<Core.Models.CoreEntities.UserAccount> userAccounts;
 
             //for use below to find the employees
             BusinessAccount businessAccount = null;
             if (!onlyCurrentUser)
             {
-                businessAccount = CoreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator }).Include(ba => ba.OwnedRoles).Include("OwnedRoles.MemberParties")
+                businessAccount = CoreEntitiesContainer.Owner(roleId.Value, new[] { RoleType.Administrator }).Include(ba => ba.OwnedRoles).Include("OwnedRoles.MemberParties")
                     //need to include employee's for the Id
                     .Include(ba => ba.Employees).FirstOrDefault();
 
@@ -231,8 +232,6 @@ namespace FoundOps.Api.Controllers.Rest
                 {
                     LinkEmployeeToUser(userAccount, user, businessAccount);
                 }
-
-
             }
             //changing properties on behalf of the current user
             else
