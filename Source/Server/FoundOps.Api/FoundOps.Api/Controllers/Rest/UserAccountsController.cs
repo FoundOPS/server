@@ -69,7 +69,7 @@ namespace FoundOps.Api.Controllers.Rest
 
             var apiUserAccounts = enumerated.Select(UserAccount.Convert).ToList();
 
-            //find and set the employee id for each user account
+            //find and set the employee id and role for each user account
             if (!onlyCurrentUser)
             {
                 foreach (var userAccount in apiUserAccounts)
@@ -77,6 +77,9 @@ namespace FoundOps.Api.Controllers.Rest
                     var employee = businessAccount.Employees.FirstOrDefault(e => e.LinkedUserAccountId == userAccount.Id);
                     if (employee != null)
                         userAccount.EmployeeId = employee.Id;
+
+                    var role = businessAccount.OwnedRoles.First(r => r.MemberParties.Any(mp => mp.Id == userAccount.Id));
+                    userAccount.Role = role.Name;
                 }
             }
 
@@ -264,28 +267,32 @@ namespace FoundOps.Api.Controllers.Rest
         }
 
         /// <summary>
-        /// Deletes a User account
+        /// Remove a user account from a role. It will delete the user account if it is not part of any other roles
+        /// REQUIRES: Admin access to role
         /// </summary>
         /// <param name="roleId">The role</param>
-        /// <param name="accountId">The Id of the account to be deleted</param>
-        public HttpResponseMessage Delete(Guid roleId, Guid accountId)
+        /// <param name="id">The userAccount's Id</param>
+        public void Delete(Guid roleId, Guid id)
         {
-            //TODO
-
-            //If they are not an admin, they do not have the ability to insert new Users
             var businessAccount = CoreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator }).FirstOrDefault();
             if (businessAccount == null)
                 throw Request.NotAuthorized();
 
-            var user = CoreEntitiesContainer.Parties.OfType<Core.Models.CoreEntities.UserAccount>().First(ua => ua.Id == accountId);
+            var userAccount = CoreEntitiesContainer.Parties.OfType<Core.Models.CoreEntities.UserAccount>()
+                .Include(ua => ua.LinkedEmployees).Include(ua => ua.RoleMembership)
+                .First(ua => ua.Id == id);
 
-            //Remove employees from the user account
-            foreach (var employee in user.LinkedEmployees)
-                user.LinkedEmployees.Remove(employee);
+            //clear the user from the business's roles and employees
+            foreach (var role in userAccount.RoleMembership.Where(r => r.OwnerBusinessAccountId == businessAccount.Id).ToArray())
+                role.MemberParties.Remove(userAccount);
+            foreach(var employee in userAccount.LinkedEmployees.Where(e=>e.EmployerId == businessAccount.Id).ToArray())
+                employee.LinkedUserAccountId = null;
 
-            CoreEntitiesContainer.DeleteUserAccountBasedOnId(accountId);
+            SaveWithRetry();
 
-            return Request.CreateResponse(HttpStatusCode.Accepted);
+            //delete the account if the user is not part of other roles
+            if (!userAccount.RoleMembership.Any())
+                CoreEntitiesContainer.DeleteUserAccountBasedOnId(id);
         }
 
         #region Helper Methods
