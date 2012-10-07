@@ -1,13 +1,21 @@
-﻿using System;
+﻿using FoundOps.Core.Tools;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using FoundOps.Core.Tools;
 
 namespace FoundOps.Api.Tools
 {
     public static class ApiExceptions
     {
+        /// <summary>
+        /// Create an exception from a HttpResponseMessage
+        /// </summary>
+        /// <param name="message">The message</param>
+        public static HttpResponseException Create(HttpResponseMessage message)
+        {
+            return new HttpResponseException(message);
+        }
+
         #region Common Exceptions
 
         /// <summary>
@@ -16,7 +24,7 @@ namespace FoundOps.Api.Tools
         /// <param name="request">The request to respond to</param>
         public static HttpResponseException NotAuthorized(this HttpRequestMessage request)
         {
-            return new HttpResponseException(request.CreateResponse(HttpStatusCode.Forbidden, "Not authorized"));
+            return Create(request.CreateResponse(HttpStatusCode.Forbidden, "Not authorized"));
         }
 
         /// <summary>
@@ -28,7 +36,7 @@ namespace FoundOps.Api.Tools
         /// </param>
         public static HttpResponseException NotFound(this HttpRequestMessage request, string missingEntityName = "Entity")
         {
-            return new HttpResponseException(request.CreateResponse(HttpStatusCode.NotFound, missingEntityName + " not found"));
+            return Create(request.CreateResponse(HttpStatusCode.NotFound, missingEntityName + " not found"));
         }
 
         /// <summary>
@@ -36,7 +44,7 @@ namespace FoundOps.Api.Tools
         /// </summary>
         public static HttpResponseException NotSaving(this HttpRequestMessage request)
         {
-            return new HttpResponseException(request.CreateResponse(HttpStatusCode.Forbidden, "Error saving"));
+            return Create(request.CreateResponse(HttpStatusCode.Forbidden, "Error saving"));
         } 
 
         #endregion
@@ -49,7 +57,7 @@ namespace FoundOps.Api.Tools
         public static void CheckAuthentication(this HttpRequestMessage request)
         {
             if (string.IsNullOrEmpty(AuthenticationLogic.CurrentUsersEmail()))
-                throw new HttpResponseException(request.CreateResponse(HttpStatusCode.Forbidden, "Not authenticated"));
+                throw Create(request.CreateResponse(HttpStatusCode.Forbidden, "Not authenticated"));
         }
     }
 }
