@@ -285,14 +285,16 @@ namespace FoundOps.Api.Controllers.Rest
             foreach (var oldEmployee in userAccount.LinkedEmployees.Where(e => e.EmployerId == businessAccount.Id).ToArray())
                 oldEmployee.LinkedUserAccountId = null;
 
+            if (!employeeId.HasValue || employeeId.Value == Guid.Empty)
+                //do not link the employee
+                return;
+
+            //the id set when an employee is supposed to be created
+            var newEntityId = new Guid("10000000-0000-0000-0000-000000000000");
+
             Employee employee;
-            //find the existing employee
-            if (employeeId.HasValue && employeeId != Guid.Empty)
-            {
-                employee = CoreEntitiesContainer.Employees.First(e => e.Id == employeeId.Value);
-            }
             //add a new employee
-            else
+            if (employeeId.Value == newEntityId)
             {
                 employee = new Employee
                 {
@@ -300,6 +302,11 @@ namespace FoundOps.Api.Controllers.Rest
                     LastName = userAccount.LastName,
                     EmployerId = businessAccount.Id
                 };
+            }
+            //find the existing employee
+            else
+            {
+                employee = CoreEntitiesContainer.Employees.First(e => e.Id == employeeId.Value);
             }
 
             employee.LinkedUserAccount = userAccount;
