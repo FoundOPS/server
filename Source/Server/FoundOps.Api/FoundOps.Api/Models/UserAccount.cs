@@ -40,7 +40,7 @@ namespace FoundOps.Api.Models
                 LastName = model.LastName,
                 TimeZone = TimeZone.ConvertModel(model.TimeZoneInfo)
             };
-
+            
             //Load image url
             if (model.PartyImage == null)
                 userAccount.ImageUrl = "img/emptyPerson.png";

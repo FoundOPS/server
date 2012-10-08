@@ -1,12 +1,12 @@
 ﻿using FoundOps.Api.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System;
-using System.Linq;
 using System.Web.Http;
 using UserAccount = FoundOps.Api.Models.UserAccount;
 
@@ -24,7 +24,7 @@ namespace FoundOps.Api.Controllers.Rest
         /// <summary>
         /// If a role id is passed:
         /// REQUIRES admin access to the role
-        /// Return the role's UserAccounts their EmployeeIds 
+        /// Return the role's (business's) UserAccounts with EmployeeId. TODO image url when it is used somewhere
         /// 
         /// If the role id is null:
         /// Return the current user account with it's image url (no EmployeeId)
@@ -75,8 +75,11 @@ namespace FoundOps.Api.Controllers.Rest
                 foreach (var userAccount in apiUserAccounts)
                 {
                     var employee = businessAccount.Employees.FirstOrDefault(e => e.LinkedUserAccountId == userAccount.Id);
-                    if (employee != null)
-                        userAccount.EmployeeId = employee.Id;
+                    userAccount.EmployeeId = employee != null ?
+                        employee.Id :
+                        //set an empty value to signify there is no employee
+                        //if it is left null, that property will not be serialized (signifying we did not send the link)
+                        new Guid();
 
                     var role = businessAccount.OwnedRoles.First(r => r.MemberParties.Any(mp => mp.Id == userAccount.Id));
                     userAccount.Role = role.Name;
@@ -87,10 +90,10 @@ namespace FoundOps.Api.Controllers.Rest
         }
 
         /// <summary>
-        /// Inserts a new User Account or adds the user to the business's role
+        /// Insert a new User Account, or adds the user with this business account to the business's role
         /// </summary>
         /// <param name="userAccount">The new user account to create</param>
-        /// <param name="roleId">the role</param>
+        /// <param name="roleId">The role</param>
         public void Post(Guid roleId, UserAccount userAccount)
         {
             //check for admin abilities
@@ -116,46 +119,28 @@ namespace FoundOps.Api.Controllers.Rest
                     LastName = userAccount.LastName,
                     TimeZone = "Eastern Standard Time"
                 };
-
-                //Send new user email
-                var sender = CoreEntitiesContainer.CurrentUserAccount().First().DisplayName;
-                var recipient = user.FirstName;
-
-                //Construct the email
-                var subject = "Your FoundOPS invite from " + sender;
-                var body = "Hi " + recipient + ", \r\n\r\n" +
-                            sender + " has created a user account for you in FoundOPS. \r\n\r\n" +
-                            "FoundOPS is an easy to use tool that helps field services teams communicate and provide the best possible service to their clients. \r\n\r\n" +
-                            "Click here to accept the invite: \r\n " + @"{0}" + "\r\n\r\n" +
-                            "If you have any difficulty accepting the invitation, email us at support@foundops.com. This invitation expires in 7 days. \r\n\r\n\r\n" +
-                            "The FoundOPS Team";
-
-                CoreEntitiesMembershipProvider.ResetAccount(user.EmailAddress, subject, body, TimeSpan.FromDays(7));
             }
 
             //add the user to the role
             user.RoleMembership.Add(role);
 
-            //TODO add employee
-            //if (userAccount.LastName != null)
-            //{
-            //    var employee = CoreEntitiesContainer.Employees.FirstOrDefault(e => e.FirstName == userAccount.FirstName && e.LastName == userAccount.LastName && e.EmployerId == businessAccount.Id);
-
-            //    user.LinkedEmployees.Add(employee);
-            //}
-            //else if (userAccount.FirstName == "Create")
-            //{
-            //    var newEmployee = new Employee
-            //    {
-            //        Id = Guid.NewGuid(),
-            //        FirstName = userAccount.FirstName,
-            //        LastName = userAccount.LastName,
-            //        Employer = businessAccount
-            //    };
-            //    user.LinkedEmployees.Add(newEmployee);
-            //}
+            //setup the employee link
+            SetupEmployee(userAccount.EmployeeId, user, businessAccount);
 
             SaveWithRetry();
+
+            //Send new user email
+            var sender = CoreEntitiesContainer.CurrentUserAccount().First().DisplayName;
+            var recipient = user.FirstName;
+            var subject = "Your FoundOPS invite from " + sender;
+            var body = "Hi " + recipient + ", \r\n\r\n" +
+                        sender + " has created a user account for you in FoundOPS. \r\n\r\n" +
+                        "FoundOPS is an easy to use tool that helps field services teams communicate and provide the best possible service to their clients. \r\n\r\n" +
+                        "Click here to accept the invite: \r\n " + @"{0}" + "\r\n\r\n" +
+                        "If you have any difficulty accepting the invitation, email us at support@foundops.com. This invitation expires in 7 days. \r\n\r\n\r\n" +
+                        "The FoundOPS Team";
+
+            CoreEntitiesMembershipProvider.ResetAccount(user.EmailAddress, subject, body, TimeSpan.FromDays(7));
         }
 
         //TODO
@@ -182,8 +167,6 @@ namespace FoundOps.Api.Controllers.Rest
         /// <param name="oldPass">(Optional) For resetting the password: the users old password</param>
         public void Put(UserAccount userAccount, Guid? roleId = null, string newPass = null, string oldPass = null)
         {
-            var currentUserAccount = CoreEntitiesContainer.CurrentUserAccount().FirstOrDefault();
-
             //changing properties on behalf of a business account
             if (roleId.HasValue)
             {
@@ -212,33 +195,14 @@ namespace FoundOps.Api.Controllers.Rest
                         user.RoleMembership.Add(newRole);
                 }
 
-                var userLinkedEmployee = user.LinkedEmployees.FirstOrDefault(e => e.EmployerId == businessAccount.Id);
+                SetupEmployee(userAccount.EmployeeId, user, businessAccount);
 
-                var employee = userLinkedEmployee != null ? CoreEntitiesContainer.Employees.FirstOrDefault(e => userLinkedEmployee.Id == e.Id) : null;
-
-                //Changing a user from one employee to another 
-                //ignore the none option
-                if (employee != null && employee.Id != userAccount.EmployeeId && userAccount.EmployeeId != Guid.Empty)
-                {
-                    user.LinkedEmployees.Remove(employee);
-
-                    LinkEmployeeToUser(userAccount, user, businessAccount);
-                }
-                //Changing a user from an employee to no employee
-                //If the employee Id == Guid.Empty, the none option was chosen
-                else if (employee != null && userAccount.EmployeeId == Guid.Empty)
-                {
-                    user.LinkedEmployees.Remove(employee);
-                }
-                //Changing a user from no employee to an employee
-                else if (employee == null && userAccount.EmployeeId != Guid.Empty)
-                {
-                    LinkEmployeeToUser(userAccount, user, businessAccount);
-                }
+                SaveWithRetry();
             }
             //changing properties on behalf of the current user
             else
             {
+                var currentUserAccount = CoreEntitiesContainer.CurrentUserAccount().FirstOrDefault();
                 //if the user is not editing itself, and if it does not have admin access to the business account
                 //throw not authorized
                 if (currentUserAccount == null || currentUserAccount.Id != userAccount.Id)
@@ -285,7 +249,7 @@ namespace FoundOps.Api.Controllers.Rest
             //clear the user from the business's roles and employees
             foreach (var role in userAccount.RoleMembership.Where(r => r.OwnerBusinessAccountId == businessAccount.Id).ToArray())
                 role.MemberParties.Remove(userAccount);
-            foreach(var employee in userAccount.LinkedEmployees.Where(e=>e.EmployerId == businessAccount.Id).ToArray())
+            foreach (var employee in userAccount.LinkedEmployees.Where(e => e.EmployerId == businessAccount.Id).ToArray())
                 employee.LinkedUserAccountId = null;
 
             SaveWithRetry();
@@ -295,28 +259,38 @@ namespace FoundOps.Api.Controllers.Rest
                 CoreEntitiesContainer.DeleteUserAccountBasedOnId(id);
         }
 
-        #region Helper Methods
-
-        //This will link the employee to the user account. If there is no employee, it will create a new one
-        private void LinkEmployeeToUser(UserAccount account, Core.Models.CoreEntities.UserAccount user, BusinessAccount businessAccount)
+        /// <summary>
+        /// Setup the employee link for a user account.
+        /// If the employeeId is null or Empty, it will create a new Employee.
+        /// Otherwise it will link the existing employee 
+        /// </summary>
+        /// <param name="employeeId">The employee Id to link</param>
+        /// <param name="userAccount">The user account</param>
+        /// <param name="businessAccount">The business account</param>
+        private void SetupEmployee(Guid? employeeId, Core.Models.CoreEntities.UserAccount userAccount, BusinessAccount businessAccount)
         {
-            var employee = CoreEntitiesContainer.Employees.FirstOrDefault(e => e.Id == account.EmployeeId);
+            //clear any linked employees for this business account
+            foreach (var oldEmployee in userAccount.LinkedEmployees.Where(e => e.EmployerId == businessAccount.Id).ToArray())
+                oldEmployee.LinkedUserAccountId = null;
 
-            if (employee != null)
-                user.LinkedEmployees.Add(employee);
+            Employee employee;
+            //find the existing employee
+            if (employeeId.HasValue && employeeId != Guid.Empty)
+            {
+                employee = CoreEntitiesContainer.Employees.First(e => e.Id == employeeId.Value);
+            }
+            //add a new employee
             else
             {
                 employee = new Employee
                 {
-                    Id = Guid.NewGuid(),
-                    FirstName = account.EmailAddress,
-                    LastName = account.LastName,
-                    Employer = businessAccount
+                    FirstName = userAccount.FirstName,
+                    LastName = userAccount.LastName,
+                    EmployerId = businessAccount.Id
                 };
-                user.LinkedEmployees.Add(employee);
             }
-        }
 
-        #endregion
+            employee.LinkedUserAccount = userAccount;
+        }
     }
 }
