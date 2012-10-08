@@ -127,7 +127,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                             }
 
                             //Get the location associaton
-                            var locationAssociation = GetLocationAssociation(locationAssociations, row);
+                            var locationAssociation = GetLocationAssociation(locationAssociations.Where(l => l.ClientId == clientAssocation.Id), row);
                             var newRecurringService = ImportRowTools.CreateRecurringService(businessAccount, row, clientServiceTemplate, clientAssocation, locationAssociation);
 
                             this.ObjectContext.RecurringServices.AddObject(newRecurringService);
@@ -183,7 +183,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             associatedLocation =
                 //compare first 6 decimals
                 locationAssociations.FirstOrDefault(
-                    c => 
+                    c =>
                         ToSixDecimals(c.Latitude.ToString()) == ToSixDecimals(locationLatitude.Value) &&
                         ToSixDecimals(c.Longitude.ToString()) == ToSixDecimals(locationLongitude.Value));
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Runtime.Serialization;
+using System.ServiceModel.DomainServices.Server;
 using System.Web.Security;
 
 // ReSharper disable CheckNamespace
@@ -49,6 +50,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// Get the system's TimeZoneInfo for the current users TimeZone
         /// </summary>
+        [Exclude]
         public TimeZoneInfo TimeZoneInfo
         {
             get
