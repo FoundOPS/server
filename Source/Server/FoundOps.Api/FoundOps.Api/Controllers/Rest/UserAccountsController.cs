@@ -1,4 +1,5 @@
 ﻿using FoundOps.Api.Tools;
+using FoundOps.Common.NET;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
 using System;
@@ -108,8 +109,10 @@ namespace FoundOps.Api.Controllers.Rest
 
             var user = GetUser(userAccount.EmailAddress);
 
+            var newUser = user == null;
+
             //if the user does not exist, create a new one
-            if (user == null)
+            if (newUser)
             {
                 user = new Core.Models.CoreEntities.UserAccount
                 {
@@ -117,7 +120,11 @@ namespace FoundOps.Api.Controllers.Rest
                     EmailAddress = userAccount.EmailAddress.Trim(),
                     FirstName = userAccount.FirstName,
                     LastName = userAccount.LastName,
-                    TimeZone = "Eastern Standard Time"
+                    TimeZone = "Eastern Standard Time",
+                    //PasswordHash and PasswordSalt are not nullable 
+                    //set temporary values (even though they will not be used)
+                    PasswordHash = EmailPasswordTools.GeneratePassword(),
+                    PasswordSalt = EncryptionTools.GenerateSalt()
                 };
             }
 
@@ -129,18 +136,23 @@ namespace FoundOps.Api.Controllers.Rest
 
             SaveWithRetry();
 
-            //Send new user email
-            var sender = CoreEntitiesContainer.CurrentUserAccount().First().DisplayName;
-            var recipient = user.FirstName;
-            var subject = "Your FoundOPS invite from " + sender;
-            var body = "Hi " + recipient + ", \r\n\r\n" +
-                        sender + " has created a user account for you in FoundOPS. \r\n\r\n" +
-                        "FoundOPS is an easy to use tool that helps field services teams communicate and provide the best possible service to their clients. \r\n\r\n" +
-                        "Click here to accept the invite: \r\n " + @"{0}" + "\r\n\r\n" +
-                        "If you have any difficulty accepting the invitation, email us at support@foundops.com. This invitation expires in 7 days. \r\n\r\n\r\n" +
-                        "The FoundOPS Team";
+            if (newUser)
+            {
+                //Send new user email
+                var sender = CoreEntitiesContainer.CurrentUserAccount().First().DisplayName;
+                var recipient = user.FirstName;
+                var subject = "Your FoundOPS invite from " + sender;
+                var body = "Hi " + recipient + ", \r\n\r\n" +
+                            sender + " has created a user account for you in FoundOPS. \r\n\r\n" +
+                            "FoundOPS is an easy to use tool that helps field services teams communicate and provide the best possible service to their clients. \r\n\r\n" +
+                            "Click here to accept the invite: \r\n " + @"{0}" + "\r\n\r\n" +
+                            "If you have any difficulty accepting the invitation, email us at support@foundops.com. This invitation expires in 7 days. \r\n\r\n\r\n" +
+                            "The FoundOPS Team";
 
-            CoreEntitiesMembershipProvider.ResetAccount(user.EmailAddress, subject, body, TimeSpan.FromDays(7));
+                CoreEntitiesMembershipProvider.ResetAccount(user.EmailAddress, subject, body, TimeSpan.FromDays(7));
+            }
+
+            //TODO consider sending an email for existing users (they were given access to...)
         }
 
         //TODO
