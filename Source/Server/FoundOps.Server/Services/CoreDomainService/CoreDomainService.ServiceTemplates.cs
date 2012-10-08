@@ -88,6 +88,33 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void UpdateField(Field currentField)
         {
+            var locationField = currentField as LocationField;
+            if (locationField != null)
+            {
+                var date = ObjectContext.CurrentUserAccount().First().Now().Date;
+                var recurringService = ObjectContext.RecurringServices.First(rs => rs.Id == locationField.ServiceTemplateId);
+                if (recurringService != null)
+                {
+                    var routeTasks = ObjectContext.RouteTasks.Where(rt => rt.RecurringServiceId != null && rt.RecurringServiceId == recurringService.Id && rt.Date >= date).Include(rt => rt.RouteDestination).ToArray();
+                    foreach (var routeTask in routeTasks)
+                    {
+                        routeTask.LocationId = locationField.LocationId;
+                        
+                        if (routeTask.RouteDestination != null)
+                            routeTask.RouteDestination.LocationId = locationField.LocationId;
+                    }
+                    var services = ObjectContext.Services.Where(s => s.RecurringServiceId == recurringService.Id).Select(s => s.Id).ToArray();
+
+                    var fields = ObjectContext.Fields.Where(f => f.ServiceTemplateId.HasValue && services.Contains(f.ServiceTemplateId.Value)
+                                                                && f.ParentFieldId == locationField.Id);
+
+                    foreach (LocationField field in fields)
+                        field.Value = locationField.Value;
+
+                    ObjectContext.SaveChanges();
+                }
+            }
+
             this.ObjectContext.Fields.AttachAsModified(currentField);
         }
 
@@ -174,8 +201,8 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             //If FoundOPS account => Filter only FoundOPS templates
             //Else => Filter by the service templates for the service provider (Vendor)
-            var serviceProviderTemplates = businessAccount.Id == BusinessAccountsConstants.FoundOpsId 
-                ? HardCodedLoaders.LoadServiceTemplateWithDetails(this.ObjectContext, null, null, businessAccount.Id, (int)ServiceTemplateLevel.FoundOpsDefined).AsQueryable() 
+            var serviceProviderTemplates = businessAccount.Id == BusinessAccountsConstants.FoundOpsId
+                ? HardCodedLoaders.LoadServiceTemplateWithDetails(this.ObjectContext, null, null, businessAccount.Id, (int)ServiceTemplateLevel.FoundOpsDefined).AsQueryable()
                 : HardCodedLoaders.LoadServiceTemplateWithDetails(this.ObjectContext, null, null, businessAccount.Id, (int)ServiceTemplateLevel.ServiceProviderDefined).AsQueryable();
 
             return serviceProviderTemplates.OrderBy(st => st.Name);
