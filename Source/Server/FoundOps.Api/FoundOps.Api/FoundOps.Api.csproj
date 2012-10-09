@@ -249,7 +249,7 @@
     <Compile Include="Controllers\Mvc\ToolsController.cs" />
     <Compile Include="Controllers\Rest\RoutesController.cs" />
     <Compile Include="Controllers\Rest\TrackPointsController.cs" />
-    <Compile Include="Controllers\Mvc\ServiceController.cs" />
+    <Compile Include="Controllers\Mvc\ServiceHoldersController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

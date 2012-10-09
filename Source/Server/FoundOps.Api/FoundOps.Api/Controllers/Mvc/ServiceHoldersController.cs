@@ -27,7 +27,7 @@ namespace FoundOps.Api.Controllers.Mvc
 
             var ignore = new[] { "ServiceId", "ClientId", "RecurringServiceId" };
 
-            var headers = (from kvp in response.Skip(1).First()
+            var headers = (from kvp in response.Skip(1).FirstOrDefault()
                            where !ignore.Contains(kvp.Key)
                            select kvp.Key.Replace("_", " "))
                            .ToArray();

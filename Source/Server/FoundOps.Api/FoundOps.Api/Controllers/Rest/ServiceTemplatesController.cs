@@ -1,8 +1,7 @@
-﻿using System;
-using System.Linq;
-using System.Web.Http;
-using FoundOps.Core.Models.CoreEntities;
+﻿using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
+using System;
+using System.Linq;
 using ServiceTemplate = FoundOps.Api.Models.ServiceTemplate;
 
 namespace FoundOps.Api.Controllers.Rest

@@ -1,17 +1,14 @@
-﻿using System;
+﻿using Dapper;
+using FoundOps.Core.Models;
+using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Core.Models.CoreEntities.ServiceEntites;
+using FoundOps.Core.Tools;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Data.SqlClient;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using Dapper;
-using FoundOps.Core.Models;
-using FoundOps.Core.Models.CoreEntities;
-using FoundOps.Core.Models.CoreEntities.ServiceEntites;
-using FoundOps.Core.Tools;
 
 namespace FoundOps.Api.Controllers.Rest
 {
