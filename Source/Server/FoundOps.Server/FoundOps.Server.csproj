@@ -231,11 +231,16 @@
     <Content Include="app\img\google.png" />
     <Content Include="app\img\got-grease-logo.png" />
     <Content Include="app\img\highlight.png" />
+    <Content Include="app\img\Icon-36x36.png" />
+    <Content Include="app\img\Icon-48x48.png" />
+    <Content Include="app\img\Icon-72x72.png" />
+    <Content Include="app\img\Icon-96x96.png" />
     <Content Include="app\img\iconmasks.svg" />
     <Content Include="app\img\icons.png" />
     <Content Include="app\img\imgTags.png" />
     <Content Include="app\img\ios-sprite.png" />
     <Content Include="app\img\jcrop.gif" />
+    <Content Include="app\img\layers.png" />
     <Content Include="app\img\loading-image.gif" />
     <Content Include="app\img\locations.png" />
     <Content Include="app\img\locationsColor.png" />
@@ -405,7 +410,6 @@
     <Content Include="ClientBin\Microsoft.CSharp.zip" />
     <Content Include="ClientBin\Telerik.Windows.Controls.DomainServices.zip" />
     <Content Include="ClientBin\Telerik.Windows.Controls.ImageEditor.zip" />
-    <Content Include="ClientBin\System.ComponentModel.DataAnnotations.zip" />
     <None Include="Content\PTS55F.eot" />
     <None Include="Content\PTS55F.ttf" />
     <None Include="disableTimeout.cmd">
