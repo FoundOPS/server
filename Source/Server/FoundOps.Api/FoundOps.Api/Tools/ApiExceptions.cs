@@ -1,4 +1,5 @@
-﻿using FoundOps.Core.Tools;
+﻿using System;
+using FoundOps.Core.Tools;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
@@ -26,6 +27,14 @@ namespace FoundOps.Api.Tools
         {
             return Create(request.CreateResponse(HttpStatusCode.Forbidden, "Not authorized"));
         }
+
+        /// <summary>
+        /// An error due to the request
+        /// </summary>
+        public static HttpResponseException BadRequest(this HttpRequestMessage request)
+        {
+            return Create(request.CreateResponse(HttpStatusCode.BadRequest));
+        } 
 
         /// <summary>
         /// A response for when an entity was expected but could not be found

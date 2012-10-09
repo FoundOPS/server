@@ -1,9 +1,10 @@
-using FoundOps.Api.Models;
 using FoundOps.Api.Tools;
+using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
 using System;
 using System.Data.Entity;
 using System.Linq;
+using Route = FoundOps.Api.Models.Route;
 
 namespace FoundOps.Api.Controllers.Rest
 {
@@ -26,7 +27,7 @@ namespace FoundOps.Api.Controllers.Rest
             Request.CheckAuthentication();
 
             //load the user account if it is used
-            Core.Models.CoreEntities.UserAccount userAccount = null;
+            UserAccount userAccount = null;
             if (!serviceDateUtc.HasValue || (assigned.HasValue && assigned.Value))
             {
                 userAccount = CoreEntitiesContainer.CurrentUserAccount().First();
@@ -38,7 +39,7 @@ namespace FoundOps.Api.Controllers.Rest
                            ? serviceDateUtc.Value.Date
                            : userAccount.Now().Date;
 
-            var loadedRoutes = CoreEntitiesContainer.Owner(roleId).Include(ba => ba.Routes)
+            var loadedRoutes = CoreEntitiesContainer.Owner(roleId, new [] { RoleType.Administrator, RoleType.Regular, RoleType.Mobile }).Include(ba => ba.Routes)
                             .SelectMany(ba => ba.Routes).Where(r => r.Date == date)
                             .Include(r => r.RouteDestinations).Include(e => e.Employees)
                             .Include("RouteDestinations.Client").Include("RouteDestinations.Location");

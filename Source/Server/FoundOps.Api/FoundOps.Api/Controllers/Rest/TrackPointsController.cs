@@ -1,6 +1,7 @@
 using FoundOps.Api.Models;
 using FoundOps.Api.Tools;
 using FoundOps.Core.Models.Azure;
+using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
@@ -12,7 +13,7 @@ using System.Web.Http;
 
 namespace FoundOps.Api.Controllers.Rest
 {
-    [FoundOps.Core.Tools.Authorize]
+    [Core.Tools.Authorize]
     public class TrackPointsController : BaseApiController
     {
         public struct UpdateConstants
@@ -53,7 +54,6 @@ namespace FoundOps.Api.Controllers.Rest
 
             //Return the list of converted track points as a queryable
             var modelTrackPoints = trackPoints.Select(TrackPoint.ConvertToModel);
-
             return modelTrackPoints.OrderBy(tp => tp.CollectedTimeStamp).AsQueryable();
         }
 
@@ -65,15 +65,15 @@ namespace FoundOps.Api.Controllers.Rest
         /// <param name="roleId">Current roleId </param>
         /// <param name="trackPoints">The list of TrackPoints being passed from an Employee's device</param>
         /// <returns>An Http response to the device signaling that the TrackPoint was successfully created</returns>
-        public HttpResponseMessage Post(Guid roleId, TrackPoint[] trackPoints)
+        public void Post(Guid roleId, TrackPoint[] trackPoints)
         {
             if (!trackPoints.Any() || !trackPoints.First().RouteId.HasValue)
-                return Request.CreateResponse(HttpStatusCode.BadRequest);
+                throw Request.BadRequest();
 
             var routeId = trackPoints.First().RouteId.Value;
 
             var currentUserAccount = CoreEntitiesContainer.CurrentUserAccount().First();
-            var currentBusinessAccount = CoreEntitiesContainer.Owner(roleId).FirstOrDefault();
+            var currentBusinessAccount = CoreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator, RoleType.Regular, RoleType.Mobile }).FirstOrDefault();
 
             //Return an Unauthorized Status Code if
             //a) there is no UserAccount
@@ -122,13 +122,6 @@ namespace FoundOps.Api.Controllers.Rest
 
             //Save all the changes that have been made in the Database
             SaveWithRetry();
-
-            //Create the Http response 
-            var response = Request.CreateResponse(HttpStatusCode.Created, trackPoints);
-            response.Headers.Location = new Uri(Request.RequestUri, "/api/trackpoints/" + employee.Id.ToString());
-
-            //Return the response
-            return response;
         }
 
         #region Helpers
