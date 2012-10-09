@@ -3,6 +3,7 @@ using FoundOps.Api.Controllers.Rest;
 using FoundOps.Api.Models;
 using System.Data;
 using System.Data.Entity;
+using FoundOps.Common.Tools.ExtensionMethods;
 using FoundOps.Core.Models.CoreEntities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -29,7 +30,7 @@ namespace FoundOps.Api.Tests.Controllers
             var request = new HttpRequestMessage(method, "http://localhost");
 
             //Add headers to the request if they exist
-            if(headers != null)
+            if (headers != null)
             {
                 foreach (var header in headers)
                     request.Headers.Add(header.Key, header.Value);
@@ -37,7 +38,7 @@ namespace FoundOps.Api.Tests.Controllers
 
             //sometimes this is necessary to work http://stackoverflow.com/questions/11053598/how-to-mock-the-createresponset-extension-method-on-httprequestmessage
             request.Properties.Add(HttpPropertyKeys.HttpConfigurationKey, new HttpConfiguration());
-            
+
             var controller = (TController)Activator.CreateInstance(typeof(TController));
             controller.Request = request;
 
@@ -153,7 +154,7 @@ namespace FoundOps.Api.Tests.Controllers
         public void SessionsTests()
         {
             DetachAllEntities();
-            var headers = new Dictionary<string, string> {{"ops-details", "true"}};
+            var headers = new Dictionary<string, string> { { "ops-details", "true" } };
             var controller = TestTools.CreateRequest<SessionsController>(HttpMethod.Get, headers);
 
             var getResponseWithHeader = controller.Get();
@@ -203,7 +204,7 @@ namespace FoundOps.Api.Tests.Controllers
             Assert.AreEqual(HttpStatusCode.Accepted, putResponse.StatusCode);
 
             controller = TestTools.CreateRequest<ServicesController>(HttpMethod.Delete);
-            
+
             //Tests deleting a service
             var deleteResponse = controller.Delete(modelService);
             Assert.AreEqual(HttpStatusCode.Accepted, deleteResponse.StatusCode);
@@ -327,7 +328,8 @@ namespace FoundOps.Api.Tests.Controllers
             DetachAllEntities();
             var controller = TestTools.CreateRequest<TrackPointsController>(HttpMethod.Get);
             var date = DateTime.UtcNow.Date;
-            var routeId = CoreEntitiesContainer.Routes.First(r => r.Date == date).Id;
+            
+            var routeId = CoreEntitiesContainer.Routes.Where(r => r.Date == date && r.OwnerBusinessAccountId == _gotGreaseId).RandomItem().Id;
 
             var getResponse = controller.Get(_roleId, routeId);
 
@@ -336,18 +338,27 @@ namespace FoundOps.Api.Tests.Controllers
             var trackPoints = new List<TrackPoint>();
             var fakeRouteId = Guid.NewGuid();
 
+            var random = new Random();
+
+            var lat = (double)random.Next(-90, 90);
+            var lon = (double)random.Next(-180, 180);
+
+            var time = DateTime.UtcNow.Subtract(TimeSpan.FromHours(1));
+
             //Create the test TrackPoints with random numbers as properties
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 50; i++)
             {
-                var random = new Random();
+                lon += +.007;
+                lon += +.007;
+                time = time.AddMinutes(1);
 
                 var trackPoint = new TrackPoint
                 {
                     Id = Guid.NewGuid(),
                     Heading = random.Next(0, 359),
-                    Latitude = random.Next(-90, 90),
-                    Longitude = random.Next(-180, 180),
-                    CollectedTimeStamp = DateTime.Now.AddSeconds(10 * i),
+                    Latitude = (decimal)lat,
+                    Longitude = (decimal)lon,
+                    CollectedTimeStamp = time,
                     Speed = random.Next(20, 60),
                     RouteId = fakeRouteId,
                     Source = "Testing",
