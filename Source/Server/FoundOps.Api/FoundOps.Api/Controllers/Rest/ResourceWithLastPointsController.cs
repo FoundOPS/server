@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
-using FoundOps.Api.Models;
+﻿using FoundOps.Api.Models;
 using FoundOps.Api.Tools;
 using FoundOps.Core.Tools;
+using System;
+using System.Linq;
 
 namespace FoundOps.Api.Controllers.Rest
 {
@@ -16,7 +14,6 @@ namespace FoundOps.Api.Controllers.Rest
         /// </summary>
         /// <param name="roleId">Used to find the Business Account</param>
         /// <returns>A list of Resource (employees or vehicles) with their latest tracked point</returns>
-        [AcceptVerbs("GET", "POST")]
         public IQueryable<ResourceWithLastPoint> Get(Guid roleId)
         {
             var currentBusinessAccount = CoreEntitiesContainer.Owner(roleId).First();
