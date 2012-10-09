@@ -1,9 +1,10 @@
-﻿using FoundOps.Api.Models;
-using FoundOps.Api.Tools;
+﻿using FoundOps.Api.Tools;
+using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using RouteTask = FoundOps.Api.Models.RouteTask;
 
 namespace FoundOps.Api.Controllers.Rest
 {
@@ -23,7 +24,7 @@ namespace FoundOps.Api.Controllers.Rest
                 throw Request.NotFound();
 
             //Check the user has access to the
-            if (!CoreEntitiesContainer.BusinessAccount(routeTaskModel.BusinessAccountId).Any())
+            if (!CoreEntitiesContainer.BusinessAccount(routeTaskModel.BusinessAccountId, new []{RoleType.Administrator, RoleType.Regular, RoleType.Mobile}).Any())
                 throw Request.NotAuthorized();
 
             //status is the only thing that can change
