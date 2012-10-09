@@ -215,28 +215,33 @@ namespace FoundOps.Api.Controllers.Rest
             else
             {
                 var currentUserAccount = CoreEntitiesContainer.CurrentUserAccount().FirstOrDefault();
+
                 //if the user is not editing itself, and if it does not have admin access to the business account
                 //throw not authorized
-                if (currentUserAccount == null || currentUserAccount.Id != userAccount.Id)
+                if (currentUserAccount == null || (userAccount != null && currentUserAccount.Id != userAccount.Id))
                     throw Request.NotAuthorized();
 
-                //if the email address changed, check it does not conflict
-                if (userAccount.EmailAddress != currentUserAccount.EmailAddress &&
-                    GetUser(userAccount.EmailAddress) != null)
-                    throw ApiExceptions.Create(Request.CreateResponse(HttpStatusCode.Conflict,
-                                                                      "This email address already exists"));
+
+                if (userAccount != null) //can be null if just changing the password
+                {
+                    //if the email address changed, check it does not conflict
+                    if (userAccount.EmailAddress != currentUserAccount.EmailAddress && GetUser(userAccount.EmailAddress) != null)
+                        throw ApiExceptions.Create(Request.CreateResponse(HttpStatusCode.Conflict, "This email address already exists"));
+
+                    //update properties
+                    currentUserAccount.FirstName = userAccount.FirstName;
+                    currentUserAccount.LastName = userAccount.LastName;
+                    currentUserAccount.EmailAddress = userAccount.EmailAddress;
+                    currentUserAccount.TimeZone = userAccount.TimeZone.Id;
+                }
 
                 //try to change the password
                 if (newPass != null && oldPass != null)
                 {
-                    if (!CoreEntitiesMembershipProvider.ChangePassword(userAccount.EmailAddress, oldPass, newPass))
+                    if (!CoreEntitiesMembershipProvider.ChangePassword(currentUserAccount.EmailAddress, oldPass, newPass))
                         throw ApiExceptions.Create(Request.CreateResponse(HttpStatusCode.NotAcceptable));
                 }
 
-                currentUserAccount.FirstName = userAccount.FirstName;
-                currentUserAccount.LastName = userAccount.LastName;
-                currentUserAccount.EmailAddress = userAccount.EmailAddress;
-                currentUserAccount.TimeZone = userAccount.TimeZone.Id;
 
                 SaveWithRetry();
             }

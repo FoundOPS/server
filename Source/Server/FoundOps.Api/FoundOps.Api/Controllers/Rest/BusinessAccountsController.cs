@@ -4,15 +4,17 @@ using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
 using System;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using BusinessAccount = FoundOps.Api.Models.BusinessAccount;
 
 namespace FoundOps.Api.Controllers.Rest
 {
     public class BusinessAccountsController : BaseApiController
     {
-        public BusinessAccount Get(Guid roleId)
+        /// <summary>
+        /// Returns the current business account with ImageUrl
+        /// NOTE: Must have admin privileges
+        /// </summary>
+        public IQueryable<BusinessAccount> Get(Guid roleId)
         {
             var currentBusinessAccount = CoreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator }).FirstOrDefault();
             if (currentBusinessAccount == null)
@@ -20,7 +22,7 @@ namespace FoundOps.Api.Controllers.Rest
 
             currentBusinessAccount.PartyImageReference.Load();
 
-            var businessAccount = new BusinessAccount { Name = currentBusinessAccount.Name };
+            var businessAccount = new BusinessAccount { Id = currentBusinessAccount.Id, Name = currentBusinessAccount.Name };
 
             //Load image url
             if (currentBusinessAccount.PartyImage != null)
@@ -29,35 +31,30 @@ namespace FoundOps.Api.Controllers.Rest
                 businessAccount.ImageUrl = imageUrl;
             }
 
-            return businessAccount;
+            return (new[] { businessAccount }).AsQueryable();
         }
 
-        public HttpResponseMessage Put(BusinessAccount account, Guid roleId, bool updateImage = false)
+        /// <summary>
+        /// Can only change properties: Name
+        /// </summary>
+        /// <param name="businessAccount">The business account</param>
+        public void Put(BusinessAccount businessAccount)
         {
-            var businessAccount = CoreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator }).FirstOrDefault();
-            if (businessAccount == null)
+            var modelBusinessAccount = CoreEntitiesContainer.BusinessAccount(businessAccount.Id, new[] { RoleType.Administrator }).FirstOrDefault();
+            if (modelBusinessAccount == null)
                 throw Request.NotAuthorized();
 
-            businessAccount.Name = account.Name;
-
-            var value = account.Name;
-
-            if(!updateImage)
-            {
-                businessAccount.PartyImageReference.Load();
-
-                if (businessAccount.PartyImage == null)
-                {
-                    var partyImage = new PartyImage { OwnerParty = businessAccount };
-                    businessAccount.PartyImage = partyImage;
-                }
-
-                value = PartyTools.UpdatePartyImageHelper(CoreEntitiesContainer, businessAccount, Request);
-            }
+            modelBusinessAccount.Name = businessAccount.Name;
 
             SaveWithRetry();
-            
-            return Request.CreateResponse(HttpStatusCode.Accepted, value);
         }
+
+        //modelBusinessAccount.PartyImageReference.Load();
+        //if (modelBusinessAccount.PartyImage == null)
+        //{
+        //    var partyImage = new PartyImage { OwnerParty = modelBusinessAccount };
+        //    modelBusinessAccount.PartyImage = partyImage;
+        //}
+        //PartyTools.UpdatePartyImageHelper(CoreEntitiesContainer, modelBusinessAccount, Request);
     }
 }
