@@ -1,115 +1,90 @@
-﻿using FoundOps.Api.Controllers.Rest;
-using FoundOps.Api.Tools;
-using FoundOps.Common.NET;
+﻿using FoundOps.Api.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
 using System;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
 using TaskStatus = FoundOps.Api.Models.TaskStatus;
 
 namespace FoundOps.Api.Controllers.Rest
 {
     public class TaskStatusesController : BaseApiController
     {
-        private readonly CoreEntitiesContainer _coreEntitiesContainer;
-
-        public TaskStatusesController()
+        /// <summary>
+        /// Get task statuses for a business account
+        /// </summary>
+        /// <param name="roleId">The role</param>
+        public IQueryable<TaskStatus> Get(Guid roleId)
         {
-            _coreEntitiesContainer = new CoreEntitiesContainer();
-            _coreEntitiesContainer.ContextOptions.LazyLoadingEnabled = false;
-        }
-
-        public IQueryable<TaskStatus> GetStatuses(Guid roleId)
-        {
-            var currentBusinessAccount =  _coreEntitiesContainer.Owner(roleId).Include(ba => ba.TaskStatuses).FirstOrDefault();
+            var currentBusinessAccount = CoreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator, RoleType.Regular, RoleType.Mobile }).Include(ba => ba.TaskStatuses).FirstOrDefault();
             if (currentBusinessAccount == null)
                 throw Request.NotAuthorized();
 
             var statuses = currentBusinessAccount.TaskStatuses.Select(TaskStatus.ConvertModel).AsQueryable();
-
             return statuses;
         }
 
-        public HttpResponseMessage InsertTaskStatus(TaskStatus taskStatus, Guid roleId)
+        /// <summary>
+        /// Insert a new task status
+        /// REQUIRES: Admin access to role
+        /// </summary>
+        /// <param name="roleId">The role</param>
+        /// <param name="taskStatus">The status</param>
+        public void Post(Guid roleId, TaskStatus taskStatus)
         {
             var status = TaskStatus.CreateFromModel(taskStatus);
 
-            var businessAccount = _coreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator }).Include(ba => ba.TaskStatuses).FirstOrDefault();
-
+            var businessAccount = CoreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator }).Include(ba => ba.TaskStatuses).FirstOrDefault();
             if (businessAccount == null)
-                return Request.CreateResponse(HttpStatusCode.Unauthorized, "User does not have Admin abilities");
+                throw Request.NotAuthorized();
 
             businessAccount.TaskStatuses.Add(status);
-
-            try
-            {
-                _coreEntitiesContainer.SaveChanges();
-            }
-            catch
-            {
-                return Request.CreateResponse(HttpStatusCode.NotAcceptable, "There was an error while saving. Please check your inputs");
-            }
-
-            return Request.CreateResponse(HttpStatusCode.Accepted);
+            SaveWithRetry();
         }
 
-        public HttpResponseMessage UpdateTaskStatus(TaskStatus taskStatus, Guid roleId)
+        /// <summary>
+        /// Update a task status
+        /// REQUIRES: Admin access to role
+        /// </summary>
+        /// <param name="roleId">The role</param>
+        /// <param name="taskStatus">The status</param>
+        public void Put(Guid roleId, TaskStatus taskStatus)
         {
-            var businessAccount = _coreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator }).Include(ba => ba.TaskStatuses).FirstOrDefault();
-
+            var businessAccount = CoreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator }).Include(ba => ba.TaskStatuses).FirstOrDefault();
             if (businessAccount == null)
-                return Request.CreateResponse(HttpStatusCode.Unauthorized, "User does not have Admin abilities");
+                throw Request.NotAuthorized();
 
-            var original = _coreEntitiesContainer.TaskStatuses.FirstOrDefault(ts => ts.Id == taskStatus.Id);
-
+            var original = CoreEntitiesContainer.TaskStatuses.FirstOrDefault(ts => ts.Id == taskStatus.Id);
             if (original == null)
-                return Request.CreateResponse(HttpStatusCode.BadRequest, "You are trying to update an object the does not exist yet!");
+                throw Request.NotFound();
 
-            //update the original
+            //update the status
             original.Color = taskStatus.Color;
             original.DefaultTypeInt = taskStatus.DefaultTypeInt;
             original.Name = taskStatus.Name;
             original.RemoveFromRoute = taskStatus.RemoveFromRoute;
 
-            try
-            {
-                _coreEntitiesContainer.SaveChanges();
-            }
-            catch
-            {
-                return Request.CreateResponse(HttpStatusCode.NotAcceptable, "There was an error while saving. Please check your inputs");
-            }
-
-            return Request.CreateResponse(HttpStatusCode.Accepted);
+            SaveWithRetry();
         }
 
-        [AcceptVerbs("POST")]
-        public HttpResponseMessage DeleteTaskStatus(TaskStatus taskStatus, Guid roleId)
+        /// <summary>
+        /// Delete a task status
+        /// </summary>
+        /// <param name="roleId">The role</param>
+        /// <param name="id">The task status id</param>
+        public void Delete(Guid roleId, Guid id)
         {
-            var businessAccount = _coreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator }).Include(ba => ba.TaskStatuses).FirstOrDefault();
-
+            var businessAccount = CoreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator }).Include(ba => ba.TaskStatuses).FirstOrDefault();
             if (businessAccount == null)
-                return Request.CreateResponse(HttpStatusCode.Unauthorized, "User does not have Admin abilities");
+                throw Request.NotAuthorized();
 
-            var status = TaskStatus.CreateFromModel(taskStatus);
+            var status = CoreEntitiesContainer.TaskStatuses.FirstOrDefault(ts => ts.Id == id);
+            if (status == null)
+                throw Request.NotFound();
 
-            _coreEntitiesContainer.DetachExistingAndAttach(status);
-            _coreEntitiesContainer.TaskStatuses.DeleteObject(status);
+            CoreEntitiesContainer.DeleteObject(status);
 
-            try
-            {
-                _coreEntitiesContainer.SaveChanges();
-            }
-            catch
-            {
-                return Request.CreateResponse(HttpStatusCode.NotAcceptable, "There was an error while saving. Please check your inputs");
-            }
-
-            return Request.CreateResponse(HttpStatusCode.Accepted);
+            SaveWithRetry();
         }
     }
 }
