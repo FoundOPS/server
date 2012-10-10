@@ -50,9 +50,9 @@ namespace FoundOps.Api
             // this allow all CORS requests
             corsConfig.ForAllResources()
 #if DEBUG
-.ForOrigins(AppConstants.RootApplicationUrl, "http://localhost:8000")
+            .AllowAllOrigins()
 #else
-            .ForOrigins(AppConstants.RootApplicationUrl)
+            .ForOrigins(AppConstants.RootApplicationUrl, AppConstants.RootApiUrl, AppConstants.MobileFrontSiteUrl)
 #endif
 .AllowAll();
         }

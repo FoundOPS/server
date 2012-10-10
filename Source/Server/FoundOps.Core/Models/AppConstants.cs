@@ -6,6 +6,7 @@
     public static class AppConstants
     {
         public static string RootFrontSiteUrl = "http://foundops.com";
+        public static string MobileFrontSiteUrl = "http://m.foundops.com";
 
         public static string RootApplicationUrl;
         public static string RootApiUrl;
