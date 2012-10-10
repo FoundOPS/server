@@ -663,7 +663,7 @@ CREATE TABLE [dbo].[RouteTasks] (
     [RouteDestinationId] uniqueidentifier  NULL,
     [ClientId] uniqueidentifier  NULL,
     [ServiceId] uniqueidentifier  NULL,
-    [ReadOnly] bit  NOT NULL,
+    [OriginalDate] datetime  NULL,
     [BusinessAccountId] uniqueidentifier  NOT NULL,
     [EstimatedDuration] time  NOT NULL,
     [Name] nvarchar(max)  NOT NULL,

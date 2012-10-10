@@ -310,6 +310,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             var original = this.ObjectContext.RouteTasks.Include("Service").First(rt => rt.Id == currentRouteTask.Id);
             this.ObjectContext.Detach(original);
 
+            //User changes date of a route task in the task board
             if (original.Date != currentRouteTask.Date)
             {
                 var service = this.ObjectContext.Services.FirstOrDefault(s => s.Id == original.ServiceId);
@@ -326,6 +327,10 @@ namespace FoundOps.Server.Services.CoreDomainService
                     excludedDates.Add(original.Date);
                     recurringService.ExcludedDates = excludedDates;
                 }
+
+                //Set original date on the route task
+                //Used in sql function to generate route tasks for the day
+                currentRouteTask.OriginalDate = original.Date;
             }
 
             this.ObjectContext.RouteTasks.AttachAsModified(currentRouteTask);

@@ -8380,18 +8380,16 @@ namespace FoundOps.Core.Models.CoreEntities
         /// Create a new RouteTask object.
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
-        /// <param name="readOnly">Initial value of the ReadOnly property.</param>
         /// <param name="businessAccountId">Initial value of the BusinessAccountId property.</param>
         /// <param name="estimatedDuration">Initial value of the EstimatedDuration property.</param>
         /// <param name="name">Initial value of the Name property.</param>
         /// <param name="statusInt">Initial value of the StatusInt property.</param>
         /// <param name="date">Initial value of the Date property.</param>
         /// <param name="orderInRouteDestination">Initial value of the OrderInRouteDestination property.</param>
-        public static RouteTask CreateRouteTask(global::System.Guid id, global::System.Boolean readOnly, global::System.Guid businessAccountId, global::System.TimeSpan estimatedDuration, global::System.String name, global::System.Int32 statusInt, global::System.DateTime date, global::System.Int32 orderInRouteDestination)
+        public static RouteTask CreateRouteTask(global::System.Guid id, global::System.Guid businessAccountId, global::System.TimeSpan estimatedDuration, global::System.String name, global::System.Int32 statusInt, global::System.DateTime date, global::System.Int32 orderInRouteDestination)
         {
             RouteTask routeTask = new RouteTask();
             routeTask.Id = id;
-            routeTask.ReadOnly = readOnly;
             routeTask.BusinessAccountId = businessAccountId;
             routeTask.EstimatedDuration = estimatedDuration;
             routeTask.Name = name;
@@ -8531,26 +8529,26 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.Boolean ReadOnly
+        public Nullable<global::System.DateTime> OriginalDate
         {
             get
             {
-                return _ReadOnly;
+                return _OriginalDate;
             }
             set
             {
-                OnReadOnlyChanging(value);
-                ReportPropertyChanging("ReadOnly");
-                _ReadOnly = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("ReadOnly");
-                OnReadOnlyChanged();
+                OnOriginalDateChanging(value);
+                ReportPropertyChanging("OriginalDate");
+                _OriginalDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("OriginalDate");
+                OnOriginalDateChanged();
             }
         }
-        private global::System.Boolean _ReadOnly;
-        partial void OnReadOnlyChanging(global::System.Boolean value);
-        partial void OnReadOnlyChanged();
+        private Nullable<global::System.DateTime> _OriginalDate;
+        partial void OnOriginalDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnOriginalDateChanged();
     
         /// <summary>
         /// No Metadata Documentation available.

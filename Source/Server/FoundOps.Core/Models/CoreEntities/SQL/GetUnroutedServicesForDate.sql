@@ -39,6 +39,13 @@ BEGIN
 	 ServiceName nvarchar(max))
 
 
+	 --Delete all RouteTasks in the TaskBoard so they can be regenerated
+	--This is necessary 
+	DELETE FROM dbo.RouteTasks 
+	WHERE RouteDestinationId IS NULL 
+	AND BusinessAccountId = @serviceProviderIdContext 
+	AND (Date = @serviceDate AND (OriginalDate = @serviceDate OR OriginalDate IS NULL))
+
 	INSERT INTO @TempGenServiceTable (Id, EndDate, EndAfterTimes, RepeatEveryTimes, FrequencyInt, FrequencyDetailInt, StartDate, ServiceName)
 	--This is a Semi-Join between the Clients table created above and the RecurringServices Table
 	--Semi-Join simply means that it has all the same logic as a normal join, but it doesnt actually join the tables
