@@ -675,7 +675,7 @@
           <Property Name="RouteDestinationId" Type="uniqueidentifier" />
           <Property Name="ClientId" Type="uniqueidentifier" />
           <Property Name="ServiceId" Type="uniqueidentifier" />
-          <Property Name="ReadOnly" Type="bit" Nullable="false" />
+          <Property Name="OriginalDate" Type="datetime" Nullable="true" />
           <Property Name="BusinessAccountId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="EstimatedDuration" Type="time" Nullable="false" />
           <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
@@ -2334,7 +2334,7 @@
           <Property Type="Guid" Name="RouteDestinationId" Nullable="true" />
           <Property Type="Guid" Name="ClientId" Nullable="true" />
           <Property Type="Guid" Name="ServiceId" Nullable="true" />
-          <Property Type="Boolean" Name="ReadOnly" Nullable="false" />
+          <Property Type="DateTime" Name="OriginalDate" Nullable="true" />
           <Property Type="Guid" Name="BusinessAccountId" Nullable="false" />
           <Property Type="Time" Name="EstimatedDuration" Nullable="false" Precision="7" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
@@ -3684,7 +3684,7 @@
           <ScalarProperty Name="RouteDestinationId" ColumnName="RouteDestinationId" />
           <ScalarProperty Name="ClientId" ColumnName="ClientId" />
           <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
-          <ScalarProperty Name="ReadOnly" ColumnName="ReadOnly" />
+          <ScalarProperty Name="OriginalDate" ColumnName="OriginalDate" />
           <ScalarProperty Name="BusinessAccountId" ColumnName="BusinessAccountId" />
           <ScalarProperty Name="EstimatedDuration" ColumnName="EstimatedDuration" />
           <ScalarProperty Name="Name" ColumnName="Name" />
