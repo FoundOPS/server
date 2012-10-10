@@ -69,6 +69,7 @@ namespace FoundOps.Api.Controllers.Rest
 
             dynamic config = new JObject();
             config.name = user.FirstName + " " + user.LastName;
+            config.email = user.EmailAddress;
             config.settingsUrl = "#view/personalSettings.html";
             config.logOutUrl = isMobile ? "#view/logout.html" : "../Account/LogOut";
 
