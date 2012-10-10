@@ -12,7 +12,7 @@ namespace FoundOps.Core.Models.CoreEntities.ServiceEntites
 
         public string Name { get; set; }
 
-        public decimal Value { get; set; }
+        public decimal? Value { get; set; }
 
         public object ObjectValue { get { return Value; } }
     }
