@@ -209,7 +209,7 @@ namespace FoundOps.Server.Controllers
                 return RedirectToAction("ResetPasswordSuccess", "Account");
 
             //If we got this far, something failed, redisplay form
-            ModelState.AddModelError("Password invalid", "");
+            ModelState.AddModelError("", "");
 
             return RedirectToAction("ResetPassword", "Account", new RouteValueDictionary { { "resetCode", resetCode } });
         }
