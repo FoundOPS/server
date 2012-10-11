@@ -772,6 +772,9 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <param name="routeDestination">The route destination to delete.</param>
         public void DeleteRouteDestination(RouteDestination routeDestination)
         {
+            foreach (var routeTask in routeDestination.RouteTasks)
+                routeTask.RouteDestinationId = null;
+            
             this.DomainContext.RouteDestinations.Remove(routeDestination);
         }
 
