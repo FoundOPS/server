@@ -718,6 +718,9 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Add the TaskHolders back to the task board
             var tasksForTaskBoard = deletedRoute.RouteDestinations.SelectMany(routeDestination => routeDestination.RouteTasks).ToArray();
 
+            foreach (var routeTask in tasksForTaskBoard)
+                routeTask.RemoveRouteDestination();
+
             //Add the task holders to keep back to the task board
             //foreach (var routeTask in tasksForTaskBoard)
             //{
@@ -732,7 +735,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             //}
 
             //Delete the Route, RouteDestinations, and RouteTasks
-            DataManager.RemoveEntities(new Entity[] { deletedRoute }.Union(deletedRoute.RouteDestinations).Union(tasksForTaskBoard).ToArray());
+            DataManager.RemoveEntities(new Entity[] { deletedRoute }.Union(deletedRoute.RouteDestinations).ToArray());
         }
 
         /// <summary>

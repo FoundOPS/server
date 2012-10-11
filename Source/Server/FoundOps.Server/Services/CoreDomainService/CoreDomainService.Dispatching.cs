@@ -313,6 +313,12 @@ namespace FoundOps.Server.Services.CoreDomainService
             //User changes date of a route task in the task board
             if (original.Date != currentRouteTask.Date)
             {
+                if(currentRouteTask.RouteDestinationId != null)
+                {
+                    currentRouteTask.RouteDestinationId = null;
+                    currentRouteTask.RouteDestination = null;
+                }
+
                 var service = this.ObjectContext.Services.FirstOrDefault(s => s.Id == original.ServiceId);
 
                 if (service != null)
