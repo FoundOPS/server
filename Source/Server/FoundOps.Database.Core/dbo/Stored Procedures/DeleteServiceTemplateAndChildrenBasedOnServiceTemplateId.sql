@@ -57,7 +57,7 @@ CREATE PROCEDURE dbo.DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId
 	(
 	SELECT		#TempTable.Id
 	FROM		#TempTable
-	WHERE		#TempTable.Id = Services.Id
+	WHERE		#TempTable.Id = Services.Id OR #TempTable.Id = Services.RecurringServiceId
 	)
 
 	DELETE 

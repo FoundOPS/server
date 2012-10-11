@@ -17,7 +17,7 @@ namespace FoundOps.Api
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            var apiRoute = routes.MapHttpRoute("RestApiRoute", "api/{controller}/{id}", new {id = RouteParameter.Optional});
+            var apiRoute = routes.MapHttpRoute("RestApiRoute", "api/{controller}/{id}", new { id = RouteParameter.Optional });
             apiRoute.DataTokens["Namespaces"] = new[] { "FoundOps.Api.Controllers.Rest" };
 
             var mvcRoute = routes.MapRoute("MvcRoute", "{controller}/{action}");
@@ -48,13 +48,7 @@ namespace FoundOps.Api
             corsConfig.RegisterGlobal(httpConfig);
 
             // this allow all CORS requests
-            corsConfig.ForAllResources()
-#if DEBUG
-            .AllowAllOrigins()
-#else
-            .ForOrigins(AppConstants.RootApplicationUrl, AppConstants.RootApiUrl, AppConstants.MobileFrontSiteUrl)
-#endif
-.AllowAll();
+            corsConfig.ForAllResources().AllowAllOrigins().AllowAll();
         }
     }
 }

@@ -4,7 +4,7 @@
     [RouteDestinationId]      UNIQUEIDENTIFIER NULL,
     [ClientId]                UNIQUEIDENTIFIER NULL,
     [ServiceId]               UNIQUEIDENTIFIER NULL,
-    [ReadOnly]                BIT              NOT NULL,
+    [OriginalDate]            DATETIME         NULL,
     [BusinessAccountId]       UNIQUEIDENTIFIER NOT NULL,
     [EstimatedDuration]       TIME (7)         NOT NULL,
     [Name]                    NVARCHAR (MAX)   NOT NULL,
@@ -23,6 +23,8 @@
     CONSTRAINT [FK_RouteTaskService] FOREIGN KEY ([ServiceId]) REFERENCES [dbo].[Services] ([Id]) ON DELETE SET NULL,
     CONSTRAINT [FK_TaskStatusRouteTask] FOREIGN KEY ([TaskStatusId]) REFERENCES [dbo].[TaskStatuses] ([Id])
 );
+
+
 
 
 
