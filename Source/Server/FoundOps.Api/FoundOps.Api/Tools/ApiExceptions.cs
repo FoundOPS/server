@@ -31,9 +31,12 @@ namespace FoundOps.Api.Tools
         /// <summary>
         /// An error due to the request
         /// </summary>
-        public static HttpResponseException BadRequest(this HttpRequestMessage request)
+        public static HttpResponseException BadRequest(this HttpRequestMessage request, string details = null)
         {
-            return Create(request.CreateResponse(HttpStatusCode.BadRequest));
+            if (string.IsNullOrEmpty(details))
+                details = "There was something wrong with your parameters or the related entities loaded";
+
+            return Create(request.CreateResponse(HttpStatusCode.BadRequest, details));
         } 
 
         /// <summary>

@@ -40,6 +40,9 @@ namespace FoundOps.Api.Controllers.Rest
             {
                 serviceTemplateIdToLoad = serviceId.Value;
                 service = CoreEntitiesContainer.Services.Include(s => s.Client).FirstOrDefault(s => s.Id == serviceId.Value);
+                if (service == null)
+                    throw Request.BadRequest();
+
                 businessAccountId = service.ServiceProviderId;
             }
             //generate it from the recurring service
@@ -47,7 +50,14 @@ namespace FoundOps.Api.Controllers.Rest
             {
                 serviceTemplateIdToLoad = recurringServiceId.Value;
                 recurringService = CoreEntitiesContainer.RecurringServices.Include(rs => rs.Client).Include(rs => rs.ServiceTemplate)
-                    .First(rs => rs.Id == recurringServiceId.Value);
+                    .FirstOrDefault(rs => rs.Id == recurringServiceId.Value);
+
+                if (recurringService == null)
+                    throw Request.BadRequest("The recurring service was not found");
+
+                if (recurringService.Client == null || !recurringService.Client.BusinessAccountId.HasValue)
+                    throw Request.BadRequest("The recurring service does not have a Client with a BusinessAccount associated");
+
                 businessAccountId = recurringService.Client.BusinessAccountId.Value;
             }
             //generate it from the service provider service template
@@ -55,11 +65,15 @@ namespace FoundOps.Api.Controllers.Rest
             {
                 serviceTemplateIdToLoad = serviceTemplateId.Value;
                 var template = CoreEntitiesContainer.ServiceTemplates.First(s => s.Id == serviceTemplateId.Value);
+
+                if (!template.OwnerServiceProviderId.HasValue)
+                    throw Request.BadRequest("The template does not have a service provider");
+
                 businessAccountId = template.OwnerServiceProviderId.Value;
             }
             else
             {
-                throw ApiExceptions.Create(Request.CreateResponse(HttpStatusCode.BadRequest));
+                throw Request.BadRequest("Not enough parameters were set");
             }
 
             //check the current user has access to the business account
@@ -72,8 +86,12 @@ namespace FoundOps.Api.Controllers.Rest
             //generate the service
             if (!serviceId.HasValue)
             {
+                if (!serviceDate.HasValue)
+                    throw Request.BadRequest("Need to have the service date set if you are generating a service (there is no service Id)");
+
                 service = new Core.Models.CoreEntities.Service
                 {
+                    //Insert a new Guid (so the same entity is tracked and updated) 
                     Id = Guid.NewGuid(),
                     ServiceDate = serviceDate.Value.Date,
                     ServiceProviderId = businessAccountId
