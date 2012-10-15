@@ -347,7 +347,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Silverlight.js" />
-    <Content Include="Views\Shared\LogOnUserControl.ascx" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\AccountController.cs" />

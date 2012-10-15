@@ -1,4 +1,3 @@
-@model FoundOps.Core.Models.Authentication.LogOnModel
 @using FoundOps.Core.Models
 
 <!DOCTYPE html>
@@ -44,40 +43,21 @@
     <!--[if IE 6]>
         <style>#container {height: 100%;}</style>
     <![endif]-->
-    @RenderSection( "HeadContent", required: false)
+    @RenderSection("HeadContent", required: false)
 </head>
 <body>
     <div id="container">
         <div id="header">
             <a href="@AppConstants.RootFrontSiteUrl">
-                <img id="SiteLogo" src="@Url.Content("../../Content/SiteLogo.png")" alt="FoundOPS" /></a>
-            <div id="mainLoginContent">
-                @using (Html.BeginForm("Login", "Account"))
-                   {
-                <div id="email">
-                    @Html.LabelFor(m => m.EmailAddress)<br />
-                    @Html.TextBoxFor(m => m.EmailAddress)
-                </div>
-                <div id="password">
-                    @Html.LabelFor(m => m.Password)<br />
-                    @Html.PasswordFor(m => m.Password)
-                </div>
-                <div id="rememberMe">
-                    @Html.CheckBoxFor(m => m.RememberMe)
-                    @Html.LabelFor(m => m.RememberMe)
-                </div>
-                <div id="forgotPass">
-                    @Html.ActionLink("Forgot Password?", "ForgotPassword", "Account")
-                </div>
-                <input id="loginBtn" type="submit" value="Login" />
-                }
-            </div>
+                <img id="SiteLogo" src="@Url.Content("../../Content/SiteLogo.png")" alt="FoundOPS" />
+            </a>
         </div>
-        <div id="main">
-            @RenderBody()
-        </div>
+    <div id="main">
+        @RenderBody()
+    </div>
     <div class="clearfooter"></div>
-    </div><!--End container -->
+    </div>
+    <!--End container -->
     <div id="footer">
         <ul id="footerList">
             <li>Connect&nbsp;&nbsp;&nbsp;</li>
@@ -118,12 +98,12 @@
                     <a href="http://www.foundops.com/2012/09/25/pricing/">Pricing</a>
                 </td>
                 <td>
-                    <a href="@String.Format("{0}/aboutUs?id=values", AppConstants.RootFrontSiteUrl)">Our Values</a>
+                    <a href="@String.Format("{0}/aboutUs?id=values", AppConstants.RootFrontSiteUrl)">Our
+                        Values</a>
                 </td>
             </tr>
             <tr>
-                <td>
-                </td>
+                <td></td>
                 <td>
                     <a href="@String.Format("{0}/aboutUs?id=jobs", AppConstants.RootFrontSiteUrl)">Jobs</a>
                 </td>
@@ -134,12 +114,14 @@
                         Blog</a>
                 </td>
                 <td>
-                    <a href="@String.Format("{0}/aboutUs?id=contactUs", AppConstants.RootFrontSiteUrl)">Contact Us</a>
+                    <a href="@String.Format("{0}/aboutUs?id=contactUs", AppConstants.RootFrontSiteUrl)">
+                        Contact Us</a>
                 </td>
             </tr>
         </table>
         <div>
-            &copy;2012&nbsp;FOUNDOPS&nbsp;LLC</div>
+            &copy;2012&nbsp;FOUNDOPS&nbsp;LLC
+        </div>
     </div>
 </body>
 </html>

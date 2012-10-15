@@ -208,10 +208,12 @@ namespace FoundOps.Server.Controllers
             if (ModelState.IsValid && _coreEntitiesMembershipProvider.SetPassword(resetCode, model.NewPassword))
                 return RedirectToAction("ResetPasswordSuccess", "Account");
 
-            //If we got this far, something failed, redisplay form
+            model.ResetCode = resetCode;
+
+            //add some kind of error
             ModelState.AddModelError("", "");
 
-            return RedirectToAction("ResetPassword", "Account", new RouteValueDictionary { { "resetCode", resetCode } });
+            return View(model);
         }
 
         public ActionResult ResetPasswordSuccess()

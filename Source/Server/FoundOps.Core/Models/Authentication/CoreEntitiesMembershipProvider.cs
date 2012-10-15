@@ -91,9 +91,9 @@ namespace FoundOps.Core.Models.Authentication
         /// <returns>True if succesful, or false if it failed</returns>
         public bool SetPassword(string resetCode, string newPassword, bool autoLogin = true)
         {
-            var account = _coreEntitiesContainer.Parties.OfType<UserAccount>().First(ua => ua.TempResetToken == resetCode);
+            var account = _coreEntitiesContainer.Parties.OfType<UserAccount>().FirstOrDefault(ua => ua.TempResetToken == resetCode);
 
-            if (resetCode != account.TempResetToken || DateTime.UtcNow > account.TempTokenExpireTime)
+            if (account == null || resetCode != account.TempResetToken || DateTime.UtcNow > account.TempTokenExpireTime)
                 return false;
 
             account.PasswordSalt = EncryptionTools.GenerateSalt();

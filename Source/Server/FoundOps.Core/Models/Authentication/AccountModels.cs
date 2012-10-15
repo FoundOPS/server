@@ -22,13 +22,15 @@ namespace FoundOps.Core.Models.Authentication
         [Required]
         [ValidatePasswordLength]
         [DataType(DataType.Password)]
-        [DisplayName("New password (must be at least 8 characters in length)")]
+        [DisplayName("New password")]
         public string NewPassword { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
         [DisplayName("Confirm new password")]
         public string ConfirmPassword { get; set; }
+
+        public string ResetCode { get; set; }
     }
 
     public class SlEmailMessage
