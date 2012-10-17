@@ -233,6 +233,7 @@
     <Compile Include="Controllers\Rest\BusinessAccountsController.cs" />
     <Compile Include="Controllers\Rest\ClientsController.cs" />
     <Compile Include="Controllers\Rest\ColumnConfigurationsController.cs" />
+    <Compile Include="Controllers\Rest\PartyImageController.cs" />
     <Compile Include="Controllers\Rest\TimeZonesController.cs" />
     <Compile Include="Controllers\Rest\EmployeesController.cs" />
     <Compile Include="Controllers\Rest\ResourceWithLastPointsController.cs" />

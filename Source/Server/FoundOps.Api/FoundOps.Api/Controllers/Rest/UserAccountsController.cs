@@ -155,20 +155,6 @@ namespace FoundOps.Api.Controllers.Rest
             //TODO consider sending an email for existing users (they were given access to...)
         }
 
-        //TODO
-        //Update user image
-        //if (updateUserImage)
-        //{
-        //    user.PartyImageReference.Load();
-        //    if (user.PartyImage == null)
-        //    {
-        //        var partyImage = new PartyImage { OwnerParty = user };
-        //        user.PartyImage = partyImage;
-        //    }
-
-        //    value = PartyTools.UpdatePartyImageHelper(CoreEntitiesContainer, user, Request);
-        //}
-
         /// <summary>
         /// If roleId is set, changing properties on behalf of a business account. Can only change role and employee link.
         /// If roleId is null, changing properties on behalf of the current user. Can only change user properties: FirstName, LastName, Email Address, TimeZone, Password
