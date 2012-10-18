@@ -15,7 +15,7 @@ namespace FoundOps.Core.Tools
             var source = new TaskCompletionSource<T>();
 
             //Create the async callback
-            AsyncCallback cb = new AsyncCallback((asyncResult) =>
+            AsyncCallback cb = (asyncResult) =>
             {
                 try
                 {
@@ -26,7 +26,7 @@ namespace FoundOps.Core.Tools
                 {
                     source.SetException(e);
                 }
-            });
+            };
 
             //Call the function asynchrously
             function.BeginInvoke(cb, null);

@@ -128,6 +128,7 @@
     <Compile Include="Models\CoreEntities\Extensions\Fields\Option.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Fields\OptionsFieldExtensions.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Parties\BusinessAccountExtensions.shared.cs" />
+    <Compile Include="Models\OSMContract.cs" />
     <Compile Include="Models\CoreEntities\ServiceEntites\SimpleOptionsField.cs" />
     <Compile Include="Models\CoreEntities\ServiceEntites\ISimpleField.cs" />
     <Compile Include="Models\CoreEntities\ServiceEntites\ServiceTemplateWithDate.cs" />
