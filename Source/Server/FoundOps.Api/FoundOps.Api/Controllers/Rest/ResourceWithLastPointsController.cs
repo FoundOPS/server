@@ -32,8 +32,8 @@ namespace FoundOps.Api.Controllers.Rest
             var resourcesWithTrackPoints = CoreEntitiesContainer.GetResourcesWithLatestPoint(currentBusinessAccount.Id, userToday);
 
             var modelResources = resourcesWithTrackPoints.Select(ResourceWithLastPoint.ConvertToModel)
-                //It has happened within the past 24 hours
-                .Where(r => DateTime.UtcNow.Subtract(r.CollectedTimeStamp) < TimeSpan.FromHours(24))
+                //It has happened within the past day (24 hours)
+                .Where(r => DateTime.UtcNow.Subtract(r.CollectedTimeStamp) < TimeSpan.FromDays(1))
                 .ToList();
 
             return modelResources.AsQueryable();

@@ -151,13 +151,17 @@ namespace FoundOps.Api.Controllers.Rest
             //order the new track points by their TimeStamps
             var orderedModelTrackPoints = trackPoints.OrderBy(tp => tp.CollectedTimeStamp).ToArray();
 
-            TrackPoint latestTrackPoint = null;
+            var latestTrackPoint = orderedModelTrackPoints.LastOrDefault();
 
-            //find the last non-erroneous TrackPoint 
-            if (employee.LastLatitude.HasValue && employee.LastLongitude.HasValue)
+            //if there was a previous point today, check the latest point is not erroneous
+            if (employee.LastTimeStamp.HasValue && DateTime.UtcNow.Subtract(employee.LastTimeStamp.Value) < TimeSpan.FromDays(1))
             {
                 var previous = new GeoLocation(employee.LastLatitude.Value, employee.LastLongitude.Value);
                 latestTrackPoint = orderedModelTrackPoints.LastOrDefault(t => !Erroneous(t, previous, t.CollectedTimeStamp.Subtract(employee.LastTimeStamp.Value)));
+
+                //set the heading based on the previous point
+                if (latestTrackPoint != null)
+                    latestTrackPoint.Heading = (int)GeoLocationTools.Bearing(previous, latestTrackPoint);
             }
 
             if (latestTrackPoint != null)

@@ -103,6 +103,22 @@ namespace FoundOps.Common.Tools
         }
 
         #endregion
+
+        /// <summary>
+        /// Calculate the bearing from a to b
+        /// </summary>
+        /// <param name="a">Location a</param>
+        /// <param name="b">Location b</param>
+        /// <returns>degrees</returns>
+        public static double Bearing(IGeoLocation a, IGeoLocation b)
+        {
+            var y = Math.Sin(b.Longitude - a.Longitude) * Math.Cos(b.Latitude);
+            var x = Math.Cos(a.Latitude) * Math.Sin(b.Latitude) -
+                    Math.Sin(a.Latitude) * Math.Cos(b.Latitude) * Math.Cos(b.Longitude - a.Longitude);
+
+            var brng = Math.Atan2(y, x) * 180 / Math.PI;
+            return brng;
+        }
     }
 
     public interface IGeoLocation
