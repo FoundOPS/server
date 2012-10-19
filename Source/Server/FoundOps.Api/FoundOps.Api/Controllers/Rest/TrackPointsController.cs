@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using FoundOps.Api.Models;
 using FoundOps.Api.Tools;
+using FoundOps.Common.Tools;
 using FoundOps.Core.Models.Azure;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
@@ -50,11 +52,61 @@ namespace FoundOps.Api.Controllers.Rest
             var trackPoints = serviceContext.CreateQuery<TrackPointsHistoryTableDataModel>(tableName)
                 .Where(tp => tp.RouteId == routeId)
                 //The following allows us to get more than 1000 rows at a time
-                .AsTableServiceQuery().Execute().ToArray();
+                .AsTableServiceQuery().Execute().OrderBy(tp => tp.CollectedTimeStamp).ToArray();
+
+            var filteredTrackPoints = new List<TrackPointsHistoryTableDataModel>();
+
+            //Filter out erroneous points
+            for (int i = 0; i < trackPoints.Count(); i++)
+            {
+                var current = trackPoints[i];
+
+                var previous = trackPoints.ElementAtOrDefault(i - 1);
+                if (previous != null)
+                {
+                    var timeDelta = current.CollectedTimeStamp.Subtract(previous.CollectedTimeStamp);
+                    var distanceDelta = GeoLocationTools.VincentyDistanceFormula(previous, current) * 1000.0;
+                    
+                    //meters per second
+                    var velocity = distanceDelta / timeDelta.TotalSeconds;
+
+                    //if the distance traveled > 45 m/s (100 mph), it is erroneous
+                    if (velocity > 45)
+                    {
+                        //TODO log this and figure out why the mobile phones are sending these trackpoints, or what is going wrong
+                        continue;
+                    }
+
+                    //if the point moved in the range of centimeters, it is erroneous
+                    if (Math.Abs(distanceDelta - 0) < 0.0000001)
+                    {
+                        continue;
+                    }
+
+                    var next = trackPoints.ElementAtOrDefault(i + 1);
+                    if (next != null && next.CollectedTimeStamp.Subtract(current.CollectedTimeStamp) < TimeSpan.FromSeconds(5))
+                    {
+                        //TODO log this and figure out why the server is saving these trackpoints
+                        continue;
+                    }
+
+                    //for debugging erroneous points
+                    //var distanceToErroneous = GeoLocationTools.VincentyDistanceFormula(current, new GeoLocation(20.899650842339007, -156.41764283180234));
+                    //if (distanceToErroneous < .001) //clicking on the map has a certain amount of inaccuracy
+                    //{
+                    //    var next = trackPoints.ElementAtOrDefault(i + 1);
+                    //    var nextTimeDelta = next.CollectedTimeStamp.Subtract(current.CollectedTimeStamp);
+                    //    var nextDistanceDelta = GeoLocationTools.VincentyDistanceFormula(current, next) * 1000.0;
+                    //    var nextVelocity = nextDistanceDelta / nextTimeDelta.TotalSeconds;
+                    //}
+                }
+
+                filteredTrackPoints.Add(current);
+            }
 
             //Return the list of converted track points as a queryable
-            var modelTrackPoints = trackPoints.Select(TrackPoint.ConvertToModel);
-            return modelTrackPoints.OrderBy(tp => tp.CollectedTimeStamp).AsQueryable();
+            var modelTrackPoints = filteredTrackPoints.Select(TrackPoint.ConvertToModel);
+            return modelTrackPoints.AsQueryable();
         }
 
         /// <summary>
