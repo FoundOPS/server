@@ -4,7 +4,7 @@ using System;
 
 namespace FoundOps.Core.Models.Azure
 {
-    public class TrackPointsHistoryTableDataModel : TableServiceEntity, IGeoLocation
+    public class TrackPointsHistoryTableDataModel : TableServiceEntity
     {
         public TrackPointsHistoryTableDataModel(string partitionKey, string rowKey)
             : base(partitionKey, rowKey)
@@ -47,15 +47,6 @@ namespace FoundOps.Core.Models.Azure
                 CollectedDate = CollectedTimeStamp.Date;
             }
         }
-
-        #region Implementation of IGeoLocation
-
-        double IGeoLocation.Latitude { get { return Latitude.Value; } }
-        double IGeoLocation.Longitude { get { return Longitude.Value; } }
-        public double LatitudeRad { get { return GeoLocation.DegreeToRadian(Latitude.Value); } }
-        public double LongitudeRad { get { return GeoLocation.DegreeToRadian(Longitude.Value); } }
-        
-        #endregion
 
         /// <summary>
         /// The latitude where this was collected.

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using FoundOps.Api.Models;
 using FoundOps.Api.Tools;
 using FoundOps.Common.Tools;
@@ -8,6 +7,7 @@ using FoundOps.Core.Tools;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -52,9 +52,9 @@ namespace FoundOps.Api.Controllers.Rest
             var trackPoints = serviceContext.CreateQuery<TrackPointsHistoryTableDataModel>(tableName)
                 .Where(tp => tp.RouteId == routeId)
                 //The following allows us to get more than 1000 rows at a time
-                .AsTableServiceQuery().Execute().OrderBy(tp => tp.CollectedTimeStamp).ToArray();
+                .AsTableServiceQuery().Execute().OrderBy(tp => tp.CollectedTimeStamp).Select(TrackPoint.ConvertToModel).ToArray();
 
-            var filteredTrackPoints = new List<TrackPointsHistoryTableDataModel>();
+            var filteredTrackPoints = new List<TrackPoint>();
 
             //Filter out erroneous points
             for (int i = 0; i < trackPoints.Count(); i++)
@@ -65,23 +65,8 @@ namespace FoundOps.Api.Controllers.Rest
                 if (previous != null)
                 {
                     var timeDelta = current.CollectedTimeStamp.Subtract(previous.CollectedTimeStamp);
-                    var distanceDelta = GeoLocationTools.VincentyDistanceFormula(previous, current) * 1000.0;
-                    
-                    //meters per second
-                    var velocity = distanceDelta / timeDelta.TotalSeconds;
-
-                    //if the distance traveled > 45 m/s (100 mph), it is erroneous
-                    if (velocity > 45)
-                    {
-                        //TODO log this and figure out why the mobile phones are sending these trackpoints, or what is going wrong
+                    if (Erroneous(previous, current, timeDelta))
                         continue;
-                    }
-
-                    //if the point moved in the range of centimeters, it is erroneous
-                    if (Math.Abs(distanceDelta - 0) < 0.0000001)
-                    {
-                        continue;
-                    }
 
                     var next = trackPoints.ElementAtOrDefault(i + 1);
                     if (next != null && next.CollectedTimeStamp.Subtract(current.CollectedTimeStamp) < TimeSpan.FromSeconds(5))
@@ -104,9 +89,34 @@ namespace FoundOps.Api.Controllers.Rest
                 filteredTrackPoints.Add(current);
             }
 
-            //Return the list of converted track points as a queryable
-            var modelTrackPoints = filteredTrackPoints.Select(TrackPoint.ConvertToModel);
-            return modelTrackPoints.AsQueryable();
+            return filteredTrackPoints.AsQueryable();
+        }
+
+        /// <summary>
+        /// If the traveled distance is too far, ignore it
+        /// </summary>
+        /// <returns></returns>
+        private bool Erroneous(IGeoLocation previous, IGeoLocation current, TimeSpan timeDelta)
+        {
+            var distanceDelta = GeoLocationTools.VincentyDistanceFormula(previous, current) * 1000.0;
+
+            //meters per second
+            var velocity = distanceDelta / timeDelta.TotalSeconds;
+
+            //if the distance traveled > 45 m/s (100 mph), it is erroneous
+            if (velocity > 45)
+            {
+                //TODO log this and figure out why the mobile phones are sending these trackpoints, or what is going wrong
+                return true;
+            }
+
+            //if the point moved in the range of centimeters, it is erroneous
+            if (Math.Abs(distanceDelta - 0) < 0.0000001)
+            {
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -141,19 +151,29 @@ namespace FoundOps.Api.Controllers.Rest
             //order the new track points by their TimeStamps
             var orderedModelTrackPoints = trackPoints.OrderBy(tp => tp.CollectedTimeStamp).ToArray();
 
-            //Save the latest (most current) TrackPoint to the database
-            var latestTrackPoint = orderedModelTrackPoints.Last();  //the last TrackPoint of orderedModelTrackPoints is the latest
-            employee.LastCompassDirection = latestTrackPoint.Heading;
-            employee.LastLatitude = (double?)latestTrackPoint.Latitude;
-            employee.LastLongitude = (double?)latestTrackPoint.Longitude;
-            employee.LastSource = latestTrackPoint.Source;
-            employee.LastSpeed = (double?)latestTrackPoint.Speed;
-            employee.LastTimeStamp = latestTrackPoint.CollectedTimeStamp;
+            TrackPoint latestTrackPoint = null;
+
+            //find the last non-erroneous TrackPoint 
+            if (employee.LastLatitude.HasValue && employee.LastLongitude.HasValue)
+            {
+                var previous = new GeoLocation(employee.LastLatitude.Value, employee.LastLongitude.Value);
+                latestTrackPoint = orderedModelTrackPoints.LastOrDefault(t => !Erroneous(t, previous, t.CollectedTimeStamp.Subtract(employee.LastTimeStamp.Value)));
+            }
+
+            if (latestTrackPoint != null)
+            {
+                //Save the latest (most current) TrackPoint to the database
+                employee.LastCompassDirection = latestTrackPoint.Heading;
+                employee.LastLatitude = (double?)latestTrackPoint.Latitude;
+                employee.LastLongitude = (double?)latestTrackPoint.Longitude;
+                employee.LastSource = latestTrackPoint.Source;
+                employee.LastSpeed = (double?)latestTrackPoint.Speed;
+                employee.LastTimeStamp = latestTrackPoint.CollectedTimeStamp;
+            }
 
             //Push TrackPoints to Azure as long as either
             //the LastPushToAzureTimeStamp is null
             //the LastPushToAzureTimeStamp difference from the TrackPoint is > TimeBetweenPushesToAzure
-
             var lastPushToAzureTimeStamp = employee.LastPushToAzureTimeStamp;
 
             //send the TrackPoints to azure, that are seperated by TimeBetweenPushesToAzure (in seconds)

@@ -1,9 +1,10 @@
-﻿using FoundOps.Core.Models.Azure;
+﻿using FoundOps.Common.Tools;
+using FoundOps.Core.Models.Azure;
 using System;
 
 namespace FoundOps.Api.Models
 {
-    public class TrackPoint
+    public class TrackPoint : IGeoLocation
     {
         /// <summary>
         /// The Id of this TrackPoint
@@ -58,6 +59,15 @@ namespace FoundOps.Api.Models
         /// In Meters
         /// </summary>
         public int? Accuracy { get; set; }
+
+        #region Implementation of IGeoLocation
+
+        double IGeoLocation.Latitude { get { return (double) Latitude.Value; } }
+        double IGeoLocation.Longitude { get { return (double) Longitude.Value; } }
+        public double LatitudeRad { get { return GeoLocation.DegreeToRadian((double) Latitude.Value); } }
+        public double LongitudeRad { get { return GeoLocation.DegreeToRadian((double) Longitude.Value); } }
+
+        #endregion
 
         public static TrackPoint ConvertToModel(TrackPointsHistoryTableDataModel modelTrackPoint)
         {
