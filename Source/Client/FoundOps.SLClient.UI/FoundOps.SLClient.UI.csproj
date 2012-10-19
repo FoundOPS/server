@@ -341,18 +341,6 @@
     <Compile Include="Controls\Employees\EmployeeHistory\EmployeeHistoryLarge.xaml.cs">
       <DependentUpon>EmployeeHistoryLarge.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\Files\FileLarge.xaml.cs">
-      <DependentUpon>FileLarge.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Files\FilesGrid.xaml.cs">
-      <DependentUpon>FilesGrid.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Files\FilesLink.xaml.cs">
-      <DependentUpon>FilesLink.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Controls\Files\ImageFileUpload.xaml.cs">
-      <DependentUpon>ImageFileUpload.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\ImportData\ImportDataGrid.xaml.cs">
       <DependentUpon>ImportDataGrid.xaml</DependentUpon>
     </Compile>
@@ -653,22 +641,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Employees\EmployeeHistory\EmployeeHistoryLarge.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Files\FileLarge.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Files\FilesGrid.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Files\FilesLink.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\Files\ImageFileUpload.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

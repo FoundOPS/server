@@ -32,12 +32,6 @@
                 </Grid>
             </Border>
             <StackPanel Grid.Row="1">
-                <Controls:Expander Margin="5" IsExpanded="true" Style="{StaticResource ExpanderStyle}" BorderBrush="{StaticResource PermissionBrush}">
-                    <Controls:Expander.Header>
-                        <TextBlock Text="Image" Margin="0,3,5,3" FontSize="13" Foreground="{StaticResource PermissionBrush}" />
-                    </Controls:Expander.Header>
-                    <Files:ImageFileUpload x:Name="accountImage1" Margin="10" HorizontalAlignment="Center" DefaultFileTypeToCreate="CoreEntities:PartyImage" OwnerParty="{Binding}"  File="{Binding PartyImage, Mode=TwoWay}" />
-                </Controls:Expander>
                 <!--INFORMATION-->
                 <Controls:Expander Margin="5" Style="{StaticResource ExpanderStyle}" IsExpanded="true" BorderBrush="{StaticResource PermissionBrush}">
                     <Controls:Expander.Header>

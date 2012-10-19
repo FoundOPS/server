@@ -1,6 +1,6 @@
-﻿using System;
-using FoundOps.Common.Tools;
-using FoundOps.Common.Composite.Entities;
+﻿using FoundOps.Common.Composite.Entities;
+using FoundOps.Core.Models.Azure;
+using System;
 
 // Disable because this is a partial class
 // ReSharper disable CheckNamespace
@@ -51,7 +51,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         public string RawUrl
         {
-            get { return String.Format(@"{0}{1}/{2}", SharedConstants.BlobStorageUrl, OwnerParty.Id, Id); }
+            get { return String.Format(@"{0}{1}/{2}", AzureServerHelpers.BlobStorageUrl, OwnerParty.Id, Id); }
         }
     }
 }

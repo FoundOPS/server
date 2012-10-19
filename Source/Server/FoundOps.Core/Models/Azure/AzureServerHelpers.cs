@@ -15,12 +15,22 @@ namespace FoundOps.Core.Models.Azure
         /// <summary>
         /// The AccountKey for the storage account (depending on the solution configuration).
         /// </summary>
-        public static string AccountKey = ConfigWrapper.ConnectionString("AzureAccountKey");
+        public static string AccountKey = ConfigWrapper.ConnectionString("StorageKey");
+
+        /// <summary>
+        /// The AccountName for the storage account
+        /// </summary>
+        public static string AccountName = ConfigWrapper.ConnectionString("StorageName");
+
+        /// <summary>
+        /// The base url for the azure storage resources
+        /// </summary>
+        public static string BlobStorageUrl = "http://" + ConfigWrapper.ConnectionString("StoragePrefix") + ".foundops.com/";
 
         /// <summary>
         /// The Azure storage connection string.
         /// </summary>
-        public static string StorageConnectionString = "DefaultEndpointsProtocol=http;AccountName=" + SharedConstants.AzureAccountName + ";AccountKey=" + AccountKey;
+        public static string StorageConnectionString = "DefaultEndpointsProtocol=http;AccountName=" + AccountName + ";AccountKey=" + AccountKey;
 
         /// <summary>
         /// The default expiration of a shared access key. Cannot be more than 1 hour without a signed identifier.
@@ -43,6 +53,28 @@ namespace FoundOps.Core.Models.Azure
         }
 
         /// <summary>
+        /// Builds the container URL. 
+        /// Example url: http://bd.foundops.com/5B15B601-D082-4CAF-BF41-562A20CE1ABB
+        /// </summary>
+        /// <param name="ownerPartyId">The owner party id.</param>
+        public static string BuildContainerUrl(Guid ownerPartyId)
+        {
+            return string.Format(@"{0}{1}", BlobStorageUrl, ownerPartyId);
+        }
+
+        /// <summary>
+        /// Builds the file URL.
+        /// Example url: http://bd.foundops.com/5B15B601-D082-4CAF-BF41-562A20CE1ABB/filenameaccesskeyhere
+        /// </summary>
+        /// <param name="ownerPartyId">The owner party id.</param>
+        /// <param name="fileId">The file id.</param>
+        /// <param name="accessKey">The access key.</param>
+        public static string BuildFileUrl(Guid ownerPartyId, Guid fileId, string accessKey)
+        {
+            return BuildContainerUrl(ownerPartyId) + "/" + fileId + accessKey;
+        }
+
+        /// <summary>
         /// Gets a shared access key read only url for a file. Expires in 1 hours
         /// </summary>
         /// <param name="ownerPartyId">The owner party of the file (the container name)</param>
@@ -50,10 +82,10 @@ namespace FoundOps.Core.Models.Azure
         public static string GetBlobUrlHelper(Guid ownerPartyId, Guid fileGuid)
         {
             //Create service client for credentialed access to the Blob service
-            var blobClient = new CloudBlobClient(SharedConstants.BlobStorageUrl, new StorageCredentialsAccountAndKey(SharedConstants.AzureAccountName, AccountKey)) { Timeout = DefaultTimeout };
+            var blobClient = new CloudBlobClient(BlobStorageUrl, new StorageCredentialsAccountAndKey(AccountName, AccountKey)) { Timeout = DefaultTimeout };
 
             //Get a reference to a container, which may or may not exist
-            var blobContainer = blobClient.GetContainerReference(AzureTools.BuildContainerUrl(ownerPartyId));
+            var blobContainer = blobClient.GetContainerReference(BuildContainerUrl(ownerPartyId));
             if (blobContainer == null)
                 return null;
 
@@ -76,11 +108,11 @@ namespace FoundOps.Core.Models.Azure
         public static CloudBlob GetBlobHelper(Guid ownerPartyId, Guid fileGuid)
         {
             //Create service client for credentialed access to the Blob service.
-            var blobClient = new CloudBlobClient(SharedConstants.BlobStorageUrl,
-                new StorageCredentialsAccountAndKey(SharedConstants.AzureAccountName, AccountKey)) { Timeout = DefaultTimeout };
+            var blobClient = new CloudBlobClient(BlobStorageUrl,
+                new StorageCredentialsAccountAndKey(AccountName, AccountKey)) { Timeout = DefaultTimeout };
 
             //Get a reference to a container, which may or may not exist
-            var blobContainer = blobClient.GetContainerReference(AzureTools.BuildContainerUrl(ownerPartyId));
+            var blobContainer = blobClient.GetContainerReference(BuildContainerUrl(ownerPartyId));
             //Create a new container, if it does not exist
             var newContainer = blobContainer.CreateIfNotExist(new BlobRequestOptions { Timeout = DefaultTimeout });
 

@@ -178,7 +178,7 @@
     <Compile Include="Models\CoreEntities\Extensions\Fields\FieldExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Fields\LocationFieldExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Fields\OptionsFieldExtensions.shared.cs" />
-    <Compile Include="Models\CoreEntities\Extensions\Core\FileExtensions.shared.cs" />
+    <Compile Include="Models\CoreEntities\Extensions\Core\FileExtensions.cs" />
     <Compile Include="Models\CoreEntities\Extensions\ICompositeRaiseEntityPropertyChanged.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\IEntityDefaultInitialization.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Invoices\InvoiceExtensions.shared.cs" />

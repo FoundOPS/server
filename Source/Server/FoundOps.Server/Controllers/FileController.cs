@@ -33,10 +33,10 @@ namespace FoundOps.Server.Controllers
             return AsyncHelper.RunAsync(() =>
             {
                 //Create service client for credentialed access to the Blob service.
-                var blobClient = new CloudBlobClient(SharedConstants.BlobStorageUrl, new StorageCredentialsAccountAndKey(SharedConstants.AzureAccountName, AzureServerHelpers.AccountKey)) { Timeout = TimeSpan.FromMilliseconds(TimeoutMilliseconds) };
+                var blobClient = new CloudBlobClient(AzureServerHelpers.BlobStorageUrl, new StorageCredentialsAccountAndKey(AzureServerHelpers.AccountName, AzureServerHelpers.AccountKey)) { Timeout = TimeSpan.FromMilliseconds(TimeoutMilliseconds) };
 
                 //Get a reference to a container, which may or may not exist.
-                var blobContainer = blobClient.GetContainerReference(AzureTools.BuildContainerUrl(ownerPartyId));
+                var blobContainer = blobClient.GetContainerReference(AzureServerHelpers.BuildContainerUrl(ownerPartyId));
 
                 //Create a new container, if it does not exist
                 blobContainer.CreateIfNotExist(new BlobRequestOptions { Timeout = TimeSpan.FromMilliseconds(TimeoutMilliseconds) });
@@ -71,11 +71,11 @@ namespace FoundOps.Server.Controllers
             return AsyncHelper.RunAsync(() =>
             {
                 //Create service client for credentialed access to the Blob service.
-                var blobClient = new CloudBlobClient(SharedConstants.BlobStorageUrl,
-                    new StorageCredentialsAccountAndKey(SharedConstants.AzureAccountName, AzureServerHelpers.AccountKey)) { Timeout = TimeSpan.FromMilliseconds(TimeoutMilliseconds) };
+                var blobClient = new CloudBlobClient(AzureServerHelpers.BlobStorageUrl,
+                    new StorageCredentialsAccountAndKey(AzureServerHelpers.AccountName, AzureServerHelpers.AccountKey)) { Timeout = TimeSpan.FromMilliseconds(TimeoutMilliseconds) };
 
                 //Get a reference to a container, which may or may not exist.
-                var blobContainer = blobClient.GetContainerReference(AzureTools.BuildContainerUrl(ownerPartyId));
+                var blobContainer = blobClient.GetContainerReference(AzureServerHelpers.BuildContainerUrl(ownerPartyId));
                 //Create a new container, if it does not exist
                 blobContainer.CreateIfNotExist(new BlobRequestOptions { Timeout = TimeSpan.FromMilliseconds(TimeoutMilliseconds) });
 
@@ -119,11 +119,11 @@ namespace FoundOps.Server.Controllers
             return AsyncHelper.RunAsync(() =>
             {
                 //Create service client for credentials access to the Blob service.
-                var blobClient = new CloudBlobClient(SharedConstants.BlobStorageUrl,
-                    new StorageCredentialsAccountAndKey(SharedConstants.AzureAccountName, AzureServerHelpers.AccountKey)) { Timeout = TimeSpan.FromMilliseconds(TimeoutMilliseconds) };
+                var blobClient = new CloudBlobClient(AzureServerHelpers.BlobStorageUrl,
+                    new StorageCredentialsAccountAndKey(AzureServerHelpers.AccountName, AzureServerHelpers.AccountKey)) { Timeout = TimeSpan.FromMilliseconds(TimeoutMilliseconds) };
 
                 //Get a reference to a container, which may or may not exist.
-                var blobContainer = blobClient.GetContainerReference(AzureTools.BuildContainerUrl(ownerPartyId));
+                var blobContainer = blobClient.GetContainerReference(AzureServerHelpers.BuildContainerUrl(ownerPartyId));
 
                 //Get a reference to a blob, which may or may not exist.
                 var blob = blobContainer.GetBlobReference(fileGuid.ToString());

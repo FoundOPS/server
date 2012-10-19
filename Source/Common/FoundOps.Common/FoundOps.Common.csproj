@@ -120,7 +120,6 @@
     <Compile Include="Entities\FieldAttribute.cs" />
     <Compile Include="Models\ObservationState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tools\AzureTools.cs" />
     <Compile Include="Tools\CsvWriter.cs" />
     <Compile Include="Tools\DateRange.cs" />
     <Compile Include="Tools\DateTimeTools.cs" />
@@ -132,7 +131,6 @@
     <Compile Include="Tools\PasswordTools.cs" />
     <Compile Include="Tools\Rxx2.cs" />
     <Compile Include="Tools\SerializationTools.cs" />
-    <Compile Include="Tools\SharedConstants.cs" />
     <Compile Include="Tools\StreamHelpers.cs" />
   </ItemGroup>
   <ItemGroup>

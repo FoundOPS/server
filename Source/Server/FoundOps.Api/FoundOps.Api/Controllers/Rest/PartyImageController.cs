@@ -73,9 +73,9 @@ namespace FoundOps.Api.Controllers.Rest
             var blob = AzureServerHelpers.GetBlobHelper(id, id);
 
             // Get the file extension to make sure it is an image that can be processed
-            var extension = Path.GetExtension(imageFileName).ToLower();
+            var extension = Path.GetExtension(imageFileName);
             string[] allowedExtensions = { ".png", ".jpeg", ".jpg", ".gif" };
-            if (!allowedExtensions.Contains(extension))
+            if (string.IsNullOrEmpty(extension) || !allowedExtensions.Contains(extension.ToLower()))
                 throw new Exception("Cannot process files of this type.");
 
             blob.UploadByteArray(imageBytes);

@@ -1,5 +1,4 @@
-﻿using FoundOps.Common.Silverlight.Tools;
-using FoundOps.Core.Models.CoreEntities;
+﻿using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Context.Services.Interface;
 using System;
 using System.Collections.Generic;
@@ -107,14 +106,6 @@ namespace FoundOps.Server.Services.CoreDomainService
             var changes = GetChangeSet();
 
             var changesRejectedArgs = new ChangedRejectedEventArgs(this, changes.AddedEntities.ToArray(), changes.ModifiedEntities.ToArray());
-
-            //https://github.com/FoundOPS/FoundOPS/wiki/Files
-            //Remove inserted files from cloud storage that are now going to be removed
-            var filesToRemove =
-                changes.Where(c => c as File != null && c.EntityState == EntityState.New).Cast<File>();
-
-            foreach (var file in filesToRemove)
-                FileManager.DeleteFile(file.PartyId, file.Id);
 
             base.RejectChanges();
 

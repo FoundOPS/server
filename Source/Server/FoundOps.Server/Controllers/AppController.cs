@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using FoundOps.Common.Tools;
 using FoundOps.Core.Models;
+using FoundOps.Core.Models.Azure;
 
 #if !DEBUG //RELEASE or TESTRELEASE
 using System.IO;
@@ -24,7 +25,7 @@ namespace FoundOps.Server.Controllers
         {
             var model = new Dictionary<string, object>
                 {
-                    {"BlobRoot", SharedConstants.BlobStorageUrl + "app/"}
+                    {"BlobRoot", AzureServerHelpers.BlobStorageUrl + "app/"}
                 };
 
 #if DEBUG
