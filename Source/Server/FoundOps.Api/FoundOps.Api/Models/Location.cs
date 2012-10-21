@@ -28,7 +28,7 @@ namespace FoundOps.Api.Models
         /// <summary>
         /// The City of this Location
         /// </summary>
-        public string AdminDistrictTwo { get; set; }
+        public string City { get; set; }
 
         /// <summary>
         /// The latitude of this Location
@@ -43,12 +43,12 @@ namespace FoundOps.Api.Models
         /// <summary>
         /// The State of this location
         /// </summary>
-        public string AdminDistrictOne { get; set; }
+        public string State { get; set; }
 
         /// <summary>
         /// The Zipcode of this location
         /// </summary>
-        public string PostalCode { get; set; }
+        public string ZipCode { get; set; }
 
         /// <summary>
         /// The Country code of this location
@@ -65,7 +65,7 @@ namespace FoundOps.Api.Models
             ContactInfoSet = new List<ContactInfo>();
         }
 
-        public static Location ConvertModel(FoundOps.Core.Models.CoreEntities.Location locationModel)
+        public static Location ConvertModel(Core.Models.CoreEntities.Location locationModel)
         {
             var location = new Location
             {
@@ -75,10 +75,10 @@ namespace FoundOps.Api.Models
                 AddressLineTwo = locationModel.AddressLineTwo,
                 Longitude = locationModel.Longitude.ToString(),
                 Latitude = locationModel.Latitude.ToString(),
-                AdminDistrictTwo = locationModel.AdminDistrictTwo,
-                AdminDistrictOne = locationModel.AdminDistrictOne,
+                City = locationModel.AdminDistrictTwo,
+                State = locationModel.AdminDistrictOne,
                 CountryCode = locationModel.CountryCode,
-                PostalCode = locationModel.PostalCode
+                ZipCode = locationModel.PostalCode
             };
 
             foreach (var contactInfo in locationModel.ContactInfoSet)
@@ -93,10 +93,10 @@ namespace FoundOps.Api.Models
             {
                 AddressLineOne = geocoderResult.AddressLineOne,
                 AddressLineTwo = geocoderResult.AddressLineTwo,
-                AdminDistrictTwo = geocoderResult.City,
-                AdminDistrictOne = geocoderResult.State,
+                City = geocoderResult.City,
+                State = geocoderResult.State,
                 CountryCode = geocoderResult.CountryCode,
-                PostalCode = geocoderResult.ZipCode,
+                ZipCode = geocoderResult.ZipCode,
                 Latitude = Decimal.Round(Convert.ToDecimal(geocoderResult.Latitude), 8).ToString(),
                 Longitude = Decimal.Round(Convert.ToDecimal(geocoderResult.Longitude), 8).ToString()
             };
@@ -107,17 +107,17 @@ namespace FoundOps.Api.Models
             return location;
         }
 
-        public static FoundOps.Core.Models.CoreEntities.Location ConvertBack(Location location)
+        public static Core.Models.CoreEntities.Location ConvertBack(Location location)
         {
-            var newLocation = new FoundOps.Core.Models.CoreEntities.Location
+            var newLocation = new Core.Models.CoreEntities.Location
                 {
                     Id = location.Id,
                     AddressLineOne = location.AddressLineOne,
                     AddressLineTwo = location.AddressLineTwo,
                     Name = location.Name,
-                    AdminDistrictOne = location.AdminDistrictOne,
-                    AdminDistrictTwo = location.AdminDistrictTwo,
-                    PostalCode = location.PostalCode,
+                    AdminDistrictOne = location.State,
+                    AdminDistrictTwo = location.City,
+                    PostalCode = location.ZipCode,
                     CountryCode = location.CountryCode,
                     Latitude = Convert.ToDecimal(location.Latitude),
                     Longitude = Convert.ToDecimal(location.Longitude)

@@ -127,9 +127,9 @@ namespace FoundOps.Api.Controllers.Rest
             //Update all properties on the original location
             original.AddressLineOne = location.AddressLineOne;
             original.AddressLineTwo = location.AddressLineTwo;
-            original.AdminDistrictOne = location.AdminDistrictOne;
-            original.AdminDistrictTwo = location.AdminDistrictTwo;
-            original.PostalCode = location.PostalCode;
+            original.AdminDistrictOne = location.State;
+            original.AdminDistrictTwo = location.City;
+            original.PostalCode = location.ZipCode;
             original.CountryCode = location.CountryCode;
 
             SaveWithRetry();
