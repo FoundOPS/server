@@ -179,11 +179,11 @@
                     <telerik:RadMaskedTextBox MaskType="None" EmptyContent="Address Line 2" Margin="0,2,0,0" Value="{Binding AddressLineTwo, Mode=TwoWay}" />
                     <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
                         <telerik:RadMaskedTextBox MaskType="None" EmptyContent="City" MinWidth="100" Margin="0,0,2,0"
-                                                    Value="{Binding City, Mode=TwoWay}" />
+                                                    Value="{Binding AdminDistrictTwo, Mode=TwoWay}" />
                         <telerik:RadMaskedTextBox Mask="ll" EmptyContent="State" Margin="0,0,2,0" Placeholder=" "
-                                                    Value="{Binding State, Mode=TwoWay}" />
+                                                    Value="{Binding AdminDistrictOne, Mode=TwoWay}" />
                         <telerik:RadMaskedTextBox Mask="##########" EmptyContent="Zip Code" MinWidth="97" Placeholder=" "
-                                                    Value="{Binding ZipCode, Mode=TwoWay}" />
+                                                    Value="{Binding PostalCode, Mode=TwoWay}" />
                     </StackPanel>
                     <Button x:Name="EditLocationButton" Content="Edit Location" Margin="0,2,0,0"
                             Visibility="Visible" Click="EditLocationButtonClick" />

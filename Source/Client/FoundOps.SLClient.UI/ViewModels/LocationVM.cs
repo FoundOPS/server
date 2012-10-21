@@ -216,7 +216,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 return;
 
             //Set the default SearchText
-            SearchText = string.Format("{0}, {1}, {2}, {3}", entity.AddressLineOne, entity.City, entity.State, entity.ZipCode);
+            SearchText = string.Format("{0}, {1}, {2}, {3}", entity.AddressLineOne, entity.AdminDistrictTwo, entity.AdminDistrictOne, entity.PostalCode);
 
             #region Subscribe to Location state validation
             //Setup ValidLatitudeLongitude observable, it will be valid as long as the Entity's lat & long have a value
@@ -267,13 +267,13 @@ namespace FoundOps.SLClient.UI.ViewModels
                     Entity.AddressLineOne = SelectedGeocoderResult.AddressLineOne;
 
                 if (!String.IsNullOrEmpty(SelectedGeocoderResult.City))
-                    Entity.City = SelectedGeocoderResult.City;
+                    Entity.AdminDistrictTwo = SelectedGeocoderResult.City;
 
                 if (!String.IsNullOrEmpty(SelectedGeocoderResult.State))
-                    Entity.State = SelectedGeocoderResult.State;
+                    Entity.AdminDistrictOne = SelectedGeocoderResult.State;
 
                 if (!String.IsNullOrEmpty(SelectedGeocoderResult.ZipCode))
-                    Entity.ZipCode = SelectedGeocoderResult.ZipCode;
+                    Entity.PostalCode = SelectedGeocoderResult.ZipCode;
             }
             MessageBus.Current.SendMessage(new LocationSetMessage(SelectedGeocoderResult.TelerikLocation.Value));
         }

@@ -42,8 +42,8 @@ namespace FoundOps.SLClient.Data.Converters
             var location = (Location)value;
             return location == null
                        ? ""
-                       : String.Format("{0} {1}, {2}, {3} {4}", location.Name, location.AddressLineOne, location.City,
-                                       location.State, location.ZipCode);
+                       : String.Format("{0} {1}, {2}, {3} {4}", location.Name, location.AddressLineOne, location.AdminDistrictTwo,
+                                       location.AdminDistrictOne, location.PostalCode);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

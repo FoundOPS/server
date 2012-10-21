@@ -56,8 +56,8 @@ with
 2. A. Delete all stored procedures
    B. Update Model from Database
    C. Add back all Stored Procedures(Except CheckServiceTemplateForChildren and all that start with "Get" )
-   D. In Model Browser delete the Function Imports for the 3 table valued functions: 
-      GetServiceHolders, GetResourcesWithLastPoint, GetUnroutedServicesForDate
+   D. In Model Browser delete the Function Imports for the table valued functions: 
+      GetResourcesWithLastPoint
    E. Save EDMX
 
 -------------------------------------------------------------------------------------------------------------------------------
@@ -65,14 +65,17 @@ with
 
 Add after </EntityContainer> (the one after FK association sets)
 
-      <Function Name="GetResourcesWithLastPoint" IsComposable="false">
+      <Function Name="GetResourcesWithLatestPoint" IsComposable="false">
         <CommandText>
           SELECT EmployeeId, VehicleId, EntityName, Heading, Latitude, Longitude, CollectedTimeStamp, Speed, Source, RouteId, Accuracy
-          FROM dbo.GetResourcesWithLatestPoint (@serviceProviderId)
+          FROM dbo.GetResourcesWithLatestPoint (@serviceProviderId, @serviceDateUtc)
         </CommandText>
         <Parameter Name="serviceProviderId"
                Mode="In"
                Type="uniqueidentifier"/>
+		<Parameter Name="serviceDateUtc"
+               Mode="In"
+               Type="date"/>
       </Function>
 -------------------------------------------------------------------------------------------------------------------------------
 Re-Import functions 

@@ -28,8 +28,9 @@ namespace FoundOps.Core.Models.CoreEntities
             this.Name = "";
             this.AddressLineOne = "";
             this.AddressLineTwo = "";
-            this.City = "";
-            this.State = "";
+            this.AdminDistrictTwo = "";
+            this.AdminDistrictOne = "";
+            this.CountryCode = "";
             OnCreation();
         }
 

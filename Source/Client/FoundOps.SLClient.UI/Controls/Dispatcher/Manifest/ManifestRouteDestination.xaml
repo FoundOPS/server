@@ -73,11 +73,11 @@
                         <!--Address Line 1-->
                         <TextBlock Text="{Binding Location.AddressLineTwo}"/>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding Location.City}"/>
+                            <TextBlock Text="{Binding Location.AdminDistrictTwo}"/>
                             <TextBlock Text=", "/>
-                            <TextBlock Text="{Binding Location.State}"/>
+                            <TextBlock Text="{Binding Location.AdminDistrictOne}"/>
                             <TextBlock Text=" "/>
-                            <TextBlock Text="{Binding Location.ZipCode}"/>
+                            <TextBlock Text="{Binding Location.PostalCode}"/>
                         </StackPanel>
                     </StackPanel>
                     <StackPanel x:Name="ContactInfoElement" Width="245" Margin="4,2" Visibility="{Binding RouteManifestVM.RouteManifestSettings.IsContactInfoVisible, 

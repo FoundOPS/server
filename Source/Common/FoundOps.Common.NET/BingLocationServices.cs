@@ -20,6 +20,11 @@ namespace FoundOps.Common.NET
 
         public static IEnumerable<GeocoderResult> TryGeocode(string location)
         {
+            if (string.IsNullOrEmpty(location))
+            {
+                return new List<GeocoderResult>();
+            }
+
             var query = String.Format("{0}?query={1}", ApiUrl, location);
             return TryGeocodeUrl(query);
         }
@@ -29,7 +34,7 @@ namespace FoundOps.Common.NET
             //Do not take addresses without an AddressLineOne, the result will be high confidence but not correct
             if (string.IsNullOrEmpty(addressToGeocode.AddressLineOne))
                 return new List<GeocoderResult>();
-            
+
             var parameters = new[]
                 {
                     addressToGeocode.State,
@@ -115,6 +120,10 @@ namespace FoundOps.Common.NET
                             var state = addressElement.Element(xmlns + "AdminDistrict");
                             if (state != null)
                                 geocoderResult.State = state.Value;
+
+                            var countryCode = addressElement.Element(xmlns + "CountryRegion");
+                            if (countryCode != null)
+                                geocoderResult.CountryCode = countryCode.Value;
 
                             var zipCode = addressElement.Element(xmlns + "PostalCode");
                             if (zipCode != null)

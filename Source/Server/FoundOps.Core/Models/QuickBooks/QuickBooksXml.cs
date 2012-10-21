@@ -88,14 +88,14 @@ namespace FoundOps.Core.Models.QuickBooks
 
                         writer.CreateElement("Line2", invoice.BillToLocation.AddressLineTwo);
 
-                        writer.CreateElement("City", invoice.BillToLocation.City);
+                        writer.CreateElement("City", invoice.BillToLocation.AdminDistrictTwo);
 
-                        writer.CreateElement("CountrySubDivisionCode", invoice.BillToLocation.State);
+                        writer.CreateElement("CountrySubDivisionCode", invoice.BillToLocation.AdminDistrictOne);
 
-                        writer.CreateElement("ZipCode", invoice.BillToLocation.ZipCode);
+                        writer.CreateElement("ZipCode", invoice.BillToLocation.PostalCode);
                     });
 
-                    //writer.CreateElement("SalesTermId", invoiceToCreate.BillToLocation.City);
+                    //writer.CreateElement("SalesTermId", invoiceToCreate.BillToLocation.AdminDistrictTwo);
                     //writer.CreateElement("DueDate", invoiceToCreate.DueDate.ToString());
                 });
 
