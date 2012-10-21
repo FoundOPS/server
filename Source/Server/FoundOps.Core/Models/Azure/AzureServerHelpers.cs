@@ -1,5 +1,4 @@
 ﻿using FoundOps.Common.NET;
-using FoundOps.Common.Tools;
 using System;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.StorageClient;

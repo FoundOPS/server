@@ -1,19 +1,19 @@
-﻿using System.Collections.Generic;
-using FoundOps.Api.Controllers.Rest;
+﻿using FoundOps.Api.Controllers.Rest;
 using FoundOps.Api.Models;
-using System.Data;
-using System.Data.Entity;
 using FoundOps.Common.Tools.ExtensionMethods;
-using FoundOps.Core.Models;
 using FoundOps.Core.Models.CoreEntities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Data;
+using System.Data.Entity;
 using System.Diagnostics;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Hosting;
+using Location = FoundOps.Api.Models.Location;
 using RouteTask = FoundOps.Api.Models.RouteTask;
 
 namespace FoundOps.Api.Tests.Controllers
@@ -60,7 +60,7 @@ namespace FoundOps.Api.Tests.Controllers
             CoreEntitiesContainer.ContextOptions.LazyLoadingEnabled = false;
 
             //Admin role on GotGrease?
-            _roleId = CoreEntitiesContainer.Roles.First(r => r.OwnerBusinessAccountId == _gotGreaseId && r.RoleTypeInt == (int)Core.Models.CoreEntities.RoleType.Administrator).Id;
+            _roleId = CoreEntitiesContainer.Roles.First(r => r.OwnerBusinessAccountId == _gotGreaseId && r.RoleTypeInt == (int)RoleType.Administrator).Id;
         }
 
         private void DetachAllEntities()
@@ -130,33 +130,27 @@ namespace FoundOps.Api.Tests.Controllers
         public void TestLocations()
         {
             var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost");
-            var controller = new LocationsController() { Request = request };
+            var controller = new LocationsController { Request = request };
 
-            var getResponseFromId = controller.Get(RoleId, new Guid("C0FA60DA-F736-455B-B9A1-9EB7D8E07769"), null);
-
-            FoundOps.Core.Models.CoreEntities.Location location;
-
-            using (var conn = new SqlConnection(ServerConstants.SqlConnectionString))
-            {
-                conn.Open();
-
-                //Find the location with the desired Id
-                location = conn.Query<FoundOps.Core.Models.CoreEntities.Location>("SELECT * FROM Locations WHERE Id = @Id", new { Id = new Guid("C0FA60DA-F736-455B-B9A1-9EB7D8E07769") }).FirstOrDefault();
-
-                conn.Close();
-            }
+            var location = CoreEntitiesContainer.Locations.First(l => l.BusinessAccountId == _gotGreaseId);
+            var getResponseFromId = controller.Get(_roleId, location.Id, null);
 
             var convertedLocation = Location.ConvertModel(location);
-
-            if (!Tools.AreObjectsEqual(getResponseFromId, convertedLocation))
+            if (!Tools.AreObjectsEqual(getResponseFromId.First(), convertedLocation))
                 throw new Exception("Objects are not equal. Check output window for details");
 
-            var searchText = convertedLocation.AddressLineOne + ' ' + convertedLocation.AdminDistrictTwo + ' ' + convertedLocation.AdminDistrictOne + ' ' + convertedLocation.CountryCode;
+            //TODO uncomment when existing locations are included in search
+            //var searchText = convertedLocation.AddressLineOne + ' ' + convertedLocation.AdminDistrictTwo + ' ' + convertedLocation.AdminDistrictOne + ' ' + convertedLocation.CountryCode;
+            //var getResponseFromSearch = controller.GetAllLocations(_roleId, searchText).FirstOrDefault();
+            //if (!Tools.AreObjectsEqual(getResponseFromSearch, convertedLocation, new[] { "Id", "Name", "AddressLineTwo" }))
+            //    throw new Exception("Objects are not equal. Check output window for details");
 
-            var getResponseFromSearch = controller.GetAllLocations(RoleId, searchText).FirstOrDefault();
-
-            if (!Tools.AreObjectsEqual(getResponseFromSearch, convertedLocation, new[] { "Id", "Name", "AddressLineTwo" }))
-                throw new Exception("Objects are not equal. Check output window for details");
+            var getResponseFromSearch = controller.GetAllLocations(_roleId, "12414 english garden, 20171").FirstOrDefault();
+            Assert.AreEqual("20171", getResponseFromSearch.PostalCode);
+            Assert.AreEqual("Herndon", getResponseFromSearch.AdminDistrictTwo);
+            Assert.AreEqual("VA", getResponseFromSearch.AdminDistrictOne);
+            Assert.IsTrue(getResponseFromSearch.Latitude.Contains("38.8981361"));
+            Assert.IsTrue(getResponseFromSearch.Longitude.Contains("-77.3790054"));
 
             var newLocation = new Location
             {
@@ -170,9 +164,7 @@ namespace FoundOps.Api.Tests.Controllers
                 CountryCode = "PO"
             };
 
-            var postResponse = controller.Post(new Guid("8528E50D-E2B9-4779-9B29-759DBEA53B61"), newLocation);
-
-            Assert.AreEqual(postResponse.StatusCode, HttpStatusCode.Accepted);
+            controller.Post(_roleId, newLocation);
 
             newLocation.CountryCode = "WK";
             newLocation.AdminDistrictTwo = "I Have Changed";
@@ -180,9 +172,7 @@ namespace FoundOps.Api.Tests.Controllers
             newLocation.AddressLineTwo = "Different";
             newLocation.PostalCode = "Not Even Postal Code";
 
-            var putResponse = controller.Put(RoleId, newLocation);
-
-            Assert.AreEqual(putResponse.StatusCode, HttpStatusCode.Accepted);
+            controller.Put(_roleId, newLocation);
         }
 
         [TestMethod]
