@@ -145,10 +145,10 @@ namespace FoundOps.Api.Tests.Controllers
             //if (!Tools.AreObjectsEqual(getResponseFromSearch, convertedLocation, new[] { "Id", "Name", "AddressLineTwo" }))
             //    throw new Exception("Objects are not equal. Check output window for details");
 
-            var getResponseFromSearch = controller.GetAllLocations(_roleId, "12414 english garden, 20171").FirstOrDefault();
-            Assert.AreEqual("20171", getResponseFromSearch.PostalCode);
-            Assert.AreEqual("Herndon", getResponseFromSearch.AdminDistrictTwo);
-            Assert.AreEqual("VA", getResponseFromSearch.AdminDistrictOne);
+            var getResponseFromSearch = controller.Get(_roleId, null, null, null, "12414 english garden, 20171").FirstOrDefault();
+            Assert.AreEqual("20171", getResponseFromSearch.ZipCode);
+            Assert.AreEqual("Herndon", getResponseFromSearch.City);
+            Assert.AreEqual("VA", getResponseFromSearch.State);
             Assert.IsTrue(getResponseFromSearch.Latitude.Contains("38.8981361"));
             Assert.IsTrue(getResponseFromSearch.Longitude.Contains("-77.3790054"));
 
@@ -158,19 +158,19 @@ namespace FoundOps.Api.Tests.Controllers
                 Name = "New Location",
                 AddressLineOne = "123 Fake Street",
                 AddressLineTwo = "Apt ???",
-                AdminDistrictTwo = "Nowheresville",
-                AdminDistrictOne = "Atlantis",
-                PostalCode = "012345",
+                City = "Nowheresville",
+                State = "Atlantis",
+                ZipCode = "012345",
                 CountryCode = "PO"
             };
 
             controller.Post(_roleId, newLocation);
 
             newLocation.CountryCode = "WK";
-            newLocation.AdminDistrictTwo = "I Have Changed";
+            newLocation.City = "I Have Changed";
             newLocation.AddressLineOne = "Not The Same as I Was";
             newLocation.AddressLineTwo = "Different";
-            newLocation.PostalCode = "Not Even Postal Code";
+            newLocation.ZipCode = "Not Even Postal Code";
 
             controller.Put(_roleId, newLocation);
         }
@@ -378,7 +378,7 @@ namespace FoundOps.Api.Tests.Controllers
             DetachAllEntities();
             var controller = TestTools.CreateRequest<TrackPointsController>(HttpMethod.Get);
             var date = DateTime.UtcNow.Date;
-            
+
             var routeId = CoreEntitiesContainer.Routes.Where(r => r.Date == date && r.OwnerBusinessAccountId == _gotGreaseId).RandomItem().Id;
 
             var getResponse = controller.Get(_roleId, routeId);

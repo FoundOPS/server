@@ -7,10 +7,10 @@
     [DateOfBirth]              DATETIME         NULL,
     [AddressLineOne]           NVARCHAR (MAX)   NULL,
     [AddressLineTwo]           NVARCHAR (MAX)   NULL,
-    [City]                     NVARCHAR (MAX)   NULL,
+    [AdminDistrictTwo]         NVARCHAR (MAX)   NULL,
     [Comments]                 NVARCHAR (MAX)   NULL,
-    [State]                    NVARCHAR (MAX)   NULL,
-    [ZipCode]                  NVARCHAR (MAX)   NULL,
+    [AdminDistrictOne]         NVARCHAR (MAX)   NULL,
+    [PostalCode]               NVARCHAR (MAX)   NULL,
     [Permissions]              NVARCHAR (MAX)   NULL,
     [HireDate]                 DATETIME         NULL,
     [SSN]                      NVARCHAR (MAX)   NULL,
@@ -24,10 +24,13 @@
     [LastSource]               NVARCHAR (MAX)   NULL,
     [LastPushToAzureTimeStamp] DATETIME         NULL,
     [LastAccuracy]             INT              NULL,
+    [CountryCode]              NVARCHAR (MAX)   NULL,
     CONSTRAINT [PK_Employees] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_EmployeeBusinessAccount] FOREIGN KEY ([EmployerId]) REFERENCES [dbo].[Parties_BusinessAccount] ([Id]),
     CONSTRAINT [FK_EmployeeUserAccount] FOREIGN KEY ([LinkedUserAccountId]) REFERENCES [dbo].[Parties_UserAccount] ([Id]) ON DELETE SET NULL
 );
+
+
 
 
 

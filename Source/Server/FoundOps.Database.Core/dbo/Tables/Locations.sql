@@ -3,22 +3,25 @@
     [Name]                     NVARCHAR (MAX)   NULL,
     [AddressLineOne]           NVARCHAR (MAX)   NULL,
     [Longitude]                DECIMAL (11, 8)  NULL,
-    [ZipCode]                  NVARCHAR (MAX)   NULL,
+    [PostalCode]               NVARCHAR (MAX)   NULL,
     [AddressLineTwo]           NVARCHAR (MAX)   NULL,
-    [State]                    NVARCHAR (MAX)   NULL,
+    [AdminDistrictOne]         NVARCHAR (MAX)   NULL,
     [Latitude]                 DECIMAL (11, 8)  NULL,
-    [City]                     NVARCHAR (MAX)   NULL,
+    [AdminDistrictTwo]         NVARCHAR (MAX)   NULL,
     [RegionId]                 UNIQUEIDENTIFIER NULL,
     [BusinessAccountIdIfDepot] UNIQUEIDENTIFIER NULL,
     [BusinessAccountId]        UNIQUEIDENTIFIER NULL,
     [ClientId]                 UNIQUEIDENTIFIER NULL,
     [IsDefaultBillingLocation] BIT              NULL,
+    [CountryCode]              NVARCHAR (MAX)   NULL,
     CONSTRAINT [PK_Locations] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_BusinessAccountLocation] FOREIGN KEY ([BusinessAccountIdIfDepot]) REFERENCES [dbo].[Parties_BusinessAccount] ([Id]),
     CONSTRAINT [FK_ClientLocation1] FOREIGN KEY ([ClientId]) REFERENCES [dbo].[Clients] ([Id]),
     CONSTRAINT [FK_LocationBusinessAccount] FOREIGN KEY ([BusinessAccountId]) REFERENCES [dbo].[Parties_BusinessAccount] ([Id]),
     CONSTRAINT [FK_RegionLocation] FOREIGN KEY ([RegionId]) REFERENCES [dbo].[Regions] ([Id])
 );
+
+
 
 
 

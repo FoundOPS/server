@@ -16,14 +16,15 @@ namespace FoundOps.Api.Controllers.Rest
     {
         /// <summary>
         /// Gets either one location based on Id passed, all locations for a client,
-        /// or all depot locations for a business account
+        /// all depot locations for a business account, or geocode based off the search string
         /// </summary>
         /// <param name="roleId">The role</param>
-        /// <param name="locationId">Used if you only want to get a specific location</param>
-        /// <param name="clientId">Used if you want to get all locations for a client</param>
-        /// <param name="getDepots">Used if you want to get all depot locations for a business account. Defaults to false</param>
+        /// <param name="locationId">If set: get a specific location</param>
+        /// <param name="clientId">Else if set: get all locations for a client</param>
+        /// <param name="getDepots">Else if set: get all depot locations for a business account</param>
+        /// <param name="search">Else if set: attempt to geocode. Only returns high-confidence results</param>
         /// <returns>List of locations</returns>
-        public Location[] Get(Guid roleId, Guid? locationId, Guid? clientId, bool? getDepots = false)
+        public IQueryable<Location> Get(Guid roleId, Guid? locationId, Guid? clientId, bool? getDepots = false, string search = null)
         {
             //Check to be sure the user has access
             var currentBusinessAccount = CoreEntitiesContainer.Owner(roleId).FirstOrDefault();
@@ -32,20 +33,36 @@ namespace FoundOps.Api.Controllers.Rest
 
             Core.Models.CoreEntities.Location[] locations;
 
-            //Default the SQL query and the Id to be for looking up one location
-            var sql = "SELECT * FROM Locations WHERE Id = @Id";
-            var lookupId = locationId;
+            string sql;
+            Guid? lookupId;
 
-            //Override with looking up all depot locations for a business accounts
-            if (getDepots.HasValue && getDepots.Value)
+            if (locationId.HasValue)
             {
+                //one location from Id
+                sql = "SELECT * FROM Locations WHERE Id = @Id";
+                lookupId = locationId;
+            }
+            else if (clientId != null) //Override with 
+            {
+                //all Locations for a client
+                sql = "SELECT * FROM Locations WHERE ClientId = @Id";
+                lookupId = clientId;
+            }
+            else if (getDepots.HasValue && getDepots.Value)
+            {
+                //depot locations for a business accounts
                 sql = "SELECT * FROM Locations WHERE BusinessAccountIdIfDepot = @Id";
                 lookupId = currentBusinessAccount.Id;
             }
-            else if (clientId != null) //Override with looking up all Locations for a client
+            else if (string.IsNullOrEmpty(search))
             {
-                sql = "SELECT * FROM Locations WHERE ClientId = @Id";
-                lookupId = clientId;
+                //attempt to geocode
+                var geocodeResult = BingLocationServices.TryGeocode(search);
+                return geocodeResult.Select(Location.ConvertGeocode).AsQueryable();
+            }
+            else
+            {
+                throw Request.BadRequest();
             }
 
             using (var conn = new SqlConnection(ServerConstants.SqlConnectionString))
@@ -57,26 +74,7 @@ namespace FoundOps.Api.Controllers.Rest
                 conn.Close();
             }
 
-            return locations.Select(Location.ConvertModel).ToArray();
-        }
-
-        /// <summary>
-        /// Tries to geocode based off of the search string
-        /// </summary>
-        /// <param name="roleId">The current roleId</param>
-        /// <param name="search">String to be geocoded</param>
-        /// <returns>A list of high confidence geocoded locations based on the search string</returns>
-        public IEnumerable<Location> GetAllLocations(Guid roleId, string search)
-        {
-            //Check to be sure the user has access
-            var currentBusinessAccount = CoreEntitiesContainer.Owner(roleId).FirstOrDefault();
-            if (currentBusinessAccount == null)
-                throw Request.NotAuthorized();
-
-            //Attempt to geocode, returns only high-confidence results
-            var geocodeResult = BingLocationServices.TryGeocode(search);
-
-            return geocodeResult.Select(Location.ConvertGeocode);
+            return locations.Select(Location.ConvertModel).AsQueryable();
         }
 
         /// <summary>

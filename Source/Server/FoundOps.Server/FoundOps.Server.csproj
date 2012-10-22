@@ -251,6 +251,7 @@
     <Content Include="app\img\LogoWhiteText%28TransparentBg%29.png" />
     <Content Include="app\img\marker-shadow.png" />
     <Content Include="app\img\marker.png" />
+    <Content Include="app\img\navBg.png" />
     <Content Include="app\img\Notify.png" />
     <Content Include="app\img\outerCircle.png" />
     <Content Include="app\img\phone.png" />
@@ -270,6 +271,7 @@
     <Content Include="app\img\ServicesGrey.png" />
     <Content Include="app\img\settings.png" />
     <Content Include="app\img\settingsColor.png" />
+    <Content Include="app\img\sideBarBg.png" />
     <Content Include="app\img\slider.png" />
     <Content Include="app\img\spanBgTags.png" />
     <Content Include="app\img\spinner.gif" />
