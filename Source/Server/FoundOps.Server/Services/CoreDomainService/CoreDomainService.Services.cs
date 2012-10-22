@@ -358,7 +358,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             var csvWriter = new CsvWriter(memoryStream);
 
             csvWriter.WriteHeaderRecord("Service Type", "Client", "Location", "Address Line 1", "Frequency",
-                                        "Start Date", "End Date", "Repeat Every", "Repeat On");
+                                        "Start Date", "End Date", "Repeat Every", "Repeat On", "Latitude", "Longitude");
 
             var recurringServices = RecurringServicesForServiceProviderOptimized(roleId).Include(rs => rs.Client).Include(rs => rs.Repeat).Include(rs => rs.ServiceTemplate);
 
@@ -459,7 +459,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                 //"Service Type", "Client", "Location", "Address", "Frequency"
                 csvWriter.WriteDataRecord(record.ServiceType, record.ClientName, locationName, address, frequency.ToString(),
                     //"Start Date", "End Date", "Repeat Every", "Repeat On"
-                   repeat.StartDate.ToShortDateString(), endDate, repeat.RepeatEveryTimes.ToString(), repeatOn);
+                   repeat.StartDate.ToShortDateString(), endDate, repeat.RepeatEveryTimes.ToString(), repeatOn, destination.Latitude, destination.Longitude);
             }
 
             csvWriter.Close();

@@ -1,7 +1,5 @@
-﻿using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
-using FoundOps.Common.Tools;
-using FoundOps.Core.Models.CoreEntities;
-using FoundOps.SLClient.Algorithm;
+﻿using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
 using FoundOps.SLClient.UI.Controls.Dispatcher;
 using ReactiveUI.Xaml;
@@ -11,6 +9,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Windows.Threading;
+using TaskOptimizer.API;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -68,6 +67,16 @@ namespace FoundOps.SLClient.UI.ViewModels
         private int _percentProgress;
 
         /// <summary>
+        /// The calculated responses
+        /// </summary>
+        private readonly List<OSMResponse> _responses = new List<OSMResponse>();
+
+        /// <summary>
+        /// The route task collections to calculate
+        /// </summary>
+        private IEnumerable<IEnumerable<RouteTask>> _routeTaskCollections;
+
+        /// <summary>
         /// The time remaining for the algorithm to run.
         /// </summary>
         public TimeSpan TotalCalculationTime
@@ -80,6 +89,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             }
         }
 
+        AlgorithmStatus _algorithmStatus;
         /// <summary>
         /// Calculate the best organization of the tasks.
         /// It will seperate tasks based on service type, and then push the ordered task collections when complete.
@@ -90,26 +100,31 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <returns>An observable to stay asynchronous. The result is pushed once, so take the first item.</returns>
         public IObservable<IEnumerable<IEnumerable<RouteTask>>> OrderTasks(IEnumerable<RouteTask> unroutedRouteTasks, IEnumerable<string> serviceTypes)
         {
-            var algorithmStatus = new AlgorithmStatus { AlgorithmVM = this };
+            _responses.Clear();
+            _routeTaskCollections = null;
+
+            _algorithmStatus = new AlgorithmStatus { AlgorithmVM = this };
             var result = new Subject<IEnumerable<IEnumerable<RouteTask>>>();
 
             //Organize the unroutedRouteTasks by ServiceTemplateName
             //only choose task holders that have LocationIds, a ServiceName, and a Latitude and a Longitude
-            var RouteTasksToRoute =
+            var routeTasksToRoute =
                 unroutedRouteTasks.Where(th =>
                     th.LocationId.HasValue && th.Name != null && th.Location.Latitude.HasValue && th.Location.Longitude.HasValue)
+                    //TODO Remove, for testing
+                    .Take(25)
                     .ToArray();
 
             //Find which service types should be routed by choosing the (distinct) ServiceTypes of the unroutedRouteTasks
             //only choose the types that should be routes
             //Then only choose route types Make sure each of those service types have at least one route with that RouteType
-            var distinctServiceTemplates = RouteTasksToRoute.Select(th => th.Name).Distinct()
+            var distinctServiceTemplates = routeTasksToRoute.Select(th => th.Name).Distinct()
                 .Where(st => serviceTypes.Any(t => t == st))
                 .ToArray();
 
             //Seperate the RouteTasks by ServiceTemplate Name to prevent routing different service types together
-            var RouteTaskCollections =
-                distinctServiceTemplates.Select(serviceTemplateName => RouteTasksToRoute.Where(th => th.Name == serviceTemplateName));
+            var routeTaskCollections =
+                distinctServiceTemplates.Select(serviceTemplateName => routeTasksToRoute.Where(th => th.Name == serviceTemplateName));
 
             #region Depot no longer used
             ////If there is not a depot set. Default to FoundOPS, 1305 Cumberland Ave, 47906: 40.460335, -86.929840
@@ -125,7 +140,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             //}
             #endregion
 
-            int totalTasksToRoute = RouteTaskCollections.Select(RouteTaskCollection => RouteTaskCollection.Count()).Sum();
+            int totalTasksToRoute = routeTaskCollections.Select(RouteTaskCollection => RouteTaskCollection.Count()).Sum();
 
             if (totalTasksToRoute <= 0)
                 return Observable.Empty<IEnumerable<IEnumerable<RouteTask>>>();
@@ -142,82 +157,58 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                 if (TimeRemaining > new TimeSpan()) return;
 
-                //When there is no TimeRemaining
-                //a) reset TimeRemaining to 0 seconds
-                //b) stop the countdown
-                TimeRemaining = new TimeSpan();
-                dispatcherTimer.Stop();
+                //When there is no TimeRemaining (and this has not been stopped), add 25% initial estimated time
+                TimeRemaining = TimeToCalculate(totalTasksToRoute / 2);
             };
             dispatcherTimer.Start();
 
-            //Calculate the order, one collection at a time
-            //peform the calculations asynchronously
+            _routeTaskCollections = routeTaskCollections;
+
+            //Calculate the order, in parallel & asynchronously
             if (totalTasksToRoute >= 0)
-                Observable.Start(() =>
-                {
-                    PerformNextCalcuation(RouteTaskCollections, 0, new List<IEnumerable<RouteTask>>(), algorithmStatus, result);
-                });
-
-            algorithmStatus.Show();
-            return result.AsObservable();
-        }
-
-        /// <summary>
-        /// A recursive method that will calculate the order of the routes, one route at a time
-        /// </summary>
-        /// <param name="geoLocationCollections">The collections to order</param>
-        /// <param name="index">The index of the collection to calculate</param>
-        /// <param name="orderedRouteTaskCollections">The ordered RouteTask collections</param>
-        /// <param name="statusWindow">The window to close when complete</param>
-        /// <param name="resultSubject">The subject to push when complete</param>
-        private void PerformNextCalcuation(IEnumerable<IEnumerable<IGeoLocation>> geoLocationCollections, int index, List<IEnumerable<RouteTask>> orderedRouteTaskCollections,
-            AlgorithmStatus statusWindow, Subject<IEnumerable<IEnumerable<RouteTask>>> resultSubject)
-        {
-            //if all routes have been calculated, close the algorithm status window and return
-            if (index >= geoLocationCollections.Count())
             {
-                statusWindow.Close();
-                resultSubject.OnNext(orderedRouteTaskCollections);
-                return;
+                foreach (var routeTaskCollection in routeTaskCollections)
+                {
+                    var coordinates = routeTaskCollection.Select(l => String.Format("{0},{1}", l.Location.Latitude.ToString(), l.Location.Longitude.ToString())).Aggregate((a, b) => a + "$" + b);
+                    Manager.Data.DomainContext.MakeTransaction(coordinates, (invokOp) => OnCalculated(invokOp, result), routeTaskCollection);
+                }
             }
 
-            var collectionToCalculate = geoLocationCollections.ElementAt(index).ToList();
-
-            var timeToCalculate = TimeToCalculate(collectionToCalculate.Count);
-            var calculator = new HiveRouteCalculator();
-            var foundSolution = calculator.Search(collectionToCalculate);
-            IList<IGeoLocation> bestSolution = null;
-            foundSolution.Subscribe(solutionMessage =>
-            {
-                if (solutionMessage == null)
-                    return;
-
-                bestSolution = solutionMessage.Solution;
-
-                ////convert meters to miles
-                //CurrentDistance = (int)(solutionMessage.Quality / 0.000621371192);
-            });
-
-            //Stop the algorithm after timeToCalculate is up
-            //then perform the next calculation
-            var stopAlgorithmDisposable = Rxx3.RunDelayed(timeToCalculate, () =>
-            {
-                calculator.StopSearch();
-                //add the best solution found to the collection
-                orderedRouteTaskCollections.Add(bestSolution.Cast<RouteTask>());
-                index++;
-                PerformNextCalcuation(geoLocationCollections, index, orderedRouteTaskCollections, statusWindow, resultSubject);
-            });
+            _algorithmStatus.Show();
 
             //Stop the algorithm on cancel search and return
             CancelCommand.Subscribe(_ =>
             {
-                //since the algorithm was cancelled, prevent the time from stopping the algorithm
-                stopAlgorithmDisposable.Dispose();
+                dispatcherTimer.Stop();
+                TimeRemaining = new TimeSpan();
 
-                calculator.StopSearch();
-                statusWindow.Close();
+                _algorithmStatus.Close();
             });
+
+            return result.AsObservable();
+        }
+
+        private void OnCalculated(System.ServiceModel.DomainServices.Client.InvokeOperation<OSMResponse> invokOp, Subject<IEnumerable<IEnumerable<RouteTask>>> result)
+        {
+            if (invokOp.IsCanceled)
+                return;
+
+            if (invokOp.HasError)
+            {
+                //TODO Perform retry logic
+                //obj.UserState
+                return;
+            }
+
+            _responses.Add(invokOp.Value);
+
+            //if all routes have been calculated, close the algorithm status window and return
+            if (_routeTaskCollections != null && _responses.Count == _routeTaskCollections.Count())
+            {
+                _algorithmStatus.Close();
+                //_responses.Select(r=>r
+                //result.OnNext(orderedRouteTaskCollections);
+            }
         }
 
         /// <summary>
