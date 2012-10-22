@@ -5,7 +5,6 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
---This procedure deletes all the basic info held on a Party (Locations, Contacts, ContactInfoSet, Roles, Vehicles and Files)
 CREATE PROCEDURE [dbo].[PropagateNewFields]
 		(@FieldId uniqueidentifier)
 	AS
