@@ -1,11 +1,9 @@
-﻿using System;
+﻿using FoundOps.Core.Models.CoreEntities;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using FoundOps.Core.Models.CoreEntities;
-using FoundOps.SLClient.Data.Services;
-using FoundOps.SLClient.UI.Controls.Dispatcher;
 using Telerik.Windows.Controls.DragDrop;
 using Telerik.Windows.Controls.TreeView;
 
@@ -316,7 +314,6 @@ namespace FoundOps.SLClient.UI.Tools
         /// Removes the dragged item from the route.
         /// </summary>
         /// <param name="draggedItem">The dragged item.</param>
-        /// <param name="routeDestination"> </param>
         public static void RemoveFromRoute(object draggedItem)
         {
             //If you are dragging the RouteDestination into the TaskBoard -> delete the RouteDestination completely

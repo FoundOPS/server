@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using FoundOps.Core.Models.CoreEntities;
+using FoundOps.SLClient.Data.Tools;
+using FoundOps.SLClient.UI.Tools;
+using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Linq;
-using System.ComponentModel;
 using Telerik.Windows.Controls;
-using FoundOps.SLClient.UI.Tools;
-using FoundOps.SLClient.Data.Tools;
-using FoundOps.SLClient.UI.ViewModels;
-using FoundOps.Core.Models.CoreEntities;
-using Telerik.Windows.Controls.DragDrop;
-using Telerik.Windows.Controls.TreeView;
 
 namespace FoundOps.SLClient.UI.Controls.Dispatcher
 {
@@ -49,7 +45,7 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher
         }
         //Logic
 
-        private void TaskBoardRadGridViewBeginningEdit(object sender, Telerik.Windows.Controls.GridViewBeginningEditRoutedEventArgs e)
+        private void TaskBoardRadGridViewBeginningEdit(object sender, GridViewBeginningEditRoutedEventArgs e)
         {
             if (e == null) throw new ArgumentNullException("e");
             if (!(e.Cell.ParentRow.Item is RouteTask))

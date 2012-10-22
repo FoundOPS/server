@@ -514,6 +514,15 @@ namespace FoundOps.SLClient.UI.ViewModels
             #endregion
         }
 
+        protected override void OnSave(SubmitOperation submitOperation)
+        {
+            base.OnSave(submitOperation);
+
+            //fixes bug where dragging a route destination into the task board does not reload the tasks
+            if (submitOperation.ChangeSet.RemovedEntities.Any(e => e as RouteDestination != null))
+                VM.TaskBoard.ForceReloadTasks.OnNext(true);
+        }
+
         /// <summary>
         /// Sets up the logic for manifests.
         /// </summary>
@@ -774,7 +783,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             foreach (var routeTask in routeDestination.RouteTasks)
                 routeTask.RouteDestinationId = null;
-            
+
             this.DomainContext.RouteDestinations.Remove(routeDestination);
         }
 
