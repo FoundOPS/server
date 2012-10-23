@@ -268,38 +268,25 @@ namespace FoundOps.Api.Tests.Controllers
             {
                 Id = newId,
                 Name = "New Location",
-                AddressLineOne = "123 Fake Street",
-                AddressLineTwo = "Apt ???",
-                City = "Nowheresville",
-                State = "Atlantis",
-                ZipCode = "012345",
-                CountryCode = "PO"
+                AddressLineOne = "2827 Floral Drive",
+                AddressLineTwo = "Room 2",
+                City = "Northbrook",
+                State = "Illinois",
+                ZipCode = "60062",
+                CountryCode = "US"
             };
 
             var controller = CreateRequest<LocationsController>(HttpMethod.Post);
 
             controller.Post(_roleId, newLocation);
-            DetachAllEntities();
-            var createdLocation = CoreEntitiesContainer.Locations.FirstOrDefault(l => l.Id == newId);
 
-            Assert.IsNotNull(createdLocation);
-
-            newLocation.CountryCode = "WK";
-            newLocation.City = "I Have Changed";
-            newLocation.AddressLineOne = "Not The Same as I Was";
-            newLocation.AddressLineTwo = "Different";
-            newLocation.ZipCode = "Not Even Postal Code";.
+            newLocation.AddressLineOne = "1305 Cumberland Ave";
+            newLocation.AddressLineTwo = "Suite 205";
+            newLocation.City = "West Lafayette";
+            newLocation.State = "Indiana";
+            newLocation.ZipCode = "47906";
 
             controller.Put(_roleId, newLocation);
-            DetachAllEntities();
-
-            createdLocation = CoreEntitiesContainer.Locations.First(l => l.Id == newId);
-
-            Assert.AreEqual("WK", createdLocation.CountryCode);
-            Assert.AreEqual("I Have Changed", createdLocation.AdminDistrictTwo);
-            Assert.AreEqual("Not The Same as I Was", createdLocation.AddressLineOne);
-            Assert.AreEqual("Different", createdLocation.AddressLineTwo);
-            Assert.AreEqual("Not Even Postal Code", createdLocation.PostalCode);
         }
 
         [TestMethod]
@@ -428,11 +415,9 @@ namespace FoundOps.Api.Tests.Controllers
             var unroutedStatus = CoreEntitiesContainer.TaskStatuses.First(ts => ts.BusinessAccountId == _gotGreaseId && ts.RemoveFromRoute);
             routeTask.TaskStatus = unroutedStatus;
 
-            var controller = CreateRequest<RouteTasksController>(HttpMethod.Get);
+            var controller = CreateRequest<RouteTasksController>(HttpMethod.Put);
 
-            var putResponse = controller.Put(RouteTask.ConvertModel(routeTask));
-            //check it worked
-            Assert.AreEqual(HttpStatusCode.Accepted, putResponse.StatusCode);
+            controller.Put(RouteTask.ConvertModel(routeTask));
 
             //make sure the route task is no longer in a route
             DetachAllEntities();
@@ -444,9 +429,7 @@ namespace FoundOps.Api.Tests.Controllers
             var routedStatus = CoreEntitiesContainer.TaskStatuses.First(ts => ts.BusinessAccountId == _gotGreaseId && !ts.RemoveFromRoute);
             routeTask.TaskStatus = routedStatus;
 
-            putResponse = controller.Put(RouteTask.ConvertModel(routeTask));
-            //check it worked
-            Assert.AreEqual(HttpStatusCode.Accepted, putResponse.StatusCode);
+            controller.Put(RouteTask.ConvertModel(routeTask));
 
             //make sure the route task is still in a route
             DetachAllEntities();
@@ -505,7 +488,7 @@ namespace FoundOps.Api.Tests.Controllers
             controller.Post(_roleId, trackPoints.ToArray());
         }
 
-        //Begin SQL function tests
+        #region SQL Tests
 
         [TestMethod]
         public void DeleteBusinessAccount()
@@ -659,7 +642,6 @@ namespace FoundOps.Api.Tests.Controllers
                 Assert.AreEqual(DateTime.UtcNow.Date.AddDays(700), lastDate);
 
                 conn.Close();
-
             }
         }
 
@@ -942,5 +924,7 @@ namespace FoundOps.Api.Tests.Controllers
                 Assert.AreEqual(0, compare.Differences.Count);
             }
         }
+
+        #endregion
     }
 }

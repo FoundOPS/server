@@ -16,8 +16,7 @@ namespace FoundOps.Api.Controllers.Rest
         /// Right now you can only change it's status.
         /// </summary>
         /// <param name="routeTask">The task to update</param>
-        /// <returns>The result</returns>
-        public HttpResponseMessage Put(RouteTask routeTask)
+        public void Put(RouteTask routeTask)
         {
             var routeTaskModel = CoreEntitiesContainer.RouteTasks.FirstOrDefault(rt => rt.Id == routeTask.Id);
             if (routeTaskModel == null)
@@ -54,7 +53,6 @@ namespace FoundOps.Api.Controllers.Rest
             }
 
             SaveWithRetry();
-            return Request.CreateResponse(HttpStatusCode.Accepted);
         }
     }
 }
