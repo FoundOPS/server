@@ -14,7 +14,7 @@ namespace FoundOps.Api.Controllers.Rest
     [Authorize]
     public class ErrorsController : BaseApiController
     {
-        public HttpResponseMessage Put(ErrorEntry errorEntry)
+        public void Put(ErrorEntry errorEntry)
         {
             var currentUser = CoreEntitiesContainer.CurrentUserAccount().First();
 
@@ -29,8 +29,6 @@ namespace FoundOps.Api.Controllers.Rest
             });
 
             SaveWithRetry();
-
-            return Request.CreateResponse(HttpStatusCode.Accepted);
         }
     }
 }

@@ -5,6 +5,7 @@ using FoundOps.Common.NET;
 using FoundOps.Common.Tools.ExtensionMethods;
 using FoundOps.Core.Models;
 using FoundOps.Core.Models.CoreEntities;
+using KellermanSoftware.CompareNetObjects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Data;
@@ -19,15 +20,132 @@ using System.Web.Http;
 using System.Web.Http.Hosting;
 using BusinessAccount = FoundOps.Core.Models.CoreEntities.BusinessAccount;
 using Client = FoundOps.Core.Models.CoreEntities.Client;
+using DateTimeField = FoundOps.Core.Models.CoreEntities.DateTimeField;
+using Field = FoundOps.Core.Models.CoreEntities.Field;
 using Location = FoundOps.Core.Models.CoreEntities.Location;
+using NumericField = FoundOps.Core.Models.CoreEntities.NumericField;
+using OptionsField = FoundOps.Core.Models.CoreEntities.OptionsField;
+using LocationField = FoundOps.Core.Models.CoreEntities.LocationField;
 using RouteTask = FoundOps.Api.Models.RouteTask;
+using ServiceTemplate = FoundOps.Core.Models.CoreEntities.ServiceTemplate;
 using TaskStatus = FoundOps.Core.Models.CoreEntities.TaskStatus;
+using TextBoxField = FoundOps.Core.Models.CoreEntities.TextBoxField;
 using UserAccount = FoundOps.Core.Models.CoreEntities.UserAccount;
 
 namespace FoundOps.Api.Tests.Controllers
 {
-    public static class TestTools
+    [TestClass]
+    public class ResourceTests
     {
+        protected readonly CoreEntitiesContainer CoreEntitiesContainer;
+        private static readonly DateTime Today = DateTime.UtcNow.Date;
+
+        private readonly Guid _roleId;
+        private readonly Guid _gotGreaseId = new Guid("8528E50D-E2B9-4779-9B29-759DBEA53B61");
+        private readonly Guid _foundOpsId = new Guid("5606A728-B99F-4AA1-B0CD-0AB38A649000");
+
+        #region Fields
+
+        private NumericField NewNumericField()
+        {
+            return new NumericField
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Numeric Test",
+                    Minimum = 10,
+                    Maximum = 20,
+                    Mask = "c"
+                };
+        }
+
+        private OptionsField NewCheckListField()
+        {
+            return new OptionsField
+                {
+                    Id = Guid.NewGuid(),
+                    AllowMultipleSelection = true,
+                    Name = "Checklist Test",
+                    TypeInt = ((int)OptionsType.Checklist),
+                    OptionsString = "Option 1,Option 2,Option 3",
+                    Value = "0,2"
+                };
+        }
+
+        private OptionsField NewCheckBoxField()
+        {
+            return new OptionsField
+                {
+                    Id = Guid.NewGuid(),
+                    AllowMultipleSelection = false,
+                    Name = "Checkbox Test",
+                    TypeInt = ((int)OptionsType.Checkbox),
+                    OptionsString = "Option 1",
+                    Value = "0"
+                };
+        }
+
+        private OptionsField NewComboBoxField()
+        {
+            return new OptionsField
+                {
+                    Id = Guid.NewGuid(),
+                    AllowMultipleSelection = true,
+                    Name = "Combobox Test",
+                    TypeInt = ((int)OptionsType.Combobox),
+                    OptionsString = "Option 1,Option 2,Option 3",
+                    Value = "1,2"
+                };
+        }
+
+        private LocationField NewLocationField()
+        {
+            return new LocationField
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Location Test",
+                    LocationFieldTypeInt = 0,
+                    LocationId = CoreEntitiesContainer.Locations.First().Id
+                };
+        }
+
+        private TextBoxField NewSmallTextBoxField()
+        {
+            return new TextBoxField
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Small TextBox Test",
+                    IsMultiline = false,
+                    Value = "Small TextBox"
+                };
+        }
+
+        private TextBoxField NewLargeTextBoxField()
+        {
+            return new TextBoxField
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "Large TextBox Test",
+                    IsMultiline = true,
+                    Value = "Large TextBox"
+                };
+        }
+
+        private DateTimeField NewDateTimeField()
+        {
+            return new DateTimeField
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "DateTime Test",
+                    Earliest = new DateTime(Today.Year, Today.Month, Today.Day, Today.AddHours(-2).Hour, 0, 0),
+                    Latest = new DateTime(Today.Year, Today.Month, Today.Day, Today.AddHours(2).Hour, 0, 0),
+                    TypeInt = ((int)DateTimeType.DateTime)
+                };
+        }
+
+        #endregion
+
+        #region Helpers
+
         /// <summary>
         /// Creates a controller of type TController with a request
         /// </summary>
@@ -53,51 +171,54 @@ namespace FoundOps.Api.Tests.Controllers
 
             return controller;
         }
-    }
 
-    [TestClass]
-    public class ResourceTests
-    {
-        protected readonly CoreEntitiesContainer CoreEntitiesContainerLocal;
+        /// <summary>
+        /// Tests if an object is returned
+        /// </summary>
+        /// <typeparam name="TController">The controller</typeparam>
+        /// <typeparam name="T">The get response type</typeparam>
+        /// <param name="get">The get method to perform</param>
+        public static IQueryable<T> SimpleGetTest<TController, T>(Func<TController, IQueryable<T>> get) where TController : BaseApiController
+        {
+            var controller = CreateRequest<TController>(HttpMethod.Get);
+            var result = get(controller);
+            Assert.IsNotNull(result.FirstOrDefault());
+            return result;
+        }
 
-        private readonly Guid _roleIdLocal;
-        private readonly Guid _gotGreaseId = new Guid("8528E50D-E2B9-4779-9B29-759DBEA53B61");
+        #endregion
 
         //private const string ConnectionString = "metadata=res://*/Models.CoreEntities.CoreEntities.csdl|res://*/Models.CoreEntities.CoreEntities.ssdl|res://*/Models.CoreEntities.CoreEntities.msl;provider=System.Data.SqlClient;provider connection string=';Data Source=f77m2u3n4m.database.windows.net;Initial Catalog=TestCore;Persist Security Info=True;User ID=perladmin;Password=QOI1m7DzVUJiNPMofFkk;MultipleActiveResultSets=True;Min Pool Size=100;Max Pool Size=1000;Pooling=true';";
         private const string CoreConnectionsString = "Data Source=f77m2u3n4m.database.windows.net;Initial Catalog=TestCore;Persist Security Info=True;User ID=perladmin;Password=QOI1m7DzVUJiNPMofFkk;MultipleActiveResultSets=True;Min Pool Size=100;Max Pool Size=1000;Pooling=true";
 
         public ResourceTests()
         {
-            CoreEntitiesContainerLocal = new CoreEntitiesContainer();
-            CoreEntitiesContainerLocal.ContextOptions.LazyLoadingEnabled = false;
+            CoreEntitiesContainer = new CoreEntitiesContainer();
+            CoreEntitiesContainer.ContextOptions.LazyLoadingEnabled = false;
             //Admin role on GotGrease?
-            _roleIdLocal = CoreEntitiesContainerLocal.Roles.First(r => r.OwnerBusinessAccountId == _gotGreaseId && r.RoleTypeInt == (int)RoleType.Administrator).Id;
+            _roleId = CoreEntitiesContainer.Roles.First(r => r.OwnerBusinessAccountId == _gotGreaseId && r.RoleTypeInt == (int)RoleType.Administrator).Id;
         }
 
         private void DetachAllEntities()
         {
             //Detach all entities
-            var attached = CoreEntitiesContainerLocal.ObjectStateManager.GetObjectStateEntries(EntityState.Added | EntityState.Deleted | EntityState.Modified | EntityState.Unchanged);
+            var attached = CoreEntitiesContainer.ObjectStateManager.GetObjectStateEntries(EntityState.Added | EntityState.Deleted | EntityState.Modified | EntityState.Unchanged);
             foreach (var objectStateEntry in attached)
-                CoreEntitiesContainerLocal.Detach(objectStateEntry.Entity);
+                CoreEntitiesContainer.Detach(objectStateEntry.Entity);
         }
 
         [TestMethod]
         public void ClientsTests()
         {
             DetachAllEntities();
-            var controller = TestTools.CreateRequest<ClientsController>(HttpMethod.Get);
-
-            var getResponse = controller.Get(_roleIdLocal, "Apollo");
-
-            Assert.IsNotNull(getResponse.FirstOrDefault());
+            SimpleGetTest<ClientsController, Models.Client>(c => c.Get(_roleId, "Apollo"));
         }
 
         [TestMethod]
         public void ErrorsTests()
         {
             DetachAllEntities();
-            var controller = TestTools.CreateRequest<ErrorsController>(HttpMethod.Get);
+            var controller = CreateRequest<ErrorsController>(HttpMethod.Put);
 
             var newError = new ErrorEntry
             {
@@ -106,49 +227,24 @@ namespace FoundOps.Api.Tests.Controllers
                 Url = "thisisafakeurl.com/notreal?true"
             };
 
-            var putResponse = controller.Put(newError);
-
-            Assert.AreEqual(HttpStatusCode.Accepted, putResponse.StatusCode);
-
-            Debug.WriteLine("All Error Controller Tests Passed");
+            controller.Put(newError);
         }
 
         [TestMethod]
         public void LocationsTests()
         {
             DetachAllEntities();
-            var locationId = CoreEntitiesContainerLocal.Locations.First(l => l.BusinessAccountId == _gotGreaseId).Id;
-            var clientId = CoreEntitiesContainerLocal.Clients.First(c => c.BusinessAccountId == _gotGreaseId).Id;
-
-            var controller = TestTools.CreateRequest<LocationsController>(HttpMethod.Get);
+            var locationId = CoreEntitiesContainer.Locations.First(l => l.BusinessAccountId == _gotGreaseId).Id;
+            var clientId = CoreEntitiesContainer.Clients.First(c => c.BusinessAccountId == _gotGreaseId).Id;
 
             //Testing getting one location
-            var getResponse = controller.Get(_roleIdLocal, locationId, null, false);
-            Assert.IsNotNull(getResponse.FirstOrDefault());
+            SimpleGetTest<LocationsController, Models.Location>(lc => lc.Get(_roleId, locationId, null, false, null));
 
             //Testing getting all locations for a client
-            getResponse = controller.Get(_roleIdLocal, null, clientId, false);
-            Assert.IsNotNull(getResponse.FirstOrDefault());
+            SimpleGetTest<LocationsController, Models.Location>(lc => lc.Get(_roleId, null, clientId, false, null));
 
             //Testing getting all depot locations for a business account
-            getResponse = controller.Get(_roleIdLocal, null, null, true);
-            Assert.IsNotNull(getResponse.FirstOrDefault());
-
-            Debug.WriteLine("All Locations Controller Tests Passed");
-        }
-
-        [TestMethod]
-        public void TestLocations()
-        {
-            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost");
-            var controller = new LocationsController { Request = request };
-
-            var location = CoreEntitiesContainerLocal.Locations.First(l => l.BusinessAccountId == _gotGreaseId);
-            var getResponseFromId = controller.Get(_roleIdLocal, location.Id, null);
-
-            var convertedLocation = Api.Models.Location.ConvertModel(location);
-            if (!Tools.AreObjectsEqual(getResponseFromId.First(), convertedLocation))
-                throw new Exception("Objects are not equal. Check output window for details");
+            SimpleGetTest<LocationsController, Models.Location>(lc => lc.Get(_roleId, null, null, true, null));
 
             //TODO uncomment when existing locations are included in search
             //var searchText = convertedLocation.AddressLineOne + ' ' + convertedLocation.AdminDistrictTwo + ' ' + convertedLocation.AdminDistrictOne + ' ' + convertedLocation.CountryCode;
@@ -156,16 +252,21 @@ namespace FoundOps.Api.Tests.Controllers
             //if (!Tools.AreObjectsEqual(getResponseFromSearch, convertedLocation, new[] { "Id", "Name", "AddressLineTwo" }))
             //    throw new Exception("Objects are not equal. Check output window for details");
 
-            var getResponseFromSearch = controller.Get(_roleIdLocal, null, null, null, "12414 english garden, 20171").FirstOrDefault();
+
+            var getResponseFromSearch = SimpleGetTest<LocationsController, Models.Location>(lc => lc.Get(_roleId, null, null, false, "12414 english garden, 20171"))
+                .FirstOrDefault();
+
             Assert.AreEqual("20171", getResponseFromSearch.ZipCode);
             Assert.AreEqual("Herndon", getResponseFromSearch.City);
             Assert.AreEqual("VA", getResponseFromSearch.State);
             Assert.IsTrue(getResponseFromSearch.Latitude.Contains("38.8981361"));
             Assert.IsTrue(getResponseFromSearch.Longitude.Contains("-77.3790054"));
 
-            var newLocation = new Api.Models.Location
+            var newId = Guid.NewGuid();
+
+            var newLocation = new Models.Location
             {
-                Id = Guid.NewGuid(),
+                Id = newId,
                 Name = "New Location",
                 AddressLineOne = "123 Fake Street",
                 AddressLineTwo = "Apt ???",
@@ -175,40 +276,46 @@ namespace FoundOps.Api.Tests.Controllers
                 CountryCode = "PO"
             };
 
-            controller.Post(_roleIdLocal, newLocation);
+            var controller = CreateRequest<LocationsController>(HttpMethod.Post);
+
+            controller.Post(_roleId, newLocation);
+            DetachAllEntities();
+            var createdLocation = CoreEntitiesContainer.Locations.FirstOrDefault(l => l.Id == newId);
+
+            Assert.IsNotNull(createdLocation);
 
             newLocation.CountryCode = "WK";
             newLocation.City = "I Have Changed";
             newLocation.AddressLineOne = "Not The Same as I Was";
             newLocation.AddressLineTwo = "Different";
-            newLocation.ZipCode = "Not Even Postal Code";
+            newLocation.ZipCode = "Not Even Postal Code";.
 
-            controller.Put(_roleIdLocal, newLocation);
+            controller.Put(_roleId, newLocation);
+            DetachAllEntities();
+
+            createdLocation = CoreEntitiesContainer.Locations.First(l => l.Id == newId);
+
+            Assert.AreEqual("WK", createdLocation.CountryCode);
+            Assert.AreEqual("I Have Changed", createdLocation.AdminDistrictTwo);
+            Assert.AreEqual("Not The Same as I Was", createdLocation.AddressLineOne);
+            Assert.AreEqual("Different", createdLocation.AddressLineTwo);
+            Assert.AreEqual("Not Even Postal Code", createdLocation.PostalCode);
         }
 
         [TestMethod]
         public void RoutesTests()
         {
-            DetachAllEntities();
-            var controller = TestTools.CreateRequest<RoutesController>(HttpMethod.Get);
-
             //Testing deep and assigned
-            var getResponse = controller.Get(_roleIdLocal, DateTime.UtcNow.Date, true, true);
-            Assert.IsNotNull(getResponse.FirstOrDefault());
+            SimpleGetTest<RoutesController, Models.Route>(r => r.Get(_roleId, DateTime.UtcNow.Date, true, true));
 
             //Testing not deep and not assigned
-            getResponse = controller.Get(_roleIdLocal, DateTime.UtcNow.Date, false, false);
-            Assert.IsNotNull(getResponse.FirstOrDefault());
+            SimpleGetTest<RoutesController, Models.Route>(r => r.Get(_roleId, DateTime.UtcNow.Date, false, false));
 
             //Testing not deep and assigned
-            getResponse = controller.Get(_roleIdLocal, DateTime.UtcNow.Date, false, true);
-            Assert.IsNotNull(getResponse.FirstOrDefault());
+            SimpleGetTest<RoutesController, Models.Route>(r => r.Get(_roleId, DateTime.UtcNow.Date, false, true));
 
             //Testing deep and not assigned
-            getResponse = controller.Get(_roleIdLocal, DateTime.UtcNow.Date, true, false);
-            Assert.IsNotNull(getResponse.FirstOrDefault());
-
-            Debug.WriteLine("All Routes Controller Tests Passed");
+            SimpleGetTest<RoutesController, Models.Route>(r => r.Get(_roleId, DateTime.UtcNow.Date, true, false));
         }
 
         [TestMethod]
@@ -216,44 +323,38 @@ namespace FoundOps.Api.Tests.Controllers
         {
             DetachAllEntities();
             var headers = new Dictionary<string, string> { { "ops-details", "true" } };
-            var controller = TestTools.CreateRequest<SessionsController>(HttpMethod.Get, headers);
+            var controller = CreateRequest<SessionsController>(HttpMethod.Get, headers);
 
             var getResponseWithHeader = controller.Get();
 
             Assert.AreEqual(HttpStatusCode.OK, getResponseWithHeader.StatusCode);
 
             //now test simple response
-            controller = TestTools.CreateRequest<SessionsController>(HttpMethod.Get);
+            controller = CreateRequest<SessionsController>(HttpMethod.Get);
 
             var getResponseWithoutHeader = controller.Get();
 
             Assert.AreEqual(HttpStatusCode.Accepted, getResponseWithoutHeader.StatusCode);
-
-            Debug.WriteLine("All Sessions Controller Tests Passed");
         }
 
         [TestMethod]
         public void ServicesTests()
         {
-            var service = CoreEntitiesContainerLocal.Services.Include(s => s.ServiceTemplate).Include(s => s.ServiceTemplate.Fields).First();
-            var recurringService = CoreEntitiesContainerLocal.RecurringServices.Include(rs => rs.Repeat).First();
+            var service = CoreEntitiesContainer.Services.Include(s => s.ServiceTemplate).Include(s => s.ServiceTemplate.Fields).First();
+            var recurringService = CoreEntitiesContainer.RecurringServices.Include(rs => rs.Repeat).First();
             var serviceDate = recurringService.Repeat.StartDate;
-            var serviceTemplate = CoreEntitiesContainerLocal.ServiceTemplates.First(st => st.OwnerServiceProviderId != null);
+            var serviceTemplate = CoreEntitiesContainer.ServiceTemplates.First(st => st.OwnerServiceProviderId != null);
 
             //Tests getting a service from an Id
-            var controller = TestTools.CreateRequest<ServicesController>(HttpMethod.Get);
-            var getResponse = controller.Get(service.Id, null, null, null);
-            Assert.AreEqual(HttpStatusCode.OK, getResponse.StatusCode);
+            SimpleGetTest<ServicesController, Models.Service>(s => s.Get(service.Id, null, null, null));
 
             //Tests getting a service from a recurring service and a date
-            getResponse = controller.Get(null, serviceDate, recurringService.Id, null);
-            Assert.AreEqual(HttpStatusCode.OK, getResponse.StatusCode);
+            SimpleGetTest<ServicesController, Models.Service>(s => s.Get(null, serviceDate, recurringService.Id, null));
 
             //Tests getting a service from a service template Id
-            getResponse = controller.Get(null, serviceDate, null, serviceTemplate.Id);
-            Assert.AreEqual(HttpStatusCode.OK, getResponse.StatusCode);
+            SimpleGetTest<ServicesController, Models.Service>(s => s.Get(null, serviceDate, null, serviceTemplate.Id));
 
-            controller = TestTools.CreateRequest<ServicesController>(HttpMethod.Put);
+            var controller = CreateRequest<ServicesController>(HttpMethod.Put);
             //fake generate a service by setting an Id and clearing the recurring service id
             var modelService = Models.Service.ConvertModel(service);
             modelService.Id = Guid.NewGuid();
@@ -261,85 +362,60 @@ namespace FoundOps.Api.Tests.Controllers
                 field.Id = Guid.NewGuid();
 
             //Tests generating a service when one does not exist
-            var putResponse = controller.Put(modelService);
-            Assert.AreEqual(HttpStatusCode.Accepted, putResponse.StatusCode);
+            controller.Put(modelService);
 
-            controller = TestTools.CreateRequest<ServicesController>(HttpMethod.Delete);
+            controller = CreateRequest<ServicesController>(HttpMethod.Delete);
 
             //Tests deleting a service
-            var deleteResponse = controller.Delete(modelService);
-            Assert.AreEqual(HttpStatusCode.Accepted, deleteResponse.StatusCode);
+            controller.Delete(modelService);
 
             //Tests updating an existing service
-            controller = TestTools.CreateRequest<ServicesController>(HttpMethod.Put);
+            controller = CreateRequest<ServicesController>(HttpMethod.Put);
 
             modelService = Models.Service.ConvertModel(service);
             modelService.Name = "I have changed";
 
-            putResponse = controller.Put(modelService);
-            Assert.AreEqual(HttpStatusCode.Accepted, putResponse.StatusCode);
-
-            Debug.WriteLine("All Services Controller Tests Passed");
+            controller.Put(modelService);
         }
 
         [TestMethod]
         public void ServiceHoldersTests()
         {
-            var clientId = CoreEntitiesContainerLocal.Clients.First().Id;
-            var recurringServiceId = CoreEntitiesContainerLocal.RecurringServices.First().Id;
-
-            var controller = TestTools.CreateRequest<ServiceHoldersController>(HttpMethod.Get);
+            var clientId = CoreEntitiesContainer.Clients.First().Id;
+            var recurringServiceId = CoreEntitiesContainer.RecurringServices.First().Id;
 
             //Tests no service type and no context
-            var getResponse = controller.Get(_roleIdLocal, null, null, null, new DateTime(2012, 9, 1), new DateTime(2012, 10, 31));
-            Assert.IsNotNull(getResponse.FirstOrDefault());
+            SimpleGetTest<ServiceHoldersController, Dictionary<string, Object>>(sh => sh.Get(_roleId, null, null, null, new DateTime(2012, 9, 1), new DateTime(2012, 10, 31)));
 
             //Tests service type with no context
-            getResponse = controller.Get(_roleIdLocal, "WVO Collection", null, null, new DateTime(2012, 9, 1), new DateTime(2012, 10, 31));
-            Assert.IsNotNull(getResponse.FirstOrDefault());
+            SimpleGetTest<ServiceHoldersController, Dictionary<string, Object>>(sh => sh.Get(_roleId, "WVO Collection", null, null, new DateTime(2012, 9, 1), new DateTime(2012, 10, 31)));
 
             //Tests no service type with client context
-            getResponse = controller.Get(_roleIdLocal, null, clientId, null, new DateTime(2012, 9, 1), new DateTime(2012, 10, 31));
-            Assert.IsNotNull(getResponse.FirstOrDefault());
+            SimpleGetTest<ServiceHoldersController, Dictionary<string, Object>>(sh => sh.Get(_roleId, null, clientId, null, new DateTime(2012, 9, 1), new DateTime(2012, 10, 31)));
 
             //Tests service type with client context
-            getResponse = controller.Get(_roleIdLocal, "WVO Collection", null, clientId, new DateTime(2012, 9, 1), new DateTime(2012, 10, 31));
-            Assert.IsNotNull(getResponse.FirstOrDefault());
+            SimpleGetTest<ServiceHoldersController, Dictionary<string, Object>>(sh => sh.Get(_roleId, "WVO Collection", null, clientId, new DateTime(2012, 9, 1), new DateTime(2012, 10, 31)));
 
             //Tests no service type with recurring service context
-            getResponse = controller.Get(_roleIdLocal, null, null, recurringServiceId, new DateTime(2012, 9, 1), new DateTime(2012, 10, 31));
-            Assert.IsNotNull(getResponse.FirstOrDefault());
+            SimpleGetTest<ServiceHoldersController, Dictionary<string, Object>>(sh => sh.Get(_roleId, null, null, recurringServiceId, new DateTime(2012, 9, 1), new DateTime(2012, 10, 31)));
 
             //Tests service type with recurring service context
-            getResponse = controller.Get(_roleIdLocal, "WVO Collection", null, recurringServiceId, new DateTime(2012, 9, 1), new DateTime(2012, 10, 31));
-            Assert.IsNotNull(getResponse.FirstOrDefault());
+            SimpleGetTest<ServiceHoldersController, Dictionary<string, Object>>(sh => sh.Get(_roleId, "WVO Collection", null, recurringServiceId, new DateTime(2012, 9, 1), new DateTime(2012, 10, 31)));
 
             //Tests just returning the column headers
-            getResponse = controller.Get(_roleIdLocal, null, null, null, new DateTime(2012, 9, 1), new DateTime(2012, 10, 31), true);
-            Assert.IsNotNull(getResponse.FirstOrDefault());
-
-            Debug.WriteLine("All Service Holders Controller Tests Passed");
+            SimpleGetTest<ServiceHoldersController, Dictionary<string, Object>>(sh => sh.Get(_roleId, null, null, null, new DateTime(2012, 9, 1), new DateTime(2012, 10, 31), true));
         }
 
         [TestMethod]
         public void ServiceTemplatesTests()
         {
-            var controller = TestTools.CreateRequest<ServiceTemplatesController>(HttpMethod.Get);
-
-            var getResponse = controller.Get(_roleIdLocal);
-
-            Assert.IsNotNull(getResponse.FirstOrDefault());
-
-            Debug.WriteLine("All Service Templates Controller Tests Passed");
+            SimpleGetTest<ServiceTemplatesController, Models.ServiceTemplate>(st => st.Get(_roleId));
         }
 
         [TestMethod]
         public void ResourceWithLastPointsTests()
         {
-            var controller = TestTools.CreateRequest<ResourceWithLastPointsController>(HttpMethod.Get);
-
-            var getResponse = controller.Get(_roleIdLocal);
-            Assert.IsNotNull(getResponse.FirstOrDefault());
+            SimpleGetTest<ResourceWithLastPointsController, Models.ResourceWithLastPoint>(st => st.Get(_roleId));
         }
 
         [TestMethod]
@@ -348,11 +424,11 @@ namespace FoundOps.Api.Tests.Controllers
             DetachAllEntities();
 
             //update a route task's status to one that remove's it from a route
-            var routeTask = CoreEntitiesContainerLocal.RouteTasks.First(rt => rt.RouteDestinationId.HasValue && rt.BusinessAccountId == _gotGreaseId);
-            var unroutedStatus = CoreEntitiesContainerLocal.TaskStatuses.First(ts => ts.BusinessAccountId == _gotGreaseId && ts.RemoveFromRoute);
+            var routeTask = CoreEntitiesContainer.RouteTasks.First(rt => rt.RouteDestinationId.HasValue && rt.BusinessAccountId == _gotGreaseId);
+            var unroutedStatus = CoreEntitiesContainer.TaskStatuses.First(ts => ts.BusinessAccountId == _gotGreaseId && ts.RemoveFromRoute);
             routeTask.TaskStatus = unroutedStatus;
 
-            var controller = TestTools.CreateRequest<RouteTasksController>(HttpMethod.Get);
+            var controller = CreateRequest<RouteTasksController>(HttpMethod.Get);
 
             var putResponse = controller.Put(RouteTask.ConvertModel(routeTask));
             //check it worked
@@ -360,12 +436,12 @@ namespace FoundOps.Api.Tests.Controllers
 
             //make sure the route task is no longer in a route
             DetachAllEntities();
-            var updatedRouteTask = CoreEntitiesContainerLocal.RouteTasks.Where(rt => rt.Id == routeTask.Id).Include(rt => rt.RouteDestination).First();
+            var updatedRouteTask = CoreEntitiesContainer.RouteTasks.Where(rt => rt.Id == routeTask.Id).Include(rt => rt.RouteDestination).First();
             Assert.IsNull(updatedRouteTask.RouteDestinationId);
 
             //update a route task's status to one that will not remove it from a route
-            routeTask = CoreEntitiesContainerLocal.RouteTasks.First(rt => rt.RouteDestinationId.HasValue && rt.BusinessAccountId == _gotGreaseId);
-            var routedStatus = CoreEntitiesContainerLocal.TaskStatuses.First(ts => ts.BusinessAccountId == _gotGreaseId && !ts.RemoveFromRoute);
+            routeTask = CoreEntitiesContainer.RouteTasks.First(rt => rt.RouteDestinationId.HasValue && rt.BusinessAccountId == _gotGreaseId);
+            var routedStatus = CoreEntitiesContainer.TaskStatuses.First(ts => ts.BusinessAccountId == _gotGreaseId && !ts.RemoveFromRoute);
             routeTask.TaskStatus = routedStatus;
 
             putResponse = controller.Put(RouteTask.ConvertModel(routeTask));
@@ -374,10 +450,8 @@ namespace FoundOps.Api.Tests.Controllers
 
             //make sure the route task is still in a route
             DetachAllEntities();
-            updatedRouteTask = CoreEntitiesContainerLocal.RouteTasks.Where(rt => rt.Id == routeTask.Id).Include(rt => rt.RouteDestination).First();
+            updatedRouteTask = CoreEntitiesContainer.RouteTasks.Where(rt => rt.Id == routeTask.Id).Include(rt => rt.RouteDestination).First();
             Assert.IsNotNull(updatedRouteTask.RouteDestinationId);
-
-            Debug.WriteLine("All RouteTasks Controller Tests Passed");
         }
 
         [TestMethod]
@@ -387,14 +461,11 @@ namespace FoundOps.Api.Tests.Controllers
             //CoreEntitiesServerManagement.CreateHistoricalTrackPoints();
 
             DetachAllEntities();
-            var controller = TestTools.CreateRequest<TrackPointsController>(HttpMethod.Get);
             var date = DateTime.UtcNow.Date;
 
-            var routeId = CoreEntitiesContainerLocal.Routes.Where(r => r.Date == date && r.OwnerBusinessAccountId == _gotGreaseId).RandomItem().Id;
+            var routeId = CoreEntitiesContainer.Routes.Where(r => r.Date == date && r.OwnerBusinessAccountId == _gotGreaseId).RandomItem().Id;
 
-            var getResponse = controller.Get(_roleIdLocal, routeId);
-
-            Assert.IsNotNull(getResponse);
+            SimpleGetTest<TrackPointsController, Models.TrackPoint>(tp => tp.Get(_roleId, routeId));
 
             var trackPoints = new List<TrackPoint>();
             var fakeRouteId = Guid.NewGuid();
@@ -429,9 +500,9 @@ namespace FoundOps.Api.Tests.Controllers
                 trackPoints.Add(trackPoint);
             }
 
-            controller = TestTools.CreateRequest<TrackPointsController>(HttpMethod.Post);
+            var controller = CreateRequest<TrackPointsController>(HttpMethod.Post);
 
-            controller.Post(_roleIdLocal, trackPoints.ToArray());
+            controller.Post(_roleId, trackPoints.ToArray());
         }
 
         //Begin SQL function tests
@@ -439,80 +510,80 @@ namespace FoundOps.Api.Tests.Controllers
         [TestMethod]
         public void DeleteBusinessAccount()
         {
-            var provider = CoreEntitiesContainerLocal.Parties.OfType<BusinessAccount>().First(ba => ba.Name != "FoundOPS");
+            var provider = CoreEntitiesContainer.Parties.OfType<BusinessAccount>().First(ba => ba.Name != "FoundOPS");
 
-            CoreEntitiesContainerLocal.DeleteBusinessAccountBasedOnId(provider.Id);
+            CoreEntitiesContainer.DeleteBusinessAccountBasedOnId(provider.Id);
         }
 
         [TestMethod]
         public void DeleteUserAccount()
         {
-            var user = CoreEntitiesContainerLocal.Parties.OfType<UserAccount>().First();
+            var user = CoreEntitiesContainer.Parties.OfType<UserAccount>().First();
 
-            CoreEntitiesContainerLocal.DeleteUserAccountBasedOnId(user.Id);
+            CoreEntitiesContainer.DeleteUserAccountBasedOnId(user.Id);
         }
 
         [TestMethod]
         public void DeleteClient()
         {
-            var client = CoreEntitiesContainerLocal.Clients.First();
+            var client = CoreEntitiesContainer.Clients.First();
 
-            CoreEntitiesContainerLocal.DeleteClientBasedOnId(client.Id);
+            CoreEntitiesContainer.DeleteClientBasedOnId(client.Id);
         }
 
         [TestMethod]
         public void DeleteFieldAndChildren()
         {
-            var field = CoreEntitiesContainerLocal.Fields.First(f => f.OwnerServiceTemplate.LevelInt == 0);
+            var field = CoreEntitiesContainer.Fields.First(f => f.OwnerServiceTemplate.LevelInt == 0);
 
-            CoreEntitiesContainerLocal.DeleteFieldAndChildrenBasedOnFieldId(field.Id);
+            CoreEntitiesContainer.DeleteFieldAndChildrenBasedOnFieldId(field.Id);
         }
 
         [TestMethod]
         public void DeleteLocation()
         {
-            var location = CoreEntitiesContainerLocal.Locations.First();
+            var location = CoreEntitiesContainer.Locations.First();
 
-            CoreEntitiesContainerLocal.DeleteLocationBasedOnId(location.Id);
+            CoreEntitiesContainer.DeleteLocationBasedOnId(location.Id);
         }
 
         [TestMethod]
         public void DeleteRecurringService()
         {
-            var recurringService = CoreEntitiesContainerLocal.RecurringServices.First();
+            var recurringService = CoreEntitiesContainer.RecurringServices.First();
 
-            CoreEntitiesContainerLocal.DeleteRecurringService(recurringService.Id);
+            CoreEntitiesContainer.DeleteRecurringService(recurringService.Id);
         }
 
         [TestMethod]
         public void DeleteServiceTemplateAndChildrenBasedOnId()
         {
-            var template = CoreEntitiesContainerLocal.ServiceTemplates.First(st => st.LevelInt == 1);
+            var template = CoreEntitiesContainer.ServiceTemplates.First(st => st.LevelInt == 1);
 
-            CoreEntitiesContainerLocal.DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId(template.Id);
+            CoreEntitiesContainer.DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId(template.Id);
         }
 
         [TestMethod]
         public void DeleteServiceTemapltesAndChildrenBasedOnContext()
         {
             //Client
-            var serviceTemplate = CoreEntitiesContainerLocal.ServiceTemplates.First(st => st.OwnerClientId != null);
+            var serviceTemplate = CoreEntitiesContainer.ServiceTemplates.First(st => st.OwnerClientId != null);
 
             var deletedId = serviceTemplate.Id;
 
-            CoreEntitiesContainerLocal.DeleteServiceTemplatesAndChildrenBasedOnContextId(null, serviceTemplate.OwnerClientId);
+            CoreEntitiesContainer.DeleteServiceTemplatesAndChildrenBasedOnContextId(null, serviceTemplate.OwnerClientId);
 
-            var badDelete = CoreEntitiesContainerLocal.ServiceTemplates.FirstOrDefault(st => st.Id == deletedId || st.OwnerServiceTemplateId == deletedId);
+            var badDelete = CoreEntitiesContainer.ServiceTemplates.FirstOrDefault(st => st.Id == deletedId || st.OwnerServiceTemplateId == deletedId);
             Assert.IsNull(badDelete);
 
             //finds a service template with an owner service provider that is not FoundOPS
-            serviceTemplate = CoreEntitiesContainerLocal.ServiceTemplates.First(st => st.OwnerServiceProviderId != null && st.OwnerServiceProviderId != new Guid("5606A728-B99F-4AA1-B0CD-0AB38A649000"));
+            serviceTemplate = CoreEntitiesContainer.ServiceTemplates.First(st => st.OwnerServiceProviderId != null && st.OwnerServiceProviderId != new Guid("5606A728-B99F-4AA1-B0CD-0AB38A649000"));
             deletedId = serviceTemplate.Id;
 
             //Business Account
-            CoreEntitiesContainerLocal.DeleteServiceTemplatesAndChildrenBasedOnContextId(serviceTemplate.OwnerServiceProviderId, null);
+            CoreEntitiesContainer.DeleteServiceTemplatesAndChildrenBasedOnContextId(serviceTemplate.OwnerServiceProviderId, null);
 
-            badDelete = CoreEntitiesContainerLocal.ServiceTemplates.FirstOrDefault(st => st.Id == deletedId || st.OwnerServiceTemplateId == deletedId);
+            badDelete = CoreEntitiesContainer.ServiceTemplates.FirstOrDefault(st => st.Id == deletedId || st.OwnerServiceTemplateId == deletedId);
             Assert.IsNull(badDelete);
         }
 
@@ -550,7 +621,7 @@ namespace FoundOps.Api.Tests.Controllers
                 //Testing Client context
                 parameters = new DynamicParameters();
                 parameters.Add("@serviceProviderIdContext", null);
-                parameters.Add("@clientIdContext", CoreEntitiesContainerLocal.Clients.First().Id);
+                parameters.Add("@clientIdContext", CoreEntitiesContainer.Clients.First().Id);
                 parameters.Add("@recurringServiceIdContext", null);
                 parameters.Add("@seedDate", DateTime.UtcNow.Date);
                 parameters.Add("@frontBackMinimum", 50);
@@ -571,7 +642,7 @@ namespace FoundOps.Api.Tests.Controllers
                 parameters = new DynamicParameters();
                 parameters.Add("@serviceProviderIdContext", null);
                 parameters.Add("@clientIdContext", null);
-                parameters.Add("@recurringServiceIdContext", CoreEntitiesContainerLocal.RecurringServices.First().Id);
+                parameters.Add("@recurringServiceIdContext", CoreEntitiesContainer.RecurringServices.First().Id);
                 parameters.Add("@seedDate", DateTime.UtcNow.Date);
                 parameters.Add("@frontBackMinimum", 50);
                 parameters.Add("@getPrevious", 1);
@@ -595,7 +666,7 @@ namespace FoundOps.Api.Tests.Controllers
         [TestMethod]
         public void GetFieldsInJavaScriptFormat()
         {
-            var data = CoreEntitiesContainerLocal.GetFieldsInJavaScriptFormat(_gotGreaseId, "WVO Collection").ToArray();
+            var data = CoreEntitiesContainer.GetFieldsInJavaScriptFormat(_gotGreaseId, "WVO Collection").ToArray();
 
             Assert.IsNotNull(data.FirstOrDefault());
         }
@@ -603,7 +674,7 @@ namespace FoundOps.Api.Tests.Controllers
         [TestMethod]
         public void ResourcesWithLastPoint()
         {
-            var data = CoreEntitiesContainerLocal.GetResourcesWithLatestPoint(_gotGreaseId, DateTime.UtcNow.Date).ToArray();
+            var data = CoreEntitiesContainer.GetResourcesWithLatestPoint(_gotGreaseId, DateTime.UtcNow.Date).ToArray();
 
             Assert.IsNotNull(data.FirstOrDefault());
         }
@@ -679,25 +750,25 @@ namespace FoundOps.Api.Tests.Controllers
                 {
                     if (location != null)
                     {
-                        CoreEntitiesContainerLocal.DetachExistingAndAttach(location);
+                        CoreEntitiesContainer.DetachExistingAndAttach(location);
                         routeTask.Location = location;
 
                         if (region != null)
                         {
-                            CoreEntitiesContainerLocal.DetachExistingAndAttach(region);
+                            CoreEntitiesContainer.DetachExistingAndAttach(region);
                             routeTask.Location.Region = region;
                         }
                     }
 
                     if (client != null)
                     {
-                        CoreEntitiesContainerLocal.DetachExistingAndAttach(client);
+                        CoreEntitiesContainer.DetachExistingAndAttach(client);
                         routeTask.Client = client;
                     }
 
                     if (taskStatus != null)
                     {
-                        CoreEntitiesContainerLocal.DetachExistingAndAttach(taskStatus);
+                        CoreEntitiesContainer.DetachExistingAndAttach(taskStatus);
                         routeTask.TaskStatus = taskStatus;
                     }
 
@@ -713,28 +784,163 @@ namespace FoundOps.Api.Tests.Controllers
         [TestMethod]
         public void PropagateNewFields()
         {
-            #region new Numeric field
+            var template = CoreEntitiesContainer.ServiceTemplates.Where(st => st.LevelInt == 1 && st.Name == "WVO Collection" && st.OwnerServiceProviderId == _gotGreaseId).Include(st => st.Fields).First();
 
-            var id = Guid.NewGuid();
+            //Numeric field
+            var propagationSuccess = PropagateFieldToTemplateAndChildren(template, NewNumericField());
+            Assert.AreEqual(true, propagationSuccess);
 
-            var numericField = new FoundOps.Core.Models.CoreEntities.NumericField
-                {
-                    Id = id,
-                    Name = "Numeric Test",
-                    Minimum = 10,
-                    Maximum = 20,
-                    Mask = "c"
-                };
+            //CheckList fields
+            propagationSuccess = PropagateFieldToTemplateAndChildren(template, NewCheckListField());
+            Assert.AreEqual(true, propagationSuccess);
 
-            var template = CoreEntitiesContainerLocal.ServiceTemplates.Where(st => st.LevelInt == 1 && st.Name == "WVO Collection" && st.OwnerServiceProviderId == _gotGreaseId).Include(st => st.Fields).First();
+            //CheckBox fields
+            propagationSuccess = PropagateFieldToTemplateAndChildren(template, NewCheckBoxField());
+            Assert.AreEqual(true, propagationSuccess);
 
-            template.Fields.Add(numericField);
+            //ComboBox fields
+            propagationSuccess = PropagateFieldToTemplateAndChildren(template, NewComboBoxField());
+            Assert.AreEqual(true, propagationSuccess);
 
-            CoreEntitiesContainerLocal.SaveChanges();
+            //Location fields
+            propagationSuccess = PropagateFieldToTemplateAndChildren(template, NewLocationField());
+            Assert.AreEqual(true, propagationSuccess);
 
-            CoreEntitiesContainerLocal.PropagateNewFields(id);
+            //Single line TextBox field
+            propagationSuccess = PropagateFieldToTemplateAndChildren(template, NewSmallTextBoxField());
+            Assert.AreEqual(true, propagationSuccess);
 
-            #endregion
+            //Multi-line TextBox field
+            propagationSuccess = PropagateFieldToTemplateAndChildren(template, NewLargeTextBoxField());
+            Assert.AreEqual(true, propagationSuccess);
+
+            propagationSuccess = PropagateFieldToTemplateAndChildren(template, NewDateTimeField());
+            Assert.AreEqual(true, propagationSuccess);
+        }
+
+        /// <summary>
+        /// Adds the new field to the Service Template and then propagates it down
+        /// After propagation completes, run a stored procedure to check to be sure that it propagated to all children Service Templates
+        /// </summary>
+        /// <param name="template">The top level Service Template the field was added to</param>
+        /// <param name="field">The field to add</param>
+        /// <returns>If propagation was successful, return true. Else, return false</returns>
+        private bool PropagateFieldToTemplateAndChildren(ServiceTemplate template, Field field)
+        {
+            template.Fields.Add(field);
+
+            CoreEntitiesContainer.SaveChanges();
+
+            CoreEntitiesContainer.PropagateNewFields(field.Id);
+
+            using (var conn = new SqlConnection(ServerConstants.SqlConnectionString))
+            {
+                conn.Open();
+
+                var parameters = new DynamicParameters();
+                parameters.Add("@serviceTemplateId", template.Id);
+                parameters.Add("@fieldName", field.Name);
+
+                //A result of '0' means that the propagation was successfull
+                //'1' means an error occurred
+                var result = conn.Query<int>("TestFieldPropagationSuccess", parameters, commandType: CommandType.StoredProcedure).First();
+
+                conn.Close();
+
+                return result != 1;
+            }
+        }
+
+        [TestMethod]
+        public void PropagateServiceTemplateNameChanges()
+        {
+            var serviceTemplate = CoreEntitiesContainer.ServiceTemplates.Where(st => st.LevelInt == 1 && st.Name == "WVO Collection" && st.OwnerServiceProviderId == _gotGreaseId).Include(st => st.Fields).First();
+            var oldName = serviceTemplate.Name;
+
+            serviceTemplate.Name = "This Name has changed!!";
+
+            //Save and propagate the name change
+            CoreEntitiesContainer.SaveChanges();
+            CoreEntitiesContainer.PropagateNameChange(serviceTemplate.Id);
+
+            //Use the function TestServiceTemplateNamePropagationSuccess to check that all Service Templates and Routes had their names changed
+            using (var conn = new SqlConnection(ServerConstants.SqlConnectionString))
+            {
+                conn.Open();
+
+                var parameters = new DynamicParameters();
+                parameters.Add("@serviceTemplateId", serviceTemplate.Id);
+                parameters.Add("@oldName", oldName);
+
+                var result = conn.Query<int>("TestServiceTemplateNamePropagationSuccess", parameters, commandType: CommandType.StoredProcedure).First();
+
+                conn.Close();
+
+                Assert.AreEqual(0, result);
+            }
+        }
+
+        [TestMethod]
+        public void PropagateNewServiceTemplateToClients()
+        {
+            var foundOpsServiceTemplate = new ServiceTemplate
+            {
+                Id = Guid.NewGuid(),
+                Name = "This is New!!",
+                ServiceTemplateLevel = ServiceTemplateLevel.FoundOpsDefined,
+                OwnerServiceProviderId = _foundOpsId
+            };
+
+            //Add Fields
+            foundOpsServiceTemplate.Fields.Add(NewCheckBoxField());
+            foundOpsServiceTemplate.Fields.Add(NewCheckListField());
+            foundOpsServiceTemplate.Fields.Add(NewComboBoxField());
+            foundOpsServiceTemplate.Fields.Add(NewDateTimeField());
+            foundOpsServiceTemplate.Fields.Add(NewLargeTextBoxField());
+            foundOpsServiceTemplate.Fields.Add(NewSmallTextBoxField());
+            foundOpsServiceTemplate.Fields.Add(NewNumericField());
+            foundOpsServiceTemplate.Fields.Add(NewLocationField());
+
+            //Make a child and set it to be on GotGrease?
+            var serviceTemplate = foundOpsServiceTemplate.MakeChild(ServiceTemplateLevel.ServiceProviderDefined);
+            serviceTemplate.OwnerServiceProviderId = _gotGreaseId;
+
+            //Save and propagate the new template
+            CoreEntitiesContainer.ServiceTemplates.AddObject(serviceTemplate);
+            CoreEntitiesContainer.SaveChanges();
+            CoreEntitiesContainer.PropagateNewServiceTemplateToClients(serviceTemplate.Id);
+
+            //Use the function TestServiceTemplateNamePropagationSuccess to check that all Service Templates and Routes had their names changed
+            using (var conn = new SqlConnection(ServerConstants.SqlConnectionString))
+            {
+                conn.Open();
+
+                var parameters = new DynamicParameters();
+                parameters.Add("@serviceTemplateId", serviceTemplate.Id);
+
+                var result = conn.Query<int>("TestNewServiceTemplatePropagationSuccess", parameters, commandType: CommandType.StoredProcedure).First();
+
+                conn.Close();
+
+                Assert.AreEqual(0, result);
+            }
+
+            var childTemplate = CoreEntitiesContainer.ServiceTemplates.Where(st => st.LevelInt == ((int)ServiceTemplateLevel.ClientDefined) && st.OwnerServiceTemplateId == serviceTemplate.Id).Include(st => st.Fields).First();
+
+            var compare = new CompareObjects { CompareChildren = false };
+
+            foreach (var field in serviceTemplate.Fields)
+            {
+                var childField = childTemplate.Fields.First(st => st.Name == field.Name);
+
+                compare.ElementsToIgnore.Add("Id");
+                compare.ElementsToIgnore.Add("ServiceTemplateId");
+                compare.ElementsToIgnore.Add("ParentFieldId");
+
+                compare.Compare(field, childField);
+
+                Assert.AreEqual(0, compare.Differences.Count);
+            }
         }
     }
 }

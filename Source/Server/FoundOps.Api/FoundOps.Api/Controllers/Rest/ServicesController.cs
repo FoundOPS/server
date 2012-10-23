@@ -26,7 +26,7 @@ namespace FoundOps.Api.Controllers.Rest
         /// b) the serviceDate and recurringServiceId -> this will generate a service based on the recurringServiceId
         /// c) the serviceTemplateId -> this will generate a service based on the provider level service template
         /// </summary>
-        public HttpResponseMessage Get(Guid? serviceId, DateTime? serviceDate, Guid? recurringServiceId, Guid? serviceTemplateId)
+        public IQueryable<Service> Get(Guid? serviceId, DateTime? serviceDate, Guid? recurringServiceId, Guid? serviceTemplateId)
         {
             Guid serviceTemplateIdToLoad;
             Core.Models.CoreEntities.Service service = null;
@@ -111,14 +111,14 @@ namespace FoundOps.Api.Controllers.Rest
             }
 
             var apiServices = new List<Service> { Service.ConvertModel(service) };
-            return Request.CreateResponse(HttpStatusCode.OK, apiServices.AsQueryable());
+            return apiServices.AsQueryable();
         }
 
         /// <summary>
         /// Pushes changes made to a Service from the API model to the FoundOPS model
         /// </summary>
         /// <param name="service">The API model of a Service</param>
-        public HttpResponseMessage Put(Service service)
+        public void Put(Service service)
         {
             var businessAccount = CoreEntitiesContainer.BusinessAccount(service.ServiceProviderId, new[] { RoleType.Regular, RoleType.Administrator, RoleType.Mobile }).FirstOrDefault();
             if (businessAccount == null)
@@ -227,19 +227,17 @@ namespace FoundOps.Api.Controllers.Rest
 
             //Save any changes that were made
             SaveWithRetry();
-
-            return Request.CreateResponse(HttpStatusCode.Accepted);
         }
 
         /// <summary>
         /// Deletes a service
         /// </summary>
         /// <param name="service">The API model of a service</param>
-        public HttpResponseMessage Delete(Service service)
+        public void Delete(Service service)
         {
             var businessAccount = CoreEntitiesContainer.BusinessAccount(service.ServiceProviderId).FirstOrDefault();
             if (businessAccount == null)
-                return Request.CreateResponse(HttpStatusCode.Unauthorized);
+                throw Request.NotAuthorized();
 
             var routeTask = CoreEntitiesContainer.RouteTasks.Include("RouteDestination").Include("RouteDestination.Route").FirstOrDefault(rt => rt.ServiceId == service.Id);
             if (routeTask != null)
@@ -266,7 +264,6 @@ namespace FoundOps.Api.Controllers.Rest
             }
 
             SaveWithRetry();
-            return Request.CreateResponse(HttpStatusCode.Accepted);
         }
     }
 }

@@ -8,7 +8,8 @@ namespace FoundOps.Api.Controllers.Rest
 {
     public abstract class BaseApiController : ApiController
     {
-        protected readonly CoreEntitiesContainer CoreEntitiesContainer;
+        public readonly CoreEntitiesContainer CoreEntitiesContainer;
+
         protected readonly CoreEntitiesMembershipProvider CoreEntitiesMembershipProvider;
         protected BaseApiController()
         {
