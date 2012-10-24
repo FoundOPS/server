@@ -206,6 +206,9 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_TextBoxField_inherits_Field]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Fields_TextBoxField] DROP CONSTRAINT [FK_TextBoxField_inherits_Field];
 GO
+IF OBJECT_ID(N'[dbo].[FK_SignatureField_inherits_Field]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[Fields_SignatureField] DROP CONSTRAINT [FK_SignatureField_inherits_Field];
+GO
 IF OBJECT_ID(N'[dbo].[FK_UserAccount_inherits_Party]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Parties_UserAccount] DROP CONSTRAINT [FK_UserAccount_inherits_Party];
 GO
@@ -258,6 +261,9 @@ IF OBJECT_ID(N'[dbo].[Fields_OptionsField]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[Fields_TextBoxField]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Fields_TextBoxField];
+GO
+IF OBJECT_ID(N'[dbo].[Fields_SignatureField]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[Fields_SignatureField];
 GO
 IF OBJECT_ID(N'[dbo].[Files]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Files];
@@ -763,6 +769,13 @@ CREATE TABLE [dbo].[Fields_TextBoxField] (
 );
 GO
 
+-- Creating table 'Fields_SignatureField'
+CREATE TABLE [dbo].[Fields_SignatureField] (
+    [Value] nvarchar(max)  NULL,
+    [Id] uniqueidentifier  NOT NULL
+);
+GO
+
 -- Creating table 'Fields_OptionsField'
 CREATE TABLE [dbo].[Fields_OptionsField] (
     [AllowMultipleSelection] bit  NOT NULL,
@@ -1027,6 +1040,12 @@ GO
 -- Creating primary key on [Id] in table 'Fields_TextBoxField'
 ALTER TABLE [dbo].[Fields_TextBoxField]
 ADD CONSTRAINT [PK_Fields_TextBoxField]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'Fields_SignatureField'
+ALTER TABLE [dbo].[Fields_SignatureField]
+ADD CONSTRAINT [PK_Fields_SignatureField]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -1896,6 +1915,15 @@ GO
 -- Creating foreign key on [Id] in table 'Fields_TextBoxField'
 ALTER TABLE [dbo].[Fields_TextBoxField]
 ADD CONSTRAINT [FK_TextBoxField_inherits_Field]
+    FOREIGN KEY ([Id])
+    REFERENCES [dbo].[Fields]
+        ([Id])
+    ON DELETE CASCADE ON UPDATE NO ACTION;
+GO
+
+-- Creating foreign key on [Id] in table 'Fields_SignatureField'
+ALTER TABLE [dbo].[Fields_SignatureField]
+ADD CONSTRAINT [FK_SignatureField_inherits_Field]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Fields]
         ([Id])

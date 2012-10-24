@@ -4199,6 +4199,7 @@ namespace FoundOps.Core.Models.CoreEntities
     [DataContractAttribute(IsReference=true)]
     [KnownTypeAttribute(typeof(LocationField))]
     [KnownTypeAttribute(typeof(TextBoxField))]
+    [KnownTypeAttribute(typeof(SignatureField))]
     [KnownTypeAttribute(typeof(OptionsField))]
     [KnownTypeAttribute(typeof(NumericField))]
     [KnownTypeAttribute(typeof(DateTimeField))]
@@ -10094,6 +10095,64 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.Guid _BusinessAccountId;
         partial void OnBusinessAccountIdChanging(global::System.Guid value);
         partial void OnBusinessAccountIdChanged();
+
+        #endregion
+
+    
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="CoreEntities", Name="SignatureField")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class SignatureField : Field
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new SignatureField object.
+        /// </summary>
+        /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="name">Initial value of the Name property.</param>
+        /// <param name="required">Initial value of the Required property.</param>
+        public static SignatureField CreateSignatureField(global::System.Guid id, global::System.String name, global::System.Boolean required)
+        {
+            SignatureField signatureField = new SignatureField();
+            signatureField.Id = id;
+            signatureField.Name = name;
+            signatureField.Required = required;
+            return signatureField;
+        }
+
+        #endregion
+
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Value
+        {
+            get
+            {
+                return _Value;
+            }
+            set
+            {
+                OnValueChanging(value);
+                ReportPropertyChanging("Value");
+                _Value = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Value");
+                OnValueChanged();
+            }
+        }
+        private global::System.String _Value;
+        partial void OnValueChanging(global::System.String value);
+        partial void OnValueChanged();
 
         #endregion
 
