@@ -1595,7 +1595,7 @@ ADD CONSTRAINT [FK_LocationFieldLocation]
     FOREIGN KEY ([LocationId])
     REFERENCES [dbo].[Locations]
         ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
+    ON DELETE SET NULL ON UPDATE NO ACTION;
 GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_LocationFieldLocation'

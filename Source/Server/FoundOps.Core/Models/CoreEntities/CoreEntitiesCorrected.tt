@@ -64,7 +64,7 @@ ADD CONSTRAINT [FK_LocationFieldLocation]
     FOREIGN KEY ([LocationId])
     REFERENCES [dbo].[Locations]
         ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
+    ON DELETE SET NULL ON UPDATE NO ACTION;
 GO");
 	
 	//5. FK_OptionsFieldOption replace with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete OptionsField when a Option is deleted
@@ -112,7 +112,7 @@ ADD CONSTRAINT [FK_LocationField_inherits_Field]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Fields]
         ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
+    ON DELETE SET NULL ON UPDATE NO ACTION;
 GO");
 	
 	//8. FK_TextBoxField_inherits_Field with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete Field when a TextBoxField is deleted
