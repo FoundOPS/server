@@ -27,29 +27,31 @@ namespace FoundOps.Api.Models
         /// <returns>A Field that has been converted to it's API model</returns>
         public static Field ConvertModel(object fieldModel)
         {
-            var textBoxField = fieldModel as FoundOps.Core.Models.CoreEntities.TextBoxField;
-            var locationField = fieldModel as FoundOps.Core.Models.CoreEntities.LocationField;
-            var numericField = fieldModel as FoundOps.Core.Models.CoreEntities.NumericField;
-            var optionsField = fieldModel as FoundOps.Core.Models.CoreEntities.OptionsField;
-            var dateTimeField = fieldModel as FoundOps.Core.Models.CoreEntities.DateTimeField;
+            var textBoxField = fieldModel as Core.Models.CoreEntities.TextBoxField;
+            var signatureField = fieldModel as Core.Models.CoreEntities.SignatureField;
+            var locationField = fieldModel as Core.Models.CoreEntities.LocationField;
+            var numericField = fieldModel as Core.Models.CoreEntities.NumericField;
+            var optionsField = fieldModel as Core.Models.CoreEntities.OptionsField;
+            var dateTimeField = fieldModel as Core.Models.CoreEntities.DateTimeField;
 
             Field field;
 
             if (textBoxField != null)
-                field = TextBoxField.ConvertTextBoxFieldModel(textBoxField);
-
+                field = TextBoxField.ConvertModel(textBoxField);
+            else if (signatureField != null)
+                field = SignatureField.ConvertModel(signatureField);
             else if (locationField != null)
-                field = LocationField.ConvertLocationFieldModel(locationField);
+                field = LocationField.ConvertModel(locationField);
 
             else if (numericField != null)
-                field = NumericField.ConvertNumericFieldModel(numericField);
+                field = NumericField.ConvertModel(numericField);
 
             //If the field is a OptionsField, convert the field to an API OptionsField and it's Options to API Options, then return
             else if (optionsField != null)
-                field = OptionsField.ConvertOptionsFieldModel(optionsField);
+                field = OptionsField.ConvertModel(optionsField);
 
             else if (dateTimeField != null)
-                field = DateTimeField.ConvertDateTimeFieldModel(dateTimeField);
+                field = DateTimeField.ConvertModel(dateTimeField);
 
             else
                 throw new Exception("Field does not exist");
@@ -66,33 +68,32 @@ namespace FoundOps.Api.Models
         /// </summary>
         /// <param name="field">The field to convert</param>
         /// <returns></returns>
-        public static FoundOps.Core.Models.CoreEntities.Field ConvertBack(Field field)
+        public static Core.Models.CoreEntities.Field ConvertBack(Field field)
         {
             var textBoxField = field as TextBoxField;
+            var signatureField = field as SignatureField;
             var locationField = field as LocationField;
             var numericField = field as NumericField;
             var optionsField = field as OptionsField;
             var dateTimeField = field as DateTimeField;
 
-            //If the field is a TextBoxField, convert the field to an API TextBoxField and return
             if (textBoxField != null)
-                return TextBoxField.ConvertBackTextBoxField(textBoxField);
+                return TextBoxField.ConvertBack(textBoxField);
 
-            //If the field is a LocationField, convert the field to an API LocationField and return
+            if (signatureField != null)
+                return SignatureField.ConvertBack(signatureField);
+
             if (locationField != null)
-                return LocationField.ConvertBackLocationField(locationField);
+                return LocationField.ConvertBack(locationField);
 
-            //If the field is a NumericField, convert the field to an API NumericField and return
             if (numericField != null)
-                return NumericField.ConvertBackNumericField(numericField);
+                return NumericField.ConvertBack(numericField);
 
-            //If the field is a OptionsField, convert the field to an API OptionsField and it's Options to API Options, then return
             if (optionsField != null)
-                return OptionsField.ConvertBackOptionsField(optionsField);
+                return OptionsField.ConvertBack(optionsField);
 
-            //If the field is a DateTimeField, convert the field to an API DateTimeField and return
             if (dateTimeField != null)
-                return DateTimeField.ConvertBackDateTimeField(dateTimeField);
+                return DateTimeField.ConvertBack(dateTimeField);
 
             throw new Exception("Field does not exist");
         }
@@ -102,10 +103,10 @@ namespace FoundOps.Api.Models
         /// </summary>
         /// <param name="field"></param>
         /// <returns></returns>
-        public static string GetJavascriptFormat(FoundOps.Core.Models.CoreEntities.Field field)
+        public static string GetJavascriptFormat(Core.Models.CoreEntities.Field field)
         {
-            var numericField = field as FoundOps.Core.Models.CoreEntities.NumericField;
-            var dateTimeField = field as FoundOps.Core.Models.CoreEntities.DateTimeField;
+            var numericField = field as Core.Models.CoreEntities.NumericField;
+            var dateTimeField = field as Core.Models.CoreEntities.DateTimeField;
 
             if (numericField != null)
                 return "number";

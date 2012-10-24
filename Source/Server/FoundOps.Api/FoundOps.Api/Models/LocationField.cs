@@ -13,7 +13,7 @@ namespace FoundOps.Api.Models
         /// </summary>
         /// <param name="fieldModel">The FoundOPS model of a LocationField to be converted</param>
         /// <returns>A LocationField that has been converted to it's API model</returns>
-        public static LocationField ConvertLocationFieldModel(FoundOps.Core.Models.CoreEntities.LocationField fieldModel)
+        public static LocationField ConvertModel(Core.Models.CoreEntities.LocationField fieldModel)
         {
             var field = new LocationField
             {
@@ -35,9 +35,9 @@ namespace FoundOps.Api.Models
         /// </summary>
         /// <param name="locationField"></param>
         /// <returns></returns>
-        public static FoundOps.Core.Models.CoreEntities.Field ConvertBackLocationField(LocationField locationField)
+        public static Core.Models.CoreEntities.Field ConvertBack(LocationField locationField)
         {
-            var field = new FoundOps.Core.Models.CoreEntities.LocationField
+            var field = new Core.Models.CoreEntities.LocationField
             {
                 Id = locationField.Id,
                 Name = locationField.Name,

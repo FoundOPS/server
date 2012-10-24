@@ -259,6 +259,7 @@
     <Compile Include="Models\ColumnConfiguration.cs" />
     <Compile Include="Models\ContactInfo.cs" />
     <Compile Include="Models\Column.cs" />
+    <Compile Include="Models\SignatureField.cs" />
     <Compile Include="Models\ErrorEntry.cs" />
     <Compile Include="Models\Option.cs" />
     <Compile Include="Models\TimeZone.cs" />

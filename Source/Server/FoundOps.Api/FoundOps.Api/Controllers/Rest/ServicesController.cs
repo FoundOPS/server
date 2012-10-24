@@ -13,6 +13,7 @@ using NumericField = FoundOps.Core.Models.CoreEntities.NumericField;
 using OptionsField = FoundOps.Core.Models.CoreEntities.OptionsField;
 using Service = FoundOps.Api.Models.Service;
 using TextBoxField = FoundOps.Core.Models.CoreEntities.TextBoxField;
+using SignatureField = FoundOps.Core.Models.CoreEntities.SignatureField;
 
 namespace FoundOps.Api.Controllers.Rest
 {
@@ -147,25 +148,25 @@ namespace FoundOps.Api.Controllers.Rest
                     var dateTimeField = existingField as DateTimeField;
                     var numericField = existingField as NumericField;
                     var textBoxField = existingField as TextBoxField;
+                    var signatureField = existingField as SignatureField;
                     var locationField = existingField as LocationField;
                     var optionsField = existingField as OptionsField;
 
-                    //If the field is a DateTimeField, update the value
                     if (dateTimeField != null)
-                        dateTimeField.Value = ((Models.DateTimeField)field).Value;
+                        dateTimeField.Value = ((Models.DateTimeField) field).Value;
 
-                    //If the field is a NumericField, update the value
                     if (numericField != null)
-                        numericField.Value = ((Models.NumericField)field).Value;
+                        numericField.Value = ((Models.NumericField) field).Value;
 
-                    //If the field is a TextBoxField, update the value
                     if (textBoxField != null)
-                        textBoxField.Value = ((Models.TextBoxField)field).Value;
+                        textBoxField.Value = ((Models.TextBoxField) field).Value;
 
-                    //If the field is a LocationField, update the value
+                    if (signatureField != null)
+                        signatureField.Value = ((Models.SignatureField) field).Value;
+
                     if (locationField != null)
                     {
-                        var apiLocationField = (Models.LocationField)field;
+                        var apiLocationField = (Models.LocationField) field;
                         var oldId = locationField.Id;
                         var newId = apiLocationField.LocationId;
                         //update the location field, any route tasks, and destinations to the new location
