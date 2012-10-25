@@ -224,6 +224,27 @@ namespace FoundOps.SLClient.UI.ViewModels
             return newLocation;
         }
 
+        /// <summary>
+        /// Before deleting make sure the user understands that they will be deleting Recurring Services as well.
+        /// </summary>
+        /// <param name="checkCompleted">The action to call after checking.</param>
+        protected override void CheckDelete(Action<bool> checkCompleted)
+        {
+            //var stringVerifier = new StringVerifier();
+
+            //stringVerifier.Succeeded += (sender, args) => checkCompleted(true);
+            //stringVerifier.Cancelled += (sender, args) => checkCompleted(false);
+
+            //stringVerifier.Show();
+        }
+
+        public override void DeleteEntity(Location entityToDelete)
+        {
+
+
+            base.DeleteEntity(entityToDelete);
+        }
+
         #endregion
     }
 }

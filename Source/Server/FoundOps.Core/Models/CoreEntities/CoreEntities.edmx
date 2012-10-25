@@ -355,6 +355,7 @@
           <Property Name="Salesperson" Type="nvarchar(max)" />
           <Property Name="BusinessAccountId" Type="uniqueidentifier" />
           <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="Hidden" Type="bit" />
         </EntityType>
         <EntityType Name="ContactInfoSet">
           <Key>
@@ -542,6 +543,7 @@
           <Property Name="ClientId" Type="uniqueidentifier" />
           <Property Name="IsDefaultBillingLocation" Type="bit" />
           <Property Name="CountryCode" Type="nvarchar(max)" />
+          <Property Name="Hidden" Type="bit" />
         </EntityType>
         <EntityType Name="Parties">
           <Key>
@@ -597,6 +599,7 @@
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="ClientId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="ExcludedDatesString" Type="nvarchar(max)" />
+          <Property Name="Hidden" Type="bit" />
         </EntityType>
         <EntityType Name="Regions">
           <Key>
@@ -677,7 +680,7 @@
           <Property Name="RouteDestinationId" Type="uniqueidentifier" />
           <Property Name="ClientId" Type="uniqueidentifier" />
           <Property Name="ServiceId" Type="uniqueidentifier" />
-          <Property Name="OriginalDate" Type="datetime" Nullable="true" />
+          <Property Name="OriginalDate" Type="datetime" />
           <Property Name="BusinessAccountId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="EstimatedDuration" Type="time" Nullable="false" />
           <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
@@ -1137,9 +1140,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_LocationFieldLocation">
-          <End Role="Locations" Type="CoreEntities.Store.Locations" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
+          <End Role="Locations" Type="CoreEntities.Store.Locations" Multiplicity="0..1" />
           <End Role="Fields_LocationField" Type="CoreEntities.Store.Fields_LocationField" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Locations">
@@ -1734,12 +1735,12 @@
         <Function Name="PropagateNameChange" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="serviceTemplateId" Type="uniqueidentifier" Mode="In" />
         </Function>
-        <Function Name="PropagateNewFields" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="FieldId" Type="uniqueidentifier" Mode="In" />
-        </Function>
         <Function Name="PropagateNewServiceTemplateToClients" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="serviceTemplateId" Type="uniqueidentifier" Mode="In" />
         </Function>
+      <Function Name="PropagateNewFields" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+        <Parameter Name="FieldId" Type="uniqueidentifier" Mode="In" />
+      </Function>
         <Function Name="sp_GetUnroutedServicesForDate" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="serviceProviderIdContext" Type="uniqueidentifier" Mode="In" />
           <Parameter Name="serviceDate" Type="date" Mode="In" />
@@ -2066,9 +2067,6 @@
           <FunctionImport Name="PropagateNameChange">
             <Parameter Name="serviceTemplateId" Mode="In" Type="Guid" />
           </FunctionImport>
-          <FunctionImport Name="PropagateNewFields">
-            <Parameter Name="FieldId" Mode="In" Type="Guid" />
-          </FunctionImport>
           <FunctionImport Name="PropagateNewServiceTemplateToClients">
             <Parameter Name="serviceTemplateId" Mode="In" Type="Guid" />
           </FunctionImport>
@@ -2079,6 +2077,9 @@
           <FunctionImport Name="GetResourcesWithLatestPoint" ReturnType="Collection(CoreEntities.ResourceWithLastPoint)">
             <Parameter Name="serviceProviderId" Mode="In" Type="Guid" />
             <Parameter Name="serviceDateUtc" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="PropagateNewFields">
+            <Parameter Name="FieldId" Mode="In" Type="Guid" />
           </FunctionImport>
           </EntityContainer>
         <EntityType Name="Block">
@@ -2182,6 +2183,7 @@
           <Property Type="Guid" Name="ClientId" Nullable="true" />
           <Property Type="Boolean" Name="IsDefaultBillingLocation" Nullable="true" />
           <Property Type="String" Name="CountryCode" Nullable="true" FixedLength="false" MaxLength="Max" Unicode="true" />
+          <Property Type="Boolean" Name="Hidden" Nullable="true" />
         </EntityType>
         <EntityType Name="Service">
           <Key>
@@ -2337,7 +2339,7 @@
           <Property Type="Guid" Name="RouteDestinationId" Nullable="true" />
           <Property Type="Guid" Name="ClientId" Nullable="true" />
           <Property Type="Guid" Name="ServiceId" Nullable="true" />
-          <Property Type="DateTime" Name="OriginalDate" Nullable="true" />
+          <Property Type="DateTime" Name="OriginalDate" Nullable="true" Precision="3" />
           <Property Type="Guid" Name="BusinessAccountId" Nullable="false" />
           <Property Type="Time" Name="EstimatedDuration" Nullable="false" Precision="7" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
@@ -2439,6 +2441,7 @@
           <NavigationProperty Name="Locations" Relationship="CoreEntities.ClientLocation1" FromRole="Client" ToRole="Location" />
           <Property Type="String" Name="Name" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="ContactInfoSet" Relationship="CoreEntities.ClientContactInfo" FromRole="Client" ToRole="ContactInfo" />
+          <Property Type="Boolean" Name="Hidden" Nullable="true" />
         </EntityType>
         <Association Name="RouteTaskClient">
           <End Type="CoreEntities.RouteTask" Role="RouteTask" Multiplicity="*" />
@@ -2629,6 +2632,7 @@
             </Documentation>
           </Property>
           <NavigationProperty Name="RouteTaskChildren" Relationship="CoreEntities.RouteTaskRecurringService" FromRole="RecurringService" ToRole="RouteTask" />
+          <Property Type="Boolean" Name="Hidden" Nullable="true" />
         </EntityType>
         <Association Name="RecurringServiceServiceTemplate">
           <End Type="CoreEntities.RecurringService" Role="RecurringService" Multiplicity="0..1" />
@@ -3430,6 +3434,7 @@
           <ScalarProperty Name="ClientId" ColumnName="ClientId" />
           <ScalarProperty Name="IsDefaultBillingLocation" ColumnName="IsDefaultBillingLocation" />
           <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
+          <ScalarProperty Name="Hidden" ColumnName="Hidden" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -3522,6 +3527,7 @@
           <ScalarProperty Name="Salesperson" ColumnName="Salesperson" />
           <ScalarProperty Name="BusinessAccountId" ColumnName="BusinessAccountId" />
           <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Hidden" ColumnName="Hidden" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -3556,6 +3562,7 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="ClientId" ColumnName="ClientId" />
           <ScalarProperty Name="ExcludedDatesString" ColumnName="ExcludedDatesString" />
+          <ScalarProperty Name="Hidden" ColumnName="Hidden" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -3778,7 +3785,7 @@
           <FunctionImportMapping FunctionImportName="DeleteUserAccountBasedOnId" FunctionName="CoreEntities.Store.DeleteUserAccountBasedOnId" />
           <FunctionImportMapping FunctionImportName="GetDateRangeForServices" FunctionName="CoreEntities.Store.GetDateRangeForServices" />
           <FunctionImportMapping FunctionImportName="GetFieldsInJavaScriptFormat" FunctionName="CoreEntities.Store.GetFieldsInJavaScriptFormat">
-          <ResultMapping>
+            <ResultMapping>
               <ComplexTypeMapping TypeName="CoreEntities.FieldJavaScript">
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
@@ -3786,7 +3793,7 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GetServiceHolders" FunctionName="CoreEntities.Store.GetServiceHolders">
-          <ResultMapping>
+            <ResultMapping>
               <ComplexTypeMapping TypeName="CoreEntities.ServiceHolder">
                 <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
                 <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
@@ -3799,7 +3806,6 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GetServiceTemplatesWithDateAndDetails" FunctionName="CoreEntities.Store.GetServiceTemplatesWithDateAndDetails" />
           <FunctionImportMapping FunctionImportName="PropagateNameChange" FunctionName="CoreEntities.Store.PropagateNameChange" />
-          <FunctionImportMapping FunctionImportName="PropagateNewFields" FunctionName="CoreEntities.Store.PropagateNewFields" />
           <FunctionImportMapping FunctionImportName="PropagateNewServiceTemplateToClients" FunctionName="CoreEntities.Store.PropagateNewServiceTemplateToClients" />
           <FunctionImportMapping FunctionImportName="sp_GetUnroutedServicesForDate" FunctionName="CoreEntities.Store.sp_GetUnroutedServicesForDate" />
           <FunctionImportMapping FunctionImportName="GetResourcesWithLatestPoint" FunctionName="CoreEntities.Store.GetResourcesWithLatestPoint">
@@ -3819,6 +3825,7 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="PropagateNewFields" FunctionName="CoreEntities.Store.PropagateNewFields" />
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>

@@ -1370,25 +1370,6 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        /// <param name="fieldId">No Metadata Documentation available.</param>
-        public int PropagateNewFields(Nullable<global::System.Guid> fieldId)
-        {
-            ObjectParameter fieldIdParameter;
-            if (fieldId.HasValue)
-            {
-                fieldIdParameter = new ObjectParameter("FieldId", fieldId);
-            }
-            else
-            {
-                fieldIdParameter = new ObjectParameter("FieldId", typeof(global::System.Guid));
-            }
-    
-            return base.ExecuteFunction("PropagateNewFields", fieldIdParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         /// <param name="serviceTemplateId">No Metadata Documentation available.</param>
         public int PropagateNewServiceTemplateToClients(Nullable<global::System.Guid> serviceTemplateId)
         {
@@ -1463,6 +1444,25 @@ namespace FoundOps.Core.Models.CoreEntities
             }
     
             return base.ExecuteFunction<ResourceWithLastPoint>("GetResourcesWithLatestPoint", serviceProviderIdParameter, serviceDateUtcParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="fieldId">No Metadata Documentation available.</param>
+        public int PropagateNewFields(Nullable<global::System.Guid> fieldId)
+        {
+            ObjectParameter fieldIdParameter;
+            if (fieldId.HasValue)
+            {
+                fieldIdParameter = new ObjectParameter("FieldId", fieldId);
+            }
+            else
+            {
+                fieldIdParameter = new ObjectParameter("FieldId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("PropagateNewFields", fieldIdParameter);
         }
 
         #endregion
@@ -2367,6 +2367,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.String _Name;
         partial void OnNameChanging(global::System.String value);
         partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Boolean> Hidden
+        {
+            get
+            {
+                return _Hidden;
+            }
+            set
+            {
+                OnHiddenChanging(value);
+                ReportPropertyChanging("Hidden");
+                _Hidden = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Hidden");
+                OnHiddenChanged();
+            }
+        }
+        private Nullable<global::System.Boolean> _Hidden;
+        partial void OnHiddenChanging(Nullable<global::System.Boolean> value);
+        partial void OnHiddenChanged();
 
         #endregion
 
@@ -5864,6 +5888,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.String _CountryCode;
         partial void OnCountryCodeChanging(global::System.String value);
         partial void OnCountryCodeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Boolean> Hidden
+        {
+            get
+            {
+                return _Hidden;
+            }
+            set
+            {
+                OnHiddenChanging(value);
+                ReportPropertyChanging("Hidden");
+                _Hidden = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Hidden");
+                OnHiddenChanged();
+            }
+        }
+        private Nullable<global::System.Boolean> _Hidden;
+        partial void OnHiddenChanging(Nullable<global::System.Boolean> value);
+        partial void OnHiddenChanged();
 
         #endregion
 
@@ -6923,6 +6971,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.String _ExcludedDatesString;
         partial void OnExcludedDatesStringChanging(global::System.String value);
         partial void OnExcludedDatesStringChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Boolean> Hidden
+        {
+            get
+            {
+                return _Hidden;
+            }
+            set
+            {
+                OnHiddenChanging(value);
+                ReportPropertyChanging("Hidden");
+                _Hidden = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Hidden");
+                OnHiddenChanged();
+            }
+        }
+        private Nullable<global::System.Boolean> _Hidden;
+        partial void OnHiddenChanging(Nullable<global::System.Boolean> value);
+        partial void OnHiddenChanged();
 
         #endregion
 

@@ -3,7 +3,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 10/02/2012 20:24:41
+-- Date Created: 10/25/2012 12:29:27
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -428,7 +428,8 @@ CREATE TABLE [dbo].[Locations] (
     [BusinessAccountId] uniqueidentifier  NULL,
     [ClientId] uniqueidentifier  NULL,
     [IsDefaultBillingLocation] bit  NULL,
-    [CountryCode] nvarchar(max)  NULL
+    [CountryCode] nvarchar(max)  NULL,
+    [Hidden] bit  NULL
 );
 GO
 
@@ -513,7 +514,8 @@ CREATE TABLE [dbo].[Clients] (
     [DateAdded] datetime  NOT NULL,
     [Salesperson] nvarchar(max)  NULL,
     [BusinessAccountId] uniqueidentifier  NULL,
-    [Name] nvarchar(max)  NULL
+    [Name] nvarchar(max)  NULL,
+    [Hidden] bit  NULL
 );
 GO
 
@@ -544,7 +546,8 @@ GO
 CREATE TABLE [dbo].[RecurringServices] (
     [Id] uniqueidentifier  NOT NULL,
     [ClientId] uniqueidentifier  NOT NULL,
-    [ExcludedDatesString] nvarchar(max)  NULL
+    [ExcludedDatesString] nvarchar(max)  NULL,
+    [Hidden] bit  NULL
 );
 GO
 
