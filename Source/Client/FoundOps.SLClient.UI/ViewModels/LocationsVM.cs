@@ -1,4 +1,5 @@
 ﻿using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
+using FoundOps.Common.Silverlight.UI.Controls;
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Services;
@@ -230,17 +231,29 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <param name="checkCompleted">The action to call after checking.</param>
         protected override void CheckDelete(Action<bool> checkCompleted)
         {
-            //var stringVerifier = new StringVerifier();
+            var deleteLocationNotifier = new DeleteLocationNotifier("5", "34");
 
-            //stringVerifier.Succeeded += (sender, args) => checkCompleted(true);
-            //stringVerifier.Cancelled += (sender, args) => checkCompleted(false);
+            //If the user clicks the cancel button, cancel the delete and close the window
+            deleteLocationNotifier.CancelButton.Click += (s, e) =>
+            {
+                deleteLocationNotifier.Close();
+                checkCompleted(false);
+            };
+            //If the user clicks the "Go For It" button, continue with the delete and close the window
+            deleteLocationNotifier.ContinueButton.Click += (s, e) =>
+            {
+                deleteLocationNotifier.Close();
+                checkCompleted(true);
+            };
 
-            //stringVerifier.Show();
+            deleteLocationNotifier.Show();
         }
 
         public override void DeleteEntity(Location entityToDelete)
         {
-
+            //Find all Recurring Services
+            var test = entityToDelete;
+            //Set EndDate to be today and Hidden = true
 
             base.DeleteEntity(entityToDelete);
         }

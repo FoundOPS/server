@@ -1,3 +1,4 @@
+using FoundOps.Common.Silverlight.UI.Controls;
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Services;
@@ -161,8 +162,22 @@ namespace FoundOps.SLClient.UI.ViewModels
             {
                 var selectedLocation = VM.Locations.SelectedEntity;
                 if (selectedLocation != null)
-                    VM.Locations.DeleteEntity(selectedLocation);
+                {
+                    var deleteLocationNotifier = new DeleteLocationNotifier("5", "34");
 
+                    //If the user clicks the cancel button, cancel the delete and close the window
+                    deleteLocationNotifier.CancelButton.Click += (s, e) => deleteLocationNotifier.Close();
+
+                    //If the user clicks the "Go For It" button, continue with the delete and close the window
+                    deleteLocationNotifier.ContinueButton.Click += (s, e) =>
+                    {
+                        deleteLocationNotifier.Close();
+                        VM.Locations.DeleteEntity(selectedLocation);
+                    };
+
+                    deleteLocationNotifier.Show();
+
+                }
                 return selectedLocation;
             };
 
