@@ -283,7 +283,6 @@
     </Compile>
     <Compile Include="Converters\BusinessAccountConverters.cs" />
     <Compile Include="Converters\ContactInfoConverters.cs" />
-    <Compile Include="Converters\FieldConverters.cs" />
     <Compile Include="Converters\LocationConverters.cs" />
     <Compile Include="Converters\RepeatConverters.cs" />
     <Compile Include="Converters\ServiceTemplatesConverters.cs" />

@@ -26,21 +26,6 @@ namespace FoundOps.Server.Services.CoreDomainService
             return this.ObjectContext.Fields;
         }
 
-        public IQueryable<OptionsField> GetOptionsFields()
-        {
-            return this.ObjectContext.Fields.OfType<OptionsField>();
-        }
-
-        public IQueryable<LocationField> GetLocationFields()
-        {
-            return this.ObjectContext.Fields.OfType<LocationField>();
-        }
-
-        public IQueryable<TextBoxField> GetTextBoxFields()
-        {
-            return this.ObjectContext.Fields.OfType<TextBoxField>();
-        }
-
         /// <summary>
         /// Searches the parent FoundOPS ServiceTemplate for Fields.
         /// </summary>

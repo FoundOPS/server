@@ -1,8 +1,6 @@
+using FoundOps.Framework.Views.Converters;
 using System.Collections;
-using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
-using FoundOps.SLClient.Data.Converters;
 using ServiceTemplate = FoundOps.Core.Models.CoreEntities.ServiceTemplate;
 
 // Needs to be in the same namespace, because it is a partial class
@@ -15,7 +13,7 @@ namespace FoundOps.Framework.Views.Controls.CustomFields
     /// </summary>
     public partial class ManifestFields
     {
-        private static OrderByNameConverter _orderByNameConverter = new OrderByNameConverter();
+        private static readonly OrderByNameConverter OrderByNameConverter = new OrderByNameConverter();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FieldsDefineGrid"/> class.
@@ -61,7 +59,7 @@ namespace FoundOps.Framework.Views.Controls.CustomFields
                 var newValue = e.NewValue as ServiceTemplate;
 
                 //Manually set the ItemsControl so this happens immediately
-                c.FieldsItemsControl.ItemsSource = (IEnumerable) (newValue == null ? null : _orderByNameConverter.Convert(newValue.Fields, null, null, null));
+                c.FieldsItemsControl.ItemsSource = (IEnumerable) (newValue == null ? null : OrderByNameConverter.Convert(newValue.Fields, null, null, null));
             }
         }
 

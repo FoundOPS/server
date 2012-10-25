@@ -2,12 +2,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.GridView" 
     xmlns:CustomFields="clr-namespace:FoundOps.Framework.Views.Controls.CustomFields" xmlns:Define="clr-namespace:FoundOps.SLClient.UI.Controls.CustomFields.Define"
-    xmlns:Selectors="clr-namespace:FoundOps.Framework.Views.Selectors" xmlns:Converters="clr-namespace:FoundOps.Framework.Views.Converters" 
+             xmlns:Converters="clr-namespace:FoundOps.Framework.Views.Converters" 
     xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL"
              xmlns:Tools1="clr-namespace:FoundOps.SLClient.Data.Tools;assembly=FoundOps.SLClient.Data"
              xmlns:CoreEntities1="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data"
              xmlns:Converters1="clr-namespace:FoundOps.SLClient.Data.Converters;assembly=FoundOps.SLClient.Data"
-             mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="400" ViewModelLocator:ViewModelLocator.SharedViewModel="FieldsVM">
+             xmlns:Selectors="clr-namespace:FoundOps.SLClient.UI.Selectors" mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="400" ViewModelLocator:ViewModelLocator.SharedViewModel="FieldsVM">
     <UserControl.Resources>
         <Converters:FieldToTypeStringConverter x:Key="FieldToTypeStringConverter"/>
         <Converters:FieldDefaultValueStringConverter x:Key="FieldDefaultValueStringConverter"/>
@@ -29,7 +29,7 @@
             <CustomFields:PercentageDefine NumericField="{Binding}" IsEnabled="{Tools1:GetContextObservableValue Converter={StaticResource FoundOPSBoolConverter}, ContextType=CoreEntities1:BusinessAccount}" />
         </DataTemplate>
         <DataTemplate x:Key="TextLgTemplate">
-            <CustomFields:TextLargeDefine TextBoxField="{Binding}" IsEnabled="{Tools1:GetContextObservableValue Converter={StaticResource FoundOPSBoolConverter}, ContextType=CoreEntities1:BusinessAccount}" />
+            <Define:TextLargeDefine TextBoxField="{Binding}" IsEnabled="{Tools1:GetContextObservableValue Converter={StaticResource FoundOPSBoolConverter}, ContextType=CoreEntities1:BusinessAccount}" />
         </DataTemplate>
         <DataTemplate x:Key="TextSmTemplate">
             <CustomFields:TextSmallDefine TextBoxField="{Binding}" IsEnabled="{Tools1:GetContextObservableValue Converter={StaticResource FoundOPSBoolConverter}, ContextType=CoreEntities1:BusinessAccount}" />
@@ -37,11 +37,15 @@
         <DataTemplate x:Key="TimeTemplate">
             <CustomFields:TimeDefine DateTimeField="{Binding}" IsEnabled="{Tools1:GetContextObservableValue Converter={StaticResource FoundOPSBoolConverter}, ContextType=CoreEntities1:BusinessAccount}" />
         </DataTemplate>
+        <DataTemplate x:Key="SignatureTemplate">
+            <TextBlock Text="Signature field is only visible in html5 sections" />
+        </DataTemplate>
         <Selectors:FieldDataTemplateSelector x:Key="FieldDataTemplateSelector" CheckBoxTemplate="{StaticResource CheckBoxTemplate}" 
                                              CheckListTemplate="{StaticResource OptionsFieldTemplate}" ComboBoxTemplate="{StaticResource OptionsFieldTemplate}" 
                                              CurrencyTemplate="{StaticResource CurrencyTemplate}" NumberTemplate="{StaticResource NumberTemplate}" 
                                              PercentageTemplate="{StaticResource PercentageTemplate}" TextSmTemplate="{StaticResource TextSmTemplate}" 
-                                             TextLgTemplate="{StaticResource TextLgTemplate}" TimeTemplate="{StaticResource TimeTemplate}"/>
+                                             TextLgTemplate="{StaticResource TextLgTemplate}" TimeTemplate="{StaticResource TimeTemplate}"
+                                             SignatureTemplate="{StaticResource SignatureTemplate}"/>
     </UserControl.Resources>
     <telerik:RadTreeListView x:Name="FieldDefineTreeListView"  AutoGenerateColumns="False" IsReadOnly="True" RowDetailsVisibilityMode="VisibleWhenSelected" 
                              RowIndicatorVisibility="Collapsed" SelectionMode="Single" RowDetailsTemplateSelector="{StaticResource FieldDataTemplateSelector}" 

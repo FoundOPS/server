@@ -23,7 +23,7 @@ namespace FoundOps.SLClient.UI.ViewModels
     {
         # region Public Properties
 
-        private static readonly IEnumerable<string> StandardFieldTypes = new List<string> { "Checkbox", "Checklist", "Combobox", "Currency", "Number", "Percentage", "Textbox Small", "Textbox Large", "Time" };
+        private static readonly IEnumerable<string> StandardFieldTypes = new List<string> { "Checkbox", "Checklist", "Combobox", "Currency", "Number", "Percentage", "Textbox Small", "Textbox Large", "Time", "Signature" };
 
         private IEnumerable<string> _fieldTypes = StandardFieldTypes;
         /// <summary>
@@ -157,6 +157,9 @@ namespace FoundOps.SLClient.UI.ViewModels
                     break;
                 case "Textbox Large":
                     fieldToAdd = new TextBoxField { IsMultiline = true };
+                    break;
+                case "Signature":
+                    fieldToAdd = new SignatureField();
                     break;
                 //NOTE: For now this is only available on FoundOPS & ServiceProvider level service templates that do not have a destination field
                 case "Destination":

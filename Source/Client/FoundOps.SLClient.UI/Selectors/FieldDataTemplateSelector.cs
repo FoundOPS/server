@@ -1,9 +1,8 @@
-﻿using System;
+﻿using FoundOps.Core.Models.CoreEntities;
 using System.Windows;
-using FoundOps.Core.Models.CoreEntities;
 using Telerik.Windows.Controls;
 
-namespace FoundOps.Framework.Views.Selectors
+namespace FoundOps.SLClient.UI.Selectors
 {
     public class FieldDataTemplateSelector : DataTemplateSelector
     {
@@ -18,6 +17,8 @@ namespace FoundOps.Framework.Views.Selectors
         public DataTemplate TextSmTemplate { get; set; }
         public DataTemplate TimeTemplate { get; set; }
 
+        public DataTemplate SignatureTemplate { get; set; }
+
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
             var field = (Field)item;
@@ -30,7 +31,7 @@ namespace FoundOps.Framework.Views.Selectors
                     return TimeTemplate;
             }
 
-            if(field is LocationField)
+            if (field is LocationField)
             {
                 return LocationTemplate;
             }
@@ -56,7 +57,7 @@ namespace FoundOps.Framework.Views.Selectors
                 if (optionsField.OptionsType == OptionsType.Combobox)
                     return ComboBoxTemplate;
             }
-          
+
             if (field is TextBoxField)
             {
                 var textBoxField = (TextBoxField)field;
@@ -64,6 +65,11 @@ namespace FoundOps.Framework.Views.Selectors
                     return TextLgTemplate;
                 if (!textBoxField.IsMultiline)
                     return TextSmTemplate;
+            }
+
+            if (field is SignatureField)
+            {
+                return SignatureTemplate;
             }
 
             return new DataTemplate();
