@@ -96,6 +96,10 @@ namespace FoundOps.Core.Tools
 
                 reader.NextResult();
 
+                var signatureFields = container.Translate<SignatureField>(reader, "Fields", MergeOption.AppendOnly).ToList();
+
+                reader.NextResult();
+
                 var optionsFields = container.Translate<OptionsField>(reader, "Fields", MergeOption.AppendOnly).ToList();
 
                 reader.NextResult();
