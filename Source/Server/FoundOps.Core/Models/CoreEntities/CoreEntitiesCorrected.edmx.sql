@@ -4681,6 +4681,10 @@ BEGIN
 	ON t1.Id = t2.Id and t1.Id IN (SELECT Id FROM @fieldIds)
 
 	SELECT t1.*, t2.* FROM dbo.Fields t1 
+	JOIN dbo.Fields_SignatureField t2 
+	ON t1.Id = t2.Id and t1.Id IN (SELECT Id FROM @fieldIds)
+
+	SELECT t1.*, t2.* FROM dbo.Fields t1 
 	JOIN dbo.Fields_OptionsField t2 
 	ON t1.Id = t2.Id and t1.Id IN (SELECT Id FROM @fieldIds)
 
@@ -4792,6 +4796,12 @@ AS
 
 		SELECT t2.Id, t2.ServiceTemplateId, t2.Name, t1.Value 
 		FROM dbo.Fields_TextBoxField t1
+		JOIN dbo.Fields t2
+		ON t2.Id = t1.Id AND t2.Id IN (SELECT Id FROM #FieldIds)
+		ORDER BY t2.ServiceTemplateId
+
+		SELECT t2.Id, t2.ServiceTemplateId, t2.Name, t1.Value 
+		FROM dbo.Fields_SignatureField t1
 		JOIN dbo.Fields t2
 		ON t2.Id = t1.Id AND t2.Id IN (SELECT Id FROM #FieldIds)
 		ORDER BY t2.ServiceTemplateId
@@ -5465,6 +5475,16 @@ CREATE PROCEDURE [dbo].[PropagateNewFields]
 								)	    
 				END
 
+				IF @FieldId IN (SELECT Id FROM dbo.Fields_SignatureField) --Copy Signature field, set new Id's
+				BEGIN
+					INSERT INTO Fields_SignatureField
+							( Value, 
+								Id )
+					VALUES  ((SELECT Value FROM dbo.Fields_SignatureField WHERE Id = @FieldId), -- Value - nvarchar(max)
+								@newFieldId  -- Id - uniqueidentifier
+								)	    
+				END
+
 				IF @FieldId IN (SELECT Id FROM dbo.Fields_OptionsField) --Copy the Options field, set new Id's 
 				BEGIN
 					
@@ -5811,6 +5831,16 @@ BEGIN
 								  Id )
 						VALUES  ( (SELECT IsMultiline FROM dbo.Fields_TextBoxField WHERE Id = @currentId), -- IsMultiline - bit
 								  (SELECT Value FROM dbo.Fields_TextBoxField WHERE Id = @currentId), -- Value - nvarchar(max)
+								  @newFieldId  -- Id - uniqueidentifier
+								  )	    
+					END
+
+					IF @currentId IN (SELECT Id FROM dbo.Fields_SignatureField) --Copy Signature field, set new Id's
+					BEGIN
+						INSERT INTO Fields_SignatureField
+								( Value, 
+								  Id )
+						VALUES  ( (SELECT Value FROM dbo.Fields_TextBoxField WHERE Id = @currentId), -- Value - nvarchar(max)
 								  @newFieldId  -- Id - uniqueidentifier
 								  )	    
 					END
