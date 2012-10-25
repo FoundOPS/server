@@ -16,27 +16,13 @@
                     </Style>
                 </telerik:RadGridView.RowStyle>
                 <telerik:RadGridView.Columns>
-                    <telerik:GridViewDataColumn Header="Service Type" DataMemberBinding="{Binding Name}">
-                        <telerik:GridViewDataColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBlock Text="{Binding Name}"/>
-                            </DataTemplate>
-                        </telerik:GridViewDataColumn.CellTemplate>
-                        <telerik:GridViewDataColumn.CellEditTemplate>
-                            <DataTemplate>
-                                <TextBox Text="{Binding Name, Mode=TwoWay}"/>
-                            </DataTemplate>
-                        </telerik:GridViewDataColumn.CellEditTemplate>
-                    </telerik:GridViewDataColumn>
-                    <!--<telerik:GridViewDataColumn Header="Region"/>-->
-                    <!--Region Name-->
-                    <telerik:GridViewDataColumn Header="Client" DataMemberBinding="{Binding Client.Name}" />
-                    <!--Location Address-->
-                    <telerik:GridViewDataColumn Header="Location" DataMemberBinding="{Binding Location.Name}"/>
-                    <telerik:GridViewDataColumn Header="Region" DataMemberBinding="{Binding Location.Region.Name}" />
-                    <telerik:GridViewDataColumn Header="Address" DataMemberBinding="{Binding Location.AddressLineOne}"/>
+                    <telerik:GridViewDataColumn Header="Service Type" DataMemberBinding="{Binding Name}" IsReadOnly="True"/>
+                    <telerik:GridViewDataColumn Header="Client" DataMemberBinding="{Binding Client.Name}" IsReadOnly="True"/>
+                    <telerik:GridViewDataColumn Header="Location" DataMemberBinding="{Binding Location.Name}" IsReadOnly="True"/>
+                    <telerik:GridViewDataColumn Header="Region" DataMemberBinding="{Binding Location.Region.Name}" IsReadOnly="True"/>
+                    <telerik:GridViewDataColumn Header="Address" DataMemberBinding="{Binding Location.AddressLineOne}" IsReadOnly="True"/>
                     <telerik:GridViewDataColumn Header="Scheduled Date" DataMemberBinding="{Binding Date}" DataFormatString="{} {0:MMM dd, yyyy}"/>
-                    <telerik:GridViewDataColumn Header="Status" DataMemberBinding="{Binding TaskStatus.Name}"/>
+                    <telerik:GridViewDataColumn Header="Status" DataMemberBinding="{Binding TaskStatus.Name}" IsReadOnly="True"/>
                 </telerik:RadGridView.Columns>
             </telerik:RadGridView>
         </Grid>
