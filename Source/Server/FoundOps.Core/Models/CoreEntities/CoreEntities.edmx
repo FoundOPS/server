@@ -321,18 +321,6 @@
             <End Role="VehicleMaintenanceLog" EntitySet="VehicleMaintenanceLog" />
           </AssociationSet>
         </EntityContainer>
-      <Function Name="GetResourcesWithLatestPoint" IsComposable="false">
-        <CommandText>
-          SELECT EmployeeId, VehicleId, EntityName, Heading, Latitude, Longitude, CollectedTimeStamp, Speed, Source, RouteId, Accuracy
-          FROM dbo.GetResourcesWithLatestPoint (@serviceProviderId, @serviceDateUtc)
-        </CommandText>
-        <Parameter Name="serviceProviderId"
-               Mode="In"
-               Type="uniqueidentifier"/>
-        <Parameter Name="serviceDateUtc"
-                   Mode="In"
-                   Type="date"/>
-      </Function>
         <EntityType Name="Blocks">
           <Key>
             <PropertyRef Name="Id" />
@@ -355,6 +343,7 @@
           <Property Name="Salesperson" Type="nvarchar(max)" />
           <Property Name="BusinessAccountId" Type="uniqueidentifier" />
           <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="DateDeleted" Type="datetime" />
         </EntityType>
         <EntityType Name="ContactInfoSet">
           <Key>
@@ -542,6 +531,7 @@
           <Property Name="ClientId" Type="uniqueidentifier" />
           <Property Name="IsDefaultBillingLocation" Type="bit" />
           <Property Name="CountryCode" Type="nvarchar(max)" />
+          <Property Name="DateDeleted" Type="datetime" />
         </EntityType>
         <EntityType Name="Parties">
           <Key>
@@ -597,6 +587,7 @@
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="ClientId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="ExcludedDatesString" Type="nvarchar(max)" />
+          <Property Name="DateDeleted" Type="datetime" />
         </EntityType>
         <EntityType Name="Regions">
           <Key>
@@ -677,7 +668,7 @@
           <Property Name="RouteDestinationId" Type="uniqueidentifier" />
           <Property Name="ClientId" Type="uniqueidentifier" />
           <Property Name="ServiceId" Type="uniqueidentifier" />
-          <Property Name="OriginalDate" Type="datetime" Nullable="true" />
+          <Property Name="OriginalDate" Type="datetime" />
           <Property Name="BusinessAccountId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="EstimatedDuration" Type="time" Nullable="false" />
           <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
@@ -1137,9 +1128,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_LocationFieldLocation">
-          <End Role="Locations" Type="CoreEntities.Store.Locations" Multiplicity="0..1">
-            <OnDelete Action="Cascade" />
-          </End>
+          <End Role="Locations" Type="CoreEntities.Store.Locations" Multiplicity="0..1" />
           <End Role="Fields_LocationField" Type="CoreEntities.Store.Fields_LocationField" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Locations">
@@ -1680,6 +1669,7 @@
         </Function>
         <Function Name="DeleteLocationBasedOnId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="locationId" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="date" Type="date" Mode="In" />
         </Function>
         <Function Name="DeleteRecurringService" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="recurringServiceId" Type="uniqueidentifier" Mode="In" />
@@ -1999,32 +1989,29 @@
             <End Role="Vehicle" EntitySet="Vehicles" />
           </AssociationSet>
           <FunctionImport Name="DeleteBasicPartyBasedOnId">
-            <Parameter Name="providerId" Mode="In" Type="Guid" />
+          <Parameter Name="providerId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteBusinessAccountBasedOnId">
-            <Parameter Name="providerId" Mode="In" Type="Guid" />
+          <Parameter Name="providerId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteClientBasedOnId">
-            <Parameter Name="clientId" Mode="In" Type="Guid" />
+          <Parameter Name="clientId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteFieldAndChildrenBasedOnFieldId">
-            <Parameter Name="parentFieldId" Mode="In" Type="Guid" />
-          </FunctionImport>
-          <FunctionImport Name="DeleteLocationBasedOnId">
-            <Parameter Name="locationId" Mode="In" Type="Guid" />
+          <Parameter Name="parentFieldId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteRecurringService">
-            <Parameter Name="recurringServiceId" Mode="In" Type="Guid" />
+          <Parameter Name="recurringServiceId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId">
-            <Parameter Name="parentTemplateId" Mode="In" Type="Guid" />
+          <Parameter Name="parentTemplateId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteServiceTemplatesAndChildrenBasedOnContextId">
             <Parameter Name="serviceProviderId" Mode="In" Type="Guid" />
             <Parameter Name="ownerClientId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteUserAccountBasedOnId">
-            <Parameter Name="providerId" Mode="In" Type="Guid" />
+          <Parameter Name="providerId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="GetDateRangeForServices" ReturnType="Collection(DateTime)">
             <Parameter Name="serviceProviderIdContext" Mode="In" Type="Guid" />
@@ -2064,13 +2051,13 @@
             <Parameter Name="serviceTypeContext" Mode="In" Type="String" />
           </FunctionImport>
           <FunctionImport Name="PropagateNameChange">
-            <Parameter Name="serviceTemplateId" Mode="In" Type="Guid" />
+          <Parameter Name="serviceTemplateId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="PropagateNewFields">
-            <Parameter Name="FieldId" Mode="In" Type="Guid" />
+          <Parameter Name="FieldId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="PropagateNewServiceTemplateToClients">
-            <Parameter Name="serviceTemplateId" Mode="In" Type="Guid" />
+          <Parameter Name="serviceTemplateId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="sp_GetUnroutedServicesForDate">
             <Parameter Name="serviceProviderIdContext" Mode="In" Type="Guid" />
@@ -2079,6 +2066,14 @@
           <FunctionImport Name="GetResourcesWithLatestPoint" ReturnType="Collection(CoreEntities.ResourceWithLastPoint)">
             <Parameter Name="serviceProviderId" Mode="In" Type="Guid" />
             <Parameter Name="serviceDateUtc" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteLocationBasedOnId">
+            <Parameter Name="locationId" Mode="In" Type="Guid" />
+            <Parameter Name="date" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteLocationBasedOnId1">
+            <Parameter Name="locationId" Mode="In" Type="Guid" />
+            <Parameter Name="date" Mode="In" Type="DateTime" />
           </FunctionImport>
           </EntityContainer>
         <EntityType Name="Block">
@@ -2182,6 +2177,7 @@
           <Property Type="Guid" Name="ClientId" Nullable="true" />
           <Property Type="Boolean" Name="IsDefaultBillingLocation" Nullable="true" />
           <Property Type="String" Name="CountryCode" Nullable="true" FixedLength="false" MaxLength="Max" Unicode="true" />
+          <Property Type="DateTime" Name="DateDeleted" Nullable="true" Precision="3" />
         </EntityType>
         <EntityType Name="Service">
           <Key>
@@ -2337,7 +2333,7 @@
           <Property Type="Guid" Name="RouteDestinationId" Nullable="true" />
           <Property Type="Guid" Name="ClientId" Nullable="true" />
           <Property Type="Guid" Name="ServiceId" Nullable="true" />
-          <Property Type="DateTime" Name="OriginalDate" Nullable="true" />
+          <Property Type="DateTime" Name="OriginalDate" Nullable="true" Precision="3" />
           <Property Type="Guid" Name="BusinessAccountId" Nullable="false" />
           <Property Type="Time" Name="EstimatedDuration" Nullable="false" Precision="7" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
@@ -2439,6 +2435,7 @@
           <NavigationProperty Name="Locations" Relationship="CoreEntities.ClientLocation1" FromRole="Client" ToRole="Location" />
           <Property Type="String" Name="Name" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="ContactInfoSet" Relationship="CoreEntities.ClientContactInfo" FromRole="Client" ToRole="ContactInfo" />
+          <Property Type="DateTime" Name="DateDeleted" Nullable="true" Precision="3" />
         </EntityType>
         <Association Name="RouteTaskClient">
           <End Type="CoreEntities.RouteTask" Role="RouteTask" Multiplicity="*" />
@@ -2629,6 +2626,7 @@
             </Documentation>
           </Property>
           <NavigationProperty Name="RouteTaskChildren" Relationship="CoreEntities.RouteTaskRecurringService" FromRole="RecurringService" ToRole="RouteTask" />
+          <Property Type="DateTime" Name="DateDeleted" Nullable="true" Precision="3" />
         </EntityType>
         <Association Name="RecurringServiceServiceTemplate">
           <End Type="CoreEntities.RecurringService" Role="RecurringService" Multiplicity="0..1" />
@@ -3430,6 +3428,7 @@
           <ScalarProperty Name="ClientId" ColumnName="ClientId" />
           <ScalarProperty Name="IsDefaultBillingLocation" ColumnName="IsDefaultBillingLocation" />
           <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
+          <ScalarProperty Name="DateDeleted" ColumnName="DateDeleted" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -3522,6 +3521,7 @@
           <ScalarProperty Name="Salesperson" ColumnName="Salesperson" />
           <ScalarProperty Name="BusinessAccountId" ColumnName="BusinessAccountId" />
           <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="DateDeleted" ColumnName="DateDeleted" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -3556,6 +3556,7 @@
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="ClientId" ColumnName="ClientId" />
           <ScalarProperty Name="ExcludedDatesString" ColumnName="ExcludedDatesString" />
+          <ScalarProperty Name="DateDeleted" ColumnName="DateDeleted" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -3771,14 +3772,13 @@
           <FunctionImportMapping FunctionImportName="DeleteBusinessAccountBasedOnId" FunctionName="CoreEntities.Store.DeleteBusinessAccountBasedOnId" />
           <FunctionImportMapping FunctionImportName="DeleteClientBasedOnId" FunctionName="CoreEntities.Store.DeleteClientBasedOnId" />
           <FunctionImportMapping FunctionImportName="DeleteFieldAndChildrenBasedOnFieldId" FunctionName="CoreEntities.Store.DeleteFieldAndChildrenBasedOnFieldId" />
-          <FunctionImportMapping FunctionImportName="DeleteLocationBasedOnId" FunctionName="CoreEntities.Store.DeleteLocationBasedOnId" />
           <FunctionImportMapping FunctionImportName="DeleteRecurringService" FunctionName="CoreEntities.Store.DeleteRecurringService" />
           <FunctionImportMapping FunctionImportName="DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId" FunctionName="CoreEntities.Store.DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId" />
           <FunctionImportMapping FunctionImportName="DeleteServiceTemplatesAndChildrenBasedOnContextId" FunctionName="CoreEntities.Store.DeleteServiceTemplatesAndChildrenBasedOnContextId" />
           <FunctionImportMapping FunctionImportName="DeleteUserAccountBasedOnId" FunctionName="CoreEntities.Store.DeleteUserAccountBasedOnId" />
           <FunctionImportMapping FunctionImportName="GetDateRangeForServices" FunctionName="CoreEntities.Store.GetDateRangeForServices" />
           <FunctionImportMapping FunctionImportName="GetFieldsInJavaScriptFormat" FunctionName="CoreEntities.Store.GetFieldsInJavaScriptFormat">
-          <ResultMapping>
+            <ResultMapping>
               <ComplexTypeMapping TypeName="CoreEntities.FieldJavaScript">
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
@@ -3786,7 +3786,7 @@
             </ResultMapping>
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GetServiceHolders" FunctionName="CoreEntities.Store.GetServiceHolders">
-          <ResultMapping>
+            <ResultMapping>
               <ComplexTypeMapping TypeName="CoreEntities.ServiceHolder">
                 <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
                 <ScalarProperty Name="ServiceId" ColumnName="ServiceId" />
@@ -3802,23 +3802,8 @@
           <FunctionImportMapping FunctionImportName="PropagateNewFields" FunctionName="CoreEntities.Store.PropagateNewFields" />
           <FunctionImportMapping FunctionImportName="PropagateNewServiceTemplateToClients" FunctionName="CoreEntities.Store.PropagateNewServiceTemplateToClients" />
           <FunctionImportMapping FunctionImportName="sp_GetUnroutedServicesForDate" FunctionName="CoreEntities.Store.sp_GetUnroutedServicesForDate" />
-          <FunctionImportMapping FunctionImportName="GetResourcesWithLatestPoint" FunctionName="CoreEntities.Store.GetResourcesWithLatestPoint">
-            <ResultMapping>
-              <ComplexTypeMapping TypeName="CoreEntities.ResourceWithLastPoint">
-                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
-                <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
-                <ScalarProperty Name="EntityName" ColumnName="EntityName" />
-                <ScalarProperty Name="Heading" ColumnName="Heading" />
-                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
-                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
-                <ScalarProperty Name="CollectedTimeStamp" ColumnName="CollectedTimeStamp" />
-                <ScalarProperty Name="Speed" ColumnName="Speed" />
-                <ScalarProperty Name="Source" ColumnName="Source" />
-                <ScalarProperty Name="RouteId" ColumnName="RouteId" />
-                <ScalarProperty Name="Accuracy" ColumnName="Accuracy" />
-              </ComplexTypeMapping>
-            </ResultMapping>
-          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="DeleteLocationBasedOnId" FunctionName="CoreEntities.Store.DeleteLocationBasedOnId" />
+          <FunctionImportMapping FunctionImportName="DeleteLocationBasedOnId1" FunctionName="CoreEntities.Store.DeleteLocationBasedOnId" />
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>

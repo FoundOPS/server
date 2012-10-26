@@ -1,3 +1,7 @@
+using System.Linq;
+using System.Threading.Tasks;
+using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
+using FoundOps.Common.Silverlight.UI.Controls;
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Services;
@@ -119,7 +123,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Setup the selected client's ContactInfoVM whenever the selected client changes
             _selectedClientContactInfoVM =
                 SelectedEntityObservable.Where(se => se != null && se.BusinessAccount != null).Select(se => new ContactInfoVM(ContactInfoType.Clients, se.ContactInfoSet))
-                .ToProperty(this, x => x.SelectedClientContactInfoVM); 
+                .ToProperty(this, x => x.SelectedClientContactInfoVM);
 
             ManuallyUpdateSuggestions = autoCompleteBox =>
                 SearchSuggestionsHelper(autoCompleteBox, () => Manager.Data.DomainContext.SearchClientsForRoleQuery(Manager.Context.RoleId, autoCompleteBox.SearchText));
@@ -145,7 +149,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 SelectedEntity.Locations.Add((Location)existingItem);
                 VM.Locations.MoveToDetailsView.Execute(null);
 
-                VM.Locations.SelectedEntity = (Location) existingItem;
+                VM.Locations.SelectedEntity = (Location)existingItem;
             };
 
             RemoveItemLocation = () =>
@@ -161,8 +165,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             {
                 var selectedLocation = VM.Locations.SelectedEntity;
                 if (selectedLocation != null)
-                    VM.Locations.DeleteEntity(selectedLocation);
-
+                    VM.Locations.ConfirmDelete(selectedLocation);
+                
                 return selectedLocation;
             };
 
@@ -217,6 +221,37 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Detach the entity graph related to the client 
             //they will be deleted in Client's delete method of the DomainService
             DataManager.DetachEntities(entityToDelete.EntityGraphToRemove);
+        }
+
+        protected override void CheckDelete(Action<bool> deleteItem)
+        {
+            ConfirmDelete(SelectedEntity);
+        }
+
+        /// <summary>
+        /// Opens up a notification the tell the user that Locations, Recurring Services and future Services will also be deleted
+        /// </summary>
+        /// <param name="selectedClient">The client to be deleted</param>
+        public void ConfirmDelete(Client selectedClient)
+        {
+            var countInvokOp = DomainContext.GetFutureServiceCountForClient(selectedClient.Id);
+            countInvokOp.Completed += (_, __) =>
+            {
+                var result = countInvokOp.Value;
+                var deleteLocationNotifier = new DeleteEntityNotifier(selectedClient.RecurringServices.Count().ToString(), result.ToString(), selectedClient.Locations.Count().ToString(), "Client");
+
+                //If the user clicks the cancel button, cancel the delete and close the window
+                deleteLocationNotifier.CancelButton.Click += (s, e) => deleteLocationNotifier.Close();
+
+                //If the user clicks the "Go For It" button, continue with the delete and close the window
+                deleteLocationNotifier.ContinueButton.Click += (s, e) =>
+                {
+                    deleteLocationNotifier.Close();
+                    this.DeleteEntity(selectedClient);
+                };
+
+                deleteLocationNotifier.Show();
+            };
         }
 
         #endregion

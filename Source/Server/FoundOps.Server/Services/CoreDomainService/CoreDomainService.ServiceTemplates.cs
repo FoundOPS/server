@@ -81,6 +81,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             {
                 //In order to propagate the original Template added must already be saved
                 ObjectContext.SaveChanges();
+                ObjectContext.CommandTimeout = 600;
 
                 ObjectContext.PropagateNewFields(field.Id);
             }

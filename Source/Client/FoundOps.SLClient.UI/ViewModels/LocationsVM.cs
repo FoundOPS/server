@@ -1,8 +1,10 @@
 ﻿using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
+using FoundOps.Common.Silverlight.UI.Controls;
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
+using FoundOps.SLClient.UI.Tools;
 using MEFedMVVM.ViewModelLocator;
 using ReactiveUI;
 using System;
@@ -222,6 +224,61 @@ namespace FoundOps.SLClient.UI.ViewModels
             this.QueryableCollectionView.AddNew(newLocation);
 
             return newLocation;
+        }
+
+        /// <summary>
+        /// Before deleting make sure the user understands that they will be deleting Recurring Services as well.
+        /// </summary>
+        /// <param name="checkCompleted">The action to call after checking.</param>
+        protected override void CheckDelete(Action<bool> checkCompleted)
+        {
+            ConfirmDelete(SelectedEntity);
+        }
+
+        /// <summary>
+        /// Opens up a notification the tell the user that Recurring Services and future Services will also be deleted
+        /// </summary>
+        /// <param name="selectedLocation">The location to be deleted</param>
+        public void ConfirmDelete(Location selectedLocation)
+        {
+            var countInvokOp = DomainContext.GetRecurringServiceCountForLocation(selectedLocation.Id);
+            countInvokOp.Completed += (_, __) =>
+            {
+                var result = countInvokOp.Value;
+                var deleteLocationNotifier = new DeleteEntityNotifier(result[0].ToString(), result[1].ToString(), "Location");
+
+                //If the user clicks the cancel button, cancel the delete and close the window
+                deleteLocationNotifier.CancelButton.Click += (s, e) => deleteLocationNotifier.Close();
+
+                //If the user clicks the "Go For It" button, continue with the delete and close the window
+                deleteLocationNotifier.ContinueButton.Click += (s, e) =>
+                {
+                    deleteLocationNotifier.Close();
+                    this.DeleteEntity(selectedLocation);
+
+                    this.SaveCommand.Execute(null);
+
+                    //must refresh recurring services and services after deleting a location
+                    DataManager.ChangesSavedObservable.Take(1).Subscribe(___ =>
+                    {
+                        if(VM.Clients.SelectedEntity == null)
+                            return;
+                        
+                        VM.Clients.SelectedEntity.DetailsLoaded = false;
+                        DataManager.DetachEntities(VM.Clients.SelectedEntity.RecurringServices);
+                        DataManager.DetachEntities(VM.Clients.SelectedEntity.Locations);
+
+                        //reload locations as well
+                        VM.Locations.ExtendedVirtualQueryableCollectionView.UpdateVirtualItemCount();
+                       
+                        //force reload client details will load recurring services
+                        VM.Clients.ForceLoadDetails();
+                        VM.Services.ForceRefresh();
+                    });
+                };
+
+                deleteLocationNotifier.Show();
+            };
         }
 
         #endregion

@@ -1,4 +1,7 @@
+using System.Data.SqlClient;
+using Dapper;
 using FoundOps.Common.NET;
+using FoundOps.Core.Models;
 using FoundOps.Core.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.DesignData;
@@ -35,7 +38,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             var businessAccount = ObjectContext.Owner(roleId).First();
 
-            var clients = ObjectContext.Clients.Where(c => c.BusinessAccountId == businessAccount.Id);
+            var clients = ObjectContext.Clients.Where(c => c.BusinessAccountId == businessAccount.Id && !c.DateDeleted.HasValue);
 
             //Client's images are not currently used, so this can be commented out
             //TODO: Figure a way to force load OwnedParty.PartyImage. 
@@ -60,10 +63,12 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             //Load contact info
             var client = ObjectContext.Clients.Where(c => c.BusinessAccountId == businessAccount.Id && c.Id == clientId)
-                .Include(c => c.ContactInfoSet).Include(c => c.RecurringServices)
-                .Include("RecurringServices.Repeat").Include("RecurringServices.ServiceTemplate").FirstOrDefault();
+                .Include(c => c.ContactInfoSet).FirstOrDefault();
 
             if (client == null) return null;
+
+            //Need to make a second call becuase otherwise we would need to do a conditional include
+            ObjectContext.RecurringServices.Where(rs => !rs.DateDeleted.HasValue).Include("Repeat").Include("ServiceTemplate").ToList();
 
             //Load clients ServiceTemplates
             GetClientServiceTemplates(businessAccount.Id, client.Id).ToArray();
@@ -100,6 +105,34 @@ namespace FoundOps.Server.Services.CoreDomainService
                 clientsWithDisplayName = clientsWithDisplayName.Where(cdn => cdn.Name.StartsWith(searchText));
 
             return clientsWithDisplayName;
+        }
+
+        public int GetFutureServiceCountForClient(Guid clientId)
+        {
+            var date = DateTime.UtcNow.Date;
+
+            const string sql = @"   SELECT COUNT(*) FROM	dbo.Services
+                                    WHERE	Id IN (
+		                                SELECT	Id FROM	dbo.ServiceTemplates
+		                                WHERE	Id IN (
+				                            SELECT	ServiceTemplateId FROM	dbo.Fields
+				                            WHERE	Id IN ( 
+                                                SELECT	Id FROM	dbo.Fields_LocationField
+								                WHERE	LocationId IN (
+                                                    SELECT Id FROM dbo.Locations WHERE ClientId = @Id) ) ) )
+		                                AND ServiceDate >= @Date
+		                                AND RecurringServiceId IS NULL";
+
+            using (var conn = new SqlConnection(ServerConstants.SqlConnectionString))
+            {
+                conn.Open();
+
+                var data = conn.Query<int>(sql, new { Id = clientId, Date = date }).First();
+
+                conn.Close();
+
+                return data;
+            }
         }
 
         public void InsertClient(Client client)
@@ -275,8 +308,8 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             var businessAccount = ObjectContext.Owner(roleId).First();
 
-            var locations = ObjectContext.Locations.Where(loc => loc.BusinessAccountId == businessAccount.Id && !loc.BusinessAccountIdIfDepot.HasValue)
-                .OrderBy(l => l.Name).ThenBy(l=>l.AddressLineOne);
+            var locations = ObjectContext.Locations.Where(loc => loc.BusinessAccountId == businessAccount.Id && !loc.BusinessAccountIdIfDepot.HasValue && !loc.DateDeleted.HasValue)
+                .OrderBy(l => l.Name).ThenBy(l => l.AddressLineOne);
             return locations;
         }
 
@@ -397,6 +430,45 @@ namespace FoundOps.Server.Services.CoreDomainService
             return csv;
         }
 
+        public int[] GetRecurringServiceCountForLocation(Guid locationId)
+        {
+            var date = DateTime.UtcNow.Date;
+            
+            const string sql = @"SELECT	COUNT(*) FROM dbo.RecurringServices
+                                 WHERE Id IN ( 
+		                            SELECT Id FROM	dbo.ServiceTemplates 
+		                            WHERE  Id IN ( 
+				                         SELECT	ServiceTemplateId FROM	dbo.Fields 
+				                         WHERE	Id IN ( 
+						                         SELECT	Id FROM	dbo.Fields_LocationField
+                                                 WHERE	LocationId = @Id ) ) )
+                                SELECT	COUNT(*)
+                                FROM	dbo.Services
+                                WHERE	Id IN (
+		                            SELECT	Id FROM	dbo.ServiceTemplates
+		                            WHERE	Id IN (
+				                        SELECT	ServiceTemplateId FROM	dbo.Fields
+				                        WHERE	Id IN (
+						                    SELECT	Id FROM	dbo.Fields_LocationField
+						                    WHERE	LocationId = @Id ) ) )
+		                            AND ServiceDate >= @Date AND RecurringServiceId IS NULL";
+
+            using (var conn = new SqlConnection(ServerConstants.SqlConnectionString))
+            {
+                conn.Open();
+
+                var data = conn.QueryMultiple(sql, new { Id = locationId, Date = date });
+                var recurringServiceCount = data.Read<int>().Single();
+                var futureServiceCount = data.Read<int>().Single();
+
+                conn.Close();
+
+                var array = new int[] {recurringServiceCount, futureServiceCount};
+
+                return array;
+            }
+        }
+
         public void InsertLocation(Location location)
         {
             if ((location.EntityState != EntityState.Detached))
@@ -420,7 +492,9 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// <param name="location">The location.</param>
         public void DeleteLocation(Location location)
         {
-            ObjectContext.DeleteLocationBasedOnId(location.Id);
+            var date = this.ObjectContext.CurrentUserAccount().First().Now();
+
+            ObjectContext.DeleteLocationBasedOnId(location.Id, date.Date);
         }
 
         #endregion

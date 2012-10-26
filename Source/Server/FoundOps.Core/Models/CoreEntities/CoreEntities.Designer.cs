@@ -908,25 +908,6 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        /// <param name="locationId">No Metadata Documentation available.</param>
-        public int DeleteLocationBasedOnId(Nullable<global::System.Guid> locationId)
-        {
-            ObjectParameter locationIdParameter;
-            if (locationId.HasValue)
-            {
-                locationIdParameter = new ObjectParameter("locationId", locationId);
-            }
-            else
-            {
-                locationIdParameter = new ObjectParameter("locationId", typeof(global::System.Guid));
-            }
-    
-            return base.ExecuteFunction("DeleteLocationBasedOnId", locationIdParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         /// <param name="recurringServiceId">No Metadata Documentation available.</param>
         public int DeleteRecurringService(Nullable<global::System.Guid> recurringServiceId)
         {
@@ -1463,6 +1444,66 @@ namespace FoundOps.Core.Models.CoreEntities
             }
     
             return base.ExecuteFunction<ResourceWithLastPoint>("GetResourcesWithLatestPoint", serviceProviderIdParameter, serviceDateUtcParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="locationId">No Metadata Documentation available.</param>
+        /// <param name="date">No Metadata Documentation available.</param>
+        public int DeleteLocationBasedOnId(Nullable<global::System.Guid> locationId, Nullable<global::System.DateTime> date)
+        {
+            ObjectParameter locationIdParameter;
+            if (locationId.HasValue)
+            {
+                locationIdParameter = new ObjectParameter("locationId", locationId);
+            }
+            else
+            {
+                locationIdParameter = new ObjectParameter("locationId", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter dateParameter;
+            if (date.HasValue)
+            {
+                dateParameter = new ObjectParameter("date", date);
+            }
+            else
+            {
+                dateParameter = new ObjectParameter("date", typeof(global::System.DateTime));
+            }
+    
+            return base.ExecuteFunction("DeleteLocationBasedOnId", locationIdParameter, dateParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="locationId">No Metadata Documentation available.</param>
+        /// <param name="date">No Metadata Documentation available.</param>
+        public int DeleteLocationBasedOnId1(Nullable<global::System.Guid> locationId, Nullable<global::System.DateTime> date)
+        {
+            ObjectParameter locationIdParameter;
+            if (locationId.HasValue)
+            {
+                locationIdParameter = new ObjectParameter("locationId", locationId);
+            }
+            else
+            {
+                locationIdParameter = new ObjectParameter("locationId", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter dateParameter;
+            if (date.HasValue)
+            {
+                dateParameter = new ObjectParameter("date", date);
+            }
+            else
+            {
+                dateParameter = new ObjectParameter("date", typeof(global::System.DateTime));
+            }
+    
+            return base.ExecuteFunction("DeleteLocationBasedOnId1", locationIdParameter, dateParameter);
         }
 
         #endregion
@@ -2367,6 +2408,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.String _Name;
         partial void OnNameChanging(global::System.String value);
         partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> DateDeleted
+        {
+            get
+            {
+                return _DateDeleted;
+            }
+            set
+            {
+                OnDateDeletedChanging(value);
+                ReportPropertyChanging("DateDeleted");
+                _DateDeleted = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DateDeleted");
+                OnDateDeletedChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _DateDeleted;
+        partial void OnDateDeletedChanging(Nullable<global::System.DateTime> value);
+        partial void OnDateDeletedChanged();
 
         #endregion
 
@@ -5864,6 +5929,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.String _CountryCode;
         partial void OnCountryCodeChanging(global::System.String value);
         partial void OnCountryCodeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> DateDeleted
+        {
+            get
+            {
+                return _DateDeleted;
+            }
+            set
+            {
+                OnDateDeletedChanging(value);
+                ReportPropertyChanging("DateDeleted");
+                _DateDeleted = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DateDeleted");
+                OnDateDeletedChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _DateDeleted;
+        partial void OnDateDeletedChanging(Nullable<global::System.DateTime> value);
+        partial void OnDateDeletedChanged();
 
         #endregion
 
@@ -6923,6 +7012,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.String _ExcludedDatesString;
         partial void OnExcludedDatesStringChanging(global::System.String value);
         partial void OnExcludedDatesStringChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> DateDeleted
+        {
+            get
+            {
+                return _DateDeleted;
+            }
+            set
+            {
+                OnDateDeletedChanging(value);
+                ReportPropertyChanging("DateDeleted");
+                _DateDeleted = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DateDeleted");
+                OnDateDeletedChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _DateDeleted;
+        partial void OnDateDeletedChanging(Nullable<global::System.DateTime> value);
+        partial void OnDateDeletedChanged();
 
         #endregion
 

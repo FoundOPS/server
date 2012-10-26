@@ -15,25 +15,95 @@ GO
 * @locationId - The Location Id to be deleted
 ***************************************************************************************************************************************************/
 CREATE PROCEDURE dbo.DeleteLocationBasedOnId
-		(@locationId uniqueidentifier)
+		(@locationId UNIQUEIDENTIFIER, @date DATE)
 
 	AS
 	BEGIN
+  
+	UPDATE	dbo.Locations
+	SET		DateDeleted = @date
+	WHERE	Id = @locationId   
 
-	DELETE FROM RouteTasks
-	WHERE LocationId = @locationId
+	CREATE TABLE #RecurringService (Id UNIQUEIDENTIFIER)
 
-	DELETE FROM SubLocations
-	WHERE LocationId = @locationId
+	INSERT INTO #RecurringService
+	SELECT Id FROM dbo.RecurringServices
+	WHERE	Id IN (
+			SELECT	Id
+			FROM	dbo.ServiceTemplates
+			WHERE	Id IN ( SELECT	ServiceTemplateId
+							FROM	dbo.Fields
+							WHERE	Id IN ( SELECT	Id
+											FROM	dbo.Fields_LocationField
+											WHERE	LocationId = @locationId ) ) )
 
-	DELETE ContactInfoSet
-	WHERE LocationId = @locationId
+	
+	UPDATE	dbo.RecurringServices
+	SET		DateDeleted = @date
+	WHERE Id IN (SELECT Id FROM #RecurringService)
 
-	DELETE FROM RouteDestinations
-	WHERE LocationId = @locationId
+	UPDATE dbo.Repeats
+	SET EndDate = @date
+	WHERE Id IN (SELECT Id FROM #RecurringService)
 
-	DELETE FROM Locations
-	WHERE Id = @locationId	
+	CREATE TABLE #RouteTasksToDelete
+		(
+		  Id UNIQUEIDENTIFIER ,
+		  RouteDestinationId UNIQUEIDENTIFIER
+		)
 
+	INSERT	INTO #RouteTasksToDelete
+			SELECT	Id ,
+					RouteDestinationId
+			FROM	dbo.RouteTasks
+			WHERE	LocationId = @locationId
+					AND [Date] > @date
+
+	DELETE	FROM RouteTasks
+	WHERE	Id IN ( SELECT	Id
+					FROM	#RouteTasksToDelete )
+
+	DELETE	FROM RouteDestinations
+	WHERE	Id IN ( SELECT	RouteDestinationId
+					FROM	#RouteTasksToDelete )
+	
+	CREATE TABLE #ServicesToDelete ( Id UNIQUEIDENTIFIER )
+	
+	INSERT	INTO #ServicesToDelete
+			SELECT	Id
+			FROM	dbo.Services
+			WHERE	Id IN (
+					SELECT	Id
+					FROM	dbo.ServiceTemplates
+					WHERE	Id IN (
+							SELECT	ServiceTemplateId
+							FROM	dbo.Fields
+							WHERE	Id IN ( SELECT	Id
+											FROM	dbo.Fields_LocationField
+											WHERE	LocationId = @locationId ) ) 
+					AND ServiceDate >= @Date
+					AND RecurringServiceId IS NULL
+					AND LevelInt = 5)
+	
+	DELETE FROM dbo.Services
+	WHERE Id IN (SELECT Id FROM #ServicesToDelete)
+
+	DECLARE @RowCount INT
+	DECLARE @RowId UNIQUEIDENTIFIER
+
+	SET @RowCount = (SELECT COUNT(*) FROM #ServicesToDelete)
+
+	WHILE @RowCount > 0
+	BEGIN
+	
+		SET @RowId = (SELECT TOP(1) Id FROM #ServicesToDelete ORDER BY Id)
+
+		EXECUTE [dbo].[DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId] @RowId
+
+		DELETE FROM #ServicesToDelete WHERE Id = @RowId
+	
+		SET @RowCount = (SELECT COUNT(*) FROM #ServicesToDelete)          
+	END
+	
 	END
 	RETURN
