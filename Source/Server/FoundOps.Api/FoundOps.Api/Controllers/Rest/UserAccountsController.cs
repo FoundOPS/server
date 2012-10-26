@@ -218,6 +218,17 @@ namespace FoundOps.Api.Controllers.Rest
                     currentUserAccount.FirstName = userAccount.FirstName;
                     currentUserAccount.LastName = userAccount.LastName;
                     currentUserAccount.EmailAddress = userAccount.EmailAddress;
+
+                    //check the time zone is acceptable
+                    try
+                    {
+                        TimeZoneInfo.FindSystemTimeZoneById(userAccount.TimeZone.Id)
+                    }
+                    catch (Exception)
+                    {
+                        throw Request.BadRequest("TimeZone not acceptable");
+                    }
+
                     currentUserAccount.TimeZone = userAccount.TimeZone.Id;
                 }
 
@@ -225,7 +236,7 @@ namespace FoundOps.Api.Controllers.Rest
                 if (newPass != null && oldPass != null)
                 {
                     if (!CoreEntitiesMembershipProvider.ChangePassword(currentUserAccount.EmailAddress, oldPass, newPass))
-                        throw ApiExceptions.Create(Request.CreateResponse(HttpStatusCode.NotAcceptable));
+                        throw Request.BadRequest("The password was incorrect, or the new password is not acceptable");
                 }
 
 
