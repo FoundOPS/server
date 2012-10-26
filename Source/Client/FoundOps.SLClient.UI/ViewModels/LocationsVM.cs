@@ -4,6 +4,7 @@ using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
+using FoundOps.SLClient.UI.Tools;
 using MEFedMVVM.ViewModelLocator;
 using ReactiveUI;
 using System;
@@ -231,22 +232,7 @@ namespace FoundOps.SLClient.UI.ViewModels
         /// <param name="checkCompleted">The action to call after checking.</param>
         protected override void CheckDelete(Action<bool> checkCompleted)
         {
-            var deleteLocationNotifier = new DeleteLocationNotifier("5", "34");
-
-            //If the user clicks the cancel button, cancel the delete and close the window
-            deleteLocationNotifier.CancelButton.Click += (s, e) =>
-            {
-                deleteLocationNotifier.Close();
-                checkCompleted(false);
-            };
-            //If the user clicks the "Go For It" button, continue with the delete and close the window
-            deleteLocationNotifier.ContinueButton.Click += (s, e) =>
-            {
-                deleteLocationNotifier.Close();
-                checkCompleted(true);
-            };
-
-            deleteLocationNotifier.Show();
+            ConfirmDelete(SelectedEntity);
         }
 
         public override void DeleteEntity(Location entityToDelete)
@@ -256,6 +242,32 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Set EndDate to be today and Hidden = true
 
             base.DeleteEntity(entityToDelete);
+        }
+
+        /// <summary>
+        /// Opens up a notification the tell the user that Recurring Services and future Services will also be deleted
+        /// </summary>
+        /// <param name="selectedLocation">The location to be deleted</param>
+        public void ConfirmDelete(Location selectedLocation)
+        {
+            var countInvokOp = DomainContext.GetRecurringServiceCountForLocation(ContextManager.RoleId, selectedLocation.Id);
+            countInvokOp.Completed += (_, __) =>
+            {
+                var result = countInvokOp.Value;
+                var deleteLocationNotifier = new DeleteEntityNotifier(result[0].ToString(), result[1].ToString(), "Location");
+
+                //If the user clicks the cancel button, cancel the delete and close the window
+                deleteLocationNotifier.CancelButton.Click += (s, e) => deleteLocationNotifier.Close();
+
+                //If the user clicks the "Go For It" button, continue with the delete and close the window
+                deleteLocationNotifier.ContinueButton.Click += (s, e) =>
+                {
+                    deleteLocationNotifier.Close();
+                    this.DeleteEntity(selectedLocation);
+                };
+
+                deleteLocationNotifier.Show();
+            };
         }
 
         #endregion

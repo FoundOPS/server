@@ -191,8 +191,8 @@
     <Compile Include="Controls\AddEditDelete\EditButton.xaml.cs">
       <DependentUpon>EditButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\DeleteLocationNotifier.xaml.cs">
-      <DependentUpon>DeleteLocationNotifier.xaml</DependentUpon>
+    <Compile Include="Controls\DeleteEntityNotifier.xaml.cs">
+      <DependentUpon>DeleteEntityNotifier.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\LocationErrorWindow.xaml.cs">
       <DependentUpon>LocationErrorWindow.xaml</DependentUpon>
@@ -405,7 +405,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Controls\DeleteLocationNotifier.xaml">
+    <Page Include="Controls\DeleteEntityNotifier.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

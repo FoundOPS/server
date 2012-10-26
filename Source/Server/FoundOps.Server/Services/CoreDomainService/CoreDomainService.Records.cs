@@ -1,4 +1,7 @@
+using System.Data.SqlClient;
+using Dapper;
 using FoundOps.Common.NET;
+using FoundOps.Core.Models;
 using FoundOps.Core.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.DesignData;
@@ -276,7 +279,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             var businessAccount = ObjectContext.Owner(roleId).First();
 
             var locations = ObjectContext.Locations.Where(loc => loc.BusinessAccountId == businessAccount.Id && !loc.BusinessAccountIdIfDepot.HasValue)
-                .OrderBy(l => l.Name).ThenBy(l=>l.AddressLineOne);
+                .OrderBy(l => l.Name).ThenBy(l => l.AddressLineOne);
             return locations;
         }
 
@@ -395,6 +398,46 @@ namespace FoundOps.Server.Services.CoreDomainService
             memoryStream.Dispose();
 
             return csv;
+        }
+
+        public int[] GetRecurringServiceCountForLocation(Guid roleId, Guid locationId)
+        {
+            var user = ObjectContext.CurrentUserAccount().First();
+            var date = user.Now().Date;
+            
+            const string sql = @"SELECT	COUNT(*) FROM dbo.RecurringServices
+                                 WHERE Id IN ( 
+		                            SELECT Id FROM	dbo.ServiceTemplates 
+		                            WHERE  Id IN ( 
+				                         SELECT	ServiceTemplateId FROM	dbo.Fields 
+				                         WHERE	Id IN ( 
+						                         SELECT	Id FROM	dbo.Fields_LocationField
+                                                 WHERE	LocationId = @Id ) ) )
+                                SELECT	COUNT(*)
+                                FROM	dbo.Services
+                                WHERE	Id IN (
+		                            SELECT	Id FROM	dbo.ServiceTemplates
+		                            WHERE	Id IN (
+				                        SELECT	ServiceTemplateId FROM	dbo.Fields
+				                        WHERE	Id IN (
+						                    SELECT	Id FROM	dbo.Fields_LocationField
+						                    WHERE	LocationId = @Id ) ) )
+		                            AND ServiceDate >= @Date";
+
+            using (var conn = new SqlConnection(ServerConstants.SqlConnectionString))
+            {
+                conn.Open();
+
+                var data = conn.QueryMultiple(sql, new { Id = locationId, Date = date });
+                var recurringServiceCount = data.Read<int>().Single();
+                var futureServiceCount = data.Read<int>().Single();
+
+                conn.Close();
+
+                var array = new int[] {recurringServiceCount, futureServiceCount};
+
+                return array;
+            }
         }
 
         public void InsertLocation(Location location)

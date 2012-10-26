@@ -3,11 +3,12 @@ using System.Windows.Controls;
 
 namespace FoundOps.Common.Silverlight.UI.Controls
 {
-    public partial class DeleteLocationNotifier
+    public partial class DeleteEntityNotifier
     {
-        public DeleteLocationNotifier(string recurringServiceCount, string futureServiceCount)
+        public DeleteEntityNotifier(string recurringServiceCount, string futureServiceCount, string entityType)
         {
             InitializeComponent();
+            this.EntityTypeTextBlock.Text = entityType;
             this.RecurringServiceCountTextBlock.Text = recurringServiceCount;
             this.FutureServiceCountTextBox.Text = futureServiceCount;
         }

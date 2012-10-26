@@ -1,3 +1,6 @@
+using System.Linq;
+using System.Threading.Tasks;
+using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Silverlight.UI.Controls;
 using FoundOps.Common.Silverlight.UI.Controls.AddEditDelete;
 using FoundOps.Core.Models.CoreEntities;
@@ -120,7 +123,7 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Setup the selected client's ContactInfoVM whenever the selected client changes
             _selectedClientContactInfoVM =
                 SelectedEntityObservable.Where(se => se != null && se.BusinessAccount != null).Select(se => new ContactInfoVM(ContactInfoType.Clients, se.ContactInfoSet))
-                .ToProperty(this, x => x.SelectedClientContactInfoVM); 
+                .ToProperty(this, x => x.SelectedClientContactInfoVM);
 
             ManuallyUpdateSuggestions = autoCompleteBox =>
                 SearchSuggestionsHelper(autoCompleteBox, () => Manager.Data.DomainContext.SearchClientsForRoleQuery(Manager.Context.RoleId, autoCompleteBox.SearchText));
@@ -146,7 +149,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                 SelectedEntity.Locations.Add((Location)existingItem);
                 VM.Locations.MoveToDetailsView.Execute(null);
 
-                VM.Locations.SelectedEntity = (Location) existingItem;
+                VM.Locations.SelectedEntity = (Location)existingItem;
             };
 
             RemoveItemLocation = () =>
@@ -162,22 +165,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             {
                 var selectedLocation = VM.Locations.SelectedEntity;
                 if (selectedLocation != null)
-                {
-                    var deleteLocationNotifier = new DeleteLocationNotifier("5", "34");
-
-                    //If the user clicks the cancel button, cancel the delete and close the window
-                    deleteLocationNotifier.CancelButton.Click += (s, e) => deleteLocationNotifier.Close();
-
-                    //If the user clicks the "Go For It" button, continue with the delete and close the window
-                    deleteLocationNotifier.ContinueButton.Click += (s, e) =>
-                    {
-                        deleteLocationNotifier.Close();
-                        VM.Locations.DeleteEntity(selectedLocation);
-                    };
-
-                    deleteLocationNotifier.Show();
-
-                }
+                    VM.Locations.ConfirmDelete(selectedLocation);
+                
                 return selectedLocation;
             };
 
