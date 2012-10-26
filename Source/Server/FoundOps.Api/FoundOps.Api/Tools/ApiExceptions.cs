@@ -18,16 +18,6 @@ namespace FoundOps.Api.Tools
         }
 
         #region Common Exceptions
-
-        /// <summary>
-        /// A response for when the current user is not authorized to perform an action
-        /// </summary>
-        /// <param name="request">The request to respond to</param>
-        public static HttpResponseException NotAuthorized(this HttpRequestMessage request)
-        {
-            return Create(request.CreateResponse(HttpStatusCode.Forbidden, "Not authorized"));
-        }
-
         /// <summary>
         /// An error due to the request
         /// </summary>
@@ -37,7 +27,27 @@ namespace FoundOps.Api.Tools
                 details = "There was something wrong with your parameters or the related entities loaded";
 
             return Create(request.CreateResponse(HttpStatusCode.BadRequest, details));
-        } 
+        }
+
+        /// <summary>
+        /// An error due to the request
+        /// </summary>
+        public static HttpResponseException InternalError(this HttpRequestMessage request, string details = null)
+        {
+            if (string.IsNullOrEmpty(details))
+                details = "There was an internal error";
+
+            return Create(request.CreateResponse(HttpStatusCode.BadRequest, details));
+        }
+
+        /// <summary>
+        /// A response for when the current user is not authorized to perform an action
+        /// </summary>
+        /// <param name="request">The request to respond to</param>
+        public static HttpResponseException NotAuthorized(this HttpRequestMessage request)
+        {
+            return Create(request.CreateResponse(HttpStatusCode.Forbidden, "Not authorized"));
+        }
 
         /// <summary>
         /// A response for when an entity was expected but could not be found

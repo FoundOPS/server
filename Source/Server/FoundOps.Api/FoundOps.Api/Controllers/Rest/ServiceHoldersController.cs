@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using FoundOps.Api.Tools;
 using FoundOps.Core.Models;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.ServiceEntites;
@@ -25,7 +26,7 @@ namespace FoundOps.Api.Controllers.Rest
         /// <param name="serviceType">The service type to filter by</param>
         /// <param name="single">Only return the types</param>
         /// <returns>A queryable of dictionaries that resemble record type javascript objects when serialized</returns>
-        public IQueryable<Dictionary<string, Object>> Get(Guid roleId, string serviceType, Guid? clientContext, Guid? recurringServiceContext, 
+        public IQueryable<Dictionary<string, Object>> Get(Guid roleId, string serviceType, Guid? clientContext, Guid? recurringServiceContext,
             DateTime startDate, DateTime endDate, bool single = false)
         {
             var currentBusinessAccount = CoreEntitiesContainer.Owner(roleId).FirstOrDefault();
@@ -47,6 +48,9 @@ namespace FoundOps.Api.Controllers.Rest
                 conn.Open();
 
                 javaScriptFields = conn.Query<FieldJavaScript>("GetFieldsInJavaScriptFormat", parameters, commandType: CommandType.StoredProcedure).ToArray();
+
+                if (javaScriptFields.Select(f => f.Name).Distinct().Count() != javaScriptFields.Count())
+                    throw Request.InternalError("Duplicate fields");
 
                 foreach (var field in javaScriptFields)
                 {
