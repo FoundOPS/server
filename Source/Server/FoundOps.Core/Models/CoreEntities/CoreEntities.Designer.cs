@@ -908,25 +908,6 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        /// <param name="locationId">No Metadata Documentation available.</param>
-        public int DeleteLocationBasedOnId(Nullable<global::System.Guid> locationId)
-        {
-            ObjectParameter locationIdParameter;
-            if (locationId.HasValue)
-            {
-                locationIdParameter = new ObjectParameter("locationId", locationId);
-            }
-            else
-            {
-                locationIdParameter = new ObjectParameter("locationId", typeof(global::System.Guid));
-            }
-    
-            return base.ExecuteFunction("DeleteLocationBasedOnId", locationIdParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         /// <param name="recurringServiceId">No Metadata Documentation available.</param>
         public int DeleteRecurringService(Nullable<global::System.Guid> recurringServiceId)
         {
@@ -1370,6 +1351,25 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        /// <param name="fieldId">No Metadata Documentation available.</param>
+        public int PropagateNewFields(Nullable<global::System.Guid> fieldId)
+        {
+            ObjectParameter fieldIdParameter;
+            if (fieldId.HasValue)
+            {
+                fieldIdParameter = new ObjectParameter("FieldId", fieldId);
+            }
+            else
+            {
+                fieldIdParameter = new ObjectParameter("FieldId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("PropagateNewFields", fieldIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         /// <param name="serviceTemplateId">No Metadata Documentation available.</param>
         public int PropagateNewServiceTemplateToClients(Nullable<global::System.Guid> serviceTemplateId)
         {
@@ -1449,20 +1449,61 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        /// <param name="fieldId">No Metadata Documentation available.</param>
-        public int PropagateNewFields(Nullable<global::System.Guid> fieldId)
+        /// <param name="locationId">No Metadata Documentation available.</param>
+        /// <param name="date">No Metadata Documentation available.</param>
+        public int DeleteLocationBasedOnId(Nullable<global::System.Guid> locationId, Nullable<global::System.DateTime> date)
         {
-            ObjectParameter fieldIdParameter;
-            if (fieldId.HasValue)
+            ObjectParameter locationIdParameter;
+            if (locationId.HasValue)
             {
-                fieldIdParameter = new ObjectParameter("FieldId", fieldId);
+                locationIdParameter = new ObjectParameter("locationId", locationId);
             }
             else
             {
-                fieldIdParameter = new ObjectParameter("FieldId", typeof(global::System.Guid));
+                locationIdParameter = new ObjectParameter("locationId", typeof(global::System.Guid));
             }
     
-            return base.ExecuteFunction("PropagateNewFields", fieldIdParameter);
+            ObjectParameter dateParameter;
+            if (date.HasValue)
+            {
+                dateParameter = new ObjectParameter("date", date);
+            }
+            else
+            {
+                dateParameter = new ObjectParameter("date", typeof(global::System.DateTime));
+            }
+    
+            return base.ExecuteFunction("DeleteLocationBasedOnId", locationIdParameter, dateParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="locationId">No Metadata Documentation available.</param>
+        /// <param name="date">No Metadata Documentation available.</param>
+        public int DeleteLocationBasedOnId1(Nullable<global::System.Guid> locationId, Nullable<global::System.DateTime> date)
+        {
+            ObjectParameter locationIdParameter;
+            if (locationId.HasValue)
+            {
+                locationIdParameter = new ObjectParameter("locationId", locationId);
+            }
+            else
+            {
+                locationIdParameter = new ObjectParameter("locationId", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter dateParameter;
+            if (date.HasValue)
+            {
+                dateParameter = new ObjectParameter("date", date);
+            }
+            else
+            {
+                dateParameter = new ObjectParameter("date", typeof(global::System.DateTime));
+            }
+    
+            return base.ExecuteFunction("DeleteLocationBasedOnId1", locationIdParameter, dateParameter);
         }
 
         #endregion
@@ -2373,24 +2414,24 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Boolean> Hidden
+        public Nullable<global::System.DateTime> DateDeleted
         {
             get
             {
-                return _Hidden;
+                return _DateDeleted;
             }
             set
             {
-                OnHiddenChanging(value);
-                ReportPropertyChanging("Hidden");
-                _Hidden = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Hidden");
-                OnHiddenChanged();
+                OnDateDeletedChanging(value);
+                ReportPropertyChanging("DateDeleted");
+                _DateDeleted = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DateDeleted");
+                OnDateDeletedChanged();
             }
         }
-        private Nullable<global::System.Boolean> _Hidden;
-        partial void OnHiddenChanging(Nullable<global::System.Boolean> value);
-        partial void OnHiddenChanged();
+        private Nullable<global::System.DateTime> _DateDeleted;
+        partial void OnDateDeletedChanging(Nullable<global::System.DateTime> value);
+        partial void OnDateDeletedChanged();
 
         #endregion
 
@@ -5894,24 +5935,24 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Boolean> Hidden
+        public Nullable<global::System.DateTime> DateDeleted
         {
             get
             {
-                return _Hidden;
+                return _DateDeleted;
             }
             set
             {
-                OnHiddenChanging(value);
-                ReportPropertyChanging("Hidden");
-                _Hidden = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Hidden");
-                OnHiddenChanged();
+                OnDateDeletedChanging(value);
+                ReportPropertyChanging("DateDeleted");
+                _DateDeleted = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DateDeleted");
+                OnDateDeletedChanged();
             }
         }
-        private Nullable<global::System.Boolean> _Hidden;
-        partial void OnHiddenChanging(Nullable<global::System.Boolean> value);
-        partial void OnHiddenChanged();
+        private Nullable<global::System.DateTime> _DateDeleted;
+        partial void OnDateDeletedChanging(Nullable<global::System.DateTime> value);
+        partial void OnDateDeletedChanged();
 
         #endregion
 
@@ -6977,24 +7018,24 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.Boolean> Hidden
+        public Nullable<global::System.DateTime> DateDeleted
         {
             get
             {
-                return _Hidden;
+                return _DateDeleted;
             }
             set
             {
-                OnHiddenChanging(value);
-                ReportPropertyChanging("Hidden");
-                _Hidden = StructuralObject.SetValidValue(value);
-                ReportPropertyChanged("Hidden");
-                OnHiddenChanged();
+                OnDateDeletedChanging(value);
+                ReportPropertyChanging("DateDeleted");
+                _DateDeleted = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DateDeleted");
+                OnDateDeletedChanged();
             }
         }
-        private Nullable<global::System.Boolean> _Hidden;
-        partial void OnHiddenChanging(Nullable<global::System.Boolean> value);
-        partial void OnHiddenChanged();
+        private Nullable<global::System.DateTime> _DateDeleted;
+        partial void OnDateDeletedChanging(Nullable<global::System.DateTime> value);
+        partial void OnDateDeletedChanged();
 
         #endregion
 

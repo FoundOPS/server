@@ -335,6 +335,7 @@ namespace FoundOps.SLClient.Data.ViewModels
             SetupDetailsLoading(entityQuery, SelectedEntityObservable);
         }
 
+        private readonly BehaviorSubject<bool> _forceDetailsLoad = new BehaviorSubject<bool>(true);
         /// <summary>
         /// Sets up data loading of an entities details when it is pushed. It will cancel the last details load when a new item is pushed.
         /// T must implement ILoadDetails.
@@ -345,35 +346,48 @@ namespace FoundOps.SLClient.Data.ViewModels
         protected void SetupDetailsLoading<T>(Func<T, EntityQuery<T>> entityQuery, IObservable<T> entitiesObservable) where T : Entity
         {
             var cancelDetailsLoad = new Subject<bool>();
-            //Whenever the entity changes
+            //Whenever the entity changes or ForceDetailsLoad is triggered
             //a) cancel the last load
             //b) load the details
-            entitiesObservable.Where(se => se != null).Subscribe(selectedEntity =>
-            {
-                //a) cancel the last load
-                cancelDetailsLoad.OnNext(true);
-
-                //Do not try to load details for an entity that does not exist yet.
-                if (selectedEntity.EntityState == EntityState.New)
+            entitiesObservable.CombineLatest(_forceDetailsLoad).Throttle(TimeSpan.FromMilliseconds(100)).ObserveOnDispatcher()
+                .Subscribe(t =>
                 {
-                    ((ILoadDetails)selectedEntity).DetailsLoaded = true;
-                    return;
-                }
+                    var selectedEntity = t.Item1;
+                    if(selectedEntity == null)
+                        return;
 
-                var query = entityQuery(selectedEntity);
-                if (query == null)
-                    return;
+                    //a) cancel the last load
+                    cancelDetailsLoad.OnNext(true);
 
-                //b) load the details
-                DomainContext.LoadAsync(query, cancelDetailsLoad)
-                    .ContinueWith(task =>
+                    //Do not try to load details for an entity that does not exist yet.
+                    if (selectedEntity.EntityState == EntityState.New)
                     {
-                        if (task.IsCanceled || !task.Result.Any())
-                            return;
-
                         ((ILoadDetails)selectedEntity).DetailsLoaded = true;
-                    }, TaskScheduler.FromCurrentSynchronizationContext());
-            });
+                        return;
+                    }
+
+                    var query = entityQuery(selectedEntity);
+                    if (query == null)
+                        return;
+
+                    //b) load the details
+                    DomainContext.LoadAsync(query, cancelDetailsLoad)
+                        .ContinueWith(task =>
+                        {
+                            if (task.IsCanceled || !task.Result.Any())
+                                return;
+
+                            ((ILoadDetails)selectedEntity).DetailsLoaded = true;
+                        }, TaskScheduler.FromCurrentSynchronizationContext());
+                });
+        }
+        
+        /// <summary>
+        /// Force loads any SetupDetails
+        /// </summary>
+        public void ForceLoadDetails()
+        {
+            _forceDetailsLoad.OnNext(true);
         }
 
         #region Methods to Override

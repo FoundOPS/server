@@ -235,22 +235,13 @@ namespace FoundOps.SLClient.UI.ViewModels
             ConfirmDelete(SelectedEntity);
         }
 
-        public override void DeleteEntity(Location entityToDelete)
-        {
-            //Find all Recurring Services
-            var test = entityToDelete;
-            //Set EndDate to be today and Hidden = true
-
-            base.DeleteEntity(entityToDelete);
-        }
-
         /// <summary>
         /// Opens up a notification the tell the user that Recurring Services and future Services will also be deleted
         /// </summary>
         /// <param name="selectedLocation">The location to be deleted</param>
         public void ConfirmDelete(Location selectedLocation)
         {
-            var countInvokOp = DomainContext.GetRecurringServiceCountForLocation(ContextManager.RoleId, selectedLocation.Id);
+            var countInvokOp = DomainContext.GetRecurringServiceCountForLocation(selectedLocation.Id);
             countInvokOp.Completed += (_, __) =>
             {
                 var result = countInvokOp.Value;
@@ -264,6 +255,26 @@ namespace FoundOps.SLClient.UI.ViewModels
                 {
                     deleteLocationNotifier.Close();
                     this.DeleteEntity(selectedLocation);
+
+                    this.SaveCommand.Execute(null);
+
+                    //must refresh recurring services and services after deleting a location
+                    DataManager.ChangesSavedObservable.Take(1).Subscribe(___ =>
+                    {
+                        if(VM.Clients.SelectedEntity == null)
+                            return;
+                        
+                        VM.Clients.SelectedEntity.DetailsLoaded = false;
+                        DataManager.DetachEntities(VM.Clients.SelectedEntity.RecurringServices);
+                        DataManager.DetachEntities(VM.Clients.SelectedEntity.Locations);
+
+                        //reload locations as well
+                        VM.Locations.ExtendedVirtualQueryableCollectionView.UpdateVirtualItemCount();
+                       
+                        //force reload client details will load recurring services
+                        VM.Clients.ForceLoadDetails();
+                        VM.Services.ForceRefresh();
+                    });
                 };
 
                 deleteLocationNotifier.Show();

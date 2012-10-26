@@ -13,6 +13,12 @@ namespace FoundOps.Common.Silverlight.UI.Controls
             this.FutureServiceCountTextBox.Text = futureServiceCount;
         }
 
+        public DeleteEntityNotifier(string recurringServiceCount, string futureServiceCount, string locationCount, string entityType) : this(recurringServiceCount, futureServiceCount, entityType)
+        {
+            this.LocationStackPanel.Visibility = Visibility.Visible;
+            this.LocationCountTextBlock.Text = locationCount;
+        }
+
         public Button ContinueButton
         {
             get { return Continue; }

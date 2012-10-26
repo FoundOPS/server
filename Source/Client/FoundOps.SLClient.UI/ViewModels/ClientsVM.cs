@@ -223,6 +223,37 @@ namespace FoundOps.SLClient.UI.ViewModels
             DataManager.DetachEntities(entityToDelete.EntityGraphToRemove);
         }
 
+        protected override void CheckDelete(Action<bool> deleteItem)
+        {
+            ConfirmDelete(SelectedEntity);
+        }
+
+        /// <summary>
+        /// Opens up a notification the tell the user that Locations, Recurring Services and future Services will also be deleted
+        /// </summary>
+        /// <param name="selectedClient">The client to be deleted</param>
+        public void ConfirmDelete(Client selectedClient)
+        {
+            var countInvokOp = DomainContext.GetFutureServiceCountForClient(selectedClient.Id);
+            countInvokOp.Completed += (_, __) =>
+            {
+                var result = countInvokOp.Value;
+                var deleteLocationNotifier = new DeleteEntityNotifier(selectedClient.RecurringServices.Count().ToString(), result.ToString(), selectedClient.Locations.Count().ToString(), "Client");
+
+                //If the user clicks the cancel button, cancel the delete and close the window
+                deleteLocationNotifier.CancelButton.Click += (s, e) => deleteLocationNotifier.Close();
+
+                //If the user clicks the "Go For It" button, continue with the delete and close the window
+                deleteLocationNotifier.ContinueButton.Click += (s, e) =>
+                {
+                    deleteLocationNotifier.Close();
+                    this.DeleteEntity(selectedClient);
+                };
+
+                deleteLocationNotifier.Show();
+            };
+        }
+
         #endregion
     }
 }

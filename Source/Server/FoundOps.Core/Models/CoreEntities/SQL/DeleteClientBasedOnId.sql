@@ -19,18 +19,13 @@ CREATE PROCEDURE dbo.DeleteClientBasedOnId
 
 	AS
 	BEGIN
-
-	DELETE FROM RouteDestinations
-	WHERE ClientId = @clientId
-
-	DELETE FROM Services
-	WHERE ClientId = @clientId
-
-	EXEC dbo.DeleteServiceTemplatesAndChildrenBasedOnContextId @serviceProviderId = NULL, @ownerClientId = @clientId
-
-	DELETE FROM RecurringServices
-	WHERE ClientId = @clientId
-
+	DECLARE @date DATE
+	SET @date = GETUTCDATE()  
+	
+	UPDATE dbo.Clients
+	SET DateDeleted = @date
+	WHERE Id = @clientId
+	  
 -------------------------------------------------------------------------------------------------------------------------
 --Delete Locations for Client
 -------------------------------------------------------------------------------------------------------------------------
@@ -54,7 +49,7 @@ CREATE PROCEDURE dbo.DeleteClientBasedOnId
 	BEGIN
 			SET @LocationId = (SELECT MIN(LocationId) FROM @LocationIdsForClient)
 
-			EXEC dbo.DeleteLocationBasedOnId @locationId = @LocationId
+			EXEC dbo.DeleteLocationBasedOnId @locationId = @LocationId, @date = @date
 
 			DELETE FROM @LocationIdsForClient
 			WHERE LocationId = @LocationId
@@ -62,12 +57,5 @@ CREATE PROCEDURE dbo.DeleteClientBasedOnId
 			SET @RowCount = (SELECT COUNT(*) FROM @LocationIdsForClient)
 	END
 -------------------------------------------------------------------------------------------------------------------------
-
-	DELETE FROM ContactInfoSet
-	WHERE ClientId = @clientId
-
-	DELETE FROM Clients
-	WHERE Id = @clientId
-
 	END
 	RETURN

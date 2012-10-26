@@ -69,7 +69,7 @@ namespace FoundOps.Api.Controllers.Rest
             {
                 conn.Open();
 
-                locations = conn.Query<Core.Models.CoreEntities.Location>(sql, new { Id = lookupId }).ToArray();
+                locations = conn.Query<Core.Models.CoreEntities.Location>(sql, new { Id = lookupId }).Where(loc => !loc.DateDeleted.HasValue).ToArray();
 
                 conn.Close();
             }

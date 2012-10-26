@@ -306,7 +306,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             var businessAccount = ObjectContext.Owner(roleId).First();
 
-            var recurringServices = this.ObjectContext.RecurringServices.Include(rs => rs.Client).Where(v => v.Client.BusinessAccountId == businessAccount.Id);
+            var recurringServices = this.ObjectContext.RecurringServices.Include(rs => rs.Client).Where(v => v.Client.BusinessAccountId == businessAccount.Id && !v.DateDeleted.HasValue);
 
             return recurringServices.OrderBy(rs => rs.ClientId);
         }

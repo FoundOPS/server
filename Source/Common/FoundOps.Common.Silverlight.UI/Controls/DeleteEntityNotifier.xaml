@@ -23,17 +23,22 @@
                 <RowDefinition/>
                 <RowDefinition/>
                 <RowDefinition/>
+                <RowDefinition/>
             </Grid.RowDefinitions>
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.ColumnSpan="7" DataContext="{Binding ElementName=myDeleteLocationNotifier}">
                 <TextBlock Text="If you delete this " FontWeight="Bold"/>
                 <TextBlock x:Name="EntityTypeTextBlock" FontWeight="Bold"/>
                 <TextBlock Text=" you will also be deleting:" FontWeight="Bold"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.ColumnSpan="7" Grid.Row="1">
+            <StackPanel x:Name="LocationStackPanel" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.ColumnSpan="7" Grid.Row="1" Visibility="Collapsed">
+                <TextBlock x:Name="LocationCountTextBlock" FontWeight="Bold"/>
+                <TextBlock Text=" Locations" FontWeight="Bold" TextAlignment="Left" Width="200"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.ColumnSpan="7" Grid.Row="2">
                 <TextBlock x:Name="RecurringServiceCountTextBlock" FontWeight="Bold"/>
                 <TextBlock Text=" Recurring Service Schedules" FontWeight="Bold" TextAlignment="Left" Width="200"/>
             </StackPanel>
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.ColumnSpan="7" Grid.Row="2">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.ColumnSpan="7" Grid.Row="3">
                 <TextBlock x:Name="FutureServiceCountTextBox" FontWeight="Bold"/>
                 <TextBlock Text=" Future Services" FontWeight="Bold" TextAlignment="Left" Width="200"/>
             </StackPanel>
