@@ -222,7 +222,7 @@ namespace FoundOps.Api.Controllers.Rest
                     //check the time zone is acceptable
                     try
                     {
-                        TimeZoneInfo.FindSystemTimeZoneById(userAccount.TimeZone.Id)
+                        TimeZoneInfo.FindSystemTimeZoneById(userAccount.TimeZone.Id);
                     }
                     catch (Exception)
                     {
