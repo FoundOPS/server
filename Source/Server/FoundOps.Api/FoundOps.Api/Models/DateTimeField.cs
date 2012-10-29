@@ -17,7 +17,7 @@ namespace FoundOps.Api.Models
         /// </summary>
         /// <param name="fieldModel">The FoundOPS model of a DateTimeField to be converted</param>
         /// <returns>A DateTimeField that has been converted to it's API model</returns>
-        public static DateTimeField ConvertDateTimeFieldModel(FoundOps.Core.Models.CoreEntities.DateTimeField fieldModel)
+        public static DateTimeField ConvertModel(Core.Models.CoreEntities.DateTimeField fieldModel)
         {
             var field = new DateTimeField
             {
@@ -41,9 +41,9 @@ namespace FoundOps.Api.Models
         /// </summary>
         /// <param name="dateTimeField"></param>
         /// <returns></returns>
-        public static FoundOps.Core.Models.CoreEntities.Field ConvertBackDateTimeField(DateTimeField dateTimeField)
+        public static Core.Models.CoreEntities.Field ConvertBack(DateTimeField dateTimeField)
         {
-            var field = new FoundOps.Core.Models.CoreEntities.DateTimeField
+            var field = new Core.Models.CoreEntities.DateTimeField
             {
                 Id = dateTimeField.Id,
                 Name = dateTimeField.Name,

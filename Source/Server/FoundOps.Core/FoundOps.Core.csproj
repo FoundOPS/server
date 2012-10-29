@@ -247,8 +247,8 @@
       <DependentUpon>CoreEntitiesCorrected.tt</DependentUpon>
     </Content>
     <Content Include="Models\CoreEntities\ManualEDMXChanges.txt" />
-    <Content Include="Models\CoreEntities\SQL Tests\ProagateNameChangeTest.sql" />
-    <Content Include="Models\CoreEntities\SQL Tests\ProagateNewServiceTemplatesToClientTest.sql" />
+    <Content Include="Models\CoreEntities\SQL Tests\PropagateNameChangeTest.sql" />
+    <Content Include="Models\CoreEntities\SQL Tests\PropagateNewServiceTemplatesToClientTest.sql" />
     <Content Include="Models\CoreEntities\SQL\TestFieldPropagationSuccess.sql" />
     <Content Include="Models\CoreEntities\SQL\TestNewServiceTemplatePropagationSuccess.sql" />
     <Content Include="Models\CoreEntities\SQL\TestServiceTemplateNamePropagationSuccess.sql" />

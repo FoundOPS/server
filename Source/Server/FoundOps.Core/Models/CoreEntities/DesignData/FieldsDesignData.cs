@@ -34,6 +34,14 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Value = "Be careful, there is a large scary dog"
             };
 
+            var designSignatureField = new SignatureField()
+            {
+                Id = Guid.NewGuid(),
+                Name = "Notes",
+                Required = false,
+                Tooltip = "Any miscellaneous service information"
+            };
+
             //var nineAm = DateTime.Now.Date.AddHours(9);
             //var sevenPm = DateTime.Now.Date.AddHours(19);
 
@@ -148,7 +156,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             //REMOVED TIME FIELDS. They need a redesign to deal w time zones. Many issues to figure out
             //designTimeField, designDateField, 
-            DesignFields = new List<Field> { designTextBoxSmallField, designTextBoxLargeField, designNumberField, designCurrencyField, designPercentageField, 
+            DesignFields = new List<Field> { designTextBoxSmallField, designTextBoxLargeField, designSignatureField, designNumberField, designCurrencyField, designPercentageField, 
                 designCheckBoxField, designComboBoxField, designCheckListField, designLocationField};
         }
     }

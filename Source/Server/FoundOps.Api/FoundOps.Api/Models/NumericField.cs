@@ -17,7 +17,7 @@
         /// </summary>
         /// <param name="fieldModel">The FoundOPS model of a NumericField to be converted</param>
         /// <returns>A NumericField that has been converted to it's API model</returns>
-        public static NumericField ConvertNumericFieldModel(FoundOps.Core.Models.CoreEntities.NumericField fieldModel)
+        public static NumericField ConvertModel(Core.Models.CoreEntities.NumericField fieldModel)
         {
             var field = new NumericField
             {
@@ -42,9 +42,9 @@
         /// </summary>
         /// <param name="numericField"></param>
         /// <returns></returns>
-        public static FoundOps.Core.Models.CoreEntities.Field ConvertBackNumericField(NumericField numericField)
+        public static Core.Models.CoreEntities.Field ConvertBack(NumericField numericField)
         {
-            var field = new FoundOps.Core.Models.CoreEntities.NumericField
+            var field = new Core.Models.CoreEntities.NumericField
             {
                 Id = numericField.Id,
                 Name = numericField.Name,

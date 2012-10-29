@@ -246,6 +246,16 @@ BEGIN
 								  )	    
 					END
 
+					IF @currentId IN (SELECT Id FROM dbo.Fields_SignatureField) --Copy Signature field, set new Id's
+					BEGIN
+						INSERT INTO Fields_SignatureField
+								( Value, 
+								  Id )
+						VALUES  ( (SELECT Value FROM dbo.Fields_TextBoxField WHERE Id = @currentId), -- Value - nvarchar(max)
+								  @newFieldId  -- Id - uniqueidentifier
+								  )	    
+					END
+
 					IF @currentId IN (SELECT Id FROM dbo.Fields_OptionsField) --Copy the Options field, set new Id's 
 					BEGIN
 						INSERT INTO dbo.Fields_OptionsField

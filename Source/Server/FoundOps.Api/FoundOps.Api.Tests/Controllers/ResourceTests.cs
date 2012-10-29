@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using FoundOps.Api.Controllers.Mvc;
 using FoundOps.Api.Controllers.Rest;
 using FoundOps.Api.Models;
 using FoundOps.Common.NET;
@@ -27,7 +28,9 @@ using NumericField = FoundOps.Core.Models.CoreEntities.NumericField;
 using OptionsField = FoundOps.Core.Models.CoreEntities.OptionsField;
 using LocationField = FoundOps.Core.Models.CoreEntities.LocationField;
 using RouteTask = FoundOps.Api.Models.RouteTask;
+using ServiceHoldersController = FoundOps.Api.Controllers.Rest.ServiceHoldersController;
 using ServiceTemplate = FoundOps.Core.Models.CoreEntities.ServiceTemplate;
+using SignatureField = FoundOps.Core.Models.CoreEntities.SignatureField;
 using TaskStatus = FoundOps.Core.Models.CoreEntities.TaskStatus;
 using TextBoxField = FoundOps.Core.Models.CoreEntities.TextBoxField;
 using UserAccount = FoundOps.Core.Models.CoreEntities.UserAccount;
@@ -45,18 +48,6 @@ namespace FoundOps.Api.Tests.Controllers
         private readonly Guid _foundOpsId = new Guid("5606A728-B99F-4AA1-B0CD-0AB38A649000");
 
         #region Fields
-
-        private NumericField NewNumericField()
-        {
-            return new NumericField
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Numeric Test",
-                    Minimum = 10,
-                    Maximum = 20,
-                    Mask = "c"
-                };
-        }
 
         private OptionsField NewCheckListField()
         {
@@ -106,6 +97,29 @@ namespace FoundOps.Api.Tests.Controllers
                     LocationFieldTypeInt = 0,
                     LocationId = CoreEntitiesContainer.Locations.First().Id
                 };
+        }
+
+        private NumericField NewNumericField()
+        {
+            return new NumericField
+            {
+                Id = Guid.NewGuid(),
+                Name = "Numeric Test",
+                Minimum = 10,
+                Maximum = 20,
+                Mask = "c"
+            };
+        }
+
+        private SignatureField NewSignatureField()
+        {
+            return new SignatureField
+            {
+                Id = Guid.NewGuid(),
+                Name = "Test Signature",
+                Tooltip = "Sign Here",
+                Value = "[{\"lx\":29,\"ly\":29,\"mx\":29,\"my\":28},{\"lx\":29,\"ly\":29,\"mx\":29,\"my\":29},{\"lx\":30,\"ly\":26,\"mx\":29,\"my\":29},{\"lx\":36,\"ly\":22,\"mx\":30,\"my\":26},{\"lx\":48,\"ly\":13,\"mx\":36,\"my\":22},{\"lx\":56,\"ly\":8,\"mx\":48,\"my\":13},{\"lx\":67,\"ly\":5,\"mx\":56,\"my\":8},{\"lx\":77,\"ly\":0,\"mx\":67,\"my\":5},{\"lx\":96,\"ly\":-1,\"mx\":77,\"my\":0},{\"lx\":82,\"ly\":8,\"mx\":96,\"my\":-1},{\"lx\":79,\"ly\":10,\"mx\":82,\"my\":8},{\"lx\":75,\"ly\":13,\"mx\":79,\"my\":10},{\"lx\":69,\"ly\":18,\"mx\":75,\"my\":13},{\"lx\":64,\"ly\":21,\"mx\":69,\"my\":18},{\"lx\":62,\"ly\":22,\"mx\":64,\"my\":21},{\"lx\":59,\"ly\":23,\"mx\":62,\"my\":22},{\"lx\":58,\"ly\":26,\"mx\":59,\"my\":23},{\"lx\":57,\"ly\":28,\"mx\":58,\"my\":26},{\"lx\":64,\"ly\":23,\"mx\":57,\"my\":28},{\"lx\":74,\"ly\":14,\"mx\":64,\"my\":23},{\"lx\":88,\"ly\":6,\"mx\":74,\"my\":14},{\"lx\":120,\"ly\":3,\"mx\":88,\"my\":6},{\"lx\":115,\"ly\":6,\"mx\":120,\"my\":3},{\"lx\":109,\"ly\":10,\"mx\":115,\"my\":6},{\"lx\":93,\"ly\":19,\"mx\":109,\"my\":10},{\"lx\":91,\"ly\":19,\"mx\":93,\"my\":19},{\"lx\":89,\"ly\":21,\"mx\":91,\"my\":19},{\"lx\":93,\"ly\":19,\"mx\":89,\"my\":21},{\"lx\":101,\"ly\":15,\"mx\":93,\"my\":19},{\"lx\":106,\"ly\":13,\"mx\":101,\"my\":15},{\"lx\":118,\"ly\":8,\"mx\":106,\"my\":13},{\"lx\":125,\"ly\":5,\"mx\":118,\"my\":8},{\"lx\":132,\"ly\":4,\"mx\":125,\"my\":5},{\"lx\":131,\"ly\":4,\"mx\":132,\"my\":4},{\"lx\":130,\"ly\":4,\"mx\":131,\"my\":4},{\"lx\":128,\"ly\":5,\"mx\":130,\"my\":4},{\"lx\":126,\"ly\":7,\"mx\":128,\"my\":5},{\"lx\":123,\"ly\":12,\"mx\":126,\"my\":7},{\"lx\":107,\"ly\":27,\"mx\":123,\"my\":12},{\"lx\":104,\"ly\":31,\"mx\":107,\"my\":27},{\"lx\":103,\"ly\":32,\"mx\":104,\"my\":31},{\"lx\":107,\"ly\":26,\"mx\":103,\"my\":32},{\"lx\":109,\"ly\":23,\"mx\":107,\"my\":26},{\"lx\":117,\"ly\":16,\"mx\":109,\"my\":23},{\"lx\":119,\"ly\":14,\"mx\":117,\"my\":16},{\"lx\":122,\"ly\":8,\"mx\":119,\"my\":14},{\"lx\":125,\"ly\":6,\"mx\":122,\"my\":8},{\"lx\":125,\"ly\":5,\"mx\":125,\"my\":6},{\"lx\":127,\"ly\":3,\"mx\":125,\"my\":5},{\"lx\":130,\"ly\":1,\"mx\":127,\"my\":3},{\"lx\":132,\"ly\":1,\"mx\":130,\"my\":1},{\"lx\":132,\"ly\":-1,\"mx\":132,\"my\":1},{\"lx\":133,\"ly\":-1,\"mx\":132,\"my\":-1},{\"lx\":133,\"ly\":1,\"mx\":133,\"my\":-1},{\"lx\":133,\"ly\":4,\"mx\":133,\"my\":1},{\"lx\":133,\"ly\":8,\"mx\":133,\"my\":4},{\"lx\":133,\"ly\":10,\"mx\":133,\"my\":8},{\"lx\":134,\"ly\":12,\"mx\":133,\"my\":10},{\"lx\":134,\"ly\":14,\"mx\":134,\"my\":12},{\"lx\":135,\"ly\":18,\"mx\":134,\"my\":14},{\"lx\":135,\"ly\":20,\"mx\":135,\"my\":18},{\"lx\":136,\"ly\":25,\"mx\":135,\"my\":20},{\"lx\":139,\"ly\":27,\"mx\":136,\"my\":25},{\"lx\":139,\"ly\":29,\"mx\":139,\"my\":27},{\"lx\":140,\"ly\":33,\"mx\":139,\"my\":29},{\"lx\":141,\"ly\":33,\"mx\":140,\"my\":33},{\"lx\":142,\"ly\":33,\"mx\":141,\"my\":33},{\"lx\":144,\"ly\":33,\"mx\":142,\"my\":33},{\"lx\":146,\"ly\":33,\"mx\":144,\"my\":33},{\"lx\":147,\"ly\":33,\"mx\":146,\"my\":33},{\"lx\":151,\"ly\":30,\"mx\":147,\"my\":33},{\"lx\":155,\"ly\":29,\"mx\":151,\"my\":30},{\"lx\":160,\"ly\":27,\"mx\":155,\"my\":29},{\"lx\":163,\"ly\":24,\"mx\":160,\"my\":27},{\"lx\":165,\"ly\":24,\"mx\":163,\"my\":24},{\"lx\":166,\"ly\":23,\"mx\":165,\"my\":24},{\"lx\":166,\"ly\":24,\"mx\":166,\"my\":23},{\"lx\":160,\"ly\":32,\"mx\":166,\"my\":24},{\"lx\":156,\"ly\":34,\"mx\":160,\"my\":32},{\"lx\":150,\"ly\":41,\"mx\":156,\"my\":34},{\"lx\":148,\"ly\":41,\"mx\":150,\"my\":41},{\"lx\":146,\"ly\":44,\"mx\":148,\"my\":41},{\"lx\":146,\"ly\":43,\"mx\":146,\"my\":44},{\"lx\":146,\"ly\":37,\"mx\":146,\"my\":43},{\"lx\":150,\"ly\":35,\"mx\":146,\"my\":37},{\"lx\":154,\"ly\":31,\"mx\":150,\"my\":35},{\"lx\":156,\"ly\":29,\"mx\":154,\"my\":31},{\"lx\":162,\"ly\":23,\"mx\":156,\"my\":29},{\"lx\":164,\"ly\":22,\"mx\":162,\"my\":23},{\"lx\":164,\"ly\":24,\"mx\":164,\"my\":22},{\"lx\":155,\"ly\":31,\"mx\":164,\"my\":24},{\"lx\":151,\"ly\":32,\"mx\":155,\"my\":31},{\"lx\":146,\"ly\":36,\"mx\":151,\"my\":32},{\"lx\":138,\"ly\":43,\"mx\":146,\"my\":36},{\"lx\":130,\"ly\":47,\"mx\":138,\"my\":43},{\"lx\":129,\"ly\":46,\"mx\":130,\"my\":47},{\"lx\":131,\"ly\":39,\"mx\":129,\"my\":46},{\"lx\":132,\"ly\":38,\"mx\":131,\"my\":39},{\"lx\":135,\"ly\":32,\"mx\":132,\"my\":38},{\"lx\":139,\"ly\":31,\"mx\":135,\"my\":32},{\"lx\":141,\"ly\":28,\"mx\":139,\"my\":31},{\"lx\":144,\"ly\":27,\"mx\":141,\"my\":28},{\"lx\":146,\"ly\":26,\"mx\":144,\"my\":27},{\"lx\":151,\"ly\":22,\"mx\":146,\"my\":26},{\"lx\":159,\"ly\":17,\"mx\":151,\"my\":22},{\"lx\":165,\"ly\":13,\"mx\":159,\"my\":17},{\"lx\":168,\"ly\":9,\"mx\":165,\"my\":13},{\"lx\":182,\"ly\":-1,\"mx\":168,\"my\":9},{\"lx\":181,\"ly\":0,\"mx\":182,\"my\":-1},{\"lx\":180,\"ly\":1,\"mx\":181,\"my\":0},{\"lx\":178,\"ly\":2,\"mx\":180,\"my\":1},{\"lx\":177,\"ly\":3,\"mx\":178,\"my\":2},{\"lx\":176,\"ly\":4,\"mx\":177,\"my\":3},{\"lx\":175,\"ly\":4,\"mx\":176,\"my\":4},{\"lx\":172,\"ly\":5,\"mx\":175,\"my\":4},{\"lx\":170,\"ly\":5,\"mx\":172,\"my\":5},{\"lx\":169,\"ly\":6,\"mx\":170,\"my\":5},{\"lx\":166,\"ly\":7,\"mx\":169,\"my\":6}]"
+            };
         }
 
         private TextBoxField NewSmallTextBoxField()
@@ -397,6 +411,23 @@ namespace FoundOps.Api.Tests.Controllers
         public void ServiceTemplatesTests()
         {
             SimpleGetTest<ServiceTemplatesController, Models.ServiceTemplate>(st => st.Get(_roleId));
+        }
+
+        [TestMethod]
+        public void SignatureTests()
+        {
+            var signatureField = NewSignatureField();
+
+            CoreEntitiesContainer.Fields.AddObject(signatureField);
+            CoreEntitiesContainer.SaveChanges();
+
+            var fieldId = signatureField.Id;
+
+            DetachAllEntities();
+
+            var controller = new SignatureFieldController();
+
+            var image = controller.GetSigntureImage(fieldId);
         }
 
         [TestMethod]

@@ -136,6 +136,11 @@ namespace FoundOps.Framework.Views.Converters
                     return "Textbox Small";
             }
 
+            if (field is SignatureField)
+            {
+                return "Signature";
+            }
+
             if (field is DateTimeField)
             {
                 var dateTimeField = (DateTimeField)field;

@@ -1,9 +1,10 @@
 <UserControl x:Class="FoundOps.Framework.Views.Controls.CustomFields.ManifestFields" x:Name="myManifestFields" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:Selectors="clr-namespace:FoundOps.Framework.Views.Selectors"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:Converters1="clr-namespace:FoundOps.Framework.Views.Converters" xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
              xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI"
-             xmlns:local="clr-namespace:SLMultiBinding;assembly=SLMultiBinding" mc:Ignorable="d">
+             xmlns:local="clr-namespace:SLMultiBinding;assembly=SLMultiBinding"
+             xmlns:Selectors="clr-namespace:FoundOps.SLClient.UI.Selectors" mc:Ignorable="d">
     <UserControl.Resources>
         <Converters1:CombineNameValueConverter x:Key="CombineNameValueConverter"/>
         <Converters:ElementFromEnumerableConverter x:Key="ElementFromEnumerableConverter"/>
@@ -114,11 +115,18 @@
                 <TextBlock x:Name="ValueText" Text="{Binding ThisField, Converter={StaticResource ManifestFieldValueConverter}}"/>
             </StackPanel>
         </DataTemplate>
+        <DataTemplate x:Key="SignatureTemplate">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Width="245">
+                <TextBlock x:Name="NameText" Text="{Binding Name}"/>
+                <TextBlock x:Name="ValueText" Text="Signature is only visible from new sections"/>
+            </StackPanel>
+        </DataTemplate>
         <Selectors:FieldDataTemplateSelector x:Key="FieldDataTemplateSelector" CheckBoxTemplate="{StaticResource CheckBoxTemplate}" 
                    CheckListTemplate="{StaticResource CheckListTemplate}" ComboBoxTemplate="{StaticResource ComboBoxTemplate}" 
                    CurrencyTemplate="{StaticResource CurrencyTemplate}" NumberTemplate="{StaticResource NumberTemplate}" 
                    PercentageTemplate="{StaticResource PercentageTemplate}" LocationTemplate="{StaticResource LocationTemplate}" 
-                   TextLgTemplate="{StaticResource TextLargeTemplate}" TextSmTemplate="{StaticResource TextSmallTemplate}" TimeTemplate="{StaticResource TimeTemplate}"/>
+                   TextLgTemplate="{StaticResource TextLargeTemplate}" TextSmTemplate="{StaticResource TextSmallTemplate}" TimeTemplate="{StaticResource TimeTemplate}" 
+                                             SignatureTemplate="{StaticResource SignatureTemplate}"/>
     </UserControl.Resources>
     <telerik:ItemsControl x:Name="FieldsItemsControl" Width="500" ItemTemplateSelector="{StaticResource FieldDataTemplateSelector}" />
 </UserControl>

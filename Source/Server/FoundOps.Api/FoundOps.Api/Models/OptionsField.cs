@@ -21,7 +21,7 @@ namespace FoundOps.Api.Models
         /// </summary>
         /// <param name="fieldModel">The FoundOPS model of a OptionsField to be converted</param>
         /// <returns>A OptionsField that has been converted to it's API model</returns>
-        public static OptionsField ConvertOptionsFieldModel(FoundOps.Core.Models.CoreEntities.OptionsField fieldModel)
+        public static OptionsField ConvertModel(Core.Models.CoreEntities.OptionsField fieldModel)
         {
             var field = new OptionsField
             {
@@ -36,7 +36,7 @@ namespace FoundOps.Api.Models
             };
 
             foreach (var option in fieldModel.Options.OrderBy(o => o.Name))
-                field.Options.Add(Option.ConvertOptionModel(option));
+                field.Options.Add(Option.ConvertModel(option));
 
             return field;
         }
@@ -46,9 +46,9 @@ namespace FoundOps.Api.Models
         /// </summary>
         /// <param name="optionsField"></param>
         /// <returns></returns>
-        public static FoundOps.Core.Models.CoreEntities.Field ConvertBackOptionsField(OptionsField optionsField)
+        public static Core.Models.CoreEntities.Field ConvertBack(OptionsField optionsField)
         {
-            var field = new FoundOps.Core.Models.CoreEntities.OptionsField
+            var field = new Core.Models.CoreEntities.OptionsField
             {
                 Id = optionsField.Id,
                 Name = optionsField.Name,
@@ -61,7 +61,7 @@ namespace FoundOps.Api.Models
             };
 
             foreach (var option in optionsField.Options)
-                field.Options.Add(Option.ConvertBackOption(option));
+                field.Options.Add(Option.ConvertBack(option));
 
             return field;
         }

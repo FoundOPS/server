@@ -229,6 +229,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\Mvc\SignatureFieldController.cs" />
     <Compile Include="Controllers\Rest\BaseApiController.cs" />
     <Compile Include="Controllers\Rest\BusinessAccountsController.cs" />
     <Compile Include="Controllers\Rest\ClientsController.cs" />
@@ -259,6 +260,7 @@
     <Compile Include="Models\ColumnConfiguration.cs" />
     <Compile Include="Models\ContactInfo.cs" />
     <Compile Include="Models\Column.cs" />
+    <Compile Include="Models\SignatureField.cs" />
     <Compile Include="Models\ErrorEntry.cs" />
     <Compile Include="Models\Option.cs" />
     <Compile Include="Models\TimeZone.cs" />
@@ -284,6 +286,7 @@
     <Compile Include="Tools\FormTools.cs" />
     <Compile Include="Tools\JsonpMediaTypeFormatter.cs" />
     <Compile Include="Tools\PartyTools.cs" />
+    <Compile Include="Tools\SignatureToImage.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
