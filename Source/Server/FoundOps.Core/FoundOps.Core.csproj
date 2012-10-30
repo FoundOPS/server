@@ -133,6 +133,7 @@
     <Compile Include="Models\CoreEntities\ServiceEntites\ServiceTemplateWithDate.cs" />
     <Compile Include="Models\CoreEntities\ServiceEntites\SimpleDateField.cs" />
     <Compile Include="Models\CoreEntities\ServiceEntites\SimpleNumericField.cs" />
+    <Compile Include="Models\CoreEntities\ServiceEntites\SimpleSignatureField.cs" />
     <Compile Include="Models\CoreEntities\ServiceEntites\SimpleTextField.cs" />
     <Compile Include="Models\ServerConstants.cs" />
     <Compile Include="Models\CoreEntities\BlocksData.cs" />
@@ -249,6 +250,8 @@
     <Content Include="Models\CoreEntities\ManualEDMXChanges.txt" />
     <Content Include="Models\CoreEntities\SQL Tests\PropagateNameChangeTest.sql" />
     <Content Include="Models\CoreEntities\SQL Tests\PropagateNewServiceTemplatesToClientTest.sql" />
+    <Content Include="Models\CoreEntities\SQL\DeleteClientBasedOnId.sql" />
+    <Content Include="Models\CoreEntities\SQL\DeleteLocationBasedOnId.sql" />
     <Content Include="Models\CoreEntities\SQL\TestFieldPropagationSuccess.sql" />
     <Content Include="Models\CoreEntities\SQL\TestNewServiceTemplatePropagationSuccess.sql" />
     <Content Include="Models\CoreEntities\SQL\TestServiceTemplateNamePropagationSuccess.sql" />
@@ -259,8 +262,8 @@
     <Content Include="Models\CoreEntities\SQL\DeleteRecurringService.sql" />
     <Content Include="Models\CoreEntities\SQL\DeleteBasicPartyBasedOnId.sql" />
     <Content Include="Models\CoreEntities\SQL\DeleteBusinessAccountBasedOnId.sql" />
-    <Content Include="Models\CoreEntities\SQL\DeleteClientBasedOnId.sql" />
-    <Content Include="Models\CoreEntities\SQL\DeleteLocationBasedOnId.sql" />
+    <Content Include="Models\CoreEntities\SQL\ArchiveClientBasedOnId.sql" />
+    <Content Include="Models\CoreEntities\SQL\ArchiveLocationBasedOnId.sql" />
     <Content Include="Models\CoreEntities\SQL\DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId.sql" />
     <Content Include="Models\CoreEntities\SQL\DeleteServiceTemplatesAndChildrenBasedOnContextId.sql" />
     <Content Include="Models\CoreEntities\SQL Tests\DeleteFields.sql" />

@@ -89,7 +89,10 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 		(
 			LocationId uniqueidentifier
 		)
-
+		
+		DECLARE @date DATE
+		SET @date = GETUTCDATE()  
+		
 		--Finds all Locations that are associated with the BusinessAccount
 		INSERT INTO @LocationIdsForServiceProvider
 		SELECT Id FROM Locations

@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 namespace FoundOps.Core.Models.CoreEntities.ServiceEntites
 {
     [DataContract]
-    public class SimpleDateField : ISimpleField
+    public class SimpleSignatureField : ISimpleField
     {
         public Guid Id { get; set; }
 
@@ -12,7 +12,7 @@ namespace FoundOps.Core.Models.CoreEntities.ServiceEntites
 
         public string Name { get; set; }
 
-        public DateTime? Value { get; set; }
+        public string Value { get; set; }
 
         public object ObjectValue { get { return Value; } }
     }

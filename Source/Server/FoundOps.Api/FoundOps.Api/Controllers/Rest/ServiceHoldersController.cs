@@ -73,6 +73,7 @@ namespace FoundOps.Api.Controllers.Rest
             ILookup<Guid, ISimpleField> simpleTextFields;
             ILookup<Guid, ISimpleField> simpleOptionsFields;
             ILookup<Guid, ISimpleField> simpleLocationFields;
+            ILookup<Guid, ISimpleField> simpleSignatureFields;
 
             using (var db = new DbContext(ServerConstants.SqlConnectionString))
             {
@@ -164,6 +165,10 @@ namespace FoundOps.Api.Controllers.Rest
 
                 reader.NextResult();
 
+                simpleSignatureFields = CoreEntitiesContainer.Translate<SimpleSignatureField>(reader).AsParallel().ToLookup(f => f.ServiceTemplateId, f => (ISimpleField)f);
+
+                reader.NextResult();
+
                 simpleOptionsFields = CoreEntitiesContainer.Translate<SimpleOptionsField>(reader).AsParallel().ToLookup(f => f.ServiceTemplateId, f => (ISimpleField)f);
 
                 reader.NextResult();
@@ -187,7 +192,7 @@ namespace FoundOps.Api.Controllers.Rest
 
                 var id = st.ServiceId.HasValue ? st.ServiceId.Value : st.RecurringServiceId.Value;
 
-                var fields = simpleDateFields[id].Union(simpleNumericFields[id]).Union(simpleTextFields[id]).Union(
+                var fields = simpleDateFields[id].Union(simpleNumericFields[id]).Union(simpleTextFields[id]).Union(simpleSignatureFields[id]).Union(
                         simpleOptionsFields[id]).Union(simpleLocationFields[id]).ToDictionary(f => f.Name);
 
                 foreach (var name in javaScriptFields.Select(f => f.Name))

@@ -37,9 +37,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             var designSignatureField = new SignatureField()
             {
                 Id = Guid.NewGuid(),
-                Name = "Notes",
+                Name = "Signature",
                 Required = false,
-                Tooltip = "Any miscellaneous service information"
+                Tooltip = "Sign Here"
             };
 
             //var nineAm = DateTime.Now.Date.AddHours(9);

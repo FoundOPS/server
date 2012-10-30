@@ -202,8 +202,8 @@ namespace FoundOps.Api.Tests.Controllers
 
         #endregion
 
-        //private const string ConnectionString = "metadata=res://*/Models.CoreEntities.CoreEntities.csdl|res://*/Models.CoreEntities.CoreEntities.ssdl|res://*/Models.CoreEntities.CoreEntities.msl;provider=System.Data.SqlClient;provider connection string=';Data Source=f77m2u3n4m.database.windows.net;Initial Catalog=TestCore;Persist Security Info=True;User ID=perladmin;Password=QOI1m7DzVUJiNPMofFkk;MultipleActiveResultSets=True;Min Pool Size=100;Max Pool Size=1000;Pooling=true';";
-        private const string CoreConnectionsString = "Data Source=f77m2u3n4m.database.windows.net;Initial Catalog=TestCore;Persist Security Info=True;User ID=perladmin;Password=QOI1m7DzVUJiNPMofFkk;MultipleActiveResultSets=True;Min Pool Size=100;Max Pool Size=1000;Pooling=true";
+        //private const string CoreConnectionsString = "metadata=res://*/Models.CoreEntities.CoreEntities.csdl|res://*/Models.CoreEntities.CoreEntities.ssdl|res://*/Models.CoreEntities.CoreEntities.msl;provider=System.Data.SqlClient;provider connection string=';Data Source=f77m2u3n4m.database.windows.net;Initial Catalog=TestCore;Persist Security Info=True;User ID=perladmin;Password=QOI1m7DzVUJiNPMofFkk;MultipleActiveResultSets=True;Min Pool Size=100;Max Pool Size=1000;Pooling=true';";
+        //private const string CoreConnectionsString = "Data Source=f77m2u3n4m.database.windows.net;Initial Catalog=TestCore;Persist Security Info=True;User ID=perladmin;Password=QOI1m7DzVUJiNPMofFkk;MultipleActiveResultSets=True;Min Pool Size=100;Max Pool Size=1000;Pooling=true";
 
         public ResourceTests()
         {
@@ -248,8 +248,8 @@ namespace FoundOps.Api.Tests.Controllers
         public void LocationsTests()
         {
             DetachAllEntities();
-            var locationId = CoreEntitiesContainer.Locations.First(l => l.BusinessAccountId == _gotGreaseId).Id;
-            var clientId = CoreEntitiesContainer.Clients.First(c => c.BusinessAccountId == _gotGreaseId).Id;
+            var locationId = CoreEntitiesContainer.Locations.First(l => l.BusinessAccountId == _gotGreaseId && !l.DateDeleted.HasValue).Id;
+            var clientId = CoreEntitiesContainer.Clients.First(c => c.BusinessAccountId == _gotGreaseId && !c.DateDeleted.HasValue).Id;
 
             //Testing getting one location
             SimpleGetTest<LocationsController, Models.Location>(lc => lc.Get(_roleId, locationId, null, false, null));
@@ -468,10 +468,10 @@ namespace FoundOps.Api.Tests.Controllers
             Assert.IsNotNull(updatedRouteTask.RouteDestinationId);
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void TrackPointsTests()
         {
-            //CoreEntitiesServerManagement.ClearHistoricalTrackPoints();
+            CoreEntitiesServerManagement.ClearHistoricalTrackPoints();
             //CoreEntitiesServerManagement.CreateHistoricalTrackPoints();
 
             DetachAllEntities();
@@ -542,7 +542,7 @@ namespace FoundOps.Api.Tests.Controllers
         {
             var client = CoreEntitiesContainer.Clients.First();
 
-            CoreEntitiesContainer.DeleteClientBasedOnId(client.Id);
+            CoreEntitiesContainer.ArchiveClientBasedOnId(client.Id);
         }
 
         [TestMethod]
@@ -558,7 +558,7 @@ namespace FoundOps.Api.Tests.Controllers
         {
             var location = CoreEntitiesContainer.Locations.First();
 
-            CoreEntitiesContainer.DeleteLocationBasedOnId(location.Id);
+            CoreEntitiesContainer.ArchiveLocationBasedOnId(location.Id, DateTime.UtcNow.Date);
         }
 
         [TestMethod]
@@ -578,7 +578,7 @@ namespace FoundOps.Api.Tests.Controllers
         }
 
         [TestMethod]
-        public void DeleteServiceTemapltesAndChildrenBasedOnContext()
+        public void DeleteServiceTemplatesAndChildrenBasedOnContext()
         {
             //Client
             var serviceTemplate = CoreEntitiesContainer.ServiceTemplates.First(st => st.OwnerClientId != null);
@@ -635,7 +635,7 @@ namespace FoundOps.Api.Tests.Controllers
                 //Testing Client context
                 parameters = new DynamicParameters();
                 parameters.Add("@serviceProviderIdContext", null);
-                parameters.Add("@clientIdContext", CoreEntitiesContainer.Clients.First().Id);
+                parameters.Add("@clientIdContext", CoreEntitiesContainer.Clients.First(c => c.RecurringServices.Count() != 0 && !c.DateDeleted.HasValue).Id);
                 parameters.Add("@recurringServiceIdContext", null);
                 parameters.Add("@seedDate", DateTime.UtcNow.Date);
                 parameters.Add("@frontBackMinimum", 50);
@@ -695,7 +695,7 @@ namespace FoundOps.Api.Tests.Controllers
         [TestMethod]
         public void GetServiceHolders()
         {
-            using (var conn = new SqlConnection(CoreConnectionsString))
+            using (var conn = new SqlConnection(ServerConstants.SqlConnectionString))
             {
                 conn.Open();
 
@@ -747,7 +747,7 @@ namespace FoundOps.Api.Tests.Controllers
         [TestMethod]
         public void GetUnroutedServicesForDate()
         {
-            using (var conn = new SqlConnection(CoreConnectionsString))
+            using (var conn = new SqlConnection(ServerConstants.SqlConnectionString))
             {
                 conn.Open();
 

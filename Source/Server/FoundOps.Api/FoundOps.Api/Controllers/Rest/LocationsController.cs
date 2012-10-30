@@ -54,7 +54,7 @@ namespace FoundOps.Api.Controllers.Rest
                 sql = "SELECT * FROM Locations WHERE BusinessAccountIdIfDepot = @Id";
                 lookupId = currentBusinessAccount.Id;
             }
-            else if (string.IsNullOrEmpty(search))
+            else if (!string.IsNullOrEmpty(search))
             {
                 //attempt to geocode
                 var geocodeResult = BingLocationServices.TryGeocode(search);

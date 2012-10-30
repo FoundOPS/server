@@ -1,9 +1,9 @@
- 
+﻿ 
 
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 10/02/2012 20:24:41
+-- Date Created: 10/29/2012 16:18:01
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -434,7 +434,8 @@ CREATE TABLE [dbo].[Locations] (
     [BusinessAccountId] uniqueidentifier  NULL,
     [ClientId] uniqueidentifier  NULL,
     [IsDefaultBillingLocation] bit  NULL,
-    [CountryCode] nvarchar(max)  NULL
+    [CountryCode] nvarchar(max)  NULL,
+    [DateDeleted] datetime  NULL
 );
 GO
 
@@ -519,7 +520,8 @@ CREATE TABLE [dbo].[Clients] (
     [DateAdded] datetime  NOT NULL,
     [Salesperson] nvarchar(max)  NULL,
     [BusinessAccountId] uniqueidentifier  NULL,
-    [Name] nvarchar(max)  NULL
+    [Name] nvarchar(max)  NULL,
+    [DateDeleted] datetime  NULL
 );
 GO
 
@@ -550,7 +552,8 @@ GO
 CREATE TABLE [dbo].[RecurringServices] (
     [Id] uniqueidentifier  NOT NULL,
     [ClientId] uniqueidentifier  NOT NULL,
-    [ExcludedDatesString] nvarchar(max)  NULL
+    [ExcludedDatesString] nvarchar(max)  NULL,
+    [DateDeleted] datetime  NULL
 );
 GO
 
@@ -1614,7 +1617,7 @@ ADD CONSTRAINT [FK_LocationFieldLocation]
     FOREIGN KEY ([LocationId])
     REFERENCES [dbo].[Locations]
         ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
+    ON DELETE SET NULL ON UPDATE NO ACTION;
 GO
 
 -- Creating non-clustered index for FOREIGN KEY 'FK_LocationFieldLocation'
@@ -1982,6 +1985,182 @@ SET QUOTED_IDENTIFIER ON
 GO
 USE Core
 GO
+IF OBJECT_ID(N'[dbo].[ArchiveClientBasedOnId]', N'FN') IS NOT NULL
+DROP PROCEDURE [dbo].ArchiveClientBasedOnId
+GO
+/****************************************************************************************************************************************************
+* FUNCTION ArchiveClientBasedOnId will archive a Client and all entities associated with it
+* Follows the following progression to delete: RouteDestinations, RouteTasks, Services, ServiceTemplates, RecurringServices, Locations 
+* ClientTitles, Parties_Business and finally the Client itself
+** Input Parameters **
+* @clientId - The Client Id to be deleted
+***************************************************************************************************************************************************/
+CREATE PROCEDURE dbo.ArchiveClientBasedOnId
+		(@clientId uniqueidentifier)
+
+	AS
+	BEGIN
+	DECLARE @date DATE
+	SET @date = GETUTCDATE()  
+	
+	UPDATE dbo.Clients
+	SET DateDeleted = @date
+	WHERE Id = @clientId
+	  
+-------------------------------------------------------------------------------------------------------------------------
+--Delete Locations for Client
+-------------------------------------------------------------------------------------------------------------------------
+	DECLARE @LocationId uniqueidentifier
+	
+	DECLARE @LocationIdsForClient TABLE
+	(
+		LocationId uniqueidentifier
+	)
+
+	--Finds all Locations that are associated with the Client
+	INSERT INTO @LocationIdsForClient
+	SELECT Id FROM Locations
+	WHERE	ClientId = @clientId
+
+	DECLARE @RowCount int
+	SET @RowCount = (SELECT COUNT(*) FROM @LocationIdsForClient)
+
+	--Iterates through @LocationIdsForClient and calls DeleteLocationBasedOnId on each
+	WHILE @RowCount > 0
+	BEGIN
+			SET @LocationId = (SELECT MIN(LocationId) FROM @LocationIdsForClient)
+
+			EXEC dbo.ArchiveLocationBasedOnId @locationId = @LocationId, @date = @date
+
+			DELETE FROM @LocationIdsForClient
+			WHERE LocationId = @LocationId
+
+			SET @RowCount = (SELECT COUNT(*) FROM @LocationIdsForClient)
+	END
+-------------------------------------------------------------------------------------------------------------------------
+	END
+	RETURN
+
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+USE Core
+GO
+
+IF OBJECT_ID(N'[dbo].[ArchiveLocationBasedOnId]', N'FN') IS NOT NULL
+DROP PROCEDURE [dbo].[ArchiveLocationBasedOnId]
+GO
+/****************************************************************************************************************************************************
+* FUNCTION ArchiveLocationBasedOnId will delete a Location and all entities associated with it
+* Follows the following progression to delete: RouteTasks, SubLocations, ContactInfoSet, RouteDestinations and finally the Location itself
+** Input Parameters **
+* @locationId - The Location Id to be deleted
+***************************************************************************************************************************************************/
+CREATE PROCEDURE dbo.ArchiveLocationBasedOnId
+		(@locationId UNIQUEIDENTIFIER, @date DATE)
+
+	AS
+	BEGIN
+  
+	UPDATE	dbo.Locations
+	SET		DateDeleted = @date
+	WHERE	Id = @locationId   
+
+	CREATE TABLE #RecurringService (Id UNIQUEIDENTIFIER)
+
+	INSERT INTO #RecurringService
+	SELECT Id FROM dbo.RecurringServices
+	WHERE	Id IN (
+			SELECT	Id
+			FROM	dbo.ServiceTemplates
+			WHERE	Id IN ( SELECT	ServiceTemplateId
+							FROM	dbo.Fields
+							WHERE	Id IN ( SELECT	Id
+											FROM	dbo.Fields_LocationField
+											WHERE	LocationId = @locationId ) ) )
+
+	
+	UPDATE	dbo.RecurringServices
+	SET		DateDeleted = @date
+	WHERE Id IN (SELECT Id FROM #RecurringService)
+
+	UPDATE dbo.Repeats
+	SET EndDate = @date
+	WHERE Id IN (SELECT Id FROM #RecurringService)
+
+	CREATE TABLE #RouteTasksToDelete
+		(
+		  Id UNIQUEIDENTIFIER ,
+		  RouteDestinationId UNIQUEIDENTIFIER
+		)
+
+	INSERT	INTO #RouteTasksToDelete
+			SELECT	Id ,
+					RouteDestinationId
+			FROM	dbo.RouteTasks
+			WHERE	LocationId = @locationId
+					AND [Date] > @date
+
+	DELETE	FROM RouteTasks
+	WHERE	Id IN ( SELECT	Id
+					FROM	#RouteTasksToDelete )
+
+	DELETE	FROM RouteDestinations
+	WHERE	Id IN ( SELECT	RouteDestinationId
+					FROM	#RouteTasksToDelete )
+	
+	CREATE TABLE #ServicesToDelete ( Id UNIQUEIDENTIFIER )
+	
+	INSERT	INTO #ServicesToDelete
+			SELECT	Id
+			FROM	dbo.Services
+			WHERE	Id IN (
+					SELECT	Id
+					FROM	dbo.ServiceTemplates
+					WHERE	Id IN (
+							SELECT	ServiceTemplateId
+							FROM	dbo.Fields
+							WHERE	Id IN ( SELECT	Id
+											FROM	dbo.Fields_LocationField
+											WHERE	LocationId = @locationId ) ) 
+					AND ServiceDate >= @Date
+					AND RecurringServiceId IS NULL
+					AND LevelInt = 5)
+	
+	DELETE FROM dbo.Services
+	WHERE Id IN (SELECT Id FROM #ServicesToDelete)
+
+	DECLARE @RowCount INT
+	DECLARE @RowId UNIQUEIDENTIFIER
+
+	SET @RowCount = (SELECT COUNT(*) FROM #ServicesToDelete)
+
+	WHILE @RowCount > 0
+	BEGIN
+	
+		SET @RowId = (SELECT TOP(1) Id FROM #ServicesToDelete ORDER BY Id)
+
+		EXECUTE [dbo].[DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId] @RowId
+
+		DELETE FROM #ServicesToDelete WHERE Id = @RowId
+	
+		SET @RowCount = (SELECT COUNT(*) FROM #ServicesToDelete)          
+	END
+	
+	END
+	RETURN
+
+GO
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+USE Core
+GO
 /****************************************************************************************************************************************************
 * FUNCTION CheckServiceTemplateForChildren will check a ServiceTemplate to see if it has any child ServiceTemplates
 ** Input Parameters **
@@ -2149,7 +2328,10 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 		(
 			LocationId uniqueidentifier
 		)
-
+		
+		DECLARE @date DATE
+		SET @date = GETUTCDATE()  
+		
 		--Finds all Locations that are associated with the BusinessAccount
 		INSERT INTO @LocationIdsForServiceProvider
 		SELECT Id FROM Locations

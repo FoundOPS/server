@@ -1,36 +1,31 @@
-SET ANSI_NULLS ON
+﻿SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
 USE Core
 GO
-IF OBJECT_ID(N'[dbo].[DeleteClientBasedOnId]', N'FN') IS NOT NULL
-DROP PROCEDURE [dbo].DeleteClientBasedOnId
+IF OBJECT_ID(N'[dbo].[ArchiveClientBasedOnId]', N'FN') IS NOT NULL
+DROP PROCEDURE [dbo].ArchiveClientBasedOnId
 GO
 /****************************************************************************************************************************************************
-* FUNCTION DeleteClientBasedOnId will delete a Client and all entities associated with it
+* FUNCTION ArchiveClientBasedOnId will archive a Client and all entities associated with it
 * Follows the following progression to delete: RouteDestinations, RouteTasks, Services, ServiceTemplates, RecurringServices, Locations 
 * ClientTitles, Parties_Business and finally the Client itself
 ** Input Parameters **
 * @clientId - The Client Id to be deleted
 ***************************************************************************************************************************************************/
-CREATE PROCEDURE dbo.DeleteClientBasedOnId
+CREATE PROCEDURE dbo.ArchiveClientBasedOnId
 		(@clientId uniqueidentifier)
 
 	AS
 	BEGIN
-
-	DELETE FROM RouteDestinations
-	WHERE ClientId = @clientId
-
-	DELETE FROM Services
-	WHERE ClientId = @clientId
-
-	EXEC dbo.DeleteServiceTemplatesAndChildrenBasedOnContextId @serviceProviderId = NULL, @ownerClientId = @clientId
-
-	DELETE FROM RecurringServices
-	WHERE ClientId = @clientId
-
+	DECLARE @date DATE
+	SET @date = GETUTCDATE()  
+	
+	UPDATE dbo.Clients
+	SET DateDeleted = @date
+	WHERE Id = @clientId
+	  
 -------------------------------------------------------------------------------------------------------------------------
 --Delete Locations for Client
 -------------------------------------------------------------------------------------------------------------------------
@@ -54,7 +49,7 @@ CREATE PROCEDURE dbo.DeleteClientBasedOnId
 	BEGIN
 			SET @LocationId = (SELECT MIN(LocationId) FROM @LocationIdsForClient)
 
-			EXEC dbo.DeleteLocationBasedOnId @locationId = @LocationId
+			EXEC dbo.ArchiveLocationBasedOnId @locationId = @LocationId, @date = @date
 
 			DELETE FROM @LocationIdsForClient
 			WHERE LocationId = @LocationId
@@ -62,12 +57,5 @@ CREATE PROCEDURE dbo.DeleteClientBasedOnId
 			SET @RowCount = (SELECT COUNT(*) FROM @LocationIdsForClient)
 	END
 -------------------------------------------------------------------------------------------------------------------------
-
-	DELETE FROM ContactInfoSet
-	WHERE ClientId = @clientId
-
-	DELETE FROM Clients
-	WHERE Id = @clientId
-
 	END
 	RETURN
