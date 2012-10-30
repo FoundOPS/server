@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using FoundOps.Api.Tools;
 
 namespace FoundOps.Api.Models
 {
-    public class Client
+    public class Client : IImportable
     {
         /// <summary>
         /// The Id
@@ -19,6 +20,8 @@ namespace FoundOps.Api.Models
         /// The list of ContactInfo associated with this Client
         /// </summary>
         public List<ContactInfo> ContactInfoSet { get; set; }
+
+        public int StatusInt { get; set; }
 
         public Client()
         {

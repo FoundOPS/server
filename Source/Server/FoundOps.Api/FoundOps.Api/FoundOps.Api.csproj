@@ -229,6 +229,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\Mvc\ImporterController.cs" />
     <Compile Include="Controllers\Mvc\SignatureFieldController.cs" />
     <Compile Include="Controllers\Rest\BaseApiController.cs" />
     <Compile Include="Controllers\Rest\BusinessAccountsController.cs" />
@@ -260,9 +261,13 @@
     <Compile Include="Models\ColumnConfiguration.cs" />
     <Compile Include="Models\ContactInfo.cs" />
     <Compile Include="Models\Column.cs" />
+    <Compile Include="Models\ImportRow.cs" />
+    <Compile Include="Models\Repeat.cs" />
+    <Compile Include="Models\RowSuggestions.cs" />
     <Compile Include="Models\SignatureField.cs" />
     <Compile Include="Models\ErrorEntry.cs" />
     <Compile Include="Models\Option.cs" />
+    <Compile Include="Models\Suggestions.cs" />
     <Compile Include="Models\TimeZone.cs" />
     <Compile Include="Models\UserAccount.cs" />
     <Compile Include="Models\ServiceType.cs" />
@@ -284,6 +289,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\ApiExceptions.cs" />
     <Compile Include="Tools\FormTools.cs" />
+    <Compile Include="Tools\IImportable.cs" />
     <Compile Include="Tools\JsonpMediaTypeFormatter.cs" />
     <Compile Include="Tools\PartyTools.cs" />
     <Compile Include="Tools\SignatureToImage.cs" />
