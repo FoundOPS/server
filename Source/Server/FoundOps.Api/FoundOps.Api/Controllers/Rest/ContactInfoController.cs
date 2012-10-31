@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using FoundOps.Api.Tools;
+﻿using FoundOps.Api.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
+using System;
+using System.Data.Entity;
+using System.Linq;
 using ContactInfo = FoundOps.Api.Models.ContactInfo;
 
 namespace FoundOps.Api.Controllers.Rest
@@ -16,13 +12,12 @@ namespace FoundOps.Api.Controllers.Rest
     {
         public void Post(Guid roleId, ContactInfo contactInfo)
         {
-            var businessAccount = CoreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator }).Include(ba => ba.TaskStatuses).FirstOrDefault();
+            var businessAccount = CoreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator, RoleType.Regular, RoleType.Mobile }).FirstOrDefault();
             if (businessAccount == null)
                 throw Request.NotAuthorized();
 
             var foundOpsContactInfo = ContactInfo.ConvertBack(contactInfo);
-
-            if(contactInfo.LocationId.HasValue)
+            if (contactInfo.LocationId.HasValue)
             {
                 var location = CoreEntitiesContainer.Locations.FirstOrDefault(l => l.Id == contactInfo.LocationId);
                 if (location == null)
@@ -30,7 +25,7 @@ namespace FoundOps.Api.Controllers.Rest
 
                 location.ContactInfoSet.Add(foundOpsContactInfo);
             }
-            else if(contactInfo.ClientId.HasValue)
+            else if (contactInfo.ClientId.HasValue)
             {
                 var client = CoreEntitiesContainer.Clients.FirstOrDefault(c => c.Id == contactInfo.ClientId);
                 if (client == null)
@@ -38,12 +33,13 @@ namespace FoundOps.Api.Controllers.Rest
 
                 client.ContactInfoSet.Add(foundOpsContactInfo);
             }
+
             SaveWithRetry();
         }
 
         public void Put(Guid roleId, ContactInfo contactInfo)
         {
-            var businessAccount = CoreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator }).Include(ba => ba.TaskStatuses).FirstOrDefault();
+            var businessAccount = CoreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator, RoleType.Regular, RoleType.Mobile }).FirstOrDefault();
             if (businessAccount == null)
                 throw Request.NotAuthorized();
 
@@ -59,15 +55,14 @@ namespace FoundOps.Api.Controllers.Rest
 
             SaveWithRetry();
         }
-        
+
         public void Delete(Guid contactInfoId)
         {
-            var contactInfoSet = CoreEntitiesContainer.ContactInfoSet.FirstOrDefault(ci => ci.Id == contactInfoId);
-
-            if (contactInfoSet == null)
+            var contactInfo = CoreEntitiesContainer.ContactInfoSet.FirstOrDefault(ci => ci.Id == contactInfoId);
+            if (contactInfo == null)
                 throw Request.BadRequest();
 
-            CoreEntitiesContainer.ContactInfoSet.DeleteObject(contactInfoSet);
+            CoreEntitiesContainer.ContactInfoSet.DeleteObject(contactInfo);
 
             SaveWithRetry();
         }
