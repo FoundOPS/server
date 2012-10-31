@@ -24,8 +24,8 @@ namespace FoundOps.Api.Controllers.Rest
         /// Gets the service and fields.
         /// Need to specify one of the following
         /// a) the serviceId -> this will return the existing service and fields
-        /// b) the serviceDate and recurringServiceId -> this will generate a service based on the recurringServiceId
-        /// c) the serviceTemplateId -> this will generate a service based on the provider level service template
+        /// b) recurringServiceId -> this will generate a service based on the recurringServiceId on serviceDate, or the current user's date
+        /// c) serviceTemplateId -> this will generate a service based on the provider level service template on serviceDate, or the current user's date
         /// </summary>
         public IQueryable<Service> Get(Guid? serviceId, DateTime? serviceDate, Guid? recurringServiceId, Guid? serviceTemplateId)
         {
@@ -87,8 +87,9 @@ namespace FoundOps.Api.Controllers.Rest
             //generate the service
             if (!serviceId.HasValue)
             {
+                //if serviceDate is null: use the current user's date
                 if (!serviceDate.HasValue)
-                    throw Request.BadRequest("Need to have the service date set if you are generating a service (there is no service Id)");
+                    serviceDate = CoreEntitiesContainer.CurrentUserAccount().First().Now().Date;
 
                 service = new Core.Models.CoreEntities.Service
                 {
