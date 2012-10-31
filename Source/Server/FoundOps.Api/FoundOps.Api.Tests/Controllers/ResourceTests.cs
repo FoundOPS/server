@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using FoundOPS.API.Models;
 using FoundOps.Api.Controllers.Mvc;
 using FoundOps.Api.Controllers.Rest;
 using FoundOps.Api.Models;
@@ -301,6 +302,16 @@ namespace FoundOps.Api.Tests.Controllers
             newLocation.ZipCode = "47906";
 
             controller.Put(_roleId, newLocation);
+        }
+
+        [TestMethod]
+        public void ImporterTests()
+        {
+            var controller = new ImporterController();
+
+            var headers = new[] { "Clientsd Name", "Address Line One", "Address Line Two", "City", "State", "Country Code", "Zipcode", "Latitude", "Longitude", "Region Name", "Service Date", };
+
+            var test = controller.ValidateInput(_roleId, headers, new List<Cell[]>());
         }
 
         [TestMethod]

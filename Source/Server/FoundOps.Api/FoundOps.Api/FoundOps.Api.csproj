@@ -257,6 +257,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\BusinessAccount.cs" />
+    <Compile Include="Models\Cell.cs" />
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\ColumnConfiguration.cs" />
     <Compile Include="Models\ContactInfo.cs" />

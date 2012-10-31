@@ -61,6 +61,8 @@ namespace FoundOps.Api.Models
         /// </summary>
         public List<ContactInfo> ContactInfoSet { get; set; }
 
+        public Region Region { get; set; }
+
         public int StatusInt { get; set; }
 
         public Location()
