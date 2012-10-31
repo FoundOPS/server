@@ -1,7 +1,10 @@
+using System;
+
 namespace FoundOps.Api.Models
 {
     public class ContactInfo
     {
+        public Guid Id { get; set; }
         /// <summary>
         /// The type of contact info (ex: Phone number, email, fax)
         /// </summary>
@@ -17,9 +20,27 @@ namespace FoundOps.Api.Models
         /// </summary>
         public string Data { get; set; }
 
+        public Guid? LocationId { get; set; }
+        public Guid? ClientId { get; set; }
+
         public static ContactInfo Convert(FoundOps.Core.Models.CoreEntities.ContactInfo contactInfoModel)
         {
-            var contactInfo = new ContactInfo { Type = contactInfoModel.Type, Label = contactInfoModel.Label, Data = contactInfoModel.Data };
+            var contactInfo = new ContactInfo { Id = contactInfoModel.Id, Type = contactInfoModel.Type, Label = contactInfoModel.Label, Data = contactInfoModel.Data, ClientId = contactInfoModel.ClientId, LocationId = contactInfoModel.LocationId};
+            //TODO Generalize this everywhere
+            if (string.IsNullOrEmpty(contactInfo.Type))
+                contactInfo.Type = "";
+            if (string.IsNullOrEmpty(contactInfo.Label))
+                contactInfo.Label = "";
+            if (string.IsNullOrEmpty(contactInfo.Data))
+                contactInfo.Data = "";
+
+            return contactInfo;
+        }
+
+        public static FoundOps.Core.Models.CoreEntities.ContactInfo ConvertBack(Api.Models.ContactInfo contactInfoModel)
+        {
+            var contactInfo = new FoundOps.Core.Models.CoreEntities.ContactInfo { Id = contactInfoModel.Id, Type = contactInfoModel.Type, Label = contactInfoModel.Label, Data = contactInfoModel.Data, ClientId = contactInfoModel.ClientId, LocationId = contactInfoModel.LocationId };
+
             //TODO Generalize this everywhere
             if (string.IsNullOrEmpty(contactInfo.Type))
                 contactInfo.Type = "";

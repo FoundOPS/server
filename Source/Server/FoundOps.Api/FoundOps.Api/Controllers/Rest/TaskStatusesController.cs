@@ -32,11 +32,11 @@ namespace FoundOps.Api.Controllers.Rest
         /// <param name="taskStatus">The status</param>
         public void Post(Guid roleId, TaskStatus taskStatus)
         {
-            var status = TaskStatus.CreateFromModel(taskStatus);
-
             var businessAccount = CoreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator }).Include(ba => ba.TaskStatuses).FirstOrDefault();
             if (businessAccount == null)
                 throw Request.NotAuthorized();
+
+            var status = TaskStatus.CreateFromModel(taskStatus);
 
             businessAccount.TaskStatuses.Add(status);
             SaveWithRetry();

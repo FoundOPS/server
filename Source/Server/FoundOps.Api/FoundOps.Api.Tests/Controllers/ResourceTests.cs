@@ -229,6 +229,49 @@ namespace FoundOps.Api.Tests.Controllers
         }
 
         [TestMethod]
+        public void ContactInfoTests()
+        {
+            var newId = Guid.NewGuid();
+
+            var newContactInfo = new Api.Models.ContactInfo
+            {
+                Id = newId,
+                Data = "(123) 456-7890",
+                Type = "Phone Number",
+                Label = "FoundOPS HQ",
+                ClientId = CoreEntitiesContainer.Clients.First(c => !c.DateDeleted.HasValue).Id,
+                LocationId = null
+            };
+
+            var controller = CreateRequest<ContactInfoController>(HttpMethod.Put);
+            controller.Post(_roleId, newContactInfo);
+
+            DetachAllEntities();
+            var createdContactInfo = CoreEntitiesContainer.ContactInfoSet.FirstOrDefault(ci => ci.Id == newId);
+
+            Assert.IsNotNull(createdContactInfo);
+            Assert.AreEqual("FoundOPS HQ", createdContactInfo.Label);
+
+            newContactInfo.Label = "Changed the Label";
+
+            controller.Put(_roleId, newContactInfo);
+            DetachAllEntities();
+
+            var updatedContactInfo = CoreEntitiesContainer.ContactInfoSet.FirstOrDefault(ci => ci.Id == newId);
+
+            Assert.IsNotNull(updatedContactInfo);
+            Assert.AreEqual("Changed the Label", updatedContactInfo.Label);
+
+            DetachAllEntities();
+
+            controller.Delete(newId);
+
+            var deletedContactInfo = CoreEntitiesContainer.ContactInfoSet.FirstOrDefault(ci => ci.Id == newId);
+
+            Assert.IsNull(deletedContactInfo);
+        }
+
+        [TestMethod]
         public void ErrorsTests()
         {
             DetachAllEntities();
@@ -517,6 +560,51 @@ namespace FoundOps.Api.Tests.Controllers
             var controller = CreateRequest<TrackPointsController>(HttpMethod.Post);
 
             controller.Post(_roleId, trackPoints.ToArray());
+        }
+
+        [TestMethod]
+        public void TaskStatusTests()
+        {
+            DetachAllEntities();
+            SimpleGetTest<TaskStatusesController, Models.TaskStatus>(ts => ts.Get(_roleId));
+
+            var newId = Guid.NewGuid();
+
+            var newTaskStatus = new Api.Models.TaskStatus
+            {
+                Id = newId,
+                BusinessAccountId = _gotGreaseId,
+                Color = "488FCD",
+                Name = "Test Status",
+                DefaultTypeInt = null,
+                RemoveFromRoute = false
+            };
+
+            var controller = CreateRequest<TaskStatusesController>(HttpMethod.Put);
+            controller.Post(_roleId, newTaskStatus);
+
+            DetachAllEntities();
+            var createdTaskStatus = CoreEntitiesContainer.TaskStatuses.FirstOrDefault(ts => ts.Id == newId);
+
+            Assert.IsNotNull(createdTaskStatus);
+            Assert.AreEqual("Test Status", createdTaskStatus.Name);
+
+            newTaskStatus.Name = "Changed Status Name";
+
+            controller.Put(_roleId, newTaskStatus);
+            DetachAllEntities();
+
+            var updatedTaskStatus = CoreEntitiesContainer.TaskStatuses.FirstOrDefault(ts => ts.Id == newId);
+
+            Assert.IsNotNull(updatedTaskStatus);
+            Assert.AreEqual("Changed Status Name", updatedTaskStatus.Name);
+
+            controller.Delete(_roleId, updatedTaskStatus.Id);
+            DetachAllEntities();
+
+            var deletedTaskStatus = CoreEntitiesContainer.TaskStatuses.FirstOrDefault(ts => ts.Id == newId);
+
+            Assert.IsNull(deletedTaskStatus);
         }
 
         #region SQL Tests
