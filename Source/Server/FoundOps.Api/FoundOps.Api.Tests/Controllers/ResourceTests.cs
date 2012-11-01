@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using FoundOPS.API.Models;
 using FoundOps.Api.Controllers.Mvc;
 using FoundOps.Api.Controllers.Rest;
 using FoundOps.Api.Models;
@@ -772,7 +771,7 @@ namespace FoundOps.Api.Tests.Controllers
                 //Then it will return all RouteTasks that are not in a route joined with their Locations, Location.Regions and Clients
                 //Dapper will then map the output table to RouteTasks, RouteTasks.Location, RouteTasks.Location.Region and RouteTasks.Client
                 //While that is being mapped we also attach the Client, Location and Region to the objectContext
-                var data = conn.Query<FoundOps.Core.Models.CoreEntities.RouteTask, Location, Region, Client, TaskStatus, FoundOps.Core.Models.CoreEntities.RouteTask>("sp_GetUnroutedServicesForDate", (routeTask, location, region, client, taskStatus) =>
+                var data = conn.Query<FoundOps.Core.Models.CoreEntities.RouteTask, Location, FoundOps.Core.Models.CoreEntities.Region, Client, TaskStatus, FoundOps.Core.Models.CoreEntities.RouteTask>("sp_GetUnroutedServicesForDate", (routeTask, location, region, client, taskStatus) =>
                 {
                     if (location != null)
                     {

@@ -23,7 +23,7 @@ namespace FoundOps.Api.Models
         public Guid? RecurringServiceId { get; set; }
         public Guid ServiceProviderId { get; set; }
         
-        public int StatusInt { get; set; }
+        public int? StatusInt { get; set; }
 
         public Service()
         {

@@ -5,7 +5,7 @@
         int? StatusInt { get; set; }
     }
 
-    enum CellStatus
+    enum ImportStatus
     {
         Linked = 0,
         New = 1,

@@ -63,7 +63,7 @@ namespace FoundOps.Api.Models
 
         public Region Region { get; set; }
 
-        public int StatusInt { get; set; }
+        public int? StatusInt { get; set; }
 
         public Location()
         {

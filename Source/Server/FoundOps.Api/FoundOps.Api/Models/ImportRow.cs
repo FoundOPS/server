@@ -6,8 +6,6 @@
 
         public Location Location { get; set; }
 
-        public Service Service { get; set; }
-
         public Repeat Repeat { get; set; }
 
     }

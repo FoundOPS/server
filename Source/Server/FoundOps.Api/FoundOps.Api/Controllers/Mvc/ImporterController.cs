@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Mvc;
 using Dapper;
-using FoundOPS.API.Models;
 using FoundOps.Api.Models;
 using FoundOps.Api.Tools;
 using FoundOps.Common.NET;
@@ -46,24 +45,7 @@ namespace FoundOps.Api.Controllers.Mvc
             if (businessAccount == null)
                 return null;
 
-            using (var conn = new SqlConnection(ServerConstants.SqlConnectionString))
-            {
-                conn.Open();
-
-                var parameters = new DynamicParameters();
-                parameters.Add("@id", businessAccount.Id);
-
-                using (var data = conn.QueryMultiple(Sql, new { id = businessAccount.Id }))
-                {
-                    _locations = data.Read<Location>().ToArray();
-
-                    _clients = data.Read<Client>().ToArray();
-
-                    _regions = data.Read<FoundOps.Core.Models.CoreEntities.Region>().ToArray();
-                }
-
-                conn.Close();
-            }
+            SetupClientLocationRegionSets(businessAccount.Id);
 
             #region Assign Column placement
 
@@ -78,7 +60,6 @@ namespace FoundOps.Api.Controllers.Mvc
             var latitudeCol = Array.IndexOf(headers, "Latitude");
             var longitudeCol = Array.IndexOf(headers, "Longitude");
             var frequencyCol = Array.IndexOf(headers, "Frequency");
-            var repeatOnCol = Array.IndexOf(headers, "Repeat On");
             var repeatEveryCol = Array.IndexOf(headers, "Repeat Every");
             var startDateCol = Array.IndexOf(headers, "Start Date");
             var endDateCol = Array.IndexOf(headers, "End Date");
@@ -125,7 +106,7 @@ namespace FoundOps.Api.Controllers.Mvc
 
                             //If they still do not have values, throw error on all entries in the row.
                             if (latitude == null && longitude == null)
-                                importedLocation.StatusInt = (int)CellStatus.Error;
+                                importedLocation.StatusInt = (int)ImportStatus.Error;
 
                             //Matched the address entered and client name matched to a location
                             var matchedLocation = _locations.FirstOrDefault(l => row[clientNameCol] != null && l.ClientId != null &&
@@ -133,24 +114,13 @@ namespace FoundOps.Api.Controllers.Mvc
                                         && _clients.First(c => c.Id == l.ClientId).Name == row[clientNameCol])));
 
                             if (matchedLocation != null)
-                            {
-                                importedLocation = Api.Models.Location.ConvertModel(matchedLocation);
-
-                                if (regionName != null)
-                                {
-                                    var region = _regions.FirstOrDefault(r => r.Name == regionName);
-                                    if (region != null)
-                                        importedLocation.Region = Region.Convert(region);
-                                }
-
-                                importedLocation.StatusInt = (int)CellStatus.Linked;
-                            }
+                                importedLocation = ConvertLocationSetRegionAndStatus(matchedLocation, regionName, ImportStatus.Linked);
                         }
                         //If lat/long exist, try and match based on that and 
-                        else if (importedLocation.StatusInt != (int)CellStatus.Linked && latitude != "" && longitude != "")
+                        else if (latitude != "" && longitude != "")
                         {
                             //Try and match a location to one in the FoundOPS system
-                            var existingLocation = addressLineTwo != null
+                            var matchedLocation = addressLineTwo != null
                                 //Use this statement if Address Line Two is not null
                             ? _locations.FirstOrDefault(l => l.AddressLineTwo == addressLineTwo && (l.Latitude != null && l.Longitude != null)
                                 && (decimal.Round(l.Latitude.Value, 6) == decimal.Round(Convert.ToDecimal(latitude), 6)
@@ -161,22 +131,12 @@ namespace FoundOps.Api.Controllers.Mvc
                                 && decimal.Round(l.Longitude.Value, 6) == decimal.Round(Convert.ToDecimal(longitude), 6)));
 
                             //If a match is found, assign Linked status to all cells
-                            if (existingLocation != null)
-                            {
-                                importedLocation = Api.Models.Location.ConvertModel(existingLocation);
-
-                                if (regionName != null)
-                                {
-                                    var region = _regions.FirstOrDefault(r => r.Name == regionName);
-                                    if (region != null)
-                                        importedLocation.Region = Region.Convert(region);
-                                }
-
-                                importedLocation.StatusInt = (int)CellStatus.Linked;
-                            }
+                            if (matchedLocation != null)
+                                importedLocation = ConvertLocationSetRegionAndStatus(matchedLocation, regionName, ImportStatus.Linked);
                         }
+
                         //If no linked location is found, it means that the location is new
-                        else if (importedLocation.StatusInt != (int)CellStatus.Linked)
+                        if (importedLocation.StatusInt != (int)ImportStatus.Linked)
                         {
                             importedLocation = new Api.Models.Location
                             {
@@ -186,23 +146,17 @@ namespace FoundOps.Api.Controllers.Mvc
                                 City = city,
                                 State = state,
                                 ZipCode = zipCode,
-                                StatusInt = (int)CellStatus.New,
+                                CountryCode = "US",
                                 ContactInfoSet = new List<ContactInfo>(),
                                 Latitude = latitude,
-                                Longitude = longitude
+                                Longitude = longitude,
+                                StatusInt = (int)ImportStatus.New,
+                                Region = SetRegion(regionName)
                             };
-
-                            if (regionName != null)
-                            {
-                                var region = _regions.FirstOrDefault(r => r.Name == regionName);
-                                if (region != null)
-                                    importedLocation.Region = Region.Convert(region);
-                            }
                         }
                     }
 
                     importRow.Location = importedLocation;
-
 
                     #endregion
 
@@ -219,7 +173,7 @@ namespace FoundOps.Api.Controllers.Mvc
                         if (existingClient != null)
                         {
                             importedClient = FoundOps.Api.Models.Client.ConvertModel(existingClient);
-                            importedClient.StatusInt = (int)CellStatus.Linked;
+                            importedClient.StatusInt = (int)ImportStatus.Linked;
                         }
                         else
                         {
@@ -228,9 +182,8 @@ namespace FoundOps.Api.Controllers.Mvc
                                 Id = Guid.NewGuid(),
                                 Name = clientName,
                                 ContactInfoSet = new List<ContactInfo>(),
-                                StatusInt = (int)CellStatus.New
+                                StatusInt = (int)ImportStatus.New
                             };
-
                         }
 
                         importRow.Client = importedClient;
@@ -267,7 +220,7 @@ namespace FoundOps.Api.Controllers.Mvc
 
                     #region Frequency Detail
 
-                    val = val.ToLower();
+                    val = row[frequencyDetailCol];
                     val = val.Replace(" ", "");
                     if (repeat.Frequency == Frequency.Weekly)
                     {
@@ -275,7 +228,7 @@ namespace FoundOps.Api.Controllers.Mvc
 
                         //If it is empty assume the Start Date
                         if (string.IsNullOrEmpty(val))
-                            repeat.FrequencyDetailAsWeeklyFrequencyDetail = new[] {startDayOfWeek};
+                            repeat.FrequencyDetailAsWeeklyFrequencyDetail = new[] { startDayOfWeek };
                         else
                         {
                             var dayStrings = val.Split(',');
@@ -309,7 +262,7 @@ namespace FoundOps.Api.Controllers.Mvc
                             if (!daysOfWeek.Contains(startDayOfWeek))
                                 daysOfWeek.Add(startDayOfWeek);
 
-                            repeat.FrequencyDetailAsWeeklyFrequencyDetail = daysOfWeek.OrderBy(e => (int) e).ToArray();
+                            repeat.FrequencyDetailAsWeeklyFrequencyDetail = daysOfWeek.OrderBy(e => (int)e).ToArray();
                         }
                     }
 
@@ -337,14 +290,133 @@ namespace FoundOps.Api.Controllers.Mvc
                     #endregion
                 });
 
-            var suggestion = SuggestEntites(importRows.ToArray());
+            var suggestion = SuggestEntites(roleId, importRows.ToArray());
 
             return suggestion;
         }
 
-        public Suggestions SuggestEntites(ImportRow[] rows)
+        public Suggestions SuggestEntites(Guid roleId, ImportRow[] rows)
         {
+            var businessAccount = _coreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator }).FirstOrDefault();
+            if (businessAccount == null)
+                return null;
+
+            SetupClientLocationRegionSets(businessAccount.Id);
+
+            var suggestionToReturn = new Suggestions();
+            var clients = new List<FoundOps.Api.Models.Client>();
+            var locations = new List<FoundOps.Api.Models.Location>();
+
+            foreach (var row in rows)
+            {
+                var rowSuggestions = new RowSuggestions();
+
+                //Location
+                //Add the matched/new location as the first suggestion
+                rowSuggestions.LocationSuggestions.Add(row.Location.Id);
+
+                var locationSuggestions = _locations.Where(l => l.ClientId == row.Client.Id).Select(l => l.Id).ToArray();
+                rowSuggestions.LocationSuggestions.AddRange(locationSuggestions);
+
+                locations.AddRange(_locations.Where(l => locationSuggestions.Contains(l.Id)).Select(FoundOps.Api.Models.Location.ConvertModel));
+
+                //If a new Location was created, add it to the list of location entites
+                if (locations.Select(l => l.Id).Contains(row.Location.Id))
+                    locations.Add(row.Location);
+
+                // Client
+                //Add the matched/new client as the first suggestion
+                rowSuggestions.ClientSuggestions.Add(row.Client.Id);
+
+                var clientSuggestions = _clients.Where(c => c.Locations.Select(l => l.Id).Contains(row.Location.Id)).Select(c => c.Id).ToArray();
+                rowSuggestions.ClientSuggestions.AddRange(clientSuggestions);
+
+                clients.AddRange(_clients.Where(c => clientSuggestions.Contains(c.Id)).Select(FoundOps.Api.Models.Client.ConvertModel));
+
+                //If a new Client was created, add it to the list of client entites
+                if (clients.Select(c => c.Id).Contains(row.Client.Id))
+                    clients.Add(row.Client);
+
+                //Repeat
+                rowSuggestions.Repeat.Add(row.Repeat);
+                suggestionToReturn.RowSuggestions.Add(rowSuggestions);
+            }
+
+            //Only add distinct Clients
+            var distinctClients = clients.Distinct();
+            suggestionToReturn.Clients.AddRange(distinctClients);
+
+            //Only add distinct Locations
+            var distinctLocations = locations.Distinct();
+            suggestionToReturn.Locations.AddRange(distinctLocations);
+
+            return suggestionToReturn;
+        }
+
+        #region Helpers
+
+        /// <summary>
+        /// Serves three functions. 
+        /// 1) Convert the FoundOPS location to the API model.
+        /// 2) Set the Region on the location if it exists.
+        /// 3) Set the Status of the Location.
+        /// </summary>
+        /// <param name="matchedLocation"></param>
+        /// <param name="regionName"></param>
+        /// <param name="linked"></param>
+        /// <returns></returns>
+        private Models.Location ConvertLocationSetRegionAndStatus(Location matchedLocation, string regionName, ImportStatus status)
+        {
+            var location = Api.Models.Location.ConvertModel(matchedLocation);
+
+            location.Region = SetRegion(regionName);
+
+            location.StatusInt = (int)status;
+
+            return location;
+        }
+
+        /// <summary>
+        /// Find the correct region(if it exists) for the location
+        /// </summary>
+        /// <param name="regionName"></param>
+        /// <returns></returns>
+        private Region SetRegion(string regionName)
+        {
+            if (regionName != null)
+            {
+                var region = _regions.FirstOrDefault(r => r.Name == regionName);
+                if (region != null)
+                    return Region.Convert(region);
+            }
+
             return null;
         }
+
+        /// <summary>
+        /// Sets up the Client, Location and Regions lists used throughout the controller.
+        /// Pulls full lists of entities for the business account so we only have to call the database once
+        /// </summary>
+        /// <param name="businessAccountId">The BusinessAccount's Id</param>
+        private void SetupClientLocationRegionSets(Guid businessAccountId)
+        {
+            using (var conn = new SqlConnection(ServerConstants.SqlConnectionString))
+            {
+                conn.Open();
+
+                using (var data = conn.QueryMultiple(Sql, new { id = businessAccountId }))
+                {
+                    _locations = data.Read<Location>().ToArray();
+
+                    _clients = data.Read<Client>().ToArray();
+
+                    _regions = data.Read<FoundOps.Core.Models.CoreEntities.Region>().ToArray();
+                }
+
+                conn.Close();
+            }
+        }
+
+        #endregion
     }
 }

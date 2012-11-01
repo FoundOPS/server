@@ -21,7 +21,7 @@ namespace FoundOps.Api.Models
         /// </summary>
         public List<ContactInfo> ContactInfoSet { get; set; }
 
-        public int StatusInt { get; set; }
+        public int? StatusInt { get; set; }
 
         public Client()
         {
