@@ -311,7 +311,9 @@ namespace FoundOps.Api.Tests.Controllers
 
             var headers = new[] { "Clientsd Name", "Address Line One", "Address Line Two", "City", "State", "Country Code", "Zipcode", "Latitude", "Longitude", "Region Name", "Service Date", };
 
-            var test = controller.ValidateInput(_roleId, headers, new List<Cell[]>());
+            var rowsWithHeaders = new List<string[]> {headers};
+
+            var test = controller.ValidateInput(_roleId, rowsWithHeaders);
         }
 
         [TestMethod]

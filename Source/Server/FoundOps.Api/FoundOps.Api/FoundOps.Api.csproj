@@ -263,6 +263,7 @@
     <Compile Include="Models\ContactInfo.cs" />
     <Compile Include="Models\Column.cs" />
     <Compile Include="Models\ImportRow.cs" />
+    <Compile Include="Models\Region.cs" />
     <Compile Include="Models\Repeat.cs" />
     <Compile Include="Models\RowSuggestions.cs" />
     <Compile Include="Models\SignatureField.cs" />
