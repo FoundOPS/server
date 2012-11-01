@@ -134,6 +134,9 @@ namespace FoundOps.Api.Controllers.Rest
             //the service exists. load all field information  and update field values
             if (existingService != null)
             {
+                //update the client id
+                existingService.ClientId = service.ClientId;
+
                 var serviceTemplate = HardCodedLoaders.LoadServiceTemplateWithDetails(CoreEntitiesContainer, existingService.Id, null, null, null).First();
 
                 serviceTemplate.Name = service.Name;
