@@ -307,8 +307,11 @@ namespace FoundOps.Api.Controllers.Mvc
             var clients = new List<FoundOps.Api.Models.Client>();
             var locations = new List<FoundOps.Api.Models.Location>();
 
-            foreach (var row in rows)
+            var rowCount = rows.Count();
+            Parallel.For((long)0, rowCount, rowIndex =>
             {
+                var row = rows[rowIndex];
+
                 var rowSuggestions = new RowSuggestions();
 
                 //Location
@@ -340,7 +343,7 @@ namespace FoundOps.Api.Controllers.Mvc
                 //Repeat
                 rowSuggestions.Repeat.Add(row.Repeat);
                 suggestionToReturn.RowSuggestions.Add(rowSuggestions);
-            }
+            });
 
             //Only add distinct Clients
             var distinctClients = clients.Distinct();
