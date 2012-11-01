@@ -257,7 +257,6 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\BusinessAccount.cs" />
-    <Compile Include="Models\Cell.cs" />
     <Compile Include="Models\Client.cs" />
     <Compile Include="Models\ColumnConfiguration.cs" />
     <Compile Include="Models\ContactInfo.cs" />
@@ -291,7 +290,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\ApiExceptions.cs" />
     <Compile Include="Tools\FormTools.cs" />
-    <Compile Include="Tools\IImportable.cs" />
+    <Compile Include="Models\IImportable.cs" />
     <Compile Include="Tools\JsonpMediaTypeFormatter.cs" />
     <Compile Include="Tools\PartyTools.cs" />
     <Compile Include="Tools\SignatureToImage.cs" />

@@ -16,12 +16,19 @@ using Client = FoundOps.Core.Models.CoreEntities.Client;
 using ContactInfo = FoundOps.Api.Models.ContactInfo;
 using Location = FoundOps.Core.Models.CoreEntities.Location;
 using Region = FoundOps.Api.Models.Region;
+using Repeat = FoundOps.Api.Models.Repeat;
 
 namespace FoundOps.Api.Controllers.Mvc
 {
     public class ImporterController : Controller
     {
         private readonly CoreEntitiesContainer _coreEntitiesContainer;
+        private Client[] _clients;
+        private Location[] _locations;
+        private FoundOps.Core.Models.CoreEntities.Region[] _regions;
+        private const string Sql = @"SELECT * FROM dbo.Locations WHERE BusinessAccountId = @id
+                                             SELECT * FROM dbo.Clients WHERE BusinessAccountId = @id
+                                 SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
 
         public ImporterController()
         {
@@ -29,15 +36,7 @@ namespace FoundOps.Api.Controllers.Mvc
             _coreEntitiesContainer.ContextOptions.LazyLoadingEnabled = false;
         }
 
-        public enum CellStatus
-        {
-            Linked = 0,
-            New = 1,
-            Suggested = 2,
-            Error = 3
-        }
-
-        public ImportRow[] ValidateInput(Guid roleId, List<string[]> rowsWithHeaders)
+        public Suggestions ValidateInput(Guid roleId, List<string[]> rowsWithHeaders)
         {
             var headers = rowsWithHeaders[0];
             rowsWithHeaders.RemoveAt(0);
@@ -47,15 +46,6 @@ namespace FoundOps.Api.Controllers.Mvc
             if (businessAccount == null)
                 return null;
 
-            const string sql = @"SELECT * FROM dbo.Locations WHERE BusinessAccountId = @id
-                                             SELECT * FROM dbo.Clients WHERE BusinessAccountId = @id
-                                 SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
-
-            Location[] locations;
-            Client[] clients;
-            FoundOps.Core.Models.CoreEntities.Region[] regions;
-
-
             using (var conn = new SqlConnection(ServerConstants.SqlConnectionString))
             {
                 conn.Open();
@@ -63,13 +53,13 @@ namespace FoundOps.Api.Controllers.Mvc
                 var parameters = new DynamicParameters();
                 parameters.Add("@id", businessAccount.Id);
 
-                using (var data = conn.QueryMultiple(sql, new { id = businessAccount.Id }))
+                using (var data = conn.QueryMultiple(Sql, new { id = businessAccount.Id }))
                 {
-                    locations = data.Read<Location>().ToArray();
+                    _locations = data.Read<Location>().ToArray();
 
-                    clients = data.Read<Client>().ToArray();
+                    _clients = data.Read<Client>().ToArray();
 
-                    regions = data.Read<FoundOps.Core.Models.CoreEntities.Region>().ToArray();
+                    _regions = data.Read<FoundOps.Core.Models.CoreEntities.Region>().ToArray();
                 }
 
                 conn.Close();
@@ -90,13 +80,14 @@ namespace FoundOps.Api.Controllers.Mvc
             var frequencyCol = Array.IndexOf(headers, "Frequency");
             var repeatOnCol = Array.IndexOf(headers, "Repeat On");
             var repeatEveryCol = Array.IndexOf(headers, "Repeat Every");
-            var startDateCol = Array.IndexOf(headers, "Repeat Start Date");
-            var endDateCol = Array.IndexOf(headers, "Repeat End Date");
+            var startDateCol = Array.IndexOf(headers, "Start Date");
+            var endDateCol = Array.IndexOf(headers, "End Date");
+            var endAfterCol = Array.IndexOf(headers, "End After Times");
             var frequencyDetailCol = Array.IndexOf(headers, "FrequencyDetail");
 
             #endregion
 
-            var suggestions = new Suggestions();
+            var importRows = new List<ImportRow>();
 
             var rowCount = rows.Count();
             Parallel.For((long)0, rowCount, rowIndex =>
@@ -137,9 +128,9 @@ namespace FoundOps.Api.Controllers.Mvc
                                 importedLocation.StatusInt = (int)CellStatus.Error;
 
                             //Matched the address entered and client name matched to a location
-                            var matchedLocation = locations.FirstOrDefault(l => row[clientNameCol] != null && l.ClientId != null &&
+                            var matchedLocation = _locations.FirstOrDefault(l => row[clientNameCol] != null && l.ClientId != null &&
                                    (addressLineTwo != null && (l.AddressLineOne == addressLineOne && l.AddressLineTwo == addressLineTwo
-                                        && clients.First(c => c.Id == l.ClientId).Name == row[clientNameCol])));
+                                        && _clients.First(c => c.Id == l.ClientId).Name == row[clientNameCol])));
 
                             if (matchedLocation != null)
                             {
@@ -147,7 +138,7 @@ namespace FoundOps.Api.Controllers.Mvc
 
                                 if (regionName != null)
                                 {
-                                    var region = regions.FirstOrDefault(r => r.Name == regionName);
+                                    var region = _regions.FirstOrDefault(r => r.Name == regionName);
                                     if (region != null)
                                         importedLocation.Region = Region.Convert(region);
                                 }
@@ -161,11 +152,11 @@ namespace FoundOps.Api.Controllers.Mvc
                             //Try and match a location to one in the FoundOPS system
                             var existingLocation = addressLineTwo != null
                                 //Use this statement if Address Line Two is not null
-                            ? locations.FirstOrDefault(l => l.AddressLineTwo == addressLineTwo && (l.Latitude != null && l.Longitude != null)
+                            ? _locations.FirstOrDefault(l => l.AddressLineTwo == addressLineTwo && (l.Latitude != null && l.Longitude != null)
                                 && (decimal.Round(l.Latitude.Value, 6) == decimal.Round(Convert.ToDecimal(latitude), 6)
                                 && decimal.Round(l.Longitude.Value, 6) == decimal.Round(Convert.ToDecimal(longitude), 6)))
                                 //Use this statement if Address Line Two is null
-                            : locations.FirstOrDefault(l => (l.Latitude != null && l.Longitude != null)
+                            : _locations.FirstOrDefault(l => (l.Latitude != null && l.Longitude != null)
                                 && (decimal.Round(l.Latitude.Value, 6) == decimal.Round(Convert.ToDecimal(latitude), 6)
                                 && decimal.Round(l.Longitude.Value, 6) == decimal.Round(Convert.ToDecimal(longitude), 6)));
 
@@ -176,7 +167,7 @@ namespace FoundOps.Api.Controllers.Mvc
 
                                 if (regionName != null)
                                 {
-                                    var region = regions.FirstOrDefault(r => r.Name == regionName);
+                                    var region = _regions.FirstOrDefault(r => r.Name == regionName);
                                     if (region != null)
                                         importedLocation.Region = Region.Convert(region);
                                 }
@@ -203,7 +194,7 @@ namespace FoundOps.Api.Controllers.Mvc
 
                             if (regionName != null)
                             {
-                                var region = regions.FirstOrDefault(r => r.Name == regionName);
+                                var region = _regions.FirstOrDefault(r => r.Name == regionName);
                                 if (region != null)
                                     importedLocation.Region = Region.Convert(region);
                             }
@@ -215,13 +206,13 @@ namespace FoundOps.Api.Controllers.Mvc
 
                     #endregion
 
-                    var clientName = row[clientNameCol];
-
                     #region Client
+
+                    var clientName = row[clientNameCol];
 
                     if (!string.IsNullOrEmpty(clientName))
                     {
-                        var existingClient = clients.FirstOrDefault(c => c.Name == clientName);
+                        var existingClient = _clients.FirstOrDefault(c => c.Name == clientName);
 
                         Models.Client importedClient;
 
@@ -246,24 +237,114 @@ namespace FoundOps.Api.Controllers.Mvc
                     }
 
                     #endregion
+
+                    #region Repeat
+
+                    var repeat = new Repeat
+                    {
+                        Id = Guid.NewGuid(),
+                        StartDate = Convert.ToDateTime(row[startDateCol]),
+                        EndDate = Convert.ToDateTime(row[endDateCol]),
+                        EndAfterTimes = Convert.ToInt32(row[endAfterCol]),
+                        RepeatEveryTimes = Convert.ToInt32(row[repeatEveryCol])
+                    };
+
+                    #region Frequency
+
+                    var val = row[frequencyCol].ToLower();
+                    if (val == "once" || val == "o")
+                        repeat.FrequencyInt = (int)Frequency.Once;
+                    else if (val == "daily" || val == "d")
+                        repeat.FrequencyInt = (int)Frequency.Daily;
+                    else if (val == "weekly" || val == "w")
+                        repeat.FrequencyInt = (int)Frequency.Weekly;
+                    else if (val == "monthly" || val == "m")
+                        repeat.FrequencyInt = (int)Frequency.Monthly;
+                    else if (val == "yearly" || val == "y")
+                        repeat.FrequencyInt = (int)Frequency.Yearly;
+
+                    #endregion
+
+                    #region Frequency Detail
+
+                    val = val.ToLower();
+                    val = val.Replace(" ", "");
+                    if (repeat.Frequency == Frequency.Weekly)
+                    {
+                        var startDayOfWeek = repeat.StartDate.DayOfWeek;
+
+                        //If it is empty assume the Start Date
+                        if (string.IsNullOrEmpty(val))
+                            repeat.FrequencyDetailAsWeeklyFrequencyDetail = new[] {startDayOfWeek};
+                        else
+                        {
+                            var dayStrings = val.Split(',');
+                            var daysOfWeek = new List<DayOfWeek>();
+
+                            if (dayStrings.Any(s => s == "s" || s == "su" || s == "sun" || s == "sunday"))
+                                daysOfWeek.Add(DayOfWeek.Sunday);
+
+                            if (dayStrings.Any(s => s == "m" || s == "mo" || s == "mon" || s == "monday"))
+                                daysOfWeek.Add(DayOfWeek.Monday);
+
+                            if (dayStrings.Any(s => s == "t" || s == "tu" || s == "tue" || s == "tues" || s == "tuesday"))
+                                daysOfWeek.Add(DayOfWeek.Tuesday);
+
+                            if (dayStrings.Any(s => s == "w" || s == "we" || s == "wed" || s == "wednesday"))
+                                daysOfWeek.Add(DayOfWeek.Wednesday);
+
+                            if (
+                                dayStrings.Any(
+                                    s =>
+                                    s == "r" || s == "th" || s == "tr" || s == "thur" || s == "thurs" || s == "thursday"))
+                                daysOfWeek.Add(DayOfWeek.Thursday);
+
+                            if (dayStrings.Any(s => s == "f" || s == "fr" || s == "fri" || s == "friday"))
+                                daysOfWeek.Add(DayOfWeek.Friday);
+
+                            if (dayStrings.Any(s => s == "s" || s == "sa" || s == "sat" || s == "saturday"))
+                                daysOfWeek.Add(DayOfWeek.Saturday);
+
+                            //Make sure the days include the startdate
+                            if (!daysOfWeek.Contains(startDayOfWeek))
+                                daysOfWeek.Add(startDayOfWeek);
+
+                            repeat.FrequencyDetailAsWeeklyFrequencyDetail = daysOfWeek.OrderBy(e => (int) e).ToArray();
+                        }
+                    }
+
+                    if (repeat.Frequency == Frequency.Monthly)
+                    {
+                        if (string.IsNullOrEmpty(val) || val == "date")
+                        {
+                            repeat.FrequencyDetailAsMonthlyFrequencyDetail = MonthlyFrequencyDetail.OnDayInMonth;
+                        }
+                        else if (val == "day")
+                        {
+                            var detailsAvailable = repeat.AvailableMonthlyFrequencyDetailTypes.ToList();
+                            if (detailsAvailable.Count() > 1)
+                                detailsAvailable.Remove(MonthlyFrequencyDetail.OnDayInMonth);
+                            repeat.FrequencyDetailAsMonthlyFrequencyDetail = detailsAvailable.First();
+                        }
+                    }
+
+                    importRow.Repeat = repeat;
+
+                    #endregion
+
+                    importRows.Add(importRow);
+
+                    #endregion
                 });
 
-            return null;
+            var suggestion = SuggestEntites(importRows.ToArray());
+
+            return suggestion;
         }
 
-        public Suggestions ValidateEntites(ImportRow[] rows)
+        public Suggestions SuggestEntites(ImportRow[] rows)
         {
-            var suggestionToReturn = new Suggestions();
-
-            foreach (var row in rows)
-            {
-                var rowSuggestions = new RowSuggestions();
-
-
-
-            }
             return null;
         }
-
     }
 }
