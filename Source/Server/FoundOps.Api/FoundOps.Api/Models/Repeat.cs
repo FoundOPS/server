@@ -21,7 +21,7 @@ namespace FoundOps.Api.Models
 
         public Frequency Frequency
         {
-            get { return (Frequency) FrequencyInt; }
+            get { return FrequencyInt != null ? (Frequency)FrequencyInt : Frequency.Null; }
             set { FrequencyInt = (int) value; }
         }
 
