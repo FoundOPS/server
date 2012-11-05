@@ -110,6 +110,7 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
                 var importedLocation = new Api.Models.Location();
 
                 //Checks to be sure that all columns needed to make a location exist in the headers passed
+                string clientName;
                 if (new[] { addressLineOneCol, addressLineTwoCol, cityCol, stateCol, countryCodeCol, zipCodeCol, latitudeCol, longitudeCol }.Any(col => col != -1))
                 {
                     var latitude = latitudeCol != -1 ? row[latitudeCol] : "";
@@ -153,7 +154,7 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
                         if (latitude == null && longitude == null)
                             importedLocation.StatusInt = (int)ImportStatus.Error;
 
-                        var clientName = clientNameCol != -1 ? row[clientNameCol] : null;
+                        clientName = clientNameCol != -1 ? row[clientNameCol] : null;
 
                         //Matched the address entered and client name matched to a location
                         var matchedLocation = _locations.FirstOrDefault(l => clientName != null && l.ClientId != null &&
@@ -205,17 +206,18 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
                             Region = SetRegion(regionName)
                         };
                     }
+                    importRow.Location = importedLocation;
                 }
-
-                importRow.Location = importedLocation;
 
                 #endregion
 
                 #region Client
 
-                if (!string.IsNullOrEmpty(row[clientNameCol]))
+                clientName = clientNameCol != -1 ? row[clientNameCol] : null;
+
+                if (clientName != null)
                 {
-                    var existingClient = _clients.FirstOrDefault(c => c.Name == row[clientNameCol]);
+                    var existingClient = _clients.FirstOrDefault(c => c.Name == clientName);
 
                     Models.Client importedClient;
 
@@ -229,7 +231,7 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
                         importedClient = new FoundOps.Api.Models.Client
                         {
                             Id = Guid.NewGuid(),
-                            Name = row[clientNameCol],
+                            Name = clientName,
                             ContactInfoSet = new List<ContactInfo>(),
                             StatusInt = (int)ImportStatus.New
                         };
@@ -242,116 +244,119 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
 
                 #region Repeat
 
-                //Note: If no start date is passed, set it to today
-                var repeat = new Repeat
+                if (new[] { startDateCol, endDateCol, endAfterCol, repeatEveryCol, frequencyCol, frequencyDetailCol }.Any(col => col != -1))
                 {
-                    Id = Guid.NewGuid(),
-                    StartDate = startDateCol == -1 || row[startDateCol] == "" ? Convert.ToDateTime(row[startDateCol]) : CoreEntitiesContainer.CurrentUserAccount().First().Now(),
-                    EndDate = endDateCol != -1 && row[endDateCol] != "" ? Convert.ToDateTime(row[endDateCol]) : (DateTime?)null,
-                    EndAfterTimes = endAfterCol != -1 && row[endAfterCol] != "" ? Convert.ToInt32(row[endAfterCol]) : (int?)null,
-                    RepeatEveryTimes = repeatEveryCol != -1 && row[repeatEveryCol] != "" ? Convert.ToInt32(row[repeatEveryCol]) : (int?)null
-                };
-
-                #region Frequency
-
-                var val = frequencyCol != -1 ? row[frequencyCol].ToLower() : "";
-                switch (val)
-                {
-                    case "o":
-                    case "once":
-                        repeat.FrequencyInt = (int)Frequency.Once;
-                        break;
-                    case "d":
-                    case "daily":
-                        repeat.FrequencyInt = (int)Frequency.Daily;
-                        break;
-                    case "w":
-                    case "weekly":
-                        repeat.FrequencyInt = (int)Frequency.Weekly;
-                        break;
-                    case "m":
-                    case "monthly":
-                        repeat.FrequencyInt = (int)Frequency.Monthly;
-                        break;
-                    case "y":
-                    case "yearly":
-                        repeat.FrequencyInt = (int)Frequency.Yearly;
-                        break;
-                    default:
-                        repeat.FrequencyInt = null;
-                        break;
-                }
-
-                #endregion
-
-                #region Frequency Detail
-
-                val = frequencyDetailCol != -1 ? row[frequencyDetailCol].ToLower() : "";
-                val = val.Replace(" ", "");
-                if (repeat.Frequency == Frequency.Weekly)
-                {
-                    var startDayOfWeek = repeat.StartDate.DayOfWeek;
-
-                    //If it is empty assume the Start Date
-                    if (string.IsNullOrEmpty(val))
-                        repeat.FrequencyDetailAsWeeklyFrequencyDetail = new[] { startDayOfWeek };
-                    else
+                    //Note: If no start date is passed, set it to today
+                    var repeat = new Repeat
                     {
-                        var dayStrings = val.Split(',');
-                        var daysOfWeek = new List<DayOfWeek>();
+                        Id = Guid.NewGuid(),
+                        StartDate = startDateCol == -1 || row[startDateCol] == "" ? Convert.ToDateTime(row[startDateCol]) : CoreEntitiesContainer.CurrentUserAccount().First().Now(),
+                        EndDate = endDateCol != -1 && row[endDateCol] != "" ? Convert.ToDateTime(row[endDateCol]) : (DateTime?)null,
+                        EndAfterTimes = endAfterCol != -1 && row[endAfterCol] != "" ? Convert.ToInt32(row[endAfterCol]) : (int?)null,
+                        RepeatEveryTimes = repeatEveryCol != -1 && row[repeatEveryCol] != "" ? Convert.ToInt32(row[repeatEveryCol]) : (int?)null
+                    };
 
-                        if (dayStrings.Any(s => s == "s" || s == "su" || s == "sun" || s == "sunday"))
-                            daysOfWeek.Add(DayOfWeek.Sunday);
+                    #region Frequency
 
-                        if (dayStrings.Any(s => s == "m" || s == "mo" || s == "mon" || s == "monday"))
-                            daysOfWeek.Add(DayOfWeek.Monday);
-
-                        if (dayStrings.Any(s => s == "t" || s == "tu" || s == "tue" || s == "tues" || s == "tuesday"))
-                            daysOfWeek.Add(DayOfWeek.Tuesday);
-
-                        if (dayStrings.Any(s => s == "w" || s == "we" || s == "wed" || s == "wednesday"))
-                            daysOfWeek.Add(DayOfWeek.Wednesday);
-
-                        if (dayStrings.Any(s => s == "r" || s == "th" || s == "tr" || s == "thur" || s == "thurs" || s == "thursday"))
-                            daysOfWeek.Add(DayOfWeek.Thursday);
-
-                        if (dayStrings.Any(s => s == "f" || s == "fr" || s == "fri" || s == "friday"))
-                            daysOfWeek.Add(DayOfWeek.Friday);
-
-                        if (dayStrings.Any(s => s == "s" || s == "sa" || s == "sat" || s == "saturday"))
-                            daysOfWeek.Add(DayOfWeek.Saturday);
-
-                        //Make sure the days include the startdate
-                        if (!daysOfWeek.Contains(startDayOfWeek))
-                            daysOfWeek.Add(startDayOfWeek);
-
-                        repeat.FrequencyDetailAsWeeklyFrequencyDetail = daysOfWeek.OrderBy(e => (int)e).ToArray();
-                    }
-                }
-
-                if (repeat.Frequency == Frequency.Monthly)
-                {
-                    if (string.IsNullOrEmpty(val) || val == "date")
+                    var val = frequencyCol != -1 ? row[frequencyCol].ToLower() : "";
+                    switch (val)
                     {
-                        repeat.FrequencyDetailAsMonthlyFrequencyDetail = MonthlyFrequencyDetail.OnDayInMonth;
+                        case "o":
+                        case "once":
+                            repeat.FrequencyInt = (int)Frequency.Once;
+                            break;
+                        case "d":
+                        case "daily":
+                            repeat.FrequencyInt = (int)Frequency.Daily;
+                            break;
+                        case "w":
+                        case "weekly":
+                            repeat.FrequencyInt = (int)Frequency.Weekly;
+                            break;
+                        case "m":
+                        case "monthly":
+                            repeat.FrequencyInt = (int)Frequency.Monthly;
+                            break;
+                        case "y":
+                        case "yearly":
+                            repeat.FrequencyInt = (int)Frequency.Yearly;
+                            break;
+                        default:
+                            repeat.FrequencyInt = null;
+                            break;
                     }
-                    else if (val == "day")
+
+                    #endregion
+
+                    #region Frequency Detail
+
+                    val = frequencyDetailCol != -1 ? row[frequencyDetailCol].ToLower() : "";
+                    val = val.Replace(" ", "");
+                    if (repeat.Frequency == Frequency.Weekly)
                     {
-                        var detailsAvailable = repeat.AvailableMonthlyFrequencyDetailTypes.ToList();
-                        if (detailsAvailable.Count() > 1)
-                            detailsAvailable.Remove(MonthlyFrequencyDetail.OnDayInMonth);
-                        repeat.FrequencyDetailAsMonthlyFrequencyDetail = detailsAvailable.First();
+                        var startDayOfWeek = repeat.StartDate.DayOfWeek;
+
+                        //If it is empty assume the Start Date
+                        if (string.IsNullOrEmpty(val))
+                            repeat.FrequencyDetailAsWeeklyFrequencyDetail = new[] { startDayOfWeek };
+                        else
+                        {
+                            var dayStrings = val.Split(',');
+                            var daysOfWeek = new List<DayOfWeek>();
+
+                            if (dayStrings.Any(s => s == "s" || s == "su" || s == "sun" || s == "sunday"))
+                                daysOfWeek.Add(DayOfWeek.Sunday);
+
+                            if (dayStrings.Any(s => s == "m" || s == "mo" || s == "mon" || s == "monday"))
+                                daysOfWeek.Add(DayOfWeek.Monday);
+
+                            if (dayStrings.Any(s => s == "t" || s == "tu" || s == "tue" || s == "tues" || s == "tuesday"))
+                                daysOfWeek.Add(DayOfWeek.Tuesday);
+
+                            if (dayStrings.Any(s => s == "w" || s == "we" || s == "wed" || s == "wednesday"))
+                                daysOfWeek.Add(DayOfWeek.Wednesday);
+
+                            if (dayStrings.Any(s => s == "r" || s == "th" || s == "tr" || s == "thur" || s == "thurs" || s == "thursday"))
+                                daysOfWeek.Add(DayOfWeek.Thursday);
+
+                            if (dayStrings.Any(s => s == "f" || s == "fr" || s == "fri" || s == "friday"))
+                                daysOfWeek.Add(DayOfWeek.Friday);
+
+                            if (dayStrings.Any(s => s == "s" || s == "sa" || s == "sat" || s == "saturday"))
+                                daysOfWeek.Add(DayOfWeek.Saturday);
+
+                            //Make sure the days include the startdate
+                            if (!daysOfWeek.Contains(startDayOfWeek))
+                                daysOfWeek.Add(startDayOfWeek);
+
+                            repeat.FrequencyDetailAsWeeklyFrequencyDetail = daysOfWeek.OrderBy(e => (int)e).ToArray();
+                        }
                     }
+
+                    if (repeat.Frequency == Frequency.Monthly)
+                    {
+                        if (string.IsNullOrEmpty(val) || val == "date")
+                        {
+                            repeat.FrequencyDetailAsMonthlyFrequencyDetail = MonthlyFrequencyDetail.OnDayInMonth;
+                        }
+                        else if (val == "day")
+                        {
+                            var detailsAvailable = repeat.AvailableMonthlyFrequencyDetailTypes.ToList();
+                            if (detailsAvailable.Count() > 1)
+                                detailsAvailable.Remove(MonthlyFrequencyDetail.OnDayInMonth);
+                            repeat.FrequencyDetailAsMonthlyFrequencyDetail = detailsAvailable.First();
+                        }
+                    }
+
+                    #endregion
+
+                    repeat.StatusInt = repeat.EndDate == null || repeat.EndAfterTimes == null ||
+                                       repeat.RepeatEveryTimes == null || repeat.FrequencyInt == null
+                                           ? (int)ImportStatus.Error
+                                           : (int)ImportStatus.New;
+
+                    importRow.Repeat = repeat;
                 }
-
-                #endregion
-
-                repeat.StatusInt = repeat.EndDate == null || repeat.EndAfterTimes == null ||
-                                   repeat.RepeatEveryTimes == null || repeat.FrequencyInt == null
-                                       ? (int) ImportStatus.Error
-                                       : (int) ImportStatus.New;
-
-                importRow.Repeat = repeat;
 
                 #endregion
 
