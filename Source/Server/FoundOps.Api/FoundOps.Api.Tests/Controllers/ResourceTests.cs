@@ -200,6 +200,50 @@ namespace FoundOps.Api.Tests.Controllers
             return result;
         }
 
+        /// <summary>
+        /// Setup a fake import using random existing Clients, Locations and Repeats
+        /// </summary>
+        /// <returns></returns>
+        private List<string[]> SetupRowsWithHeaders()
+        {
+            var headers = new[] { "Client Name", "Address Line One", "Address Line Two", "City", "State", "Zipcode", "Country Code", "Region Name", "Latitude", "Longitude", "Frequency", "Repeat Every", "Start Date", "End Date", "End After Times", "Frequency Detail" };
+
+            var rowsWithHeaders = new List<string[]> { headers };
+
+            var random = new Random();
+
+            for (int i = 0; i < 1; i++)
+            {
+                var client = CoreEntitiesContainer.Clients.First();//.ToArray().ElementAt(random.Next(48));
+                var location = CoreEntitiesContainer.Locations.Where(l => l.BusinessAccountIdIfDepot == null).Include(l => l.Region).First();//.ToArray().ElementAt(random.Next(51));
+                var repeat = CoreEntitiesContainer.Repeats.Where(r => r.FrequencyInt == 3).First();//.ToArray().ElementAt(random.Next(144));
+
+                var newRow = new List<string>
+                {
+                        client.Name,
+                        location.AddressLineOne,
+                        location.AddressLineTwo,
+                        location.AdminDistrictTwo,
+                        location.AdminDistrictOne,
+                        location.PostalCode,
+                        location.CountryCode,
+                        location.Region != null ? location.Region.Name : "",
+                        "",
+                        "",
+                        repeat.Frequency.ToString(),
+                        repeat.RepeatEveryTimes.ToString(),
+                        repeat.StartDate.ToString(),
+                        repeat.EndDate.ToString(),
+                        repeat.EndAfterTimes.ToString(),
+                        repeat.FrequencyDetailAsWeeklyFrequencyDetail.First().ToString()
+                    };
+
+                rowsWithHeaders.Add(newRow.ToArray());
+            }
+
+            return rowsWithHeaders;
+        }
+
         #endregion
 
         //private const string CoreConnectionsString = "metadata=res://*/Models.CoreEntities.CoreEntities.csdl|res://*/Models.CoreEntities.CoreEntities.ssdl|res://*/Models.CoreEntities.CoreEntities.msl;provider=System.Data.SqlClient;provider connection string=';Data Source=f77m2u3n4m.database.windows.net;Initial Catalog=TestCore;Persist Security Info=True;User ID=perladmin;Password=QOI1m7DzVUJiNPMofFkk;MultipleActiveResultSets=True;Min Pool Size=100;Max Pool Size=1000;Pooling=true';";
@@ -345,6 +389,35 @@ namespace FoundOps.Api.Tests.Controllers
 
             controller.Put(_roleId, newLocation);
         }
+
+        [TestMethod]
+        public void ImporterTests()
+        {
+            var controller = new SuggestionsController();
+
+            var rowsWithHeaders = SetupRowsWithHeaders();
+
+            var suggestions = controller.Get(_roleId, rowsWithHeaders, null);
+
+            var clientSuggestions = suggestions.RowSuggestions.SelectMany(rs => rs.ClientSuggestions).Distinct().ToArray();
+            var clients = suggestions.Clients.Select(c => c.Id).ToArray();
+            var extras = clients.All(clientSuggestions.Contains);
+
+            Assert.AreEqual(false, extras);
+
+            //Reset rows with headers becuase we remove the first row in ValidateInput
+            rowsWithHeaders = SetupRowsWithHeaders();
+
+            suggestions = controller.Get(_roleId, rowsWithHeaders, null);
+
+            //Reset rows with headers becuase we remove the first row in ValidateInput
+            rowsWithHeaders = SetupRowsWithHeaders();
+
+            suggestions = controller.Get(_roleId, rowsWithHeaders, null);
+
+        }
+
+       
 
         [TestMethod]
         public void RoutesTests()
@@ -847,7 +920,7 @@ namespace FoundOps.Api.Tests.Controllers
                 //Then it will return all RouteTasks that are not in a route joined with their Locations, Location.Regions and Clients
                 //Dapper will then map the output table to RouteTasks, RouteTasks.Location, RouteTasks.Location.Region and RouteTasks.Client
                 //While that is being mapped we also attach the Client, Location and Region to the objectContext
-                var data = conn.Query<FoundOps.Core.Models.CoreEntities.RouteTask, Location, Region, Client, TaskStatus, FoundOps.Core.Models.CoreEntities.RouteTask>("sp_GetUnroutedServicesForDate", (routeTask, location, region, client, taskStatus) =>
+                var data = conn.Query<FoundOps.Core.Models.CoreEntities.RouteTask, Location, FoundOps.Core.Models.CoreEntities.Region, Client, TaskStatus, FoundOps.Core.Models.CoreEntities.RouteTask>("sp_GetUnroutedServicesForDate", (routeTask, location, region, client, taskStatus) =>
                 {
                     if (location != null)
                     {
