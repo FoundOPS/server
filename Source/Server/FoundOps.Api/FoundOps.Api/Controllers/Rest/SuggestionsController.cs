@@ -21,14 +21,20 @@ using Repeat = FoundOps.Api.Models.Repeat;
 
 namespace FoundOps.Api.Controllers.Rest
 {
+    public class SuggestionsRequest
+    {
+        public List<string[]> RowsWithHeaders { get; set; }
+        public ImportRow[] Rows { get; set; }
+    }
+
     public class SuggestionsController : BaseApiController
     {
         private Client[] _clients;
         private Location[] _locations;
         private FoundOps.Core.Models.CoreEntities.Region[] _regions;
         private const string Sql = @"SELECT * FROM dbo.Locations WHERE BusinessAccountId = @id
-                                             SELECT * FROM dbo.Clients WHERE BusinessAccountId = @id
-                                 SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
+SELECT * FROM dbo.Clients WHERE BusinessAccountId = @id
+SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
 
         /// <summary>
         /// This just call the appropriate function based on the inputs
@@ -37,10 +43,10 @@ namespace FoundOps.Api.Controllers.Rest
         /// <param name="rowsWithHeaders">If not null, call ValidateInput. The first string[] is the headers. The rest are data to be imported</param>
         /// <param name="rows">If not null, call SuggestEntites. The rows to be imported</param>
         /// <returns>Entites with suggestions</returns>
-        public Suggestions Get(Guid roleId, List<string[]> rowsWithHeaders = null, ImportRow[] rows = null)
+        public Suggestions Put(Guid roleId, SuggestionsRequest request)
         {
             //If both or neither optional input are null, throw a bad request
-            if ((rowsWithHeaders == null && rows == null) || (rowsWithHeaders != null && rows != null))
+            if ((request.RowsWithHeaders == null && request.Rows == null) || (request.RowsWithHeaders != null && request.Rows != null))
                 throw Request.BadRequest();
 
             var businessAccount = CoreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator }).FirstOrDefault();
@@ -48,7 +54,8 @@ namespace FoundOps.Api.Controllers.Rest
                 throw Request.BadRequest();
 
             //Call the appropriate function and return the Suggestions
-            return rowsWithHeaders != null ? this.ValidateInput(rowsWithHeaders, businessAccount) : this.SuggestEntites(rows, businessAccount);
+            return request.RowsWithHeaders != null ? this.ValidateInput(request.RowsWithHeaders, businessAccount) :
+            this.SuggestEntites(request.Rows, businessAccount);
         }
 
         /// <summary>
@@ -143,8 +150,8 @@ namespace FoundOps.Api.Controllers.Rest
                     //If lat/long exist, try and match based on that and 
                     if (latitude != "" && longitude != "")
                     {
-                        var roundedLatitude = decimal.Round(Convert.ToDecimal(latitude), 6);
-                        var roundedLongitude = decimal.Round(Convert.ToDecimal(longitude), 6);
+                        var roundedLatitude = Math.Round(Convert.ToDecimal(latitude), 6);
+                        var roundedLongitude = Math.Round(Convert.ToDecimal(longitude), 6);
 
                         //Try and match a location to one in the FoundOPS system
                         var matchedLocation = addressLineTwo != null
@@ -344,7 +351,7 @@ namespace FoundOps.Api.Controllers.Rest
                 rowSuggestions.LocationSuggestions.Add(row.Location.Id);
 
                 //Find all the Locations to be suggested by finding all Locations for the Client of the row
-                var locationSuggestions = _locations.Where(l => l.ClientId == row.Client.Id).ToArray();
+                var locationSuggestions = _locations.Where(l => l.ClientId == row.Client.Id || l.Id == row.Location.Id).ToArray();
                 rowSuggestions.LocationSuggestions.AddRange(locationSuggestions.Select(l => l.Id));
 
                 //Add all suggested Locations to the list of Locations to be returned
@@ -362,7 +369,7 @@ namespace FoundOps.Api.Controllers.Rest
                 rowSuggestions.ClientSuggestions.Add(row.Client.Id);
 
                 //Find all the Clients to be suggested by finding all Clients for the Location of the row
-                var clientSuggestions = _clients.Where(c => c.Id == row.Location.ClientId).ToArray();
+                var clientSuggestions = _clients.Where(c => c.Id == row.Location.ClientId || c.Id == row.Client.Id).ToArray();
                 rowSuggestions.ClientSuggestions.AddRange(clientSuggestions.Select(c => c.Id));
 
                 //Add all suggested Clients to the list of Clients to be returned
