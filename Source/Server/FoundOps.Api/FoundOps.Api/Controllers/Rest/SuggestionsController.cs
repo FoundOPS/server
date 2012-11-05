@@ -143,16 +143,19 @@ namespace FoundOps.Api.Controllers.Rest
                     //If lat/long exist, try and match based on that and 
                     if (latitude != "" && longitude != "")
                     {
+                        var roundedLatitude = decimal.Round(Convert.ToDecimal(latitude), 6);
+                        var roundedLongitude = decimal.Round(Convert.ToDecimal(longitude), 6);
+
                         //Try and match a location to one in the FoundOPS system
                         var matchedLocation = addressLineTwo != null
                             //Use this statement if Address Line Two is not null
                         ? _locations.FirstOrDefault(l => l.AddressLineTwo == String.Empty && (l.Latitude != null && l.Longitude != null)
-                            && (decimal.Round(l.Latitude.Value, 6) == decimal.Round(Convert.ToDecimal(latitude), 6)
-                            && decimal.Round(l.Longitude.Value, 6) == decimal.Round(Convert.ToDecimal(longitude), 6)))
+                            && (decimal.Round(l.Latitude.Value, 6) == roundedLatitude
+                            && decimal.Round(l.Longitude.Value, 6) == roundedLongitude))
                             //Use this statement if Address Line Two is null
                         : _locations.FirstOrDefault(l => (l.Latitude != null && l.Longitude != null)
-                            && (decimal.Round(l.Latitude.Value, 6) == decimal.Round(Convert.ToDecimal(latitude), 6)
-                            && decimal.Round(l.Longitude.Value, 6) == decimal.Round(Convert.ToDecimal(longitude), 6)));
+                            && (decimal.Round(l.Latitude.Value, 6) == roundedLatitude
+                            && decimal.Round(l.Longitude.Value, 6) == roundedLongitude));
 
                         //If a match is found, assign Linked status to all cells
                         if (matchedLocation != null)

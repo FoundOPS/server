@@ -229,7 +229,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\Mvc\ImporterController.cs" />
     <Compile Include="Controllers\Mvc\SignatureFieldController.cs" />
     <Compile Include="Controllers\Rest\BaseApiController.cs" />
     <Compile Include="Controllers\Rest\BusinessAccountsController.cs" />
