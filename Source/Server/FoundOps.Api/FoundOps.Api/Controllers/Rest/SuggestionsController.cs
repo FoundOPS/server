@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web.Http;
 using Dapper;
@@ -138,17 +139,19 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
                         try
                         {
                             geocodeResult = BingLocationServices.TryGeocode(address).FirstOrDefault();
+
+                            if (geocodeResult == null)
+                                throw new Exception();
                         }
                         catch (Exception)
                         {
+                            //Pause the thread for 0.25 seconds because there was a problem connecting to the Bing servers above
+                            Thread.Sleep(250);
                             geocodeResult = BingLocationServices.TryGeocode(address).FirstOrDefault();
                         }
 
-                        if (geocodeResult != null)
-                        {
-                            latitude = geocodeResult.Latitude;
-                            longitude = geocodeResult.Longitude;
-                        }
+                        latitude = geocodeResult != null ? geocodeResult.Latitude : null;
+                        longitude = geocodeResult != null ? geocodeResult.Longitude : null;
 
                         //If they still do not have values, throw error on all entries in the row.
                         if (latitude == null && longitude == null)
