@@ -200,6 +200,50 @@ namespace FoundOps.Api.Tests.Controllers
             return result;
         }
 
+        /// <summary>
+        /// Setup a fake import using random existing Clients, Locations and Repeats
+        /// </summary>
+        /// <returns></returns>
+        private List<string[]> SetupRowsWithHeaders()
+        {
+            var headers = new[] { "Client Name", "Address Line One", "Address Line Two", "City", "State", "Zipcode", "Country Code", "Region Name", "Latitude", "Longitude", "Frequency", "Repeat Every", "Start Date", "End Date", "End After Times", "Frequency Detail" };
+
+            var rowsWithHeaders = new List<string[]> { headers };
+
+            var random = new Random();
+
+            for (int i = 0; i < 10; i++)
+            {
+                var client = CoreEntitiesContainer.Clients.ToArray().ElementAt(random.Next(48));
+                var location = CoreEntitiesContainer.Locations.Where(l => l.BusinessAccountIdIfDepot == null).Include(l => l.Region).ToArray().ElementAt(random.Next(51));
+                var repeat = CoreEntitiesContainer.Repeats.Where(r => r.FrequencyInt == 3).ToArray().ElementAt(random.Next(144));
+
+                var newRow = new List<string>
+                {
+                        client.Name,
+                        location.AddressLineOne,
+                        location.AddressLineTwo,
+                        location.AdminDistrictTwo,
+                        location.AdminDistrictOne,
+                        location.PostalCode,
+                        location.CountryCode,
+                        location.Region != null ? location.Region.Name : "",
+                        "",
+                        "",
+                        repeat.Frequency.ToString(),
+                        repeat.RepeatEveryTimes.ToString(),
+                        repeat.StartDate.ToString(),
+                        repeat.EndDate.ToString(),
+                        repeat.EndAfterTimes.ToString(),
+                        repeat.FrequencyDetailAsWeeklyFrequencyDetail.First().ToString()
+                    };
+
+                rowsWithHeaders.Add(newRow.ToArray());
+            }
+
+            return rowsWithHeaders;
+        }
+
         #endregion
 
         //private const string CoreConnectionsString = "metadata=res://*/Models.CoreEntities.CoreEntities.csdl|res://*/Models.CoreEntities.CoreEntities.ssdl|res://*/Models.CoreEntities.CoreEntities.msl;provider=System.Data.SqlClient;provider connection string=';Data Source=f77m2u3n4m.database.windows.net;Initial Catalog=TestCore;Persist Security Info=True;User ID=perladmin;Password=QOI1m7DzVUJiNPMofFkk;MultipleActiveResultSets=True;Min Pool Size=100;Max Pool Size=1000;Pooling=true';";
@@ -308,12 +352,28 @@ namespace FoundOps.Api.Tests.Controllers
         {
             var controller = new ImporterController();
 
-            var headers = new[] { "Clientsd Name", "Address Line One", "Address Line Two", "City", "State", "Country Code", "Zipcode", "Latitude", "Longitude", "Region Name", "Service Date", };
+            var rowsWithHeaders = SetupRowsWithHeaders();
 
-            var rowsWithHeaders = new List<string[]> {headers};
+            var suggestions = controller.ValidateInput(_roleId, rowsWithHeaders);
 
-            var test = controller.ValidateInput(_roleId, rowsWithHeaders);
+            var clientSuggestions = suggestions.RowSuggestions.SelectMany(rs => rs.ClientSuggestions).Distinct().ToArray();
+            var clients = suggestions.Clients.Select(c => c.Id).ToArray();
+            var extras = clients.All(clientSuggestions.Contains);
+
+            Assert.AreEqual(false, extras);
+            //Reset rows with headers becuase we remove the first row in ValidateInput
+            rowsWithHeaders = SetupRowsWithHeaders();
+
+            suggestions = controller.ValidateInput(_roleId, rowsWithHeaders);
+
+            //Reset rows with headers becuase we remove the first row in ValidateInput
+            rowsWithHeaders = SetupRowsWithHeaders();
+
+            suggestions = controller.ValidateInput(_roleId, rowsWithHeaders);
+
         }
+
+       
 
         [TestMethod]
         public void RoutesTests()

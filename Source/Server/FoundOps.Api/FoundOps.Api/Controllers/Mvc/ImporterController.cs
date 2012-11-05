@@ -35,6 +35,14 @@ namespace FoundOps.Api.Controllers.Mvc
             _coreEntitiesContainer.ContextOptions.LazyLoadingEnabled = false;
         }
 
+        /// <summary>
+        /// Manipulates the input strings to either existing or new entities.
+        /// Passes those entities to SuggestEntities to generate the suggestions.
+        /// This method is only used for the initial step of the Import. Once entites are generated; use SuggestEntities
+        /// </summary>
+        /// <param name="roleId">The current role Id</param>
+        /// <param name="rowsWithHeaders">List of string[]. The first string[] is the headers. the rest are data to be imported</param>
+        /// <returns>Entites with suggestions</returns>
         public Suggestions ValidateInput(Guid roleId, List<string[]> rowsWithHeaders)
         {
             var headers = rowsWithHeaders[0];
@@ -64,7 +72,7 @@ namespace FoundOps.Api.Controllers.Mvc
             var startDateCol = Array.IndexOf(headers, "Start Date");
             var endDateCol = Array.IndexOf(headers, "End Date");
             var endAfterCol = Array.IndexOf(headers, "End After Times");
-            var frequencyDetailCol = Array.IndexOf(headers, "FrequencyDetail");
+            var frequencyDetailCol = Array.IndexOf(headers, "Frequency Detail");
 
             #endregion
 
@@ -89,6 +97,7 @@ namespace FoundOps.Api.Controllers.Mvc
                     var state = row[stateCol];
                     var zipCode = row[zipCodeCol];
                     var regionName = regionNameCol != -1 ? row[regionNameCol] : null;
+                    var clientName = row[clientNameCol];
 
                     //Checks to be sure that all columns needed to make a location exist in the headers passed
                     if (new[] { addressLineOneCol, addressLineTwoCol, cityCol, stateCol, countryCodeCol, zipCodeCol, latitudeCol, longitudeCol }.All(col => col != -1))
@@ -108,16 +117,19 @@ namespace FoundOps.Api.Controllers.Mvc
                             if (latitude == null && longitude == null)
                                 importedLocation.StatusInt = (int)ImportStatus.Error;
 
+                            clientName = row[clientNameCol];
+
                             //Matched the address entered and client name matched to a location
-                            var matchedLocation = _locations.FirstOrDefault(l => row[clientNameCol] != null && l.ClientId != null &&
+                            var matchedLocation = _locations.FirstOrDefault(l => clientName != null && l.ClientId != null &&
                                    (addressLineTwo != null && (l.AddressLineOne == addressLineOne && l.AddressLineTwo == addressLineTwo
-                                        && _clients.First(c => c.Id == l.ClientId).Name == row[clientNameCol])));
+                                        && _clients.First(c => c.Id == l.ClientId).Name == clientName)));
 
                             if (matchedLocation != null)
                                 importedLocation = ConvertLocationSetRegionAndStatus(matchedLocation, regionName, ImportStatus.Linked);
                         }
+                        
                         //If lat/long exist, try and match based on that and 
-                        else if (latitude != "" && longitude != "")
+                        if (latitude != "" && longitude != "")
                         {
                             //Try and match a location to one in the FoundOPS system
                             var matchedLocation = addressLineTwo != null
@@ -162,8 +174,6 @@ namespace FoundOps.Api.Controllers.Mvc
 
                     #region Client
 
-                    var clientName = row[clientNameCol];
-
                     if (!string.IsNullOrEmpty(clientName))
                     {
                         var existingClient = _clients.FirstOrDefault(c => c.Name == clientName);
@@ -197,9 +207,9 @@ namespace FoundOps.Api.Controllers.Mvc
                     {
                         Id = Guid.NewGuid(),
                         StartDate = Convert.ToDateTime(row[startDateCol]),
-                        EndDate = Convert.ToDateTime(row[endDateCol]),
-                        EndAfterTimes = Convert.ToInt32(row[endAfterCol]),
-                        RepeatEveryTimes = Convert.ToInt32(row[repeatEveryCol])
+                        EndDate = row[endDateCol] != "" ? Convert.ToDateTime(row[endDateCol]) : (DateTime?) null,
+                        EndAfterTimes = row[endAfterCol] != "" ? Convert.ToInt32(row[endAfterCol]) : (int?) null,
+                        RepeatEveryTimes = row[repeatEveryCol] != "" ? Convert.ToInt32(row[repeatEveryCol]) : (int?) null
                     };
 
                     #region Frequency
@@ -246,10 +256,7 @@ namespace FoundOps.Api.Controllers.Mvc
                             if (dayStrings.Any(s => s == "w" || s == "we" || s == "wed" || s == "wednesday"))
                                 daysOfWeek.Add(DayOfWeek.Wednesday);
 
-                            if (
-                                dayStrings.Any(
-                                    s =>
-                                    s == "r" || s == "th" || s == "tr" || s == "thur" || s == "thurs" || s == "thursday"))
+                            if (dayStrings.Any(s => s == "r" || s == "th" || s == "tr" || s == "thur" || s == "thurs" || s == "thursday"))
                                 daysOfWeek.Add(DayOfWeek.Thursday);
 
                             if (dayStrings.Any(s => s == "f" || s == "fr" || s == "fri" || s == "friday"))
@@ -295,6 +302,12 @@ namespace FoundOps.Api.Controllers.Mvc
             return suggestion;
         }
 
+        /// <summary>
+        /// Suggests other potential options based on the entities passed
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <param name="rows"></param>
+        /// <returns></returns>
         public Suggestions SuggestEntites(Guid roleId, ImportRow[] rows)
         {
             var businessAccount = _coreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator }).FirstOrDefault();
@@ -314,34 +327,46 @@ namespace FoundOps.Api.Controllers.Mvc
 
                 var rowSuggestions = new RowSuggestions();
 
-                //Location
+                #region Location
+                
                 //Add the matched/new location as the first suggestion
                 rowSuggestions.LocationSuggestions.Add(row.Location.Id);
 
-                var locationSuggestions = _locations.Where(l => l.ClientId == row.Client.Id).Select(l => l.Id).ToArray();
-                rowSuggestions.LocationSuggestions.AddRange(locationSuggestions);
+                //Find all the Locations to be suggested by finding all Locations for the Client of the row
+                var locationSuggestions = _locations.Where(l => l.ClientId == row.Client.Id).ToArray();
+                rowSuggestions.LocationSuggestions.AddRange(locationSuggestions.Select(l => l.Id));
 
-                locations.AddRange(_locations.Where(l => locationSuggestions.Contains(l.Id)).Select(FoundOps.Api.Models.Location.ConvertModel));
+                //Add all suggested Locations to the list of Locations to be returned
+                locations.AddRange(locationSuggestions.Select(FoundOps.Api.Models.Location.ConvertModel));
 
                 //If a new Location was created, add it to the list of location entites
-                if (locations.Select(l => l.Id).Contains(row.Location.Id))
+                if (!_locations.Select(l => l.Id).Contains(row.Location.Id))
                     locations.Add(row.Location);
 
-                // Client
+                #endregion
+
+                #region Client
+
                 //Add the matched/new client as the first suggestion
                 rowSuggestions.ClientSuggestions.Add(row.Client.Id);
 
-                var clientSuggestions = _clients.Where(c => c.Locations.Select(l => l.Id).Contains(row.Location.Id)).Select(c => c.Id).ToArray();
-                rowSuggestions.ClientSuggestions.AddRange(clientSuggestions);
+                //Find all the Clients to be suggested by finding all Clients for the Location of the row
+                var clientSuggestions = _clients.Where(c => c.Id == row.Location.ClientId).ToArray();
+                rowSuggestions.ClientSuggestions.AddRange(clientSuggestions.Select(c => c.Id));
 
-                clients.AddRange(_clients.Where(c => clientSuggestions.Contains(c.Id)).Select(FoundOps.Api.Models.Client.ConvertModel));
+                //Add all suggested Clients to the list of Clients to be returned
+                clients.AddRange(clientSuggestions.Select(FoundOps.Api.Models.Client.ConvertModel));
 
                 //If a new Client was created, add it to the list of client entites
-                if (clients.Select(c => c.Id).Contains(row.Client.Id))
+                if (!_clients.Select(c => c.Id).Contains(row.Client.Id))
                     clients.Add(row.Client);
+
+                #endregion
 
                 //Repeat
                 rowSuggestions.Repeat.Add(row.Repeat);
+
+                //Add this row's suggestions to the list to be returned
                 suggestionToReturn.RowSuggestions.Add(rowSuggestions);
             });
 

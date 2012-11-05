@@ -60,8 +60,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 AdminDistrictOne = "IN",
                 PostalCode = "47901",
                 CountryCode = "US",
-                Latitude = (decimal?)40.418414,
-                Longitude = (decimal?)-86.894219,
+                Latitude = (decimal?)40.418537,
+                Longitude = (decimal?)-86.894592,
                 BusinessAccountId = businessAccountId
             });
 
@@ -73,8 +73,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 AdminDistrictOne = "IN",
                 PostalCode = "46970-3668",
                 CountryCode = "US",
-                Latitude = (decimal?)40.671159,
-                Longitude = (decimal?)-86.145577,
+                Latitude = (decimal?)40.671158,
+                Longitude = (decimal?)-86.144875,
                 BusinessAccountId = businessAccountId
 
             });
@@ -87,8 +87,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 AdminDistrictOne = "IN",
                 PostalCode = "46901-6220",
                 CountryCode = "US",
-                Latitude = (decimal?)40.476616,
-                Longitude = (decimal?)-86.119251,
+                Latitude = (decimal?)40.476653,
+                Longitude = (decimal?)-86.119249,
                 BusinessAccountId = businessAccountId
             });
 
@@ -100,8 +100,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 AdminDistrictOne = "IN",
                 PostalCode = "47904-3158",
                 CountryCode = "US",
-                Latitude = (decimal?)40.417552,
-                Longitude = (decimal?)-86.859526,
+                Latitude = (decimal?)40.417294,
+                Longitude = (decimal?)-86.859673,
                 BusinessAccountId = businessAccountId
             });
 
@@ -113,8 +113,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 AdminDistrictOne = "IN",
                 PostalCode = "47905-5111",
                 CountryCode = "US",
-                Latitude = (decimal?)40.3955,
-                Longitude = (decimal?)-86.855914,
+                Latitude = (decimal?)40.394829,
+                Longitude = (decimal?)-86.855118,
                 BusinessAccountId = businessAccountId
             });
 
@@ -126,8 +126,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 AdminDistrictOne = "IN",
                 PostalCode = "46041-9429",
                 CountryCode = "US",
-                Latitude = (decimal?)40.278846,
-                Longitude = (decimal?)-86.479537,
+                Latitude = (decimal?)40.279324,
+                Longitude = (decimal?)-86.479408,
                 BusinessAccountId = businessAccountId
             });
 
@@ -139,8 +139,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 AdminDistrictOne = "IN",
                 PostalCode = "47901-1261",
                 CountryCode = "US",
-                Latitude = (decimal?)40.419119,
-                Longitude = (decimal?)-86.894604,
+                Latitude = (decimal?)40.419082,
+                Longitude = (decimal?)-86.894629,
                 BusinessAccountId = businessAccountId
             });
 
@@ -152,8 +152,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 AdminDistrictOne = "IN",
                 PostalCode = "46901-5457",
                 CountryCode = "US",
-                Latitude = (decimal?)40.477384,
-                Longitude = (decimal?)-86.131005,
+                Latitude = (decimal?)40.477381,
+                Longitude = (decimal?)-86.130955,
                 BusinessAccountId = businessAccountId
             });
 
@@ -165,8 +165,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 AdminDistrictOne = "IN",
                 PostalCode = "47901-1446",
                 CountryCode = "US",
-                Latitude = (decimal?)40.419142,
-                Longitude = (decimal?)-86.891727,
+                Latitude = (decimal?)40.419105,
+                Longitude = (decimal?)-86.891680,
                 BusinessAccountId = businessAccountId
             });
 
@@ -178,8 +178,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 AdminDistrictOne = "IN",
                 PostalCode = "47901-1603",
                 CountryCode = "US",
-                Latitude = (decimal?)40.417224,
-                Longitude = (decimal?)-86.893046,
+                Latitude = (decimal?)40.417069,
+                Longitude = (decimal?)-86.893372,
                 BusinessAccountId = businessAccountId
             });
 
@@ -192,8 +192,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 AdminDistrictOne = "IN",
                 PostalCode = "47933-1710",
                 CountryCode = "US",
-                Latitude = (decimal?)40.041696,
-                Longitude = (decimal?)-86.901095,
+                Latitude = (decimal?)40.041659,
+                Longitude = (decimal?)-86.901082,
                 BusinessAccountId = businessAccountId
             });
 
@@ -205,8 +205,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 AdminDistrictOne = "IN",
                 PostalCode = "46204-2127",
                 CountryCode = "US",
-                Latitude = (decimal?)39.769887,
-                Longitude = (decimal?)-86.154359,
+                Latitude = (decimal?)39.770008,
+                Longitude = (decimal?)-86.153954,
                 BusinessAccountId = businessAccountId
             });
 
@@ -218,8 +218,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 AdminDistrictOne = "IN",
                 PostalCode = "47906-3210",
                 CountryCode = "US",
-                Latitude = (decimal?)40.422081,
-                Longitude = (decimal?)-86.903569,
+                Latitude = (decimal?)40.422287,
+                Longitude = (decimal?)-86.902817,
                 BusinessAccountId = businessAccountId
             });
 
@@ -231,8 +231,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 AdminDistrictOne = "IN",
                 PostalCode = "47905-4819",
                 CountryCode = "US",
-                Latitude = (decimal?)40.417733,
-                Longitude = (decimal?)-86.824187,
+                Latitude = (decimal?)40.418232,
+                Longitude = (decimal?)-86.823944,
                 BusinessAccountId = businessAccountId
             });
 
@@ -244,8 +244,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 AdminDistrictOne = "IN",
                 PostalCode = "47905-2219",
                 CountryCode = "US",
-                Latitude = (decimal?)40.395504,
-                Longitude = (decimal?)-86.868527,
+                Latitude = (decimal?)40.395924,
+                Longitude = (decimal?)-86.868797,
                 BusinessAccountId = businessAccountId
             });
 
@@ -257,8 +257,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 AdminDistrictOne = "IN",
                 PostalCode = "47905-5201",
                 CountryCode = "US",
-                Latitude = (decimal?)40.388618,
-                Longitude = (decimal?)-86.838981,
+                Latitude = (decimal?)40.388650,
+                Longitude = (decimal?)-86.838902,
                 BusinessAccountId = businessAccountId
             });
 
@@ -270,8 +270,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 AdminDistrictOne = "IN",
                 PostalCode = "47933-1710",
                 CountryCode = "US",
-                Latitude = (decimal?)40.041694,
-                Longitude = (decimal?)-86.901216,
+                Latitude = (decimal?)40.041658,
+                Longitude = (decimal?)-86.901200,
                 BusinessAccountId = businessAccountId
             });
 
@@ -283,8 +283,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 AdminDistrictOne = "IN",
                 PostalCode = "46204-2803",
                 CountryCode = "US",
-                Latitude = (decimal?)39.768098,
-                Longitude = (decimal?)-86.159864,
+                Latitude = (decimal?)39.768185,
+                Longitude = (decimal?)-86.159500,
                 BusinessAccountId = businessAccountId
             });
 
@@ -296,8 +296,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 AdminDistrictOne = "IN",
                 PostalCode = "47928-8024",
                 CountryCode = "US",
-                Latitude = (decimal?)39.968641,
-                Longitude = (decimal?)-87.472417,
+                Latitude = (decimal?)39.968635,
+                Longitude = (decimal?)-87.472469,
                 BusinessAccountId = businessAccountId
             });
 
@@ -309,8 +309,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 AdminDistrictOne = "IN",
                 PostalCode = "47906-3218",
                 CountryCode = "US",
-                Latitude = (decimal?)40.422733,
-                Longitude = (decimal?)-86.902758,
+                Latitude = (decimal?)40.422989,
+                Longitude = (decimal?)-86.902519,
                 BusinessAccountId = businessAccountId
             });
 
@@ -322,8 +322,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 AdminDistrictOne = "IN",
                 PostalCode = "47905-9464",
                 CountryCode = "US",
-                Latitude = (decimal?)40.388141,
-                Longitude = (decimal?)-86.837137,
+                Latitude = (decimal?)40.388126,
+                Longitude = (decimal?)-86.837196,
                 BusinessAccountId = businessAccountId
             });
 
@@ -335,21 +335,21 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 AdminDistrictOne = "IN",
                 PostalCode = "47909",
                 CountryCode = "US",
-                Latitude = (decimal?)40.367866516113281,
-                Longitude = (decimal?)-86.8621826171875,
+                Latitude = (decimal?)40.367867,
+                Longitude = (decimal?)-86.862183,
                 BusinessAccountId = businessAccountId
             });
 
             _designLocations.Add(new Location
             {
                 Name = "Crawfordsville Forum Family",
-                AddressLineOne = "1410 Darlington Ave",
+                AddressLineOne = "IN-47",
                 AdminDistrictTwo = "Crawfordsville",
                 AdminDistrictOne = "IN",
                 PostalCode = "47933-2007",
                 CountryCode = "US",
-                Latitude = (decimal?)40.046804,
-                Longitude = (decimal?)-86.879933,
+                Latitude = (decimal?)40.046829,
+                Longitude = (decimal?)-86.877022,
                 BusinessAccountId = businessAccountId
             });
 
@@ -361,8 +361,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 AdminDistrictOne = "IN",
                 PostalCode = "47933-9424",
                 CountryCode = "US",
-                Latitude = (decimal?)40.012145,
-                Longitude = (decimal?)-86.903825,
+                Latitude = (decimal?)40.012134,
+                Longitude = (decimal?)-86.903877,
                 BusinessAccountId = businessAccountId
             });
 

@@ -13,7 +13,7 @@ namespace FoundOps.Api.Models
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public int? EndAfterTimes { get; set; }
-        public int RepeatEveryTimes { get; set; }
+        public int? RepeatEveryTimes { get; set; }
         public int FrequencyInt { get; set; }
         public int? FrequencyDetailInt { get; set; }
         public Guid? RecurringServiceId { get; set; }

@@ -63,6 +63,8 @@ namespace FoundOps.Api.Models
 
         public Region Region { get; set; }
 
+        public Guid? ClientId { get; set; }
+
         public int? StatusInt { get; set; }
 
         public Location()
@@ -83,7 +85,8 @@ namespace FoundOps.Api.Models
                 City = locationModel.AdminDistrictTwo,
                 State = locationModel.AdminDistrictOne,
                 CountryCode = locationModel.CountryCode,
-                ZipCode = locationModel.PostalCode
+                ZipCode = locationModel.PostalCode,
+                ClientId = locationModel.ClientId
             };
 
             foreach (var contactInfo in locationModel.ContactInfoSet)
@@ -125,7 +128,8 @@ namespace FoundOps.Api.Models
                     PostalCode = location.ZipCode,
                     CountryCode = location.CountryCode,
                     Latitude = Convert.ToDecimal(location.Latitude),
-                    Longitude = Convert.ToDecimal(location.Longitude)
+                    Longitude = Convert.ToDecimal(location.Longitude),
+                    ClientId = location.ClientId
                 };
 
             return newLocation;
