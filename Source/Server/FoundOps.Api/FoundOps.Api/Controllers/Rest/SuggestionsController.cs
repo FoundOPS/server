@@ -124,7 +124,16 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
                     //If Lat/Lon dont have values, try to GeoCode
                     if (latitude == "" && longitude == "")
                     {
-                        var geocodeResult = BingLocationServices.TryGeocode(new Address { AddressLineOne = addressLineOne, City = city, State = state, ZipCode = zipCode }).FirstOrDefault();
+                        GeocoderResult geocodeResult;
+
+                        try
+                        {
+                            geocodeResult = BingLocationServices.TryGeocode(new Address { AddressLineOne = addressLineOne, City = city, State = state, ZipCode = zipCode }).FirstOrDefault();
+                        }
+                        catch (Exception)
+                        {
+                            geocodeResult = BingLocationServices.TryGeocode(new Address { AddressLineOne = addressLineOne, City = city, State = state, ZipCode = zipCode }).FirstOrDefault();
+                        }
 
                         if (geocodeResult != null)
                         {
@@ -224,6 +233,9 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
                 #endregion
 
                 #region Repeat
+
+                if (startDateCol == -1 || row[startDateCol] == "")
+                    Request.BadRequest("Every Repeat needs a start date");
 
                 var repeat = new Repeat
                 {

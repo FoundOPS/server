@@ -212,7 +212,7 @@ namespace FoundOps.Api.Tests.Controllers
 
             var random = new Random();
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 30; i++)
             {
                 var client = CoreEntitiesContainer.Clients.ToArray().ElementAt(random.Next(48));
                 var location = CoreEntitiesContainer.Locations.Where(l => l.BusinessAccountIdIfDepot == null).Include(l => l.Region).ToArray().ElementAt(random.Next(51));
@@ -391,7 +391,7 @@ namespace FoundOps.Api.Tests.Controllers
         }
 
         [TestMethod]
-        public void ImporterTests()
+        public void ImporterSuggestionsTests()
         {
             var controller = new SuggestionsController();
 
@@ -406,16 +406,12 @@ namespace FoundOps.Api.Tests.Controllers
 
             Assert.AreEqual(0, except.Count());
 
-            ////Reset rows with headers becuase we remove the first row in ValidateInput
-            //rowsWithHeaders = SetupRowsWithHeaders();
+            var locationSuggestions = suggestions.RowSuggestions.SelectMany(rs => rs.LocationSuggestions).Distinct().ToArray();
+            var locations = suggestions.Locations.Select(l => l.Id).ToArray();
 
-            //suggestions = controller.Get(_roleId, rowsWithHeaders, null);
+            except = locations.Except(locationSuggestions);
 
-            ////Reset rows with headers becuase we remove the first row in ValidateInput
-            //rowsWithHeaders = SetupRowsWithHeaders();
-
-            //suggestions = controller.Get(_roleId, rowsWithHeaders, null);
-
+            Assert.AreEqual(0, except.Count());
         }
 
 
