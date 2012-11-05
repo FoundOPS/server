@@ -4,8 +4,10 @@
     [Id]                   UNIQUEIDENTIFIER NOT NULL,
     CONSTRAINT [PK_Fields_LocationField] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_LocationField_inherits_Field] FOREIGN KEY ([Id]) REFERENCES [dbo].[Fields] ([Id]) ON DELETE CASCADE,
-    CONSTRAINT [FK_LocationFieldLocation] FOREIGN KEY ([LocationId]) REFERENCES [dbo].[Locations] ([Id]) ON DELETE CASCADE
+    CONSTRAINT [FK_LocationFieldLocation] FOREIGN KEY ([LocationId]) REFERENCES [dbo].[Locations] ([Id]) ON DELETE SET NULL
 );
+
+
 
 
 

@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2010
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoundOPS.API", "FoundOPS.API\FoundOPS.API.csproj", "{8BE952E2-F077-42D0-A4AD-704EEC696840}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoundOps.Core", "..\FoundOps.Core\FoundOps.Core.csproj", "{C5170A8A-CAD2-47E2-8552-FEF87C771C03}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoundOps.Common.NET", "..\..\Common\FoundOps.Common.NET\FoundOps.Common.NET.csproj", "{DEB95CF8-BB65-4E94-A65D-9758F0CDA5CB}"
 EndProject
-Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "FoundOPS.API.Azure", "FoundOPS.API.Azure\FoundOPS.API.Azure.ccproj", "{46694993-D9FC-472F-A3A4-ECB22B012BCE}"
+Project("{CC5FD16D-436D-48AD-A40C-5A424C6E3E79}") = "FoundOPS.API.Azure", "FoundOPS.API.Azure\FoundOps.Api.Azure.ccproj", "{46694993-D9FC-472F-A3A4-ECB22B012BCE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

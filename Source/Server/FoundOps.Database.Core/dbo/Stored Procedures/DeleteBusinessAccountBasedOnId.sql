@@ -11,9 +11,6 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 	AS
 	BEGIN
 
-	DELETE FROM Vehicles 
-	WHERE	BusinessAccountId = @providerId
-
 	DELETE FROM RouteEmployee
 	WHERE Routes_Id IN
 	(
@@ -29,6 +26,9 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 		FROM Routes
 		WHERE OwnerBusinessAccountId = @providerId
 	)
+
+	DELETE FROM Vehicles 
+	WHERE	BusinessAccountId = @providerId
 
 	DELETE FROM Routes
 	WHERE OwnerBusinessAccountId = @providerId
@@ -84,7 +84,10 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 		(
 			LocationId uniqueidentifier
 		)
-
+		
+		DECLARE @date DATE
+		SET @date = GETUTCDATE()  
+		
 		--Finds all Locations that are associated with the BusinessAccount
 		INSERT INTO @LocationIdsForServiceProvider
 		SELECT Id FROM Locations
@@ -120,12 +123,6 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 	WHERE EmployerId = @providerId
 
 -------------------------------------------------------------------------------------------------------------------------
---Delete all off of Parties
--------------------------------------------------------------------------------------------------------------------------
-
-	EXECUTE [dbo].[DeleteBasicPartyBasedOnId] @providerId
-
--------------------------------------------------------------------------------------------------------------------------
 --Delete the BusinessAccount itself
 -------------------------------------------------------------------------------------------------------------------------
 	DELETE FROM Roles
@@ -133,6 +130,12 @@ CREATE PROCEDURE dbo.DeleteBusinessAccountBasedOnId
 	
 	DELETE FROM Parties_BusinessAccount
 	WHERE Id = @providerId
+
+-------------------------------------------------------------------------------------------------------------------------
+--Delete all off of Parties
+-------------------------------------------------------------------------------------------------------------------------
+
+	EXECUTE [dbo].[DeleteBasicPartyBasedOnId] @providerId
 
 	END
 	RETURN

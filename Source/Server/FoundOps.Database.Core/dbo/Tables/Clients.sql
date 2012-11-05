@@ -1,12 +1,15 @@
-CREATE TABLE [dbo].[Clients] (
+﻿CREATE TABLE [dbo].[Clients] (
     [Id]                UNIQUEIDENTIFIER NOT NULL,
     [DateAdded]         DATETIME         NOT NULL,
     [Salesperson]       NVARCHAR (MAX)   NULL,
     [BusinessAccountId] UNIQUEIDENTIFIER NULL,
     [Name]              NVARCHAR (MAX)   NULL,
+    [DateDeleted]       DATETIME         NULL,
     CONSTRAINT [PK_Clients] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_ClientBusinessAccount] FOREIGN KEY ([BusinessAccountId]) REFERENCES [dbo].[Parties_BusinessAccount] ([Id])
 );
+
+
 
 
 

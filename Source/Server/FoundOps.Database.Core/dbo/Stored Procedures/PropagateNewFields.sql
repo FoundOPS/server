@@ -1,5 +1,4 @@
-﻿--This procedure deletes all the basic info held on a Party (Locations, Contacts, ContactInfoSet, Roles, Vehicles and Files)
-CREATE PROCEDURE [dbo].[PropagateNewFields]
+﻿CREATE PROCEDURE [dbo].[PropagateNewFields]
 		(@FieldId uniqueidentifier)
 	AS
 	BEGIN
@@ -137,6 +136,16 @@ CREATE PROCEDURE [dbo].[PropagateNewFields]
 								Id )
 					VALUES  ( (SELECT IsMultiline FROM dbo.Fields_TextBoxField WHERE Id = @FieldId), -- IsMultiline - bit
 								(SELECT Value FROM dbo.Fields_TextBoxField WHERE Id = @FieldId), -- Value - nvarchar(max)
+								@newFieldId  -- Id - uniqueidentifier
+								)	    
+				END
+
+				IF @FieldId IN (SELECT Id FROM dbo.Fields_SignatureField) --Copy Signature field, set new Id's
+				BEGIN
+					INSERT INTO Fields_SignatureField
+							( Value, 
+								Id )
+					VALUES  ((SELECT Value FROM dbo.Fields_SignatureField WHERE Id = @FieldId), -- Value - nvarchar(max)
 								@newFieldId  -- Id - uniqueidentifier
 								)	    
 				END

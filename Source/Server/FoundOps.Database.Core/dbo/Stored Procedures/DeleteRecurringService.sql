@@ -10,10 +10,6 @@ CREATE PROCEDURE [dbo].[DeleteRecurringService]
 	AS
 	BEGIN
 
-	DELETE 
-	FROM	Services 
-	WHERE	RecurringServiceId = @recurringServiceId
-
 	DECLARE @serviceTemplateId uniqueidentifier
 
 	--Find the ServiceTemplate that correspods to the Recurring Service  

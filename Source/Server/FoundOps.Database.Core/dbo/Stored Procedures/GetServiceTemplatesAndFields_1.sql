@@ -108,6 +108,10 @@ BEGIN
 	ON t1.Id = t2.Id and t1.Id IN (SELECT Id FROM @fieldIds)
 
 	SELECT t1.*, t2.* FROM dbo.Fields t1 
+	JOIN dbo.Fields_SignatureField t2 
+	ON t1.Id = t2.Id and t1.Id IN (SELECT Id FROM @fieldIds)
+
+	SELECT t1.*, t2.* FROM dbo.Fields t1 
 	JOIN dbo.Fields_OptionsField t2 
 	ON t1.Id = t2.Id and t1.Id IN (SELECT Id FROM @fieldIds)
 

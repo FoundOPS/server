@@ -14,12 +14,15 @@
     [ClientId]                 UNIQUEIDENTIFIER NULL,
     [IsDefaultBillingLocation] BIT              NULL,
     [CountryCode]              NVARCHAR (MAX)   NULL,
+    [DateDeleted]              DATETIME         NULL,
     CONSTRAINT [PK_Locations] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_BusinessAccountLocation] FOREIGN KEY ([BusinessAccountIdIfDepot]) REFERENCES [dbo].[Parties_BusinessAccount] ([Id]),
     CONSTRAINT [FK_ClientLocation1] FOREIGN KEY ([ClientId]) REFERENCES [dbo].[Clients] ([Id]),
     CONSTRAINT [FK_LocationBusinessAccount] FOREIGN KEY ([BusinessAccountId]) REFERENCES [dbo].[Parties_BusinessAccount] ([Id]),
     CONSTRAINT [FK_RegionLocation] FOREIGN KEY ([RegionId]) REFERENCES [dbo].[Regions] ([Id])
 );
+
+
 
 
 
