@@ -54,7 +54,7 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
                 throw Request.BadRequest();
 
             //Call the appropriate function and return the Suggestions
-            return request.RowsWithHeaders != null ? 
+            return request.RowsWithHeaders != null ?
                 this.ValidateInput(request.RowsWithHeaders, businessAccount) :
                 this.SuggestEntites(request.Rows, businessAccount);
         }
@@ -114,7 +114,7 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
                 if (new[] { addressLineOneCol, addressLineTwoCol, cityCol, stateCol, countryCodeCol, zipCodeCol, latitudeCol, longitudeCol }.Any(col => col != -1))
                 {
                     var latitude = latitudeCol != -1 ? row[latitudeCol] : "";
-                    var longitude = longitudeCol != -1 ? row[longitudeCol] : "" ;
+                    var longitude = longitudeCol != -1 ? row[longitudeCol] : "";
                     var addressLineOne = addressLineOneCol != -1 ? row[addressLineOneCol] : null;
                     var addressLineTwo = addressLineTwoCol != -1 ? row[addressLineTwoCol] : null;
                     var city = cityCol != -1 ? row[cityCol] : null;
@@ -129,10 +129,10 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
 
                         var address = new Address
                         {
-                                AddressLineOne = addressLineOne ?? null,
-                                City = city ?? null,
-                                State = state ?? null,
-                                ZipCode = zipCode ?? null
+                            AddressLineOne = addressLineOne ?? null,
+                            City = city ?? null,
+                            State = state ?? null,
+                            ZipCode = zipCode ?? null
                         };
 
                         try
@@ -391,42 +391,55 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
 
                 #region Location
 
-                //Add the matched/new location as the first suggestion
-                rowSuggestions.LocationSuggestions.Add(row.Location.Id);
+                if (row.Location != null)
+                {
+                    //Add the matched/new location as the first suggestion
+                    rowSuggestions.LocationSuggestions.Add(row.Location.Id);
 
-                //Find all the Locations to be suggested by finding all Locations for the Client of the row
-                var locationSuggestions = _locations.Where(l => l.ClientId == row.Client.Id || l.Id == row.Location.Id).ToArray();
-                rowSuggestions.LocationSuggestions.AddRange(locationSuggestions.Select(l => l.Id));
+                    //Find all the Locations to be suggested by finding all Locations for the Client of the row
+                    var locationSuggestions = row.Client != null
+                        ? _locations.Where(l => l.ClientId == row.Client.Id || l.Id == row.Location.Id).ToArray()
+                        : _locations.Where(l => l.Id == row.Location.Id).ToArray();
 
-                //Add all suggested Locations to the list of Locations to be returned
-                locations.AddRange(locationSuggestions.Select(FoundOps.Api.Models.Location.ConvertModel));
+                    rowSuggestions.LocationSuggestions.AddRange(locationSuggestions.Select(l => l.Id));
 
-                //If a new Location was created, add it to the list of location entites
-                if (!_locations.Select(l => l.Id).Contains(row.Location.Id))
-                    locations.Add(row.Location);
+                    //Add all suggested Locations to the list of Locations to be returned
+                    locations.AddRange(locationSuggestions.Select(FoundOps.Api.Models.Location.ConvertModel));
+
+                    //If a new Location was created, add it to the list of location entites
+                    if (!_locations.Select(l => l.Id).Contains(row.Location.Id))
+                        locations.Add(row.Location);
+                }
 
                 #endregion
 
                 #region Client
 
-                //Add the matched/new client as the first suggestion
-                rowSuggestions.ClientSuggestions.Add(row.Client.Id);
+                if (row.Client != null)
+                {
+                    //Add the matched/new client as the first suggestion
+                    rowSuggestions.ClientSuggestions.Add(row.Client.Id);
 
-                //Find all the Clients to be suggested by finding all Clients for the Location of the row
-                var clientSuggestions = _clients.Where(c => c.Id == row.Location.ClientId || c.Id == row.Client.Id).ToArray();
-                rowSuggestions.ClientSuggestions.AddRange(clientSuggestions.Select(c => c.Id));
+                    //Find all the Clients to be suggested by finding all Clients for the Location of the row
+                    var clientSuggestions = row.Location != null
+                        ? _clients.Where(c => c.Id == row.Location.ClientId || c.Id == row.Client.Id).ToArray()
+                        : _clients.Where(c => c.Id == row.Client.Id).ToArray();
 
-                //Add all suggested Clients to the list of Clients to be returned
-                clients.AddRange(clientSuggestions.Select(FoundOps.Api.Models.Client.ConvertModel));
+                    rowSuggestions.ClientSuggestions.AddRange(clientSuggestions.Select(c => c.Id));
 
-                //If a new Client was created, add it to the list of client entites
-                if (!_clients.Select(c => c.Id).Contains(row.Client.Id))
-                    clients.Add(row.Client);
+                    //Add all suggested Clients to the list of Clients to be returned
+                    clients.AddRange(clientSuggestions.Select(FoundOps.Api.Models.Client.ConvertModel));
+
+                    //If a new Client was created, add it to the list of client entites
+                    if (!_clients.Select(c => c.Id).Contains(row.Client.Id))
+                        clients.Add(row.Client);
+                }
 
                 #endregion
 
                 //Repeat
-                rowSuggestions.Repeat.Add(row.Repeat);
+                if (row.Repeat != null)
+                    rowSuggestions.Repeat.Add(row.Repeat);
 
                 //Add this row's suggestions to the list to be returned
                 suggestionToReturn.RowSuggestions.Add(rowSuggestions);
