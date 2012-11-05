@@ -212,11 +212,11 @@ namespace FoundOps.Api.Tests.Controllers
 
             var random = new Random();
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 1; i++)
             {
-                var client = CoreEntitiesContainer.Clients.ToArray().ElementAt(random.Next(48));
-                var location = CoreEntitiesContainer.Locations.Where(l => l.BusinessAccountIdIfDepot == null).Include(l => l.Region).ToArray().ElementAt(random.Next(51));
-                var repeat = CoreEntitiesContainer.Repeats.Where(r => r.FrequencyInt == 3).ToArray().ElementAt(random.Next(144));
+                var client = CoreEntitiesContainer.Clients.First();//.ToArray().ElementAt(random.Next(48));
+                var location = CoreEntitiesContainer.Locations.Where(l => l.BusinessAccountIdIfDepot == null).Include(l => l.Region).First();//.ToArray().ElementAt(random.Next(51));
+                var repeat = CoreEntitiesContainer.Repeats.Where(r => r.FrequencyInt == 3).First();//.ToArray().ElementAt(random.Next(144));
 
                 var newRow = new List<string>
                 {
@@ -350,26 +350,27 @@ namespace FoundOps.Api.Tests.Controllers
         [TestMethod]
         public void ImporterTests()
         {
-            var controller = new ImporterController();
+            var controller = new SuggestionsController();
 
             var rowsWithHeaders = SetupRowsWithHeaders();
 
-            var suggestions = controller.ValidateInput(_roleId, rowsWithHeaders);
+            var suggestions = controller.Get(_roleId, rowsWithHeaders, null);
 
             var clientSuggestions = suggestions.RowSuggestions.SelectMany(rs => rs.ClientSuggestions).Distinct().ToArray();
             var clients = suggestions.Clients.Select(c => c.Id).ToArray();
             var extras = clients.All(clientSuggestions.Contains);
 
             Assert.AreEqual(false, extras);
-            //Reset rows with headers becuase we remove the first row in ValidateInput
-            rowsWithHeaders = SetupRowsWithHeaders();
-
-            suggestions = controller.ValidateInput(_roleId, rowsWithHeaders);
 
             //Reset rows with headers becuase we remove the first row in ValidateInput
             rowsWithHeaders = SetupRowsWithHeaders();
 
-            suggestions = controller.ValidateInput(_roleId, rowsWithHeaders);
+            suggestions = controller.Get(_roleId, rowsWithHeaders, null);
+
+            //Reset rows with headers becuase we remove the first row in ValidateInput
+            rowsWithHeaders = SetupRowsWithHeaders();
+
+            suggestions = controller.Get(_roleId, rowsWithHeaders, null);
 
         }
 
