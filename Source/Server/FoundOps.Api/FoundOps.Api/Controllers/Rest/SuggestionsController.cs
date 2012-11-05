@@ -114,11 +114,11 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
                 {
                     var latitude = latitudeCol != -1 ? row[latitudeCol] : "";
                     var longitude = longitudeCol != -1 ? row[longitudeCol] : "" ;
-                    var addressLineOne = addressLineOneCol != -1 ? row[addressLineOneCol] : "";
-                    var addressLineTwo = addressLineTwoCol != -1 ? row[addressLineTwoCol] : "";
-                    var city = cityCol != -1 ? row[cityCol] : "";
-                    var state = stateCol != -1 ? row[stateCol] : "";
-                    var zipCode = zipCodeCol != -1 ? row[zipCodeCol] : "";
+                    var addressLineOne = addressLineOneCol != -1 ? row[addressLineOneCol] : null;
+                    var addressLineTwo = addressLineTwoCol != -1 ? row[addressLineTwoCol] : null;
+                    var city = cityCol != -1 ? row[cityCol] : null;
+                    var state = stateCol != -1 ? row[stateCol] : null;
+                    var zipCode = zipCodeCol != -1 ? row[zipCodeCol] : null;
                     var regionName = regionNameCol != -1 ? row[regionNameCol] : null;
 
                     //If Lat/Lon dont have values, try to GeoCode
@@ -153,7 +153,7 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
                         if (latitude == null && longitude == null)
                             importedLocation.StatusInt = (int)ImportStatus.Error;
 
-                        var clientName = row[clientNameCol];
+                        var clientName = clientNameCol != -1 ? row[clientNameCol] : null;
 
                         //Matched the address entered and client name matched to a location
                         var matchedLocation = _locations.FirstOrDefault(l => clientName != null && l.ClientId != null &&
