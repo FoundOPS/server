@@ -1513,7 +1513,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1532,7 +1532,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
+                    _Id = StructuralObject.SetValidValue(value, "Id");
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -1557,7 +1557,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnNameChanging(value);
                 ReportPropertyChanging("Name");
-                _Name = StructuralObject.SetValidValue(value, false);
+                _Name = StructuralObject.SetValidValue(value, false, "Name");
                 ReportPropertyChanged("Name");
                 OnNameChanged();
             }
@@ -1581,7 +1581,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnColorChanging(value);
                 ReportPropertyChanging("Color");
-                _Color = StructuralObject.SetValidValue(value, false);
+                _Color = StructuralObject.SetValidValue(value, false, "Color");
                 ReportPropertyChanged("Color");
                 OnColorChanged();
             }
@@ -1605,7 +1605,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnHideFromNavigationChanging(value);
                 ReportPropertyChanging("HideFromNavigation");
-                _HideFromNavigation = StructuralObject.SetValidValue(value);
+                _HideFromNavigation = StructuralObject.SetValidValue(value, "HideFromNavigation");
                 ReportPropertyChanged("HideFromNavigation");
                 OnHideFromNavigationChanged();
             }
@@ -1629,7 +1629,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnIconUrlChanging(value);
                 ReportPropertyChanging("IconUrl");
-                _IconUrl = StructuralObject.SetValidValue(value, true);
+                _IconUrl = StructuralObject.SetValidValue(value, true, "IconUrl");
                 ReportPropertyChanged("IconUrl");
                 OnIconUrlChanged();
             }
@@ -1653,7 +1653,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnHoverIconUrlChanging(value);
                 ReportPropertyChanging("HoverIconUrl");
-                _HoverIconUrl = StructuralObject.SetValidValue(value, true);
+                _HoverIconUrl = StructuralObject.SetValidValue(value, true, "HoverIconUrl");
                 ReportPropertyChanged("HoverIconUrl");
                 OnHoverIconUrlChanged();
             }
@@ -1677,7 +1677,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnUrlChanging(value);
                 ReportPropertyChanging("Url");
-                _Url = StructuralObject.SetValidValue(value, true);
+                _Url = StructuralObject.SetValidValue(value, true, "Url");
                 ReportPropertyChanged("Url");
                 OnUrlChanged();
             }
@@ -1701,7 +1701,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnIsSilverlightChanging(value);
                 ReportPropertyChanging("IsSilverlight");
-                _IsSilverlight = StructuralObject.SetValidValue(value);
+                _IsSilverlight = StructuralObject.SetValidValue(value, "IsSilverlight");
                 ReportPropertyChanged("IsSilverlight");
                 OnIsSilverlightChanged();
             }
@@ -1712,7 +1712,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
         #region Navigation Properties
     
         /// <summary>
@@ -1764,7 +1763,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -1781,7 +1780,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnQuickBooksEnabledChanging(value);
                 ReportPropertyChanging("QuickBooksEnabled");
-                _QuickBooksEnabled = StructuralObject.SetValidValue(value);
+                _QuickBooksEnabled = StructuralObject.SetValidValue(value, "QuickBooksEnabled");
                 ReportPropertyChanged("QuickBooksEnabled");
                 OnQuickBooksEnabledChanged();
             }
@@ -1805,7 +1804,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnQuickBooksAccessTokenChanging(value);
                 ReportPropertyChanging("QuickBooksAccessToken");
-                _QuickBooksAccessToken = StructuralObject.SetValidValue(value, true);
+                _QuickBooksAccessToken = StructuralObject.SetValidValue(value, true, "QuickBooksAccessToken");
                 ReportPropertyChanged("QuickBooksAccessToken");
                 OnQuickBooksAccessTokenChanged();
             }
@@ -1829,7 +1828,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnQuickBooksAccessTokenSecretChanging(value);
                 ReportPropertyChanging("QuickBooksAccessTokenSecret");
-                _QuickBooksAccessTokenSecret = StructuralObject.SetValidValue(value, true);
+                _QuickBooksAccessTokenSecret = StructuralObject.SetValidValue(value, true, "QuickBooksAccessTokenSecret");
                 ReportPropertyChanged("QuickBooksAccessTokenSecret");
                 OnQuickBooksAccessTokenSecretChanged();
             }
@@ -1853,7 +1852,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnRouteManifestSettingsChanging(value);
                 ReportPropertyChanging("RouteManifestSettings");
-                _RouteManifestSettings = StructuralObject.SetValidValue(value, true);
+                _RouteManifestSettings = StructuralObject.SetValidValue(value, true, "RouteManifestSettings");
                 ReportPropertyChanged("RouteManifestSettings");
                 OnRouteManifestSettingsChanged();
             }
@@ -1877,7 +1876,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnQuickBooksSessionXmlChanging(value);
                 ReportPropertyChanging("QuickBooksSessionXml");
-                _QuickBooksSessionXml = StructuralObject.SetValidValue(value, true);
+                _QuickBooksSessionXml = StructuralObject.SetValidValue(value, true, "QuickBooksSessionXml");
                 ReportPropertyChanged("QuickBooksSessionXml");
                 OnQuickBooksSessionXmlChanged();
             }
@@ -1901,7 +1900,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnMaxRoutesChanging(value);
                 ReportPropertyChanging("MaxRoutes");
-                _MaxRoutes = StructuralObject.SetValidValue(value);
+                _MaxRoutes = StructuralObject.SetValidValue(value, "MaxRoutes");
                 ReportPropertyChanged("MaxRoutes");
                 OnMaxRoutesChanged();
             }
@@ -1925,7 +1924,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnNameChanging(value);
                 ReportPropertyChanging("Name");
-                _Name = StructuralObject.SetValidValue(value, true);
+                _Name = StructuralObject.SetValidValue(value, true, "Name");
                 ReportPropertyChanged("Name");
                 OnNameChanged();
             }
@@ -1936,7 +1935,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
         #region Navigation Properties
     
         /// <summary>
@@ -2254,7 +2252,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -2273,7 +2271,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
+                    _Id = StructuralObject.SetValidValue(value, "Id");
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -2298,7 +2296,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnDateAddedChanging(value);
                 ReportPropertyChanging("DateAdded");
-                _DateAdded = StructuralObject.SetValidValue(value);
+                _DateAdded = StructuralObject.SetValidValue(value, "DateAdded");
                 ReportPropertyChanged("DateAdded");
                 OnDateAddedChanged();
             }
@@ -2322,7 +2320,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnSalespersonChanging(value);
                 ReportPropertyChanging("Salesperson");
-                _Salesperson = StructuralObject.SetValidValue(value, true);
+                _Salesperson = StructuralObject.SetValidValue(value, true, "Salesperson");
                 ReportPropertyChanged("Salesperson");
                 OnSalespersonChanged();
             }
@@ -2346,7 +2344,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnBusinessAccountIdChanging(value);
                 ReportPropertyChanging("BusinessAccountId");
-                _BusinessAccountId = StructuralObject.SetValidValue(value);
+                _BusinessAccountId = StructuralObject.SetValidValue(value, "BusinessAccountId");
                 ReportPropertyChanged("BusinessAccountId");
                 OnBusinessAccountIdChanged();
             }
@@ -2370,7 +2368,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnNameChanging(value);
                 ReportPropertyChanging("Name");
-                _Name = StructuralObject.SetValidValue(value, true);
+                _Name = StructuralObject.SetValidValue(value, true, "Name");
                 ReportPropertyChanged("Name");
                 OnNameChanged();
             }
@@ -2394,7 +2392,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnDateDeletedChanging(value);
                 ReportPropertyChanging("DateDeleted");
-                _DateDeleted = StructuralObject.SetValidValue(value);
+                _DateDeleted = StructuralObject.SetValidValue(value, "DateDeleted");
                 ReportPropertyChanged("DateDeleted");
                 OnDateDeletedChanged();
             }
@@ -2405,7 +2403,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
         #region Navigation Properties
     
         /// <summary>
@@ -2651,7 +2648,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -2670,7 +2667,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
+                    _Id = StructuralObject.SetValidValue(value, "Id");
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -2695,7 +2692,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnTypeChanging(value);
                 ReportPropertyChanging("Type");
-                _Type = StructuralObject.SetValidValue(value, false);
+                _Type = StructuralObject.SetValidValue(value, false, "Type");
                 ReportPropertyChanged("Type");
                 OnTypeChanged();
             }
@@ -2719,7 +2716,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLabelChanging(value);
                 ReportPropertyChanging("Label");
-                _Label = StructuralObject.SetValidValue(value, true);
+                _Label = StructuralObject.SetValidValue(value, true, "Label");
                 ReportPropertyChanged("Label");
                 OnLabelChanged();
             }
@@ -2743,7 +2740,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnDataChanging(value);
                 ReportPropertyChanging("Data");
-                _Data = StructuralObject.SetValidValue(value, true);
+                _Data = StructuralObject.SetValidValue(value, true, "Data");
                 ReportPropertyChanged("Data");
                 OnDataChanged();
             }
@@ -2767,7 +2764,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnPartyIdChanging(value);
                 ReportPropertyChanging("PartyId");
-                _PartyId = StructuralObject.SetValidValue(value);
+                _PartyId = StructuralObject.SetValidValue(value, "PartyId");
                 ReportPropertyChanged("PartyId");
                 OnPartyIdChanged();
             }
@@ -2791,7 +2788,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLocationIdChanging(value);
                 ReportPropertyChanging("LocationId");
-                _LocationId = StructuralObject.SetValidValue(value);
+                _LocationId = StructuralObject.SetValidValue(value, "LocationId");
                 ReportPropertyChanged("LocationId");
                 OnLocationIdChanged();
             }
@@ -2815,7 +2812,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnClientIdChanging(value);
                 ReportPropertyChanging("ClientId");
-                _ClientId = StructuralObject.SetValidValue(value);
+                _ClientId = StructuralObject.SetValidValue(value, "ClientId");
                 ReportPropertyChanged("ClientId");
                 OnClientIdChanged();
             }
@@ -2826,7 +2823,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
         #region Navigation Properties
     
         /// <summary>
@@ -2942,7 +2938,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -2959,7 +2955,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnEarliestChanging(value);
                 ReportPropertyChanging("Earliest");
-                _Earliest = StructuralObject.SetValidValue(value);
+                _Earliest = StructuralObject.SetValidValue(value, "Earliest");
                 ReportPropertyChanged("Earliest");
                 OnEarliestChanged();
             }
@@ -2983,7 +2979,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLatestChanging(value);
                 ReportPropertyChanging("Latest");
-                _Latest = StructuralObject.SetValidValue(value);
+                _Latest = StructuralObject.SetValidValue(value, "Latest");
                 ReportPropertyChanged("Latest");
                 OnLatestChanged();
             }
@@ -3007,7 +3003,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnTypeIntChanging(value);
                 ReportPropertyChanging("TypeInt");
-                _TypeInt = StructuralObject.SetValidValue(value);
+                _TypeInt = StructuralObject.SetValidValue(value, "TypeInt");
                 ReportPropertyChanged("TypeInt");
                 OnTypeIntChanged();
             }
@@ -3031,7 +3027,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnValueChanging(value);
                 ReportPropertyChanging("Value");
-                _Value = StructuralObject.SetValidValue(value);
+                _Value = StructuralObject.SetValidValue(value, "Value");
                 ReportPropertyChanged("Value");
                 OnValueChanged();
             }
@@ -3042,7 +3038,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
     }
     
     /// <summary>
@@ -3070,7 +3065,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -3089,7 +3084,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
+                    _Id = StructuralObject.SetValidValue(value, "Id");
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -3114,7 +3109,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnFirstNameChanging(value);
                 ReportPropertyChanging("FirstName");
-                _FirstName = StructuralObject.SetValidValue(value, true);
+                _FirstName = StructuralObject.SetValidValue(value, true, "FirstName");
                 ReportPropertyChanged("FirstName");
                 OnFirstNameChanged();
             }
@@ -3138,7 +3133,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLastNameChanging(value);
                 ReportPropertyChanging("LastName");
-                _LastName = StructuralObject.SetValidValue(value, true);
+                _LastName = StructuralObject.SetValidValue(value, true, "LastName");
                 ReportPropertyChanged("LastName");
                 OnLastNameChanged();
             }
@@ -3162,7 +3157,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnMiddleInitialChanging(value);
                 ReportPropertyChanging("MiddleInitial");
-                _MiddleInitial = StructuralObject.SetValidValue(value, true);
+                _MiddleInitial = StructuralObject.SetValidValue(value, true, "MiddleInitial");
                 ReportPropertyChanged("MiddleInitial");
                 OnMiddleInitialChanged();
             }
@@ -3186,7 +3181,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnGenderIntChanging(value);
                 ReportPropertyChanging("GenderInt");
-                _GenderInt = StructuralObject.SetValidValue(value);
+                _GenderInt = StructuralObject.SetValidValue(value, "GenderInt");
                 ReportPropertyChanged("GenderInt");
                 OnGenderIntChanged();
             }
@@ -3210,7 +3205,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnDateOfBirthChanging(value);
                 ReportPropertyChanging("DateOfBirth");
-                _DateOfBirth = StructuralObject.SetValidValue(value);
+                _DateOfBirth = StructuralObject.SetValidValue(value, "DateOfBirth");
                 ReportPropertyChanged("DateOfBirth");
                 OnDateOfBirthChanged();
             }
@@ -3234,7 +3229,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnAddressLineOneChanging(value);
                 ReportPropertyChanging("AddressLineOne");
-                _AddressLineOne = StructuralObject.SetValidValue(value, true);
+                _AddressLineOne = StructuralObject.SetValidValue(value, true, "AddressLineOne");
                 ReportPropertyChanged("AddressLineOne");
                 OnAddressLineOneChanged();
             }
@@ -3258,7 +3253,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnAddressLineTwoChanging(value);
                 ReportPropertyChanging("AddressLineTwo");
-                _AddressLineTwo = StructuralObject.SetValidValue(value, true);
+                _AddressLineTwo = StructuralObject.SetValidValue(value, true, "AddressLineTwo");
                 ReportPropertyChanged("AddressLineTwo");
                 OnAddressLineTwoChanged();
             }
@@ -3282,7 +3277,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnAdminDistrictTwoChanging(value);
                 ReportPropertyChanging("AdminDistrictTwo");
-                _AdminDistrictTwo = StructuralObject.SetValidValue(value, true);
+                _AdminDistrictTwo = StructuralObject.SetValidValue(value, true, "AdminDistrictTwo");
                 ReportPropertyChanged("AdminDistrictTwo");
                 OnAdminDistrictTwoChanged();
             }
@@ -3306,7 +3301,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnCommentsChanging(value);
                 ReportPropertyChanging("Comments");
-                _Comments = StructuralObject.SetValidValue(value, true);
+                _Comments = StructuralObject.SetValidValue(value, true, "Comments");
                 ReportPropertyChanged("Comments");
                 OnCommentsChanged();
             }
@@ -3330,7 +3325,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnAdminDistrictOneChanging(value);
                 ReportPropertyChanging("AdminDistrictOne");
-                _AdminDistrictOne = StructuralObject.SetValidValue(value, true);
+                _AdminDistrictOne = StructuralObject.SetValidValue(value, true, "AdminDistrictOne");
                 ReportPropertyChanged("AdminDistrictOne");
                 OnAdminDistrictOneChanged();
             }
@@ -3354,7 +3349,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnPostalCodeChanging(value);
                 ReportPropertyChanging("PostalCode");
-                _PostalCode = StructuralObject.SetValidValue(value, true);
+                _PostalCode = StructuralObject.SetValidValue(value, true, "PostalCode");
                 ReportPropertyChanged("PostalCode");
                 OnPostalCodeChanged();
             }
@@ -3378,7 +3373,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnPermissionsChanging(value);
                 ReportPropertyChanging("Permissions");
-                _Permissions = StructuralObject.SetValidValue(value, true);
+                _Permissions = StructuralObject.SetValidValue(value, true, "Permissions");
                 ReportPropertyChanged("Permissions");
                 OnPermissionsChanged();
             }
@@ -3402,7 +3397,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnHireDateChanging(value);
                 ReportPropertyChanging("HireDate");
-                _HireDate = StructuralObject.SetValidValue(value);
+                _HireDate = StructuralObject.SetValidValue(value, "HireDate");
                 ReportPropertyChanged("HireDate");
                 OnHireDateChanged();
             }
@@ -3426,7 +3421,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnSSNChanging(value);
                 ReportPropertyChanging("SSN");
-                _SSN = StructuralObject.SetValidValue(value, true);
+                _SSN = StructuralObject.SetValidValue(value, true, "SSN");
                 ReportPropertyChanged("SSN");
                 OnSSNChanged();
             }
@@ -3450,7 +3445,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLinkedUserAccountIdChanging(value);
                 ReportPropertyChanging("LinkedUserAccountId");
-                _LinkedUserAccountId = StructuralObject.SetValidValue(value);
+                _LinkedUserAccountId = StructuralObject.SetValidValue(value, "LinkedUserAccountId");
                 ReportPropertyChanged("LinkedUserAccountId");
                 OnLinkedUserAccountIdChanged();
             }
@@ -3474,7 +3469,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnEmployerIdChanging(value);
                 ReportPropertyChanging("EmployerId");
-                _EmployerId = StructuralObject.SetValidValue(value);
+                _EmployerId = StructuralObject.SetValidValue(value, "EmployerId");
                 ReportPropertyChanged("EmployerId");
                 OnEmployerIdChanged();
             }
@@ -3498,7 +3493,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLastCompassDirectionChanging(value);
                 ReportPropertyChanging("LastCompassDirection");
-                _LastCompassDirection = StructuralObject.SetValidValue(value);
+                _LastCompassDirection = StructuralObject.SetValidValue(value, "LastCompassDirection");
                 ReportPropertyChanged("LastCompassDirection");
                 OnLastCompassDirectionChanged();
             }
@@ -3522,7 +3517,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLastLongitudeChanging(value);
                 ReportPropertyChanging("LastLongitude");
-                _LastLongitude = StructuralObject.SetValidValue(value);
+                _LastLongitude = StructuralObject.SetValidValue(value, "LastLongitude");
                 ReportPropertyChanged("LastLongitude");
                 OnLastLongitudeChanged();
             }
@@ -3546,7 +3541,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLastLatitudeChanging(value);
                 ReportPropertyChanging("LastLatitude");
-                _LastLatitude = StructuralObject.SetValidValue(value);
+                _LastLatitude = StructuralObject.SetValidValue(value, "LastLatitude");
                 ReportPropertyChanged("LastLatitude");
                 OnLastLatitudeChanged();
             }
@@ -3570,7 +3565,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLastTimeStampChanging(value);
                 ReportPropertyChanging("LastTimeStamp");
-                _LastTimeStamp = StructuralObject.SetValidValue(value);
+                _LastTimeStamp = StructuralObject.SetValidValue(value, "LastTimeStamp");
                 ReportPropertyChanged("LastTimeStamp");
                 OnLastTimeStampChanged();
             }
@@ -3594,7 +3589,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLastSpeedChanging(value);
                 ReportPropertyChanging("LastSpeed");
-                _LastSpeed = StructuralObject.SetValidValue(value);
+                _LastSpeed = StructuralObject.SetValidValue(value, "LastSpeed");
                 ReportPropertyChanged("LastSpeed");
                 OnLastSpeedChanged();
             }
@@ -3618,7 +3613,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLastSourceChanging(value);
                 ReportPropertyChanging("LastSource");
-                _LastSource = StructuralObject.SetValidValue(value, true);
+                _LastSource = StructuralObject.SetValidValue(value, true, "LastSource");
                 ReportPropertyChanged("LastSource");
                 OnLastSourceChanged();
             }
@@ -3642,7 +3637,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLastPushToAzureTimeStampChanging(value);
                 ReportPropertyChanging("LastPushToAzureTimeStamp");
-                _LastPushToAzureTimeStamp = StructuralObject.SetValidValue(value);
+                _LastPushToAzureTimeStamp = StructuralObject.SetValidValue(value, "LastPushToAzureTimeStamp");
                 ReportPropertyChanged("LastPushToAzureTimeStamp");
                 OnLastPushToAzureTimeStampChanged();
             }
@@ -3666,7 +3661,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLastAccuracyChanging(value);
                 ReportPropertyChanging("LastAccuracy");
-                _LastAccuracy = StructuralObject.SetValidValue(value);
+                _LastAccuracy = StructuralObject.SetValidValue(value, "LastAccuracy");
                 ReportPropertyChanged("LastAccuracy");
                 OnLastAccuracyChanged();
             }
@@ -3690,7 +3685,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnCountryCodeChanging(value);
                 ReportPropertyChanging("CountryCode");
-                _CountryCode = StructuralObject.SetValidValue(value, true);
+                _CountryCode = StructuralObject.SetValidValue(value, true, "CountryCode");
                 ReportPropertyChanged("CountryCode");
                 OnCountryCodeChanged();
             }
@@ -3701,7 +3696,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
         #region Navigation Properties
     
         /// <summary>
@@ -3853,7 +3847,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -3872,7 +3866,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
+                    _Id = StructuralObject.SetValidValue(value, "Id");
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -3897,7 +3891,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnDateChanging(value);
                 ReportPropertyChanging("Date");
-                _Date = StructuralObject.SetValidValue(value);
+                _Date = StructuralObject.SetValidValue(value, "Date");
                 ReportPropertyChanged("Date");
                 OnDateChanged();
             }
@@ -3921,7 +3915,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnTypeChanging(value);
                 ReportPropertyChanging("Type");
-                _Type = StructuralObject.SetValidValue(value, true);
+                _Type = StructuralObject.SetValidValue(value, true, "Type");
                 ReportPropertyChanged("Type");
                 OnTypeChanged();
             }
@@ -3945,7 +3939,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnSummaryChanging(value);
                 ReportPropertyChanging("Summary");
-                _Summary = StructuralObject.SetValidValue(value, true);
+                _Summary = StructuralObject.SetValidValue(value, true, "Summary");
                 ReportPropertyChanged("Summary");
                 OnSummaryChanged();
             }
@@ -3969,7 +3963,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnNotesChanging(value);
                 ReportPropertyChanging("Notes");
-                _Notes = StructuralObject.SetValidValue(value, true);
+                _Notes = StructuralObject.SetValidValue(value, true, "Notes");
                 ReportPropertyChanged("Notes");
                 OnNotesChanged();
             }
@@ -3993,7 +3987,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnEmployeeIdChanging(value);
                 ReportPropertyChanging("EmployeeId");
-                _EmployeeId = StructuralObject.SetValidValue(value);
+                _EmployeeId = StructuralObject.SetValidValue(value, "EmployeeId");
                 ReportPropertyChanged("EmployeeId");
                 OnEmployeeIdChanged();
             }
@@ -4004,7 +3998,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
         #region Navigation Properties
     
         /// <summary>
@@ -4072,7 +4065,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -4091,7 +4084,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
+                    _Id = StructuralObject.SetValidValue(value, "Id");
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -4116,7 +4109,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnDateChanging(value);
                 ReportPropertyChanging("Date");
-                _Date = StructuralObject.SetValidValue(value);
+                _Date = StructuralObject.SetValidValue(value, "Date");
                 ReportPropertyChanged("Date");
                 OnDateChanged();
             }
@@ -4140,7 +4133,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnBusinessNameChanging(value);
                 ReportPropertyChanging("BusinessName");
-                _BusinessName = StructuralObject.SetValidValue(value, true);
+                _BusinessName = StructuralObject.SetValidValue(value, true, "BusinessName");
                 ReportPropertyChanged("BusinessName");
                 OnBusinessNameChanged();
             }
@@ -4164,7 +4157,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnUserEmailChanging(value);
                 ReportPropertyChanging("UserEmail");
-                _UserEmail = StructuralObject.SetValidValue(value, true);
+                _UserEmail = StructuralObject.SetValidValue(value, true, "UserEmail");
                 ReportPropertyChanged("UserEmail");
                 OnUserEmailChanged();
             }
@@ -4188,7 +4181,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnErrorTextChanging(value);
                 ReportPropertyChanging("ErrorText");
-                _ErrorText = StructuralObject.SetValidValue(value, true);
+                _ErrorText = StructuralObject.SetValidValue(value, true, "ErrorText");
                 ReportPropertyChanged("ErrorText");
                 OnErrorTextChanged();
             }
@@ -4212,7 +4205,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnInnerExceptionChanging(value);
                 ReportPropertyChanging("InnerException");
-                _InnerException = StructuralObject.SetValidValue(value, true);
+                _InnerException = StructuralObject.SetValidValue(value, true, "InnerException");
                 ReportPropertyChanged("InnerException");
                 OnInnerExceptionChanged();
             }
@@ -4223,7 +4216,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
     }
     
     /// <summary>
@@ -4259,7 +4251,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -4278,7 +4270,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
+                    _Id = StructuralObject.SetValidValue(value, "Id");
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -4303,7 +4295,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnNameChanging(value);
                 ReportPropertyChanging("Name");
-                _Name = StructuralObject.SetValidValue(value, false);
+                _Name = StructuralObject.SetValidValue(value, false, "Name");
                 ReportPropertyChanged("Name");
                 OnNameChanged();
             }
@@ -4327,7 +4319,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnRequiredChanging(value);
                 ReportPropertyChanging("Required");
-                _Required = StructuralObject.SetValidValue(value);
+                _Required = StructuralObject.SetValidValue(value, "Required");
                 ReportPropertyChanged("Required");
                 OnRequiredChanged();
             }
@@ -4351,7 +4343,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnTooltipChanging(value);
                 ReportPropertyChanging("Tooltip");
-                _Tooltip = StructuralObject.SetValidValue(value, true);
+                _Tooltip = StructuralObject.SetValidValue(value, true, "Tooltip");
                 ReportPropertyChanged("Tooltip");
                 OnTooltipChanged();
             }
@@ -4375,7 +4367,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnParentFieldIdChanging(value);
                 ReportPropertyChanging("ParentFieldId");
-                _ParentFieldId = StructuralObject.SetValidValue(value);
+                _ParentFieldId = StructuralObject.SetValidValue(value, "ParentFieldId");
                 ReportPropertyChanged("ParentFieldId");
                 OnParentFieldIdChanged();
             }
@@ -4399,7 +4391,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnServiceTemplateIdChanging(value);
                 ReportPropertyChanging("ServiceTemplateId");
-                _ServiceTemplateId = StructuralObject.SetValidValue(value);
+                _ServiceTemplateId = StructuralObject.SetValidValue(value, "ServiceTemplateId");
                 ReportPropertyChanged("ServiceTemplateId");
                 OnServiceTemplateIdChanged();
             }
@@ -4410,7 +4402,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
         #region Navigation Properties
     
         /// <summary>
@@ -4543,7 +4534,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -4562,7 +4553,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
+                    _Id = StructuralObject.SetValidValue(value, "Id");
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -4587,7 +4578,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnDataChanging(value);
                 ReportPropertyChanging("Data");
-                _Data = StructuralObject.SetValidValue(value);
+                _Data = StructuralObject.SetValidValue(value, "Data");
                 ReportPropertyChanged("Data");
                 OnDataChanged();
             }
@@ -4611,7 +4602,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnNameChanging(value);
                 ReportPropertyChanging("Name");
-                _Name = StructuralObject.SetValidValue(value, true);
+                _Name = StructuralObject.SetValidValue(value, true, "Name");
                 ReportPropertyChanged("Name");
                 OnNameChanged();
             }
@@ -4635,7 +4626,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLocationIdChanging(value);
                 ReportPropertyChanging("LocationId");
-                _LocationId = StructuralObject.SetValidValue(value);
+                _LocationId = StructuralObject.SetValidValue(value, "LocationId");
                 ReportPropertyChanged("LocationId");
                 OnLocationIdChanged();
             }
@@ -4659,7 +4650,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnPartyIdChanging(value);
                 ReportPropertyChanging("PartyId");
-                _PartyId = StructuralObject.SetValidValue(value);
+                _PartyId = StructuralObject.SetValidValue(value, "PartyId");
                 ReportPropertyChanged("PartyId");
                 OnPartyIdChanged();
             }
@@ -4670,7 +4661,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
         #region Navigation Properties
     
         /// <summary>
@@ -4778,7 +4768,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -4797,7 +4787,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
+                    _Id = StructuralObject.SetValidValue(value, "Id");
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -4822,7 +4812,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLocationIdChanging(value);
                 ReportPropertyChanging("LocationId");
-                _LocationId = StructuralObject.SetValidValue(value);
+                _LocationId = StructuralObject.SetValidValue(value, "LocationId");
                 ReportPropertyChanged("LocationId");
                 OnLocationIdChanged();
             }
@@ -4846,7 +4836,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnFixedScheduleOptionIntChanging(value);
                 ReportPropertyChanging("FixedScheduleOptionInt");
-                _FixedScheduleOptionInt = StructuralObject.SetValidValue(value);
+                _FixedScheduleOptionInt = StructuralObject.SetValidValue(value, "FixedScheduleOptionInt");
                 ReportPropertyChanged("FixedScheduleOptionInt");
                 OnFixedScheduleOptionIntChanged();
             }
@@ -4870,7 +4860,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnRelativeScheduleDaysChanging(value);
                 ReportPropertyChanging("RelativeScheduleDays");
-                _RelativeScheduleDays = StructuralObject.SetValidValue(value);
+                _RelativeScheduleDays = StructuralObject.SetValidValue(value, "RelativeScheduleDays");
                 ReportPropertyChanged("RelativeScheduleDays");
                 OnRelativeScheduleDaysChanged();
             }
@@ -4894,7 +4884,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnScheduleModeIntChanging(value);
                 ReportPropertyChanging("ScheduleModeInt");
-                _ScheduleModeInt = StructuralObject.SetValidValue(value);
+                _ScheduleModeInt = StructuralObject.SetValidValue(value, "ScheduleModeInt");
                 ReportPropertyChanged("ScheduleModeInt");
                 OnScheduleModeIntChanged();
             }
@@ -4918,7 +4908,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnSalesTermIdChanging(value);
                 ReportPropertyChanging("SalesTermId");
-                _SalesTermId = StructuralObject.SetValidValue(value);
+                _SalesTermId = StructuralObject.SetValidValue(value, "SalesTermId");
                 ReportPropertyChanged("SalesTermId");
                 OnSalesTermIdChanged();
             }
@@ -4942,7 +4932,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnMemoChanging(value);
                 ReportPropertyChanging("Memo");
-                _Memo = StructuralObject.SetValidValue(value, true);
+                _Memo = StructuralObject.SetValidValue(value, true, "Memo");
                 ReportPropertyChanged("Memo");
                 OnMemoChanged();
             }
@@ -4966,7 +4956,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnDueDateChanging(value);
                 ReportPropertyChanging("DueDate");
-                _DueDate = StructuralObject.SetValidValue(value);
+                _DueDate = StructuralObject.SetValidValue(value, "DueDate");
                 ReportPropertyChanged("DueDate");
                 OnDueDateChanged();
             }
@@ -4990,7 +4980,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnSyncTokenChanging(value);
                 ReportPropertyChanging("SyncToken");
-                _SyncToken = StructuralObject.SetValidValue(value, true);
+                _SyncToken = StructuralObject.SetValidValue(value, true, "SyncToken");
                 ReportPropertyChanged("SyncToken");
                 OnSyncTokenChanged();
             }
@@ -5014,7 +5004,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnCustomerIdChanging(value);
                 ReportPropertyChanging("CustomerId");
-                _CustomerId = StructuralObject.SetValidValue(value, true);
+                _CustomerId = StructuralObject.SetValidValue(value, true, "CustomerId");
                 ReportPropertyChanged("CustomerId");
                 OnCustomerIdChanged();
             }
@@ -5038,7 +5028,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnCreateTimeChanging(value);
                 ReportPropertyChanging("CreateTime");
-                _CreateTime = StructuralObject.SetValidValue(value, true);
+                _CreateTime = StructuralObject.SetValidValue(value, true, "CreateTime");
                 ReportPropertyChanged("CreateTime");
                 OnCreateTimeChanged();
             }
@@ -5062,7 +5052,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLastUpdatedTimeChanging(value);
                 ReportPropertyChanging("LastUpdatedTime");
-                _LastUpdatedTime = StructuralObject.SetValidValue(value, true);
+                _LastUpdatedTime = StructuralObject.SetValidValue(value, true, "LastUpdatedTime");
                 ReportPropertyChanged("LastUpdatedTime");
                 OnLastUpdatedTimeChanged();
             }
@@ -5086,7 +5076,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnBusinessAccountIdChanging(value);
                 ReportPropertyChanging("BusinessAccountId");
-                _BusinessAccountId = StructuralObject.SetValidValue(value);
+                _BusinessAccountId = StructuralObject.SetValidValue(value, "BusinessAccountId");
                 ReportPropertyChanged("BusinessAccountId");
                 OnBusinessAccountIdChanged();
             }
@@ -5110,7 +5100,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnClientIdChanging(value);
                 ReportPropertyChanging("ClientId");
-                _ClientId = StructuralObject.SetValidValue(value);
+                _ClientId = StructuralObject.SetValidValue(value, "ClientId");
                 ReportPropertyChanged("ClientId");
                 OnClientIdChanged();
             }
@@ -5121,7 +5111,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
         #region Navigation Properties
     
         /// <summary>
@@ -5365,7 +5354,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -5384,7 +5373,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
+                    _Id = StructuralObject.SetValidValue(value, "Id");
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -5409,7 +5398,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnInvoiceIdChanging(value);
                 ReportPropertyChanging("InvoiceId");
-                _InvoiceId = StructuralObject.SetValidValue(value);
+                _InvoiceId = StructuralObject.SetValidValue(value, "InvoiceId");
                 ReportPropertyChanged("InvoiceId");
                 OnInvoiceIdChanged();
             }
@@ -5433,7 +5422,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnDescriptionChanging(value);
                 ReportPropertyChanging("Description");
-                _Description = StructuralObject.SetValidValue(value, true);
+                _Description = StructuralObject.SetValidValue(value, true, "Description");
                 ReportPropertyChanged("Description");
                 OnDescriptionChanged();
             }
@@ -5457,7 +5446,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnAmountChanging(value);
                 ReportPropertyChanging("Amount");
-                _Amount = StructuralObject.SetValidValue(value, true);
+                _Amount = StructuralObject.SetValidValue(value, true, "Amount");
                 ReportPropertyChanged("Amount");
                 OnAmountChanged();
             }
@@ -5468,7 +5457,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
         #region Navigation Properties
     
         /// <summary>
@@ -5536,7 +5524,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -5555,7 +5543,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
+                    _Id = StructuralObject.SetValidValue(value, "Id");
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -5580,7 +5568,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnNameChanging(value);
                 ReportPropertyChanging("Name");
-                _Name = StructuralObject.SetValidValue(value, true);
+                _Name = StructuralObject.SetValidValue(value, true, "Name");
                 ReportPropertyChanged("Name");
                 OnNameChanged();
             }
@@ -5604,7 +5592,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnAddressLineOneChanging(value);
                 ReportPropertyChanging("AddressLineOne");
-                _AddressLineOne = StructuralObject.SetValidValue(value, true);
+                _AddressLineOne = StructuralObject.SetValidValue(value, true, "AddressLineOne");
                 ReportPropertyChanged("AddressLineOne");
                 OnAddressLineOneChanged();
             }
@@ -5628,7 +5616,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLongitudeChanging(value);
                 ReportPropertyChanging("Longitude");
-                _Longitude = StructuralObject.SetValidValue(value);
+                _Longitude = StructuralObject.SetValidValue(value, "Longitude");
                 ReportPropertyChanged("Longitude");
                 OnLongitudeChanged();
             }
@@ -5652,7 +5640,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnPostalCodeChanging(value);
                 ReportPropertyChanging("PostalCode");
-                _PostalCode = StructuralObject.SetValidValue(value, true);
+                _PostalCode = StructuralObject.SetValidValue(value, true, "PostalCode");
                 ReportPropertyChanged("PostalCode");
                 OnPostalCodeChanged();
             }
@@ -5676,7 +5664,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnAddressLineTwoChanging(value);
                 ReportPropertyChanging("AddressLineTwo");
-                _AddressLineTwo = StructuralObject.SetValidValue(value, true);
+                _AddressLineTwo = StructuralObject.SetValidValue(value, true, "AddressLineTwo");
                 ReportPropertyChanged("AddressLineTwo");
                 OnAddressLineTwoChanged();
             }
@@ -5700,7 +5688,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnAdminDistrictOneChanging(value);
                 ReportPropertyChanging("AdminDistrictOne");
-                _AdminDistrictOne = StructuralObject.SetValidValue(value, true);
+                _AdminDistrictOne = StructuralObject.SetValidValue(value, true, "AdminDistrictOne");
                 ReportPropertyChanged("AdminDistrictOne");
                 OnAdminDistrictOneChanged();
             }
@@ -5724,7 +5712,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLatitudeChanging(value);
                 ReportPropertyChanging("Latitude");
-                _Latitude = StructuralObject.SetValidValue(value);
+                _Latitude = StructuralObject.SetValidValue(value, "Latitude");
                 ReportPropertyChanged("Latitude");
                 OnLatitudeChanged();
             }
@@ -5748,7 +5736,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnAdminDistrictTwoChanging(value);
                 ReportPropertyChanging("AdminDistrictTwo");
-                _AdminDistrictTwo = StructuralObject.SetValidValue(value, true);
+                _AdminDistrictTwo = StructuralObject.SetValidValue(value, true, "AdminDistrictTwo");
                 ReportPropertyChanged("AdminDistrictTwo");
                 OnAdminDistrictTwoChanged();
             }
@@ -5772,7 +5760,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnRegionIdChanging(value);
                 ReportPropertyChanging("RegionId");
-                _RegionId = StructuralObject.SetValidValue(value);
+                _RegionId = StructuralObject.SetValidValue(value, "RegionId");
                 ReportPropertyChanged("RegionId");
                 OnRegionIdChanged();
             }
@@ -5796,7 +5784,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnBusinessAccountIdIfDepotChanging(value);
                 ReportPropertyChanging("BusinessAccountIdIfDepot");
-                _BusinessAccountIdIfDepot = StructuralObject.SetValidValue(value);
+                _BusinessAccountIdIfDepot = StructuralObject.SetValidValue(value, "BusinessAccountIdIfDepot");
                 ReportPropertyChanged("BusinessAccountIdIfDepot");
                 OnBusinessAccountIdIfDepotChanged();
             }
@@ -5820,7 +5808,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnBusinessAccountIdChanging(value);
                 ReportPropertyChanging("BusinessAccountId");
-                _BusinessAccountId = StructuralObject.SetValidValue(value);
+                _BusinessAccountId = StructuralObject.SetValidValue(value, "BusinessAccountId");
                 ReportPropertyChanged("BusinessAccountId");
                 OnBusinessAccountIdChanged();
             }
@@ -5844,7 +5832,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnClientIdChanging(value);
                 ReportPropertyChanging("ClientId");
-                _ClientId = StructuralObject.SetValidValue(value);
+                _ClientId = StructuralObject.SetValidValue(value, "ClientId");
                 ReportPropertyChanged("ClientId");
                 OnClientIdChanged();
             }
@@ -5868,7 +5856,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnIsDefaultBillingLocationChanging(value);
                 ReportPropertyChanging("IsDefaultBillingLocation");
-                _IsDefaultBillingLocation = StructuralObject.SetValidValue(value);
+                _IsDefaultBillingLocation = StructuralObject.SetValidValue(value, "IsDefaultBillingLocation");
                 ReportPropertyChanged("IsDefaultBillingLocation");
                 OnIsDefaultBillingLocationChanged();
             }
@@ -5892,7 +5880,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnCountryCodeChanging(value);
                 ReportPropertyChanging("CountryCode");
-                _CountryCode = StructuralObject.SetValidValue(value, true);
+                _CountryCode = StructuralObject.SetValidValue(value, true, "CountryCode");
                 ReportPropertyChanged("CountryCode");
                 OnCountryCodeChanged();
             }
@@ -5916,7 +5904,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnDateDeletedChanging(value);
                 ReportPropertyChanging("DateDeleted");
-                _DateDeleted = StructuralObject.SetValidValue(value);
+                _DateDeleted = StructuralObject.SetValidValue(value, "DateDeleted");
                 ReportPropertyChanged("DateDeleted");
                 OnDateDeletedChanged();
             }
@@ -5927,7 +5915,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
         #region Navigation Properties
     
         /// <summary>
@@ -6269,7 +6256,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -6286,7 +6273,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLocationIdChanging(value);
                 ReportPropertyChanging("LocationId");
-                _LocationId = StructuralObject.SetValidValue(value);
+                _LocationId = StructuralObject.SetValidValue(value, "LocationId");
                 ReportPropertyChanged("LocationId");
                 OnLocationIdChanged();
             }
@@ -6310,7 +6297,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLocationFieldTypeIntChanging(value);
                 ReportPropertyChanging("LocationFieldTypeInt");
-                _LocationFieldTypeInt = StructuralObject.SetValidValue(value);
+                _LocationFieldTypeInt = StructuralObject.SetValidValue(value, "LocationFieldTypeInt");
                 ReportPropertyChanged("LocationFieldTypeInt");
                 OnLocationFieldTypeIntChanged();
             }
@@ -6321,7 +6308,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
         #region Navigation Properties
     
         /// <summary>
@@ -6401,7 +6387,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -6418,7 +6404,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnMaskChanging(value);
                 ReportPropertyChanging("Mask");
-                _Mask = StructuralObject.SetValidValue(value, false);
+                _Mask = StructuralObject.SetValidValue(value, false, "Mask");
                 ReportPropertyChanged("Mask");
                 OnMaskChanged();
             }
@@ -6442,7 +6428,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnDecimalPlacesChanging(value);
                 ReportPropertyChanging("DecimalPlaces");
-                _DecimalPlaces = StructuralObject.SetValidValue(value);
+                _DecimalPlaces = StructuralObject.SetValidValue(value, "DecimalPlaces");
                 ReportPropertyChanged("DecimalPlaces");
                 OnDecimalPlacesChanged();
             }
@@ -6466,7 +6452,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnMinimumChanging(value);
                 ReportPropertyChanging("Minimum");
-                _Minimum = StructuralObject.SetValidValue(value);
+                _Minimum = StructuralObject.SetValidValue(value, "Minimum");
                 ReportPropertyChanged("Minimum");
                 OnMinimumChanged();
             }
@@ -6490,7 +6476,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnMaximumChanging(value);
                 ReportPropertyChanging("Maximum");
-                _Maximum = StructuralObject.SetValidValue(value);
+                _Maximum = StructuralObject.SetValidValue(value, "Maximum");
                 ReportPropertyChanged("Maximum");
                 OnMaximumChanged();
             }
@@ -6514,7 +6500,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnValueChanging(value);
                 ReportPropertyChanging("Value");
-                _Value = StructuralObject.SetValidValue(value);
+                _Value = StructuralObject.SetValidValue(value, "Value");
                 ReportPropertyChanged("Value");
                 OnValueChanged();
             }
@@ -6525,7 +6511,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
     }
     
     /// <summary>
@@ -6559,7 +6544,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -6576,7 +6561,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnAllowMultipleSelectionChanging(value);
                 ReportPropertyChanging("AllowMultipleSelection");
-                _AllowMultipleSelection = StructuralObject.SetValidValue(value);
+                _AllowMultipleSelection = StructuralObject.SetValidValue(value, "AllowMultipleSelection");
                 ReportPropertyChanged("AllowMultipleSelection");
                 OnAllowMultipleSelectionChanged();
             }
@@ -6600,7 +6585,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnTypeIntChanging(value);
                 ReportPropertyChanging("TypeInt");
-                _TypeInt = StructuralObject.SetValidValue(value);
+                _TypeInt = StructuralObject.SetValidValue(value, "TypeInt");
                 ReportPropertyChanged("TypeInt");
                 OnTypeIntChanged();
             }
@@ -6624,7 +6609,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnOptionsStringChanging(value);
                 ReportPropertyChanging("OptionsString");
-                _OptionsString = StructuralObject.SetValidValue(value, true);
+                _OptionsString = StructuralObject.SetValidValue(value, true, "OptionsString");
                 ReportPropertyChanged("OptionsString");
                 OnOptionsStringChanged();
             }
@@ -6648,7 +6633,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnValueChanging(value);
                 ReportPropertyChanging("Value");
-                _Value = StructuralObject.SetValidValue(value, true);
+                _Value = StructuralObject.SetValidValue(value, true, "Value");
                 ReportPropertyChanged("Value");
                 OnValueChanged();
             }
@@ -6659,7 +6644,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
     }
     
     /// <summary>
@@ -6687,7 +6671,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -6706,7 +6690,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
+                    _Id = StructuralObject.SetValidValue(value, "Id");
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -6718,7 +6702,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
         #region Navigation Properties
     
         /// <summary>
@@ -6834,7 +6817,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
         #region Navigation Properties
     
         /// <summary>
@@ -6904,7 +6886,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -6923,7 +6905,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
+                    _Id = StructuralObject.SetValidValue(value, "Id");
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -6948,7 +6930,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnClientIdChanging(value);
                 ReportPropertyChanging("ClientId");
-                _ClientId = StructuralObject.SetValidValue(value);
+                _ClientId = StructuralObject.SetValidValue(value, "ClientId");
                 ReportPropertyChanged("ClientId");
                 OnClientIdChanged();
             }
@@ -6975,7 +6957,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnExcludedDatesStringChanging(value);
                 ReportPropertyChanging("ExcludedDatesString");
-                _ExcludedDatesString = StructuralObject.SetValidValue(value, true);
+                _ExcludedDatesString = StructuralObject.SetValidValue(value, true, "ExcludedDatesString");
                 ReportPropertyChanged("ExcludedDatesString");
                 OnExcludedDatesStringChanged();
             }
@@ -6999,7 +6981,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnDateDeletedChanging(value);
                 ReportPropertyChanging("DateDeleted");
-                _DateDeleted = StructuralObject.SetValidValue(value);
+                _DateDeleted = StructuralObject.SetValidValue(value, "DateDeleted");
                 ReportPropertyChanged("DateDeleted");
                 OnDateDeletedChanged();
             }
@@ -7010,7 +6992,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
         #region Navigation Properties
     
         /// <summary>
@@ -7200,7 +7181,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -7219,7 +7200,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
+                    _Id = StructuralObject.SetValidValue(value, "Id");
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -7244,7 +7225,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnNameChanging(value);
                 ReportPropertyChanging("Name");
-                _Name = StructuralObject.SetValidValue(value, false);
+                _Name = StructuralObject.SetValidValue(value, false, "Name");
                 ReportPropertyChanged("Name");
                 OnNameChanged();
             }
@@ -7268,7 +7249,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnBusinessAccountIdChanging(value);
                 ReportPropertyChanging("BusinessAccountId");
-                _BusinessAccountId = StructuralObject.SetValidValue(value);
+                _BusinessAccountId = StructuralObject.SetValidValue(value, "BusinessAccountId");
                 ReportPropertyChanged("BusinessAccountId");
                 OnBusinessAccountIdChanged();
             }
@@ -7292,7 +7273,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnColorChanging(value);
                 ReportPropertyChanging("Color");
-                _Color = StructuralObject.SetValidValue(value, true);
+                _Color = StructuralObject.SetValidValue(value, true, "Color");
                 ReportPropertyChanged("Color");
                 OnColorChanged();
             }
@@ -7316,7 +7297,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnNotesChanging(value);
                 ReportPropertyChanging("Notes");
-                _Notes = StructuralObject.SetValidValue(value, true);
+                _Notes = StructuralObject.SetValidValue(value, true, "Notes");
                 ReportPropertyChanged("Notes");
                 OnNotesChanged();
             }
@@ -7327,7 +7308,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
         #region Navigation Properties
     
         /// <summary>
@@ -7423,7 +7403,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -7442,7 +7422,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
+                    _Id = StructuralObject.SetValidValue(value, "Id");
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -7467,7 +7447,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnEndDateChanging(value);
                 ReportPropertyChanging("EndDate");
-                _EndDate = StructuralObject.SetValidValue(value);
+                _EndDate = StructuralObject.SetValidValue(value, "EndDate");
                 ReportPropertyChanged("EndDate");
                 OnEndDateChanged();
             }
@@ -7491,7 +7471,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnEndAfterTimesChanging(value);
                 ReportPropertyChanging("EndAfterTimes");
-                _EndAfterTimes = StructuralObject.SetValidValue(value);
+                _EndAfterTimes = StructuralObject.SetValidValue(value, "EndAfterTimes");
                 ReportPropertyChanged("EndAfterTimes");
                 OnEndAfterTimesChanged();
             }
@@ -7515,7 +7495,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnRepeatEveryTimesChanging(value);
                 ReportPropertyChanging("RepeatEveryTimes");
-                _RepeatEveryTimes = StructuralObject.SetValidValue(value);
+                _RepeatEveryTimes = StructuralObject.SetValidValue(value, "RepeatEveryTimes");
                 ReportPropertyChanged("RepeatEveryTimes");
                 OnRepeatEveryTimesChanged();
             }
@@ -7539,7 +7519,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnFrequencyIntChanging(value);
                 ReportPropertyChanging("FrequencyInt");
-                _FrequencyInt = StructuralObject.SetValidValue(value);
+                _FrequencyInt = StructuralObject.SetValidValue(value, "FrequencyInt");
                 ReportPropertyChanged("FrequencyInt");
                 OnFrequencyIntChanged();
             }
@@ -7563,7 +7543,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnFrequencyDetailIntChanging(value);
                 ReportPropertyChanging("FrequencyDetailInt");
-                _FrequencyDetailInt = StructuralObject.SetValidValue(value);
+                _FrequencyDetailInt = StructuralObject.SetValidValue(value, "FrequencyDetailInt");
                 ReportPropertyChanged("FrequencyDetailInt");
                 OnFrequencyDetailIntChanged();
             }
@@ -7587,7 +7567,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnStartDateChanging(value);
                 ReportPropertyChanging("StartDate");
-                _StartDate = StructuralObject.SetValidValue(value);
+                _StartDate = StructuralObject.SetValidValue(value, "StartDate");
                 ReportPropertyChanged("StartDate");
                 OnStartDateChanged();
             }
@@ -7598,7 +7578,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
         #region Navigation Properties
     
         /// <summary>
@@ -7666,7 +7645,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -7685,7 +7664,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
+                    _Id = StructuralObject.SetValidValue(value, "Id");
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -7710,7 +7689,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnNameChanging(value);
                 ReportPropertyChanging("Name");
-                _Name = StructuralObject.SetValidValue(value, true);
+                _Name = StructuralObject.SetValidValue(value, true, "Name");
                 ReportPropertyChanged("Name");
                 OnNameChanged();
             }
@@ -7734,7 +7713,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnDescriptionChanging(value);
                 ReportPropertyChanging("Description");
-                _Description = StructuralObject.SetValidValue(value, true);
+                _Description = StructuralObject.SetValidValue(value, true, "Description");
                 ReportPropertyChanged("Description");
                 OnDescriptionChanged();
             }
@@ -7758,7 +7737,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnRoleTypeIntChanging(value);
                 ReportPropertyChanging("RoleTypeInt");
-                _RoleTypeInt = StructuralObject.SetValidValue(value);
+                _RoleTypeInt = StructuralObject.SetValidValue(value, "RoleTypeInt");
                 ReportPropertyChanged("RoleTypeInt");
                 OnRoleTypeIntChanged();
             }
@@ -7782,7 +7761,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnOwnerBusinessAccountIdChanging(value);
                 ReportPropertyChanging("OwnerBusinessAccountId");
-                _OwnerBusinessAccountId = StructuralObject.SetValidValue(value);
+                _OwnerBusinessAccountId = StructuralObject.SetValidValue(value, "OwnerBusinessAccountId");
                 ReportPropertyChanged("OwnerBusinessAccountId");
                 OnOwnerBusinessAccountIdChanged();
             }
@@ -7793,7 +7772,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
         #region Navigation Properties
     
         /// <summary>
@@ -7915,7 +7893,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -7934,7 +7912,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
+                    _Id = StructuralObject.SetValidValue(value, "Id");
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -7959,7 +7937,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnNameChanging(value);
                 ReportPropertyChanging("Name");
-                _Name = StructuralObject.SetValidValue(value, true);
+                _Name = StructuralObject.SetValidValue(value, true, "Name");
                 ReportPropertyChanged("Name");
                 OnNameChanged();
             }
@@ -7983,7 +7961,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnDateChanging(value);
                 ReportPropertyChanging("Date");
-                _Date = StructuralObject.SetValidValue(value);
+                _Date = StructuralObject.SetValidValue(value, "Date");
                 ReportPropertyChanged("Date");
                 OnDateChanged();
             }
@@ -8007,7 +7985,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnStartTimeChanging(value);
                 ReportPropertyChanging("StartTime");
-                _StartTime = StructuralObject.SetValidValue(value);
+                _StartTime = StructuralObject.SetValidValue(value, "StartTime");
                 ReportPropertyChanged("StartTime");
                 OnStartTimeChanged();
             }
@@ -8031,7 +8009,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnEndTimeChanging(value);
                 ReportPropertyChanging("EndTime");
-                _EndTime = StructuralObject.SetValidValue(value);
+                _EndTime = StructuralObject.SetValidValue(value, "EndTime");
                 ReportPropertyChanged("EndTime");
                 OnEndTimeChanged();
             }
@@ -8055,7 +8033,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnOwnerBusinessAccountIdChanging(value);
                 ReportPropertyChanging("OwnerBusinessAccountId");
-                _OwnerBusinessAccountId = StructuralObject.SetValidValue(value);
+                _OwnerBusinessAccountId = StructuralObject.SetValidValue(value, "OwnerBusinessAccountId");
                 ReportPropertyChanged("OwnerBusinessAccountId");
                 OnOwnerBusinessAccountIdChanged();
             }
@@ -8079,7 +8057,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnRouteTypeChanging(value);
                 ReportPropertyChanging("RouteType");
-                _RouteType = StructuralObject.SetValidValue(value, false);
+                _RouteType = StructuralObject.SetValidValue(value, false, "RouteType");
                 ReportPropertyChanged("RouteType");
                 OnRouteTypeChanged();
             }
@@ -8090,7 +8068,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
         #region Navigation Properties
     
         /// <summary>
@@ -8228,7 +8205,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -8247,7 +8224,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
+                    _Id = StructuralObject.SetValidValue(value, "Id");
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -8272,7 +8249,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnOrderInRouteChanging(value);
                 ReportPropertyChanging("OrderInRoute");
-                _OrderInRoute = StructuralObject.SetValidValue(value);
+                _OrderInRoute = StructuralObject.SetValidValue(value, "OrderInRoute");
                 ReportPropertyChanged("OrderInRoute");
                 OnOrderInRouteChanged();
             }
@@ -8296,7 +8273,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLocationIdChanging(value);
                 ReportPropertyChanging("LocationId");
-                _LocationId = StructuralObject.SetValidValue(value);
+                _LocationId = StructuralObject.SetValidValue(value, "LocationId");
                 ReportPropertyChanged("LocationId");
                 OnLocationIdChanged();
             }
@@ -8320,7 +8297,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnRouteIdChanging(value);
                 ReportPropertyChanging("RouteId");
-                _RouteId = StructuralObject.SetValidValue(value);
+                _RouteId = StructuralObject.SetValidValue(value, "RouteId");
                 ReportPropertyChanged("RouteId");
                 OnRouteIdChanged();
             }
@@ -8344,7 +8321,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnClientIdChanging(value);
                 ReportPropertyChanging("ClientId");
-                _ClientId = StructuralObject.SetValidValue(value);
+                _ClientId = StructuralObject.SetValidValue(value, "ClientId");
                 ReportPropertyChanged("ClientId");
                 OnClientIdChanged();
             }
@@ -8355,7 +8332,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
         #region Navigation Properties
     
         /// <summary>
@@ -8533,7 +8509,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -8552,7 +8528,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
+                    _Id = StructuralObject.SetValidValue(value, "Id");
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -8577,7 +8553,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLocationIdChanging(value);
                 ReportPropertyChanging("LocationId");
-                _LocationId = StructuralObject.SetValidValue(value);
+                _LocationId = StructuralObject.SetValidValue(value, "LocationId");
                 ReportPropertyChanged("LocationId");
                 OnLocationIdChanged();
             }
@@ -8601,7 +8577,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnRouteDestinationIdChanging(value);
                 ReportPropertyChanging("RouteDestinationId");
-                _RouteDestinationId = StructuralObject.SetValidValue(value);
+                _RouteDestinationId = StructuralObject.SetValidValue(value, "RouteDestinationId");
                 ReportPropertyChanged("RouteDestinationId");
                 OnRouteDestinationIdChanged();
             }
@@ -8625,7 +8601,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnClientIdChanging(value);
                 ReportPropertyChanging("ClientId");
-                _ClientId = StructuralObject.SetValidValue(value);
+                _ClientId = StructuralObject.SetValidValue(value, "ClientId");
                 ReportPropertyChanged("ClientId");
                 OnClientIdChanged();
             }
@@ -8649,7 +8625,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnServiceIdChanging(value);
                 ReportPropertyChanging("ServiceId");
-                _ServiceId = StructuralObject.SetValidValue(value);
+                _ServiceId = StructuralObject.SetValidValue(value, "ServiceId");
                 ReportPropertyChanged("ServiceId");
                 OnServiceIdChanged();
             }
@@ -8673,7 +8649,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnOriginalDateChanging(value);
                 ReportPropertyChanging("OriginalDate");
-                _OriginalDate = StructuralObject.SetValidValue(value);
+                _OriginalDate = StructuralObject.SetValidValue(value, "OriginalDate");
                 ReportPropertyChanged("OriginalDate");
                 OnOriginalDateChanged();
             }
@@ -8697,7 +8673,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnBusinessAccountIdChanging(value);
                 ReportPropertyChanging("BusinessAccountId");
-                _BusinessAccountId = StructuralObject.SetValidValue(value);
+                _BusinessAccountId = StructuralObject.SetValidValue(value, "BusinessAccountId");
                 ReportPropertyChanged("BusinessAccountId");
                 OnBusinessAccountIdChanged();
             }
@@ -8721,7 +8697,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnEstimatedDurationChanging(value);
                 ReportPropertyChanging("EstimatedDuration");
-                _EstimatedDuration = StructuralObject.SetValidValue(value);
+                _EstimatedDuration = StructuralObject.SetValidValue(value, "EstimatedDuration");
                 ReportPropertyChanged("EstimatedDuration");
                 OnEstimatedDurationChanged();
             }
@@ -8745,7 +8721,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnNameChanging(value);
                 ReportPropertyChanging("Name");
-                _Name = StructuralObject.SetValidValue(value, false);
+                _Name = StructuralObject.SetValidValue(value, false, "Name");
                 ReportPropertyChanged("Name");
                 OnNameChanged();
             }
@@ -8769,7 +8745,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnStatusIntChanging(value);
                 ReportPropertyChanging("StatusInt");
-                _StatusInt = StructuralObject.SetValidValue(value);
+                _StatusInt = StructuralObject.SetValidValue(value, "StatusInt");
                 ReportPropertyChanged("StatusInt");
                 OnStatusIntChanged();
             }
@@ -8793,7 +8769,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnDateChanging(value);
                 ReportPropertyChanging("Date");
-                _Date = StructuralObject.SetValidValue(value);
+                _Date = StructuralObject.SetValidValue(value, "Date");
                 ReportPropertyChanged("Date");
                 OnDateChanged();
             }
@@ -8817,7 +8793,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnOrderInRouteDestinationChanging(value);
                 ReportPropertyChanging("OrderInRouteDestination");
-                _OrderInRouteDestination = StructuralObject.SetValidValue(value);
+                _OrderInRouteDestination = StructuralObject.SetValidValue(value, "OrderInRouteDestination");
                 ReportPropertyChanged("OrderInRouteDestination");
                 OnOrderInRouteDestinationChanged();
             }
@@ -8841,7 +8817,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnRecurringServiceIdChanging(value);
                 ReportPropertyChanging("RecurringServiceId");
-                _RecurringServiceId = StructuralObject.SetValidValue(value);
+                _RecurringServiceId = StructuralObject.SetValidValue(value, "RecurringServiceId");
                 ReportPropertyChanged("RecurringServiceId");
                 OnRecurringServiceIdChanged();
             }
@@ -8865,7 +8841,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnDelayedChildIdChanging(value);
                 ReportPropertyChanging("DelayedChildId");
-                _DelayedChildId = StructuralObject.SetValidValue(value);
+                _DelayedChildId = StructuralObject.SetValidValue(value, "DelayedChildId");
                 ReportPropertyChanged("DelayedChildId");
                 OnDelayedChildIdChanged();
             }
@@ -8889,7 +8865,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnTaskStatusIdChanging(value);
                 ReportPropertyChanging("TaskStatusId");
-                _TaskStatusId = StructuralObject.SetValidValue(value);
+                _TaskStatusId = StructuralObject.SetValidValue(value, "TaskStatusId");
                 ReportPropertyChanged("TaskStatusId");
                 OnTaskStatusIdChanged();
             }
@@ -8900,7 +8876,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
         #region Navigation Properties
     
         /// <summary>
@@ -9198,7 +9173,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -9217,7 +9192,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
+                    _Id = StructuralObject.SetValidValue(value, "Id");
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -9242,7 +9217,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnDueDaysChanging(value);
                 ReportPropertyChanging("DueDays");
-                _DueDays = StructuralObject.SetValidValue(value);
+                _DueDays = StructuralObject.SetValidValue(value, "DueDays");
                 ReportPropertyChanged("DueDays");
                 OnDueDaysChanged();
             }
@@ -9266,7 +9241,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnNameChanging(value);
                 ReportPropertyChanging("Name");
-                _Name = StructuralObject.SetValidValue(value, false);
+                _Name = StructuralObject.SetValidValue(value, false, "Name");
                 ReportPropertyChanged("Name");
                 OnNameChanged();
             }
@@ -9277,7 +9252,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
         #region Navigation Properties
     
         /// <summary>
@@ -9335,7 +9309,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -9354,7 +9328,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
+                    _Id = StructuralObject.SetValidValue(value, "Id");
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -9379,7 +9353,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnClientIdChanging(value);
                 ReportPropertyChanging("ClientId");
-                _ClientId = StructuralObject.SetValidValue(value);
+                _ClientId = StructuralObject.SetValidValue(value, "ClientId");
                 ReportPropertyChanged("ClientId");
                 OnClientIdChanged();
             }
@@ -9403,7 +9377,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnServiceProviderIdChanging(value);
                 ReportPropertyChanging("ServiceProviderId");
-                _ServiceProviderId = StructuralObject.SetValidValue(value);
+                _ServiceProviderId = StructuralObject.SetValidValue(value, "ServiceProviderId");
                 ReportPropertyChanged("ServiceProviderId");
                 OnServiceProviderIdChanged();
             }
@@ -9427,7 +9401,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnRecurringServiceIdChanging(value);
                 ReportPropertyChanging("RecurringServiceId");
-                _RecurringServiceId = StructuralObject.SetValidValue(value);
+                _RecurringServiceId = StructuralObject.SetValidValue(value, "RecurringServiceId");
                 ReportPropertyChanged("RecurringServiceId");
                 OnRecurringServiceIdChanged();
             }
@@ -9451,7 +9425,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnServiceDateChanging(value);
                 ReportPropertyChanging("ServiceDate");
-                _ServiceDate = StructuralObject.SetValidValue(value);
+                _ServiceDate = StructuralObject.SetValidValue(value, "ServiceDate");
                 ReportPropertyChanged("ServiceDate");
                 OnServiceDateChanged();
             }
@@ -9462,7 +9436,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
         #region Navigation Properties
     
         /// <summary>
@@ -9668,7 +9641,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -9687,7 +9660,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
+                    _Id = StructuralObject.SetValidValue(value, "Id");
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -9712,7 +9685,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnOwnerServiceProviderIdChanging(value);
                 ReportPropertyChanging("OwnerServiceProviderId");
-                _OwnerServiceProviderId = StructuralObject.SetValidValue(value);
+                _OwnerServiceProviderId = StructuralObject.SetValidValue(value, "OwnerServiceProviderId");
                 ReportPropertyChanged("OwnerServiceProviderId");
                 OnOwnerServiceProviderIdChanged();
             }
@@ -9736,7 +9709,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnOwnerClientIdChanging(value);
                 ReportPropertyChanging("OwnerClientId");
-                _OwnerClientId = StructuralObject.SetValidValue(value);
+                _OwnerClientId = StructuralObject.SetValidValue(value, "OwnerClientId");
                 ReportPropertyChanged("OwnerClientId");
                 OnOwnerClientIdChanged();
             }
@@ -9760,7 +9733,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnOwnerServiceTemplateIdChanging(value);
                 ReportPropertyChanging("OwnerServiceTemplateId");
-                _OwnerServiceTemplateId = StructuralObject.SetValidValue(value);
+                _OwnerServiceTemplateId = StructuralObject.SetValidValue(value, "OwnerServiceTemplateId");
                 ReportPropertyChanged("OwnerServiceTemplateId");
                 OnOwnerServiceTemplateIdChanged();
             }
@@ -9784,7 +9757,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLevelIntChanging(value);
                 ReportPropertyChanging("LevelInt");
-                _LevelInt = StructuralObject.SetValidValue(value);
+                _LevelInt = StructuralObject.SetValidValue(value, "LevelInt");
                 ReportPropertyChanged("LevelInt");
                 OnLevelIntChanged();
             }
@@ -9808,7 +9781,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnNameChanging(value);
                 ReportPropertyChanging("Name");
-                _Name = StructuralObject.SetValidValue(value, true);
+                _Name = StructuralObject.SetValidValue(value, true, "Name");
                 ReportPropertyChanged("Name");
                 OnNameChanged();
             }
@@ -9819,7 +9792,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
         #region Navigation Properties
     
         /// <summary>
@@ -10123,7 +10095,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -10142,7 +10114,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 {
                     OnServiceTemplateIdChanging(value);
                     ReportPropertyChanging("ServiceTemplateId");
-                    _ServiceTemplateId = StructuralObject.SetValidValue(value);
+                    _ServiceTemplateId = StructuralObject.SetValidValue(value, "ServiceTemplateId");
                     ReportPropertyChanged("ServiceTemplateId");
                     OnServiceTemplateIdChanged();
                 }
@@ -10169,7 +10141,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 {
                     OnBusinessAccountIdChanging(value);
                     ReportPropertyChanging("BusinessAccountId");
-                    _BusinessAccountId = StructuralObject.SetValidValue(value);
+                    _BusinessAccountId = StructuralObject.SetValidValue(value, "BusinessAccountId");
                     ReportPropertyChanged("BusinessAccountId");
                     OnBusinessAccountIdChanged();
                 }
@@ -10181,7 +10153,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
     }
     
     /// <summary>
@@ -10211,7 +10182,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -10228,7 +10199,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnValueChanging(value);
                 ReportPropertyChanging("Value");
-                _Value = StructuralObject.SetValidValue(value, true);
+                _Value = StructuralObject.SetValidValue(value, true, "Value");
                 ReportPropertyChanged("Value");
                 OnValueChanged();
             }
@@ -10239,7 +10210,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
     }
     
     /// <summary>
@@ -10269,7 +10239,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -10288,7 +10258,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
+                    _Id = StructuralObject.SetValidValue(value, "Id");
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -10313,7 +10283,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnNameChanging(value);
                 ReportPropertyChanging("Name");
-                _Name = StructuralObject.SetValidValue(value, false);
+                _Name = StructuralObject.SetValidValue(value, false, "Name");
                 ReportPropertyChanged("Name");
                 OnNameChanged();
             }
@@ -10337,7 +10307,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLongitudeChanging(value);
                 ReportPropertyChanging("Longitude");
-                _Longitude = StructuralObject.SetValidValue(value);
+                _Longitude = StructuralObject.SetValidValue(value, "Longitude");
                 ReportPropertyChanged("Longitude");
                 OnLongitudeChanged();
             }
@@ -10361,7 +10331,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLatitudeChanging(value);
                 ReportPropertyChanging("Latitude");
-                _Latitude = StructuralObject.SetValidValue(value);
+                _Latitude = StructuralObject.SetValidValue(value, "Latitude");
                 ReportPropertyChanged("Latitude");
                 OnLatitudeChanged();
             }
@@ -10385,7 +10355,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnNotesChanging(value);
                 ReportPropertyChanging("Notes");
-                _Notes = StructuralObject.SetValidValue(value, true);
+                _Notes = StructuralObject.SetValidValue(value, true, "Notes");
                 ReportPropertyChanged("Notes");
                 OnNotesChanged();
             }
@@ -10409,7 +10379,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLocationIdChanging(value);
                 ReportPropertyChanging("LocationId");
-                _LocationId = StructuralObject.SetValidValue(value);
+                _LocationId = StructuralObject.SetValidValue(value, "LocationId");
                 ReportPropertyChanged("LocationId");
                 OnLocationIdChanged();
             }
@@ -10433,7 +10403,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnNumberChanging(value);
                 ReportPropertyChanging("Number");
-                _Number = StructuralObject.SetValidValue(value);
+                _Number = StructuralObject.SetValidValue(value, "Number");
                 ReportPropertyChanged("Number");
                 OnNumberChanged();
             }
@@ -10444,7 +10414,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
         #region Navigation Properties
     
         /// <summary>
@@ -10514,7 +10483,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -10533,7 +10502,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
+                    _Id = StructuralObject.SetValidValue(value, "Id");
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -10558,7 +10527,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnColorChanging(value);
                 ReportPropertyChanging("Color");
-                _Color = StructuralObject.SetValidValue(value, true);
+                _Color = StructuralObject.SetValidValue(value, true, "Color");
                 ReportPropertyChanged("Color");
                 OnColorChanged();
             }
@@ -10582,7 +10551,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnNameChanging(value);
                 ReportPropertyChanging("Name");
-                _Name = StructuralObject.SetValidValue(value, true);
+                _Name = StructuralObject.SetValidValue(value, true, "Name");
                 ReportPropertyChanged("Name");
                 OnNameChanged();
             }
@@ -10606,7 +10575,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnDefaultTypeIntChanging(value);
                 ReportPropertyChanging("DefaultTypeInt");
-                _DefaultTypeInt = StructuralObject.SetValidValue(value);
+                _DefaultTypeInt = StructuralObject.SetValidValue(value, "DefaultTypeInt");
                 ReportPropertyChanged("DefaultTypeInt");
                 OnDefaultTypeIntChanged();
             }
@@ -10630,7 +10599,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnRemoveFromRouteChanging(value);
                 ReportPropertyChanging("RemoveFromRoute");
-                _RemoveFromRoute = StructuralObject.SetValidValue(value);
+                _RemoveFromRoute = StructuralObject.SetValidValue(value, "RemoveFromRoute");
                 ReportPropertyChanged("RemoveFromRoute");
                 OnRemoveFromRouteChanged();
             }
@@ -10654,7 +10623,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnBusinessAccountIdChanging(value);
                 ReportPropertyChanging("BusinessAccountId");
-                _BusinessAccountId = StructuralObject.SetValidValue(value);
+                _BusinessAccountId = StructuralObject.SetValidValue(value, "BusinessAccountId");
                 ReportPropertyChanged("BusinessAccountId");
                 OnBusinessAccountIdChanged();
             }
@@ -10665,7 +10634,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
         #region Navigation Properties
     
         /// <summary>
@@ -10761,7 +10729,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -10778,7 +10746,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnIsMultilineChanging(value);
                 ReportPropertyChanging("IsMultiline");
-                _IsMultiline = StructuralObject.SetValidValue(value);
+                _IsMultiline = StructuralObject.SetValidValue(value, "IsMultiline");
                 ReportPropertyChanged("IsMultiline");
                 OnIsMultilineChanged();
             }
@@ -10802,7 +10770,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnValueChanging(value);
                 ReportPropertyChanging("Value");
-                _Value = StructuralObject.SetValidValue(value, true);
+                _Value = StructuralObject.SetValidValue(value, true, "Value");
                 ReportPropertyChanged("Value");
                 OnValueChanged();
             }
@@ -10813,7 +10781,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
     }
     
     /// <summary>
@@ -10845,7 +10812,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -10862,7 +10829,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnPasswordHashChanging(value);
                 ReportPropertyChanging("PasswordHash");
-                _PasswordHash = StructuralObject.SetValidValue(value, true);
+                _PasswordHash = StructuralObject.SetValidValue(value, true, "PasswordHash");
                 ReportPropertyChanged("PasswordHash");
                 OnPasswordHashChanged();
             }
@@ -10886,7 +10853,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnEmailAddressChanging(value);
                 ReportPropertyChanging("EmailAddress");
-                _EmailAddress = StructuralObject.SetValidValue(value, false);
+                _EmailAddress = StructuralObject.SetValidValue(value, false, "EmailAddress");
                 ReportPropertyChanged("EmailAddress");
                 OnEmailAddressChanged();
             }
@@ -10910,7 +10877,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLastActivityChanging(value);
                 ReportPropertyChanging("LastActivity");
-                _LastActivity = StructuralObject.SetValidValue(value);
+                _LastActivity = StructuralObject.SetValidValue(value, "LastActivity");
                 ReportPropertyChanged("LastActivity");
                 OnLastActivityChanged();
             }
@@ -10934,7 +10901,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnCreationDateChanging(value);
                 ReportPropertyChanging("CreationDate");
-                _CreationDate = StructuralObject.SetValidValue(value);
+                _CreationDate = StructuralObject.SetValidValue(value, "CreationDate");
                 ReportPropertyChanged("CreationDate");
                 OnCreationDateChanged();
             }
@@ -10958,7 +10925,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnFirstNameChanging(value);
                 ReportPropertyChanging("FirstName");
-                _FirstName = StructuralObject.SetValidValue(value, true);
+                _FirstName = StructuralObject.SetValidValue(value, true, "FirstName");
                 ReportPropertyChanged("FirstName");
                 OnFirstNameChanged();
             }
@@ -10982,7 +10949,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLastNameChanging(value);
                 ReportPropertyChanging("LastName");
-                _LastName = StructuralObject.SetValidValue(value, true);
+                _LastName = StructuralObject.SetValidValue(value, true, "LastName");
                 ReportPropertyChanged("LastName");
                 OnLastNameChanged();
             }
@@ -11006,7 +10973,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnMiddleInitialChanging(value);
                 ReportPropertyChanging("MiddleInitial");
-                _MiddleInitial = StructuralObject.SetValidValue(value, true);
+                _MiddleInitial = StructuralObject.SetValidValue(value, true, "MiddleInitial");
                 ReportPropertyChanged("MiddleInitial");
                 OnMiddleInitialChanged();
             }
@@ -11030,7 +10997,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnGenderIntChanging(value);
                 ReportPropertyChanging("GenderInt");
-                _GenderInt = StructuralObject.SetValidValue(value);
+                _GenderInt = StructuralObject.SetValidValue(value, "GenderInt");
                 ReportPropertyChanged("GenderInt");
                 OnGenderIntChanged();
             }
@@ -11054,7 +11021,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnDateOfBirthChanging(value);
                 ReportPropertyChanging("DateOfBirth");
-                _DateOfBirth = StructuralObject.SetValidValue(value);
+                _DateOfBirth = StructuralObject.SetValidValue(value, "DateOfBirth");
                 ReportPropertyChanged("DateOfBirth");
                 OnDateOfBirthChanged();
             }
@@ -11078,7 +11045,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnTimeZoneChanging(value);
                 ReportPropertyChanging("TimeZone");
-                _TimeZone = StructuralObject.SetValidValue(value, true);
+                _TimeZone = StructuralObject.SetValidValue(value, true, "TimeZone");
                 ReportPropertyChanged("TimeZone");
                 OnTimeZoneChanged();
             }
@@ -11102,7 +11069,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnColumnConfigurationsChanging(value);
                 ReportPropertyChanging("ColumnConfigurations");
-                _ColumnConfigurations = StructuralObject.SetValidValue(value, true);
+                _ColumnConfigurations = StructuralObject.SetValidValue(value, true, "ColumnConfigurations");
                 ReportPropertyChanged("ColumnConfigurations");
                 OnColumnConfigurationsChanged();
             }
@@ -11126,7 +11093,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnPasswordSaltChanging(value);
                 ReportPropertyChanging("PasswordSalt");
-                _PasswordSalt = StructuralObject.SetValidValue(value, false);
+                _PasswordSalt = StructuralObject.SetValidValue(value, false, "PasswordSalt");
                 ReportPropertyChanged("PasswordSalt");
                 OnPasswordSaltChanged();
             }
@@ -11150,7 +11117,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnTempResetTokenChanging(value);
                 ReportPropertyChanging("TempResetToken");
-                _TempResetToken = StructuralObject.SetValidValue(value, true);
+                _TempResetToken = StructuralObject.SetValidValue(value, true, "TempResetToken");
                 ReportPropertyChanged("TempResetToken");
                 OnTempResetTokenChanged();
             }
@@ -11174,7 +11141,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnTempTokenExpireTimeChanging(value);
                 ReportPropertyChanging("TempTokenExpireTime");
-                _TempTokenExpireTime = StructuralObject.SetValidValue(value);
+                _TempTokenExpireTime = StructuralObject.SetValidValue(value, "TempTokenExpireTime");
                 ReportPropertyChanged("TempTokenExpireTime");
                 OnTempTokenExpireTimeChanged();
             }
@@ -11185,7 +11152,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
         #region Navigation Properties
     
         /// <summary>
@@ -11263,7 +11229,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -11282,7 +11248,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
+                    _Id = StructuralObject.SetValidValue(value, "Id");
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -11307,7 +11273,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnTypeIdChanging(value);
                 ReportPropertyChanging("TypeId");
-                _TypeId = StructuralObject.SetValidValue(value);
+                _TypeId = StructuralObject.SetValidValue(value, "TypeId");
                 ReportPropertyChanged("TypeId");
                 OnTypeIdChanged();
             }
@@ -11331,7 +11297,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnTimeStampChanging(value);
                 ReportPropertyChanging("TimeStamp");
-                _TimeStamp = StructuralObject.SetValidValue(value);
+                _TimeStamp = StructuralObject.SetValidValue(value, "TimeStamp");
                 ReportPropertyChanged("TimeStamp");
                 OnTimeStampChanged();
             }
@@ -11355,7 +11321,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnUserAccountIdChanging(value);
                 ReportPropertyChanging("UserAccountId");
-                _UserAccountId = StructuralObject.SetValidValue(value);
+                _UserAccountId = StructuralObject.SetValidValue(value, "UserAccountId");
                 ReportPropertyChanged("UserAccountId");
                 OnUserAccountIdChanged();
             }
@@ -11366,7 +11332,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
         #region Navigation Properties
     
         /// <summary>
@@ -11436,7 +11401,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -11455,7 +11420,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
+                    _Id = StructuralObject.SetValidValue(value, "Id");
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -11480,7 +11445,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnVehicleIdChanging(value);
                 ReportPropertyChanging("VehicleId");
-                _VehicleId = StructuralObject.SetValidValue(value, true);
+                _VehicleId = StructuralObject.SetValidValue(value, true, "VehicleId");
                 ReportPropertyChanged("VehicleId");
                 OnVehicleIdChanged();
             }
@@ -11504,7 +11469,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnMileageChanging(value);
                 ReportPropertyChanging("Mileage");
-                _Mileage = StructuralObject.SetValidValue(value);
+                _Mileage = StructuralObject.SetValidValue(value, "Mileage");
                 ReportPropertyChanged("Mileage");
                 OnMileageChanged();
             }
@@ -11528,7 +11493,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLicensePlateChanging(value);
                 ReportPropertyChanging("LicensePlate");
-                _LicensePlate = StructuralObject.SetValidValue(value, true);
+                _LicensePlate = StructuralObject.SetValidValue(value, true, "LicensePlate");
                 ReportPropertyChanged("LicensePlate");
                 OnLicensePlateChanged();
             }
@@ -11552,7 +11517,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnVINChanging(value);
                 ReportPropertyChanging("VIN");
-                _VIN = StructuralObject.SetValidValue(value, true);
+                _VIN = StructuralObject.SetValidValue(value, true, "VIN");
                 ReportPropertyChanged("VIN");
                 OnVINChanged();
             }
@@ -11576,7 +11541,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnYearChanging(value);
                 ReportPropertyChanging("Year");
-                _Year = StructuralObject.SetValidValue(value);
+                _Year = StructuralObject.SetValidValue(value, "Year");
                 ReportPropertyChanged("Year");
                 OnYearChanged();
             }
@@ -11600,7 +11565,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnMakeChanging(value);
                 ReportPropertyChanging("Make");
-                _Make = StructuralObject.SetValidValue(value, true);
+                _Make = StructuralObject.SetValidValue(value, true, "Make");
                 ReportPropertyChanged("Make");
                 OnMakeChanged();
             }
@@ -11624,7 +11589,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnModelChanging(value);
                 ReportPropertyChanging("Model");
-                _Model = StructuralObject.SetValidValue(value, true);
+                _Model = StructuralObject.SetValidValue(value, true, "Model");
                 ReportPropertyChanged("Model");
                 OnModelChanged();
             }
@@ -11648,7 +11613,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnNotesChanging(value);
                 ReportPropertyChanging("Notes");
-                _Notes = StructuralObject.SetValidValue(value, true);
+                _Notes = StructuralObject.SetValidValue(value, true, "Notes");
                 ReportPropertyChanged("Notes");
                 OnNotesChanged();
             }
@@ -11672,7 +11637,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLastCompassDirectionChanging(value);
                 ReportPropertyChanging("LastCompassDirection");
-                _LastCompassDirection = StructuralObject.SetValidValue(value);
+                _LastCompassDirection = StructuralObject.SetValidValue(value, "LastCompassDirection");
                 ReportPropertyChanged("LastCompassDirection");
                 OnLastCompassDirectionChanged();
             }
@@ -11696,7 +11661,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLastLongitudeChanging(value);
                 ReportPropertyChanging("LastLongitude");
-                _LastLongitude = StructuralObject.SetValidValue(value);
+                _LastLongitude = StructuralObject.SetValidValue(value, "LastLongitude");
                 ReportPropertyChanged("LastLongitude");
                 OnLastLongitudeChanged();
             }
@@ -11720,7 +11685,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLastLatitudeChanging(value);
                 ReportPropertyChanging("LastLatitude");
-                _LastLatitude = StructuralObject.SetValidValue(value);
+                _LastLatitude = StructuralObject.SetValidValue(value, "LastLatitude");
                 ReportPropertyChanged("LastLatitude");
                 OnLastLatitudeChanged();
             }
@@ -11744,7 +11709,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLastTimeStampChanging(value);
                 ReportPropertyChanging("LastTimeStamp");
-                _LastTimeStamp = StructuralObject.SetValidValue(value);
+                _LastTimeStamp = StructuralObject.SetValidValue(value, "LastTimeStamp");
                 ReportPropertyChanged("LastTimeStamp");
                 OnLastTimeStampChanged();
             }
@@ -11768,7 +11733,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLastSpeedChanging(value);
                 ReportPropertyChanging("LastSpeed");
-                _LastSpeed = StructuralObject.SetValidValue(value);
+                _LastSpeed = StructuralObject.SetValidValue(value, "LastSpeed");
                 ReportPropertyChanged("LastSpeed");
                 OnLastSpeedChanged();
             }
@@ -11792,7 +11757,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLastSourceChanging(value);
                 ReportPropertyChanging("LastSource");
-                _LastSource = StructuralObject.SetValidValue(value, true);
+                _LastSource = StructuralObject.SetValidValue(value, true, "LastSource");
                 ReportPropertyChanged("LastSource");
                 OnLastSourceChanged();
             }
@@ -11816,7 +11781,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLastPushToAzureTimeStampChanging(value);
                 ReportPropertyChanging("LastPushToAzureTimeStamp");
-                _LastPushToAzureTimeStamp = StructuralObject.SetValidValue(value);
+                _LastPushToAzureTimeStamp = StructuralObject.SetValidValue(value, "LastPushToAzureTimeStamp");
                 ReportPropertyChanged("LastPushToAzureTimeStamp");
                 OnLastPushToAzureTimeStampChanged();
             }
@@ -11840,7 +11805,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLastAccuracyChanging(value);
                 ReportPropertyChanging("LastAccuracy");
-                _LastAccuracy = StructuralObject.SetValidValue(value);
+                _LastAccuracy = StructuralObject.SetValidValue(value, "LastAccuracy");
                 ReportPropertyChanged("LastAccuracy");
                 OnLastAccuracyChanged();
             }
@@ -11864,7 +11829,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnBusinessAccountIdChanging(value);
                 ReportPropertyChanging("BusinessAccountId");
-                _BusinessAccountId = StructuralObject.SetValidValue(value);
+                _BusinessAccountId = StructuralObject.SetValidValue(value, "BusinessAccountId");
                 ReportPropertyChanged("BusinessAccountId");
                 OnBusinessAccountIdChanged();
             }
@@ -11875,7 +11840,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
         #region Navigation Properties
     
         /// <summary>
@@ -11989,7 +11953,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -12008,7 +11972,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
+                    _Id = StructuralObject.SetValidValue(value, "Id");
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -12033,7 +11997,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnTypeChanging(value);
                 ReportPropertyChanging("Type");
-                _Type = StructuralObject.SetValidValue(value, true);
+                _Type = StructuralObject.SetValidValue(value, true, "Type");
                 ReportPropertyChanged("Type");
                 OnTypeChanged();
             }
@@ -12057,7 +12021,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnCostChanging(value);
                 ReportPropertyChanging("Cost");
-                _Cost = StructuralObject.SetValidValue(value);
+                _Cost = StructuralObject.SetValidValue(value, "Cost");
                 ReportPropertyChanged("Cost");
                 OnCostChanged();
             }
@@ -12081,7 +12045,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnDetailsChanging(value);
                 ReportPropertyChanging("Details");
-                _Details = StructuralObject.SetValidValue(value, true);
+                _Details = StructuralObject.SetValidValue(value, true, "Details");
                 ReportPropertyChanged("Details");
                 OnDetailsChanged();
             }
@@ -12105,7 +12069,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnVehicleMaintenanceLogEntryIdChanging(value);
                 ReportPropertyChanging("VehicleMaintenanceLogEntryId");
-                _VehicleMaintenanceLogEntryId = StructuralObject.SetValidValue(value);
+                _VehicleMaintenanceLogEntryId = StructuralObject.SetValidValue(value, "VehicleMaintenanceLogEntryId");
                 ReportPropertyChanged("VehicleMaintenanceLogEntryId");
                 OnVehicleMaintenanceLogEntryIdChanged();
             }
@@ -12116,7 +12080,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
         #region Navigation Properties
     
         /// <summary>
@@ -12186,7 +12149,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -12205,7 +12168,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 {
                     OnIdChanging(value);
                     ReportPropertyChanging("Id");
-                    _Id = StructuralObject.SetValidValue(value);
+                    _Id = StructuralObject.SetValidValue(value, "Id");
                     ReportPropertyChanged("Id");
                     OnIdChanged();
                 }
@@ -12230,7 +12193,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnDateChanging(value);
                 ReportPropertyChanging("Date");
-                _Date = StructuralObject.SetValidValue(value);
+                _Date = StructuralObject.SetValidValue(value, "Date");
                 ReportPropertyChanged("Date");
                 OnDateChanged();
             }
@@ -12254,7 +12217,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnMileageChanging(value);
                 ReportPropertyChanging("Mileage");
-                _Mileage = StructuralObject.SetValidValue(value);
+                _Mileage = StructuralObject.SetValidValue(value, "Mileage");
                 ReportPropertyChanged("Mileage");
                 OnMileageChanged();
             }
@@ -12278,7 +12241,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnServicedByChanging(value);
                 ReportPropertyChanging("ServicedBy");
-                _ServicedBy = StructuralObject.SetValidValue(value, true);
+                _ServicedBy = StructuralObject.SetValidValue(value, true, "ServicedBy");
                 ReportPropertyChanged("ServicedBy");
                 OnServicedByChanged();
             }
@@ -12302,7 +12265,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnCommentsChanging(value);
                 ReportPropertyChanging("Comments");
-                _Comments = StructuralObject.SetValidValue(value, true);
+                _Comments = StructuralObject.SetValidValue(value, true, "Comments");
                 ReportPropertyChanged("Comments");
                 OnCommentsChanged();
             }
@@ -12326,7 +12289,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnVehicleIdChanging(value);
                 ReportPropertyChanging("VehicleId");
-                _VehicleId = StructuralObject.SetValidValue(value);
+                _VehicleId = StructuralObject.SetValidValue(value, "VehicleId");
                 ReportPropertyChanged("VehicleId");
                 OnVehicleIdChanged();
             }
@@ -12337,7 +12300,6 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-    
         #region Navigation Properties
     
         /// <summary>
@@ -12416,7 +12378,7 @@ namespace FoundOps.Core.Models.CoreEntities
     [Serializable()]
     public partial class FieldJavaScript : ComplexObject
     {
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -12433,7 +12395,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnNameChanging(value);
                 ReportPropertyChanging("Name");
-                _Name = StructuralObject.SetValidValue(value, true);
+                _Name = StructuralObject.SetValidValue(value, true, "Name");
                 ReportPropertyChanged("Name");
                 OnNameChanged();
             }
@@ -12457,7 +12419,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnTypeChanging(value);
                 ReportPropertyChanging("Type");
-                _Type = StructuralObject.SetValidValue(value, true);
+                _Type = StructuralObject.SetValidValue(value, true, "Type");
                 ReportPropertyChanged("Type");
                 OnTypeChanged();
             }
@@ -12478,7 +12440,7 @@ namespace FoundOps.Core.Models.CoreEntities
     [Serializable()]
     public partial class ResourceWithLastPoint : ComplexObject
     {
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -12495,7 +12457,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnEmployeeIdChanging(value);
                 ReportPropertyChanging("EmployeeId");
-                _EmployeeId = StructuralObject.SetValidValue(value);
+                _EmployeeId = StructuralObject.SetValidValue(value, "EmployeeId");
                 ReportPropertyChanged("EmployeeId");
                 OnEmployeeIdChanged();
             }
@@ -12519,7 +12481,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnVehicleIdChanging(value);
                 ReportPropertyChanging("VehicleId");
-                _VehicleId = StructuralObject.SetValidValue(value);
+                _VehicleId = StructuralObject.SetValidValue(value, "VehicleId");
                 ReportPropertyChanged("VehicleId");
                 OnVehicleIdChanged();
             }
@@ -12543,7 +12505,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnEntityNameChanging(value);
                 ReportPropertyChanging("EntityName");
-                _EntityName = StructuralObject.SetValidValue(value, true);
+                _EntityName = StructuralObject.SetValidValue(value, true, "EntityName");
                 ReportPropertyChanged("EntityName");
                 OnEntityNameChanged();
             }
@@ -12567,7 +12529,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnHeadingChanging(value);
                 ReportPropertyChanging("Heading");
-                _Heading = StructuralObject.SetValidValue(value);
+                _Heading = StructuralObject.SetValidValue(value, "Heading");
                 ReportPropertyChanged("Heading");
                 OnHeadingChanged();
             }
@@ -12591,7 +12553,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLatitudeChanging(value);
                 ReportPropertyChanging("Latitude");
-                _Latitude = StructuralObject.SetValidValue(value);
+                _Latitude = StructuralObject.SetValidValue(value, "Latitude");
                 ReportPropertyChanged("Latitude");
                 OnLatitudeChanged();
             }
@@ -12615,7 +12577,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnLongitudeChanging(value);
                 ReportPropertyChanging("Longitude");
-                _Longitude = StructuralObject.SetValidValue(value);
+                _Longitude = StructuralObject.SetValidValue(value, "Longitude");
                 ReportPropertyChanged("Longitude");
                 OnLongitudeChanged();
             }
@@ -12639,7 +12601,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnCollectedTimeStampChanging(value);
                 ReportPropertyChanging("CollectedTimeStamp");
-                _CollectedTimeStamp = StructuralObject.SetValidValue(value);
+                _CollectedTimeStamp = StructuralObject.SetValidValue(value, "CollectedTimeStamp");
                 ReportPropertyChanged("CollectedTimeStamp");
                 OnCollectedTimeStampChanged();
             }
@@ -12663,7 +12625,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnSpeedChanging(value);
                 ReportPropertyChanging("Speed");
-                _Speed = StructuralObject.SetValidValue(value);
+                _Speed = StructuralObject.SetValidValue(value, "Speed");
                 ReportPropertyChanged("Speed");
                 OnSpeedChanged();
             }
@@ -12687,7 +12649,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnSourceChanging(value);
                 ReportPropertyChanging("Source");
-                _Source = StructuralObject.SetValidValue(value, true);
+                _Source = StructuralObject.SetValidValue(value, true, "Source");
                 ReportPropertyChanged("Source");
                 OnSourceChanged();
             }
@@ -12711,7 +12673,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnRouteIdChanging(value);
                 ReportPropertyChanging("RouteId");
-                _RouteId = StructuralObject.SetValidValue(value);
+                _RouteId = StructuralObject.SetValidValue(value, "RouteId");
                 ReportPropertyChanged("RouteId");
                 OnRouteIdChanged();
             }
@@ -12735,7 +12697,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnAccuracyChanging(value);
                 ReportPropertyChanging("Accuracy");
-                _Accuracy = StructuralObject.SetValidValue(value);
+                _Accuracy = StructuralObject.SetValidValue(value, "Accuracy");
                 ReportPropertyChanged("Accuracy");
                 OnAccuracyChanged();
             }
@@ -12771,7 +12733,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
         #endregion
 
-        #region Primitive Properties
+        #region Simple Properties
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -12788,7 +12750,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnRecurringServiceIdChanging(value);
                 ReportPropertyChanging("RecurringServiceId");
-                _RecurringServiceId = StructuralObject.SetValidValue(value);
+                _RecurringServiceId = StructuralObject.SetValidValue(value, "RecurringServiceId");
                 ReportPropertyChanged("RecurringServiceId");
                 OnRecurringServiceIdChanged();
             }
@@ -12812,7 +12774,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnServiceIdChanging(value);
                 ReportPropertyChanging("ServiceId");
-                _ServiceId = StructuralObject.SetValidValue(value);
+                _ServiceId = StructuralObject.SetValidValue(value, "ServiceId");
                 ReportPropertyChanged("ServiceId");
                 OnServiceIdChanged();
             }
@@ -12836,7 +12798,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnOccurDateChanging(value);
                 ReportPropertyChanging("OccurDate");
-                _OccurDate = StructuralObject.SetValidValue(value);
+                _OccurDate = StructuralObject.SetValidValue(value, "OccurDate");
                 ReportPropertyChanged("OccurDate");
                 OnOccurDateChanged();
             }
@@ -12860,7 +12822,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 OnServiceNameChanging(value);
                 ReportPropertyChanging("ServiceName");
-                _ServiceName = StructuralObject.SetValidValue(value, true);
+                _ServiceName = StructuralObject.SetValidValue(value, true, "ServiceName");
                 ReportPropertyChanged("ServiceName");
                 OnServiceNameChanged();
             }
@@ -12875,5 +12837,4 @@ namespace FoundOps.Core.Models.CoreEntities
 
     #endregion
 
-    
 }

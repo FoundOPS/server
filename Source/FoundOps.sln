@@ -40,12 +40,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoundOps.Core", "Server\Fou
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoundOps.SLClient.Algorithm", "FoundOps.SLClient.Algorithm\FoundOps.SLClient.Algorithm.csproj", "{E900BDCA-451F-4433-A98A-287BD326BD29}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoundOPS.API", "Server\FoundOPS.API\FoundOPS.API\FoundOPS.API.csproj", "{8BE952E2-F077-42D0-A4AD-704EEC696840}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoundOps.Api", "Server\FoundOPS.API\FoundOPS.API\FoundOps.Api.csproj", "{8BE952E2-F077-42D0-A4AD-704EEC696840}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{91D32AC0-4424-455E-8966-FC0F1B142645}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoundOps.Api.Tests", "Server\FoundOps.Api\FoundOps.Api.Tests\FoundOps.Api.Tests.csproj", "{41CC16C3-EDF7-4534-AD5C-0968F45309F7}"
 EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
@@ -154,6 +156,14 @@ Global
 		{8BE952E2-F077-42D0-A4AD-704EEC696840}.Release|Any CPU.Build.0 = Release|Any CPU
 		{8BE952E2-F077-42D0-A4AD-704EEC696840}.TestRelease|Any CPU.ActiveCfg = TestRelease|Any CPU
 		{8BE952E2-F077-42D0-A4AD-704EEC696840}.TestRelease|Any CPU.Build.0 = TestRelease|Any CPU
+		{41CC16C3-EDF7-4534-AD5C-0968F45309F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41CC16C3-EDF7-4534-AD5C-0968F45309F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41CC16C3-EDF7-4534-AD5C-0968F45309F7}.DebugNode|Any CPU.ActiveCfg = Debug|Any CPU
+		{41CC16C3-EDF7-4534-AD5C-0968F45309F7}.DebugNode|Any CPU.Build.0 = Debug|Any CPU
+		{41CC16C3-EDF7-4534-AD5C-0968F45309F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41CC16C3-EDF7-4534-AD5C-0968F45309F7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41CC16C3-EDF7-4534-AD5C-0968F45309F7}.TestRelease|Any CPU.ActiveCfg = Release|Any CPU
+		{41CC16C3-EDF7-4534-AD5C-0968F45309F7}.TestRelease|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -171,5 +181,6 @@ Global
 		{D32C535E-2B13-4AC5-9D49-70C8EDC83933} = {A8ACC713-7FE7-49C4-BE25-9C1B9E94AD8E}
 		{C5170A8A-CAD2-47E2-8552-FEF87C771C03} = {A8ACC713-7FE7-49C4-BE25-9C1B9E94AD8E}
 		{8BE952E2-F077-42D0-A4AD-704EEC696840} = {A8ACC713-7FE7-49C4-BE25-9C1B9E94AD8E}
+		{41CC16C3-EDF7-4534-AD5C-0968F45309F7} = {A8ACC713-7FE7-49C4-BE25-9C1B9E94AD8E}
 	EndGlobalSection
 EndGlobal

@@ -1,53 +1,53 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
   <!-- EF Runtime content -->
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="CoreEntities.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+    <Schema Namespace="CoreEntities.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityContainer Name="CoreEntitiesStoreContainer">
-          <EntitySet Name="Blocks" EntityType="CoreEntities.Store.Blocks" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Clients" EntityType="CoreEntities.Store.Clients" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="ContactInfoSet" EntityType="CoreEntities.Store.ContactInfoSet" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="EmployeeHistoryEntries" EntityType="CoreEntities.Store.EmployeeHistoryEntries" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Employees" EntityType="CoreEntities.Store.Employees" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Errors" EntityType="CoreEntities.Store.Errors" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Fields" EntityType="CoreEntities.Store.Fields" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Fields_DateTimeField" EntityType="CoreEntities.Store.Fields_DateTimeField" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Fields_LocationField" EntityType="CoreEntities.Store.Fields_LocationField" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Fields_NumericField" EntityType="CoreEntities.Store.Fields_NumericField" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Fields_OptionsField" EntityType="CoreEntities.Store.Fields_OptionsField" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Fields_SignatureField" EntityType="CoreEntities.Store.Fields_SignatureField" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Fields_TextBoxField" EntityType="CoreEntities.Store.Fields_TextBoxField" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Files" EntityType="CoreEntities.Store.Files" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Files_PartyImage" EntityType="CoreEntities.Store.Files_PartyImage" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Invoices" EntityType="CoreEntities.Store.Invoices" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="LineItems" EntityType="CoreEntities.Store.LineItems" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Locations" EntityType="CoreEntities.Store.Locations" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Parties" EntityType="CoreEntities.Store.Parties" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Parties_BusinessAccount" EntityType="CoreEntities.Store.Parties_BusinessAccount" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Parties_UserAccount" EntityType="CoreEntities.Store.Parties_UserAccount" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="PartyRole" EntityType="CoreEntities.Store.PartyRole" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="RecurringServices" EntityType="CoreEntities.Store.RecurringServices" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Regions" EntityType="CoreEntities.Store.Regions" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Repeats" EntityType="CoreEntities.Store.Repeats" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="RoleBlock" EntityType="CoreEntities.Store.RoleBlock" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Roles" EntityType="CoreEntities.Store.Roles" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="RouteDestinations" EntityType="CoreEntities.Store.RouteDestinations" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="RouteEmployee" EntityType="CoreEntities.Store.RouteEmployee" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Routes" EntityType="CoreEntities.Store.Routes" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="RouteTasks" EntityType="CoreEntities.Store.RouteTasks" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="RouteVehicle" EntityType="CoreEntities.Store.RouteVehicle" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="SalesTerms" EntityType="CoreEntities.Store.SalesTerms" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Services" EntityType="CoreEntities.Store.Services" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="ServiceTemplates" EntityType="CoreEntities.Store.ServiceTemplates" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="SubLocations" EntityType="CoreEntities.Store.SubLocations" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="TaskStatuses" EntityType="CoreEntities.Store.TaskStatuses" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="UserAccountLog" EntityType="CoreEntities.Store.UserAccountLog" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="VehicleMaintenanceLineItems" EntityType="CoreEntities.Store.VehicleMaintenanceLineItems" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="VehicleMaintenanceLog" EntityType="CoreEntities.Store.VehicleMaintenanceLog" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="Vehicles" EntityType="CoreEntities.Store.Vehicles" store:Type="Tables" Schema="dbo" />
-          <EntitySet Name="ServiceTemplatesWithVendorId" EntityType="CoreEntities.Store.ServiceTemplatesWithVendorId" store:Type="Views" store:Schema="dbo" store:Name="ServiceTemplatesWithVendorId">
+          <EntitySet Name="Blocks" EntityType="CoreEntities.Store.Blocks" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Clients" EntityType="CoreEntities.Store.Clients" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="ContactInfoSet" EntityType="CoreEntities.Store.ContactInfoSet" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="EmployeeHistoryEntries" EntityType="CoreEntities.Store.EmployeeHistoryEntries" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Employees" EntityType="CoreEntities.Store.Employees" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Errors" EntityType="CoreEntities.Store.Errors" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Fields" EntityType="CoreEntities.Store.Fields" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Fields_DateTimeField" EntityType="CoreEntities.Store.Fields_DateTimeField" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Fields_LocationField" EntityType="CoreEntities.Store.Fields_LocationField" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Fields_NumericField" EntityType="CoreEntities.Store.Fields_NumericField" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Fields_OptionsField" EntityType="CoreEntities.Store.Fields_OptionsField" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Fields_SignatureField" EntityType="CoreEntities.Store.Fields_SignatureField" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Fields_TextBoxField" EntityType="CoreEntities.Store.Fields_TextBoxField" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Files" EntityType="CoreEntities.Store.Files" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Files_PartyImage" EntityType="CoreEntities.Store.Files_PartyImage" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Invoices" EntityType="CoreEntities.Store.Invoices" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="LineItems" EntityType="CoreEntities.Store.LineItems" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Locations" EntityType="CoreEntities.Store.Locations" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Parties" EntityType="CoreEntities.Store.Parties" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Parties_BusinessAccount" EntityType="CoreEntities.Store.Parties_BusinessAccount" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Parties_UserAccount" EntityType="CoreEntities.Store.Parties_UserAccount" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="PartyRole" EntityType="CoreEntities.Store.PartyRole" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="RecurringServices" EntityType="CoreEntities.Store.RecurringServices" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Regions" EntityType="CoreEntities.Store.Regions" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Repeats" EntityType="CoreEntities.Store.Repeats" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="RoleBlock" EntityType="CoreEntities.Store.RoleBlock" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Roles" EntityType="CoreEntities.Store.Roles" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="RouteDestinations" EntityType="CoreEntities.Store.RouteDestinations" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="RouteEmployee" EntityType="CoreEntities.Store.RouteEmployee" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Routes" EntityType="CoreEntities.Store.Routes" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="RouteTasks" EntityType="CoreEntities.Store.RouteTasks" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="RouteVehicle" EntityType="CoreEntities.Store.RouteVehicle" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="SalesTerms" EntityType="CoreEntities.Store.SalesTerms" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Services" EntityType="CoreEntities.Store.Services" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="ServiceTemplates" EntityType="CoreEntities.Store.ServiceTemplates" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="SubLocations" EntityType="CoreEntities.Store.SubLocations" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="TaskStatuses" EntityType="CoreEntities.Store.TaskStatuses" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="UserAccountLog" EntityType="CoreEntities.Store.UserAccountLog" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="VehicleMaintenanceLineItems" EntityType="CoreEntities.Store.VehicleMaintenanceLineItems" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="VehicleMaintenanceLog" EntityType="CoreEntities.Store.VehicleMaintenanceLog" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="Vehicles" EntityType="CoreEntities.Store.Vehicles" store:Type="Tables" Schema="dbo" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" />
+          <EntitySet Name="ServiceTemplatesWithVendorId" EntityType="CoreEntities.Store.ServiceTemplatesWithVendorId" store:Type="Views" store:Schema="dbo" store:Name="ServiceTemplatesWithVendorId" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator">
             <DefiningQuery>SELECT 
       [ServiceTemplatesWithVendorId].[ServiceTemplateId] AS [ServiceTemplateId], 
       [ServiceTemplatesWithVendorId].[BusinessAccountId] AS [BusinessAccountId]
@@ -331,12 +331,8 @@
           SELECT EmployeeId, VehicleId, EntityName, Heading, Latitude, Longitude, CollectedTimeStamp, Speed, Source, RouteId, Accuracy
           FROM dbo.GetResourcesWithLatestPoint (@serviceProviderId, @serviceDateUtc)
         </CommandText>
-        <Parameter Name="serviceProviderId"
-               Mode="In"
-               Type="uniqueidentifier"/>
-        <Parameter Name="serviceDateUtc"
-                   Mode="In"
-                   Type="date"/>
+        <Parameter Name="serviceProviderId" Mode="In" Type="uniqueidentifier" />
+        <Parameter Name="serviceDateUtc" Mode="In" Type="date" />
       </Function>
         <EntityType Name="Blocks">
           <Key>
@@ -1775,8 +1771,8 @@
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="CoreEntities" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
-        <EntityContainer Name="CoreEntitiesContainer" annotation:LazyLoadingEnabled="true">
+      <Schema Namespace="CoreEntities" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="CoreEntitiesContainer" annotation:LazyLoadingEnabled="true" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation">
           <EntitySet Name="Blocks" EntityType="CoreEntities.Block" />
           <EntitySet Name="Roles" EntityType="CoreEntities.Role" />
           <EntitySet Name="Parties" EntityType="CoreEntities.Party" />
@@ -2114,7 +2110,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="String" Name="Color" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="Boolean" Name="HideFromNavigation" Nullable="false" />
@@ -2128,12 +2124,12 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="String" Name="Name" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="String" Name="Description" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Blocks" Relationship="CoreEntities.RoleBlock" FromRole="Role" ToRole="Block" />
           <NavigationProperty Name="MemberParties" Relationship="CoreEntities.PartyRole" FromRole="Role" ToRole="Party" />
-          <Property Type="Int16" Name="RoleTypeInt" Nullable="false" DefaultValue="0" >
+          <Property Type="Int16" Name="RoleTypeInt" Nullable="false" DefaultValue="0">
             <Documentation>
               <Summary>The Role's type. Defaults to custom.</Summary>
             </Documentation>
@@ -2145,7 +2141,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <NavigationProperty Name="RoleMembership" Relationship="CoreEntities.PartyRole" FromRole="Party" ToRole="Role" />
           <NavigationProperty Name="OwnedFiles" Relationship="CoreEntities.FileParty" FromRole="Party" ToRole="File" />
           <NavigationProperty Name="PartyImage" Relationship="CoreEntities.PartyPartyImage" FromRole="Party" ToRole="PartyImage" />
@@ -2154,7 +2150,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="String" Name="Type" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="String" Name="Label" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="String" Name="Data" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
@@ -2172,7 +2168,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="DateTime" Name="EndDate" Nullable="true" Precision="3" />
           <Property Type="Int32" Name="EndAfterTimes" Nullable="true" />
           <Property Type="Int32" Name="RepeatEveryTimes" Nullable="false" />
@@ -2186,7 +2182,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <NavigationProperty Name="ContactInfoSet" Relationship="CoreEntities.LocationContactInfo" FromRole="Location" ToRole="ContactInfo" />
-          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="String" Name="Name" Nullable="true" DefaultValue="" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="String" Name="AddressLineOne" Nullable="true" DefaultValue="" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="Decimal" Name="Longitude" Nullable="true" Precision="11" Scale="8" />
@@ -2217,7 +2213,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <NavigationProperty Name="Client" Relationship="CoreEntities.ServiceClient" FromRole="Service" ToRole="Client" />
           <Property Type="Guid" Name="ClientId" Nullable="false" />
           <NavigationProperty Name="RouteTasks" Relationship="CoreEntities.RouteTaskService" FromRole="Service" ToRole="RouteTask" />
@@ -2232,7 +2228,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="Boolean" Name="Required" Nullable="false" />
           <Property Type="String" Name="Tooltip" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
@@ -2242,11 +2238,11 @@
           <NavigationProperty Name="OwnerServiceTemplate" Relationship="CoreEntities.ServiceTemplateField" FromRole="Field" ToRole="ServiceTemplate" />
           <Property Type="Guid" Name="ServiceTemplateId" Nullable="true" />
         </EntityType>
-        <EntityType Name="TextBoxField" BaseType="CoreEntities.Field" >
+        <EntityType Name="TextBoxField" BaseType="CoreEntities.Field">
           <Property Type="Boolean" Name="IsMultiline" Nullable="false" />
           <Property Type="String" Name="Value" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
         </EntityType>
-        <EntityType Name="SignatureField" BaseType="CoreEntities.Field" >
+        <EntityType Name="SignatureField" BaseType="CoreEntities.Field">
           <Property Type="String" Name="Value" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
         </EntityType>
         <Association Name="LocationContactInfo">
@@ -2265,7 +2261,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="Int32" Name="OrderInRoute" Nullable="false" />
           <NavigationProperty Name="Location" Relationship="CoreEntities.RouteDestinationLocation" FromRole="RouteDestination" ToRole="Location" />
           <Property Type="Guid" Name="LocationId" Nullable="true" />
@@ -2279,7 +2275,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="String" Name="Name" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="DateTime" Name="Date" Nullable="false" Precision="3" />
           <Property Type="DateTime" Name="StartTime" Nullable="false" Precision="3" />
@@ -2295,7 +2291,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="Int32" Name="TypeId" Nullable="true" />
           <Property Type="DateTime" Name="TimeStamp" Nullable="false" Precision="3" />
           <NavigationProperty Name="UserAccount" Relationship="CoreEntities.UserAccountUserAccountLogEntry" FromRole="UserAccountLogEntry" ToRole="UserAccount" />
@@ -2305,7 +2301,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="String" Name="VehicleId" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="Int32" Name="Mileage" Nullable="true" />
           <Property Type="String" Name="LicensePlate" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
@@ -2331,7 +2327,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="DateTime" Name="Date" Nullable="true" Precision="3" />
           <Property Type="Int32" Name="Mileage" Nullable="true" />
           <Property Type="String" Name="ServicedBy" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
@@ -2365,7 +2361,7 @@
           <NavigationProperty Name="Client" Relationship="CoreEntities.RouteTaskClient" FromRole="RouteTask" ToRole="Client" />
           <NavigationProperty Name="Service" Relationship="CoreEntities.RouteTaskService" FromRole="RouteTask" ToRole="Service" />
           <NavigationProperty Name="OwnerBusinessAccount" Relationship="CoreEntities.BusinessAccountRouteTask" FromRole="RouteTask" ToRole="BusinessAccount" />
-          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="Guid" Name="LocationId" Nullable="true" />
           <Property Type="Guid" Name="RouteDestinationId" Nullable="true" />
           <Property Type="Guid" Name="ClientId" Nullable="true" />
@@ -2435,9 +2431,9 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="String" Name="Type" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
-          <Property Type="Decimal" Name="Cost" Nullable="true" cg:SetterAccess="Public" Precision="12" Scale="2" />
+          <Property Type="Decimal" Name="Cost" Nullable="true" cg:SetterAccess="Public" Precision="12" Scale="2" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
           <Property Type="String" Name="Details" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="VehicleMaintenanceLogEntry" Relationship="CoreEntities.VehicleMaintenanceLogEntryLineItem" FromRole="LineItem" ToRole="VehicleMaintenanceLogEntry" />
           <Property Type="Guid" Name="VehicleMaintenanceLogEntryId" Nullable="false" />
@@ -2458,7 +2454,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" Type="Guid" />
+          <Property Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" Type="Guid" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="DateTime" Name="DateAdded" Nullable="false" Precision="3" />
           <Property Type="String" Name="Salesperson" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="RouteTasks" Relationship="CoreEntities.RouteTaskClient" FromRole="Client" ToRole="RouteTask" />
@@ -2522,7 +2518,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="BusinessAccount" BaseType="CoreEntities.Party" >
+        <EntityType Name="BusinessAccount" BaseType="CoreEntities.Party">
           <NavigationProperty Name="ServicesToProvide" Relationship="CoreEntities.BusinessAccountService" FromRole="BusinessAccount" ToRole="Service" />
           <NavigationProperty Name="Routes" Relationship="CoreEntities.BusinessAccountRoute" FromRole="BusinessAccount" ToRole="Route" />
           <NavigationProperty Name="RouteTasks" Relationship="CoreEntities.BusinessAccountRouteTask" FromRole="BusinessAccount" ToRole="RouteTask" />
@@ -2580,7 +2576,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="UserAccount" BaseType="CoreEntities.Party" >
+        <EntityType Name="UserAccount" BaseType="CoreEntities.Party">
           <Property Type="String" Name="PasswordHash" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="String" Name="EmailAddress" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="DateTime" Name="LastActivity" Nullable="true" Precision="3" />
@@ -2614,7 +2610,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <NavigationProperty Name="OwnerServiceProvider" Relationship="CoreEntities.ServiceTemplateBusinessAccount" FromRole="ServiceTemplate" ToRole="BusinessAccount" />
           <Property Type="Guid" Name="OwnerServiceProviderId" Nullable="true" />
           <NavigationProperty Name="OwnerRecurringService" Relationship="CoreEntities.RecurringServiceServiceTemplate" FromRole="ServiceTemplate" ToRole="RecurringService" />
@@ -2641,7 +2637,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="OptionsField" BaseType="CoreEntities.Field" >
+        <EntityType Name="OptionsField" BaseType="CoreEntities.Field">
           <Property Type="Boolean" Name="AllowMultipleSelection" Nullable="false" />
           <Property Type="Int16" Name="TypeInt" Nullable="false" />
           <Property Name="OptionsString" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
@@ -2651,13 +2647,13 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <NavigationProperty Name="ServiceTemplate" Relationship="CoreEntities.RecurringServiceServiceTemplate" FromRole="RecurringService" ToRole="ServiceTemplate" />
           <NavigationProperty Name="GeneratedServices" Relationship="CoreEntities.RecurringServiceService" FromRole="RecurringService" ToRole="Service" />
           <NavigationProperty Name="Client" Relationship="CoreEntities.RecurringServiceClient" FromRole="RecurringService" ToRole="Client" />
           <Property Type="Guid" Name="ClientId" Nullable="false" />
           <NavigationProperty Name="Repeat" Relationship="CoreEntities.RecurringServiceRepeat" FromRole="RecurringService" ToRole="Repeat" />
-          <Property Type="String" Name="ExcludedDatesString" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" >
+          <Property Type="String" Name="ExcludedDatesString" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false">
             <Documentation>
               <LongDescription>A comma seperated list of dates</LongDescription>
             </Documentation>
@@ -2733,7 +2729,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Locations" Relationship="CoreEntities.RegionLocation" FromRole="Regions" ToRole="Location" />
           <NavigationProperty Name="BusinessAccount" Relationship="CoreEntities.BusinessAccountRegion" FromRole="Region" ToRole="BusinessAccount" />
@@ -2769,7 +2765,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Name="Data" Nullable="false" Type="Byte" />
           <Property Type="String" Name="Name" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Location" Relationship="CoreEntities.LocationFile" FromRole="File" ToRole="Location" />
@@ -2793,7 +2789,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="Decimal" Name="Longitude" Nullable="true" Precision="11" Scale="8" />
           <Property Type="Decimal" Name="Latitude" Nullable="true" Precision="11" Scale="8" />
@@ -2818,7 +2814,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" xmlns="http://schemas.microsoft.com/ado/2008/09/edm" />
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="String" Name="FirstName" Nullable="true" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="LastName" Nullable="true" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Type="String" Name="MiddleInitial" Nullable="true" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -2885,14 +2881,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="NumericField" BaseType="CoreEntities.Field" >
+        <EntityType Name="NumericField" BaseType="CoreEntities.Field">
           <Property Type="String" Name="Mask" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="Int32" Name="DecimalPlaces" Nullable="false" />
           <Property Type="Decimal" Name="Minimum" Nullable="false" Precision="16" Scale="6" />
           <Property Type="Decimal" Name="Maximum" Nullable="false" Precision="16" Scale="6" />
           <Property Type="Decimal" Name="Value" Nullable="true" Scale="6" Precision="16" />
         </EntityType>
-        <EntityType Name="DateTimeField" BaseType="CoreEntities.Field" >
+        <EntityType Name="DateTimeField" BaseType="CoreEntities.Field">
           <Property Type="DateTime" Name="Earliest" Nullable="false" Precision="3" />
           <Property Type="DateTime" Name="Latest" Nullable="false" Precision="3" />
           <Property Type="Int16" Name="TypeInt" Nullable="false" />
@@ -2902,7 +2898,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="DateTime" Name="Date" Nullable="true" Precision="3" />
           <Property Type="String" Name="Type" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="String" Name="Summary" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
@@ -2935,8 +2931,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FieldField">
-          <End Type="CoreEntities.Field" Role="Field" Multiplicity="0..1"/>
-          <End Type="CoreEntities.Field" Role="Field1" Multiplicity="*"/>
+          <End Type="CoreEntities.Field" Role="Field" Multiplicity="0..1" />
+          <End Type="CoreEntities.Field" Role="Field1" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Field">
               <PropertyRef Name="Id" />
@@ -2958,7 +2954,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="LocationField" BaseType="CoreEntities.Field" >
+        <EntityType Name="LocationField" BaseType="CoreEntities.Field">
           <NavigationProperty Name="Value" Relationship="CoreEntities.LocationFieldLocation" FromRole="LocationField" ToRole="Location" />
           <Property Type="Guid" Name="LocationId" Nullable="true" />
           <Property Type="Int16" Name="LocationFieldTypeInt" Nullable="false" />
@@ -2979,7 +2975,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <NavigationProperty Name="BillToLocation" Relationship="CoreEntities.InvoiceLocation" FromRole="Invoice" ToRole="Location" />
           <Property Type="Guid" Name="LocationId" Nullable="true" />
           <Property Type="Int32" Name="FixedScheduleOptionInt" Nullable="true" />
@@ -3016,7 +3012,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="Int32" Name="DueDays" Nullable="true" />
           <Property Type="String" Name="Name" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Invoices" Relationship="CoreEntities.InvoiceSalesTerm" FromRole="SalesTerm" ToRole="Invoice" />
@@ -3049,7 +3045,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <NavigationProperty Name="Invoice" Relationship="CoreEntities.LineItemInvoice" FromRole="LineItem" ToRole="Invoice" />
           <Property Type="Guid" Name="InvoiceId" Nullable="false" />
           <Property Type="String" Name="Description" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
@@ -3067,7 +3063,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="PartyImage" BaseType="CoreEntities.File" >
+        <EntityType Name="PartyImage" BaseType="CoreEntities.File">
           <Documentation>
             <Summary>This is a special class to avoid a 0..1 to 0..1 association between party and file.</Summary>
           </Documentation>
@@ -3125,7 +3121,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="DateTime" Name="Date" Nullable="true" Precision="3" />
           <Property Type="String" Name="BusinessName" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="String" Name="UserEmail" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
@@ -3140,7 +3136,7 @@
           <Property Type="Guid" Name="ServiceTemplateId" Nullable="false" />
           <Property Type="Guid" Name="BusinessAccountId" Nullable="false" />
         </EntityType>
-        <ComplexType Name="ServiceHolder" >
+        <ComplexType Name="ServiceHolder">
           <Property Type="Guid" Name="RecurringServiceId" Nullable="true" />
           <Property Type="Guid" Name="ServiceId" Nullable="true" />
           <Property Type="DateTime" Name="OccurDate" Nullable="false" />
@@ -3251,7 +3247,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" />
+          <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="String" Name="Color" Nullable="true" FixedLength="false" MaxLength="Max" Unicode="true" />
           <Property Type="String" Name="Name" Nullable="true" FixedLength="false" MaxLength="Max" Unicode="true" />
           <Property Type="Int32" Name="DefaultTypeInt" Nullable="true" />
@@ -3304,7 +3300,7 @@
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
-    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="CoreEntitiesStoreContainer" CdmEntityContainer="CoreEntitiesContainer">
     <EntitySetMapping Name="Blocks">
       <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.Block)">
@@ -3846,7 +3842,7 @@
               </ComplexTypeMapping>
             </ResultMapping>
           </FunctionImportMapping>
-          <FunctionImportMapping FunctionImportName="GetFieldsInJavaScriptFormat" FunctionName="CoreEntities.Store.GetFieldsInJavaScriptFormat" >
+          <FunctionImportMapping FunctionImportName="GetFieldsInJavaScriptFormat" FunctionName="CoreEntities.Store.GetFieldsInJavaScriptFormat">
             <ResultMapping>
               <ComplexTypeMapping TypeName="CoreEntities.FieldJavaScript">
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -3866,14 +3862,14 @@
 </Mapping></edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
-  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <edmx:Designer>
     <edmx:Connection>
-      <DesignerInfoPropertySet>
+      <DesignerInfoPropertySet xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
         <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
       </DesignerInfoPropertySet>
     </edmx:Connection>
     <edmx:Options>
-      <DesignerInfoPropertySet>
+      <DesignerInfoPropertySet xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="True" />
         <DesignerProperty Name="DatabaseGenerationWorkflow" Value="$(VSEFTools)\DBGen\TablePerTypeStrategy.xaml" />
@@ -3881,6 +3877,6 @@
       </DesignerInfoPropertySet>
     </edmx:Options>
     <!-- Diagram content (shape and connector positions) -->
-    <edmx:Diagrams></edmx:Diagrams>
+    <edmx:Diagrams />
   </edmx:Designer>
 </edmx:Edmx>
