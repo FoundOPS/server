@@ -54,8 +54,9 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
                 throw Request.BadRequest();
 
             //Call the appropriate function and return the Suggestions
-            return request.RowsWithHeaders != null ? this.ValidateInput(request.RowsWithHeaders, businessAccount) :
-            this.SuggestEntites(request.Rows, businessAccount);
+            return request.RowsWithHeaders != null ? 
+                this.ValidateInput(request.RowsWithHeaders, businessAccount) :
+                this.SuggestEntites(request.Rows, businessAccount);
         }
 
         /// <summary>
@@ -119,20 +120,28 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
                 var clientName = row[clientNameCol];
 
                 //Checks to be sure that all columns needed to make a location exist in the headers passed
-                if (new[] { addressLineOneCol, addressLineTwoCol, cityCol, stateCol, countryCodeCol, zipCodeCol, latitudeCol, longitudeCol }.All(col => col != -1))
+                if (new[] { addressLineOneCol, addressLineTwoCol, cityCol, stateCol, countryCodeCol, zipCodeCol, latitudeCol, longitudeCol }.Any(col => col != -1))
                 {
                     //If Lat/Lon dont have values, try to GeoCode
                     if (latitude == "" && longitude == "")
                     {
                         GeocoderResult geocodeResult;
 
+                        var address = new Address
+                        {
+                                AddressLineOne = addressLineOne ?? null,
+                                City = city ?? null,
+                                State = state ?? null,
+                                ZipCode = zipCode ?? null
+                        };
+
                         try
                         {
-                            geocodeResult = BingLocationServices.TryGeocode(new Address { AddressLineOne = addressLineOne, City = city, State = state, ZipCode = zipCode }).FirstOrDefault();
+                            geocodeResult = BingLocationServices.TryGeocode(address).FirstOrDefault();
                         }
                         catch (Exception)
                         {
-                            geocodeResult = BingLocationServices.TryGeocode(new Address { AddressLineOne = addressLineOne, City = city, State = state, ZipCode = zipCode }).FirstOrDefault();
+                            geocodeResult = BingLocationServices.TryGeocode(address).FirstOrDefault();
                         }
 
                         if (geocodeResult != null)
@@ -234,13 +243,11 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
 
                 #region Repeat
 
-                if (startDateCol == -1 || row[startDateCol] == "")
-                    Request.BadRequest("Every Repeat needs a start date");
-
+                //Note: If no start date is passed, set it to today
                 var repeat = new Repeat
                 {
                     Id = Guid.NewGuid(),
-                    StartDate = Convert.ToDateTime(row[startDateCol]),
+                    StartDate = startDateCol == -1 || row[startDateCol] == "" ? Convert.ToDateTime(row[startDateCol]) : CoreEntitiesContainer.CurrentUserAccount().First().Now(),
                     EndDate = endDateCol != -1 && row[endDateCol] != "" ? Convert.ToDateTime(row[endDateCol]) : (DateTime?)null,
                     EndAfterTimes = endAfterCol != -1 && row[endAfterCol] != "" ? Convert.ToInt32(row[endAfterCol]) : (int?)null,
                     RepeatEveryTimes = repeatEveryCol != -1 && row[repeatEveryCol] != "" ? Convert.ToInt32(row[repeatEveryCol]) : (int?)null
@@ -248,23 +255,39 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
 
                 #region Frequency
 
-                var val = row[frequencyCol].ToLower();
-                if (val == "once" || val == "o")
-                    repeat.FrequencyInt = (int)Frequency.Once;
-                else if (val == "daily" || val == "d")
-                    repeat.FrequencyInt = (int)Frequency.Daily;
-                else if (val == "weekly" || val == "w")
-                    repeat.FrequencyInt = (int)Frequency.Weekly;
-                else if (val == "monthly" || val == "m")
-                    repeat.FrequencyInt = (int)Frequency.Monthly;
-                else if (val == "yearly" || val == "y")
-                    repeat.FrequencyInt = (int)Frequency.Yearly;
+                var val = frequencyCol != -1 ? row[frequencyCol].ToLower() : "";
+                switch (val)
+                {
+                    case "o":
+                    case "once":
+                        repeat.FrequencyInt = (int)Frequency.Once;
+                        break;
+                    case "d":
+                    case "daily":
+                        repeat.FrequencyInt = (int)Frequency.Daily;
+                        break;
+                    case "w":
+                    case "weekly":
+                        repeat.FrequencyInt = (int)Frequency.Weekly;
+                        break;
+                    case "m":
+                    case "monthly":
+                        repeat.FrequencyInt = (int)Frequency.Monthly;
+                        break;
+                    case "y":
+                    case "yearly":
+                        repeat.FrequencyInt = (int)Frequency.Yearly;
+                        break;
+                    default:
+                        repeat.FrequencyInt = null;
+                        break;
+                }
 
                 #endregion
 
                 #region Frequency Detail
 
-                val = row[frequencyDetailCol];
+                val = frequencyDetailCol != -1 ? row[frequencyDetailCol].ToLower() : "";
                 val = val.Replace(" ", "");
                 if (repeat.Frequency == Frequency.Weekly)
                 {
@@ -322,13 +345,18 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
                     }
                 }
 
+                #endregion
+
+                repeat.StatusInt = repeat.EndDate == null || repeat.EndAfterTimes == null ||
+                                   repeat.RepeatEveryTimes == null || repeat.FrequencyInt == null
+                                       ? (int) ImportStatus.Error
+                                       : (int) ImportStatus.New;
+
                 importRow.Repeat = repeat;
 
                 #endregion
 
                 importRows.Add(importRow);
-
-                #endregion
             });
 
             var suggestion = SuggestEntites(importRows.ToArray(), businessAccount);
