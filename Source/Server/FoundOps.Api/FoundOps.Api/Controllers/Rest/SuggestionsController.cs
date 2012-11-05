@@ -156,7 +156,7 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
                         //Try and match a location to one in the FoundOPS system
                         var matchedLocation = addressLineTwo != null
                             //Use this statement if Address Line Two is not null
-                        ? _locations.FirstOrDefault(l => l.AddressLineTwo == String.Empty && (l.Latitude != null && l.Longitude != null)
+                        ? _locations.FirstOrDefault(l => l.AddressLineTwo == addressLineTwo && (l.Latitude != null && l.Longitude != null)
                             && (decimal.Round(l.Latitude.Value, 6) == roundedLatitude
                             && decimal.Round(l.Longitude.Value, 6) == roundedLongitude))
                             //Use this statement if Address Line Two is null
@@ -229,9 +229,9 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
                 {
                     Id = Guid.NewGuid(),
                     StartDate = Convert.ToDateTime(row[startDateCol]),
-                    EndDate = row[endDateCol] != "" ? Convert.ToDateTime(row[endDateCol]) : (DateTime?)null,
-                    EndAfterTimes = row[endAfterCol] != "" ? Convert.ToInt32(row[endAfterCol]) : (int?)null,
-                    RepeatEveryTimes = row[repeatEveryCol] != "" ? Convert.ToInt32(row[repeatEveryCol]) : (int?)null
+                    EndDate = endDateCol != -1 && row[endDateCol] != "" ? Convert.ToDateTime(row[endDateCol]) : (DateTime?)null,
+                    EndAfterTimes = endAfterCol != -1 && row[endAfterCol] != "" ? Convert.ToInt32(row[endAfterCol]) : (int?)null,
+                    RepeatEveryTimes = repeatEveryCol != -1 && row[repeatEveryCol] != "" ? Convert.ToInt32(row[repeatEveryCol]) : (int?)null
                 };
 
                 #region Frequency
