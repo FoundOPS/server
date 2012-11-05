@@ -109,19 +109,18 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
 
                 var importedLocation = new Api.Models.Location();
 
-                var latitude = row[latitudeCol];
-                var longitude = row[longitudeCol];
-                var addressLineOne = row[addressLineOneCol];
-                var addressLineTwo = row[addressLineTwoCol];
-                var city = row[cityCol];
-                var state = row[stateCol];
-                var zipCode = row[zipCodeCol];
-                var regionName = regionNameCol != -1 ? row[regionNameCol] : null;
-                var clientName = row[clientNameCol];
-
                 //Checks to be sure that all columns needed to make a location exist in the headers passed
                 if (new[] { addressLineOneCol, addressLineTwoCol, cityCol, stateCol, countryCodeCol, zipCodeCol, latitudeCol, longitudeCol }.Any(col => col != -1))
                 {
+                    var latitude = row[latitudeCol];
+                    var longitude = row[longitudeCol];
+                    var addressLineOne = row[addressLineOneCol];
+                    var addressLineTwo = row[addressLineTwoCol];
+                    var city = row[cityCol];
+                    var state = row[stateCol];
+                    var zipCode = row[zipCodeCol];
+                    var regionName = regionNameCol != -1 ? row[regionNameCol] : null;
+
                     //If Lat/Lon dont have values, try to GeoCode
                     if (latitude == "" && longitude == "")
                     {
@@ -154,7 +153,7 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
                         if (latitude == null && longitude == null)
                             importedLocation.StatusInt = (int)ImportStatus.Error;
 
-                        clientName = row[clientNameCol];
+                        var clientName = row[clientNameCol];
 
                         //Matched the address entered and client name matched to a location
                         var matchedLocation = _locations.FirstOrDefault(l => clientName != null && l.ClientId != null &&
@@ -214,9 +213,9 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
 
                 #region Client
 
-                if (!string.IsNullOrEmpty(clientName))
+                if (!string.IsNullOrEmpty(row[clientNameCol]))
                 {
-                    var existingClient = _clients.FirstOrDefault(c => c.Name == clientName);
+                    var existingClient = _clients.FirstOrDefault(c => c.Name == row[clientNameCol]);
 
                     Models.Client importedClient;
 
@@ -230,7 +229,7 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
                         importedClient = new FoundOps.Api.Models.Client
                         {
                             Id = Guid.NewGuid(),
-                            Name = clientName,
+                            Name = row[clientNameCol],
                             ContactInfoSet = new List<ContactInfo>(),
                             StatusInt = (int)ImportStatus.New
                         };
