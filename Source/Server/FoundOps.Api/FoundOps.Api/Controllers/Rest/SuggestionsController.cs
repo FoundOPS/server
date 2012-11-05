@@ -112,13 +112,13 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
                 //Checks to be sure that all columns needed to make a location exist in the headers passed
                 if (new[] { addressLineOneCol, addressLineTwoCol, cityCol, stateCol, countryCodeCol, zipCodeCol, latitudeCol, longitudeCol }.Any(col => col != -1))
                 {
-                    var latitude = row[latitudeCol];
-                    var longitude = row[longitudeCol];
-                    var addressLineOne = row[addressLineOneCol];
-                    var addressLineTwo = row[addressLineTwoCol];
-                    var city = row[cityCol];
-                    var state = row[stateCol];
-                    var zipCode = row[zipCodeCol];
+                    var latitude = latitudeCol != -1 ? row[latitudeCol] : "";
+                    var longitude = longitudeCol != -1 ? row[longitudeCol] : "" ;
+                    var addressLineOne = addressLineOneCol != -1 ? row[addressLineOneCol] : "";
+                    var addressLineTwo = addressLineTwoCol != -1 ? row[addressLineTwoCol] : "";
+                    var city = cityCol != -1 ? row[cityCol] : "";
+                    var state = stateCol != -1 ? row[stateCol] : "";
+                    var zipCode = zipCodeCol != -1 ? row[zipCodeCol] : "";
                     var regionName = regionNameCol != -1 ? row[regionNameCol] : null;
 
                     //If Lat/Lon dont have values, try to GeoCode
