@@ -1,18 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http.Formatting;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
+using Newtonsoft.Json;
 
 namespace FoundOps.Api.Tools
 {
     public class JsonpMediaTypeFormatter : JsonMediaTypeFormatter
     {
-        private string callbackQueryParameter;
+        private string _callbackQueryParameter;
 
         public JsonpMediaTypeFormatter()
         {
@@ -21,13 +20,17 @@ namespace FoundOps.Api.Tools
 
             MediaTypeMappings.Add(new UriPathExtensionMapping("jsonp", DefaultMediaType));
 
-            this.SerializerSettings.TypeNameHandling = Newtonsoft.Json.TypeNameHandling.Auto;
+            SerializerSettings = new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.Auto,
+                NullValueHandling = NullValueHandling.Include
+            };
         }
 
         public string CallbackQueryParameter
         {
-            get { return callbackQueryParameter ?? "callback"; }
-            set { callbackQueryParameter = value; }
+            get { return _callbackQueryParameter ?? "callback"; }
+            set { _callbackQueryParameter = value; }
         }
 
         public override Task WriteToStreamAsync(Type type, object value, Stream stream, HttpContentHeaders contentHeaders, TransportContext transportContext)
