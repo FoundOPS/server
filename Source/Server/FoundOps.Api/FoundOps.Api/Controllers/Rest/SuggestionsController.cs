@@ -121,8 +121,6 @@ namespace FoundOps.Api.Controllers.Rest
                     //If Lat/Lon dont have values, try to Geocode
                     if (latitude == "" && longitude == "")
                     {
-                        GeocoderResult geocodeResult;
-
                         var address = new Address
                         {
                             AddressLineOne = addressLineOne,
@@ -132,7 +130,7 @@ namespace FoundOps.Api.Controllers.Rest
                         };
 
                         //Attempt to Geocode the address
-                        geocodeResult = BingLocationServices.TryGeocode(address).FirstOrDefault(gc => gc != null);
+                        var geocodeResult = BingLocationServices.TryGeocode(address).FirstOrDefault(gc => gc != null);
 
                         latitude = geocodeResult != null ? geocodeResult.Latitude : null;
                         longitude = geocodeResult != null ? geocodeResult.Longitude : null;
