@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -39,7 +40,7 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
         /// <para>RowWithHeaders (List of sting[]): If not null, call ValidateInput. The first string[] is the headers. The rest are data to be imported. </para>
         /// <para>Rows (ImportRow[]): If not null, call SuggestEntites. The rows to be imported</para>
         /// <para>Depending on what combination is passed you will either go to ValidateInput or SuggestEntites.</para>
-        /// <para>If both or neither are null, an error will be thrown. </para></param>
+        /// If both or neither are null, an error will be thrown. </para></param>
         /// <returns>Entites with suggestions</returns>
         public Suggestions Put(Guid roleId, SuggestionsRequest request)
         {
@@ -94,7 +95,7 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
 
             #endregion
 
-            var importRows = new List<ImportRow>();
+            var concurrentDictionary = new ConcurrentDictionary<int, ImportRow>();
 
             var rowCount = rows.Count();
             Parallel.For((long)0, rowCount, rowIndex =>
@@ -156,19 +157,28 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
                         if (latitude == null && longitude == null)
                             importedLocation.StatusInt = (int)ImportStatus.Error;
 
-                        clientName = clientNameCol != -1 ? row[clientNameCol] : null;
-
-                        //Matched the address entered and client name matched to a location
-                        var matchedLocation = _locations.FirstOrDefault(l => clientName != null && l.ClientId != null &&
-                               (addressLineTwo != null && (l.AddressLineOne == addressLineOne && l.AddressLineTwo == addressLineTwo
-                                    && _clients.First(c => c.Id == l.ClientId).Name == clientName)));
+                        //Matched the entire address to a location (AddressLineOne, AddressLineTwo, City, State and ZipCode)
+                        var matchedLocation = _locations.FirstOrDefault(l => l.AddressLineOne == addressLineOne && l.AddressLineTwo == addressLineTwo
+                                                            && l.AdminDistrictTwo == city && l.AdminDistrictOne == state && l.PostalCode == zipCode);
 
                         if (matchedLocation != null)
                             importedLocation = ConvertLocationSetRegionAndStatus(matchedLocation, regionName, ImportStatus.Linked);
+                        else
+                        {
+                            clientName = clientNameCol != -1 ? row[clientNameCol] : null;
+
+                            //Matched the address entered and client name to a location
+                            matchedLocation = _locations.FirstOrDefault(l => clientName != null && l.ClientId != null &&
+                                   (addressLineTwo != null && (l.AddressLineOne == addressLineOne && l.AddressLineTwo == addressLineTwo
+                                        && _clients.First(c => c.Id == l.ClientId).Name == clientName)));
+
+                            if (matchedLocation != null)
+                                importedLocation = ConvertLocationSetRegionAndStatus(matchedLocation, regionName, ImportStatus.Linked);
+                        }
                     }
 
                     //If lat/long exist, try and match based on that
-                    if (latitude != "" && longitude != "" && importedLocation.StatusInt == (int)ImportStatus.Error)
+                    if (latitude != "" && longitude != "" && importedLocation.StatusInt != (int)ImportStatus.Error)
                     {
                         var roundedLatitude = Math.Round(Convert.ToDecimal(latitude), 6);
                         var roundedLongitude = Math.Round(Convert.ToDecimal(longitude), 6);
@@ -362,10 +372,12 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
 
                 #endregion
 
-                importRows.Add(importRow);
+                concurrentDictionary.GetOrAdd((int)rowIndex, importRow);
             });
 
-            var suggestion = SuggestEntites(importRows.ToArray(), businessAccount);
+            var importRows = concurrentDictionary.OrderBy(kvp => kvp.Key).Select(kvp => kvp.Value).ToArray();
+
+            var suggestion = SuggestEntites(importRows, businessAccount);
 
             return suggestion;
         }
@@ -379,6 +391,8 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
         public Suggestions SuggestEntites(ImportRow[] rows, FoundOps.Core.Models.CoreEntities.BusinessAccount businessAccount)
         {
             SetupClientLocationRegionSets(businessAccount.Id);
+
+            var concurrentDictionary = new ConcurrentDictionary<int, RowSuggestions>();
 
             var suggestionToReturn = new Suggestions();
             var clients = new List<FoundOps.Api.Models.Client>();
@@ -444,8 +458,10 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
                     rowSuggestions.Repeat.Add(row.Repeat);
 
                 //Add this row's suggestions to the list to be returned
-                suggestionToReturn.RowSuggestions.Add(rowSuggestions);
+                concurrentDictionary.GetOrAdd((int)rowIndex, rowSuggestions);
             });
+
+            suggestionToReturn.RowSuggestions.AddRange(concurrentDictionary.OrderBy(kvp => kvp.Key).Select(kvp => kvp.Value));
 
             //Only add distinct Clients
             var distinctClients = clients.Distinct();

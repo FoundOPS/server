@@ -69,8 +69,17 @@ namespace FoundOps.Common.NET
 
             // Initiate Async Network call to Bing Maps REST Service
             var geocodeService = new WebClient();
-            var data = geocodeService.DownloadString(new Uri(restQueryUrl));
-            return BingGeocodeServiceDownloadStringCompleted(data);
+            try
+            {
+                var data = geocodeService.DownloadString(new Uri(restQueryUrl));
+                return BingGeocodeServiceDownloadStringCompleted(data);
+            }
+            catch (Exception)
+            {
+                var data = geocodeService.DownloadString(new Uri(restQueryUrl));
+                return BingGeocodeServiceDownloadStringCompleted(data);
+            }
+            
         }
 
         private static IEnumerable<GeocoderResult> BingGeocodeServiceDownloadStringCompleted(string data)

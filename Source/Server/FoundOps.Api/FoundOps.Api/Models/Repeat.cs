@@ -16,20 +16,35 @@ namespace FoundOps.Api.Models
         public int? RepeatEveryTimes { get; set; }
         public int? FrequencyInt { get; set; }
         public int? FrequencyDetailInt { get; set; }
-        public Guid? RecurringServiceId { get; set; }
         public int? StatusInt { get; set; }
+
+        public static Repeat ConvertModel(FoundOps.Core.Models.CoreEntities.Repeat repeatModel)
+        {
+            var repeat = new Api.Models.Repeat
+            {
+                Id = repeatModel.Id,
+                StartDate = repeatModel.StartDate,
+                EndDate = repeatModel.EndDate,
+                EndAfterTimes = repeatModel.EndAfterTimes,
+                RepeatEveryTimes = repeatModel.RepeatEveryTimes,
+                FrequencyInt = repeatModel.FrequencyInt,
+                FrequencyDetailInt = repeatModel.FrequencyDetailInt
+            };
+
+            return repeat;
+        }
 
         public Frequency Frequency
         {
             get { return FrequencyInt != null ? (Frequency)FrequencyInt : Frequency.Null; }
-            set { FrequencyInt = (int) value; }
+            set { FrequencyInt = (int)value; }
         }
 
         public DayOfWeek[] FrequencyDetailAsWeeklyFrequencyDetail
         {
             get
             {
-                if(Frequency != Frequency.Weekly)
+                if (Frequency != Frequency.Weekly)
                     return new DayOfWeek[] { };
 
                 return IntegerToWeeklyFrequencyDetail(FrequencyDetailInt);
@@ -69,7 +84,7 @@ namespace FoundOps.Api.Models
                 FrequencyDetailInt = Convert.ToInt32(frequencyDetailString);
             }
         }
-        
+
         public static DayOfWeek[] IntegerToWeeklyFrequencyDetail(int? integer)
         {
             var daysOfWeekForWeeklyFrequency = new ObservableCollection<DayOfWeek>();
@@ -182,5 +197,5 @@ namespace FoundOps.Api.Models
                     break;
             }
         }
-    }
+    } 
 }
