@@ -79,7 +79,6 @@ namespace FoundOps.Common.NET
                 var data = geocodeService.DownloadString(new Uri(restQueryUrl));
                 return BingGeocodeServiceDownloadStringCompleted(data);
             }
-            
         }
 
         private static IEnumerable<GeocoderResult> BingGeocodeServiceDownloadStringCompleted(string data)

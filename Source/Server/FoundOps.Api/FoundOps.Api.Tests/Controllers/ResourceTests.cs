@@ -507,7 +507,6 @@ namespace FoundOps.Api.Tests.Controllers
             if (importLocations)
             {
                 //Test Location output
-                var notMatched = suggestions.Locations.Where(l => l.StatusInt == 1);
                 var locationSuggestions = suggestions.RowSuggestions.SelectMany(rs => rs.LocationSuggestions).Distinct().ToArray();
                 var locations = suggestions.Locations.Select(l => l.Id).ToArray();
                 var except = locations.Except(locationSuggestions);

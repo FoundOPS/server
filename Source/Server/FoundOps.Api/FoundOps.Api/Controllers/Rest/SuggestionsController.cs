@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Web.Http;
-using Dapper;
+﻿using Dapper;
 using FoundOps.Api.Models;
 using FoundOps.Api.Tools;
 using FoundOps.Common.NET;
 using FoundOps.Core.Models;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Threading.Tasks;
 using Client = FoundOps.Core.Models.CoreEntities.Client;
 using ContactInfo = FoundOps.Api.Models.ContactInfo;
 using Location = FoundOps.Core.Models.CoreEntities.Location;
@@ -27,24 +23,24 @@ namespace FoundOps.Api.Controllers.Rest
     {
         private Client[] _clients;
         private Location[] _locations;
-        private FoundOps.Core.Models.CoreEntities.Region[] _regions;
+        private Core.Models.CoreEntities.Region[] _regions;
         private const string Sql = @"SELECT * FROM dbo.Locations WHERE BusinessAccountId = @id
-SELECT * FROM dbo.Clients WHERE BusinessAccountId = @id
-SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
+                                     SELECT * FROM dbo.Clients WHERE BusinessAccountId = @id
+                                     SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
 
         /// <summary>
-        /// This just call the appropriate function based on the inputs
+        /// Get suggestions.
+        /// In the request specify either RowsWithHeaders or Rows.
         /// </summary>
         /// <param name="roleId">The current role id</param>
-        /// <param name="request">Contains RowsWithHeaders and rows.
-        /// <para>RowWithHeaders (List of sting[]): If not null, call ValidateInput. The first string[] is the headers. The rest are data to be imported. </para>
+        /// <param name="request">
+        /// <para>RowWithHeaders (List of sting[]): If not null, call ValidateInput. The first string[] is the headers. The rest are data to be imported.</para>
         /// <para>Rows (ImportRow[]): If not null, call SuggestEntites. The rows to be imported</para>
-        /// <para>Depending on what combination is passed you will either go to ValidateInput or SuggestEntites.</para>
-        /// If both or neither are null, an error will be thrown. </para></param>
+        /// <para>If both parameters are set or null an error will be thrown.</para></param>
         /// <returns>Entites with suggestions</returns>
         public Suggestions Put(Guid roleId, SuggestionsRequest request)
         {
-            //If both or neither optional input are null, throw a bad request
+            //If both parameters are set or null an error will be thrown
             if ((request.RowsWithHeaders == null && request.Rows == null) || (request.RowsWithHeaders != null && request.Rows != null))
                 throw Request.BadRequest();
 
@@ -52,27 +48,27 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
             if (businessAccount == null)
                 throw Request.BadRequest();
 
+            //load all of the business account's clients, locations, and regions
+            SetupClientLocationRegionSets(businessAccount.Id);
+
             //Call the appropriate function and return the Suggestions
             return request.RowsWithHeaders != null ?
-                this.ValidateInput(request.RowsWithHeaders, businessAccount) :
-                this.SuggestEntites(request.Rows, businessAccount);
+                this.ValidateThenSuggestEntities(request.RowsWithHeaders) :
+                this.SuggestEntites(request.Rows);
         }
 
         /// <summary>
-        /// Manipulates the input strings to either existing or new entities.
-        /// Passes those entities to SuggestEntities to generate the suggestions.
-        /// This method is only used for the initial step of the Import. Once entites are generated; use SuggestEntities
+        /// Manipulates the input strings to existing or new entities.
+        /// Then it passes those entities to SuggestEntities to generate suggestions.
+        /// <note>This method is only used for the initial step of the Import. Once entites are generated; use SuggestEntities</note>
         /// </summary>
-        /// <param name="rowsWithHeaders">List of string[]. The first string[] is the headers. the rest are data to be imported</param>
-        /// <param name="businessAccount">The business account </param>
+        /// <param name="rowsWithHeaders">List of string[]. The first string[] is the headers, the rest are data to be imported</param>
         /// <returns>Entites with suggestions</returns>
-        public Suggestions ValidateInput(List<string[]> rowsWithHeaders, FoundOps.Core.Models.CoreEntities.BusinessAccount businessAccount)
+        public Suggestions ValidateThenSuggestEntities(List<string[]> rowsWithHeaders)
         {
             var headers = rowsWithHeaders[0];
             rowsWithHeaders.RemoveAt(0);
             var rows = rowsWithHeaders;
-
-            SetupClientLocationRegionSets(businessAccount.Id);
 
             #region Assign Column placement
 
@@ -108,8 +104,9 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
 
                 var importedLocation = new Api.Models.Location();
 
-                //Checks to be sure that all columns needed to make a location exist in the headers passed
                 string clientName;
+
+                //Checks if at least one location column is passed
                 if (new[] { addressLineOneCol, addressLineTwoCol, cityCol, stateCol, countryCodeCol, zipCodeCol, latitudeCol, longitudeCol }.Any(col => col != -1))
                 {
                     var latitude = latitudeCol != -1 ? row[latitudeCol] : "";
@@ -121,39 +118,26 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
                     var zipCode = zipCodeCol != -1 ? row[zipCodeCol] : null;
                     var regionName = regionNameCol != -1 ? row[regionNameCol] : null;
 
-                    //If Lat/Lon dont have values, try to GeoCode
+                    //If Lat/Lon dont have values, try to Geocode
                     if (latitude == "" && longitude == "")
                     {
                         GeocoderResult geocodeResult;
 
                         var address = new Address
                         {
-                            AddressLineOne = addressLineOne ?? null,
-                            City = city ?? null,
-                            State = state ?? null,
-                            ZipCode = zipCode ?? null
+                            AddressLineOne = addressLineOne,
+                            City = city,
+                            State = state,
+                            ZipCode = zipCode
                         };
 
-                        //Attempt to Geocode the address.
-                        //If it fails, or returns a null geocode, try again
-                        try
-                        {
-                            geocodeResult = BingLocationServices.TryGeocode(address).FirstOrDefault();
-
-                            if (geocodeResult == null)
-                                throw new Exception();
-                        }
-                        catch (Exception)
-                        {
-                            //Pause the thread for 0.25 seconds because there was a problem connecting to the Bing servers above
-                            Thread.Sleep(250);
-                            geocodeResult = BingLocationServices.TryGeocode(address).FirstOrDefault();
-                        }
+                        //Attempt to Geocode the address
+                        geocodeResult = BingLocationServices.TryGeocode(address).FirstOrDefault(gc => gc != null);
 
                         latitude = geocodeResult != null ? geocodeResult.Latitude : null;
                         longitude = geocodeResult != null ? geocodeResult.Longitude : null;
 
-                        //If they still do not have values, throw error on all entries in the row.
+                        //If they still do not have values, throw error on the location
                         if (latitude == null && longitude == null)
                             importedLocation.StatusInt = (int)ImportStatus.Error;
 
@@ -377,7 +361,7 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
 
             var importRows = concurrentDictionary.OrderBy(kvp => kvp.Key).Select(kvp => kvp.Value).ToArray();
 
-            var suggestion = SuggestEntites(importRows, businessAccount);
+            var suggestion = SuggestEntites(importRows);
 
             return suggestion;
         }
@@ -386,20 +370,16 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
         /// Suggests other potential options based on the entities passed
         /// </summary>
         /// <param name="rows">The rows being imported</param>
-        /// <param name="businessAccount">The business account </param>
         /// <returns>Entites with suggestions</returns>
-        public Suggestions SuggestEntites(ImportRow[] rows, FoundOps.Core.Models.CoreEntities.BusinessAccount businessAccount)
+        public Suggestions SuggestEntites(ImportRow[] rows)
         {
-            SetupClientLocationRegionSets(businessAccount.Id);
-
             var concurrentDictionary = new ConcurrentDictionary<int, RowSuggestions>();
 
             var suggestionToReturn = new Suggestions();
             var clients = new List<FoundOps.Api.Models.Client>();
             var locations = new List<FoundOps.Api.Models.Location>();
 
-            var rowCount = rows.Count();
-            Parallel.For((long)0, rowCount, rowIndex =>
+            Parallel.For((long)0, rows.Count(), rowIndex =>
             {
                 var row = rows[rowIndex];
 
@@ -531,7 +511,7 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
 
                     _clients = data.Read<Client>().ToArray();
 
-                    _regions = data.Read<FoundOps.Core.Models.CoreEntities.Region>().ToArray();
+                    _regions = data.Read<Core.Models.CoreEntities.Region>().ToArray();
                 }
 
                 conn.Close();
