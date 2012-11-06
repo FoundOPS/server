@@ -258,6 +258,7 @@
     <Compile Include="Models\SignatureField.cs" />
     <Compile Include="Models\ErrorEntry.cs" />
     <Compile Include="Models\Option.cs" />
+    <Compile Include="Models\SuggestionRequest.cs" />
     <Compile Include="Models\Suggestions.cs" />
     <Compile Include="Models\TimeZone.cs" />
     <Compile Include="Models\UserAccount.cs" />

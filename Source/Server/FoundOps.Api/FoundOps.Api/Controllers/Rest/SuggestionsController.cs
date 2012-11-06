@@ -22,12 +22,6 @@ using Repeat = FoundOps.Api.Models.Repeat;
 
 namespace FoundOps.Api.Controllers.Rest
 {
-    public class SuggestionsRequest
-    {
-        public List<string[]> RowsWithHeaders { get; set; }
-        public ImportRow[] Rows { get; set; }
-    }
-
     public class SuggestionsController : BaseApiController
     {
         private Client[] _clients;
@@ -41,8 +35,11 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
         /// This just call the appropriate function based on the inputs
         /// </summary>
         /// <param name="roleId">The current role id</param>
-        /// <param name="rowsWithHeaders">If not null, call ValidateInput. The first string[] is the headers. The rest are data to be imported</param>
-        /// <param name="rows">If not null, call SuggestEntites. The rows to be imported</param>
+        /// <param name="request">Contains RowsWithHeaders and rows.
+        /// <para>RowWithHeaders (List of sting[]): If not null, call ValidateInput. The first string[] is the headers. The rest are data to be imported. </para>
+        /// <para>Rows (ImportRow[]): If not null, call SuggestEntites. The rows to be imported</para>
+        /// <para>Depending on what combination is passed you will either go to ValidateInput or SuggestEntites.</para>
+        /// <para>If both or neither are null, an error will be thrown. </para></param>
         /// <returns>Entites with suggestions</returns>
         public Suggestions Put(Guid roleId, SuggestionsRequest request)
         {
@@ -136,6 +133,8 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
                             ZipCode = zipCode ?? null
                         };
 
+                        //Attempt to Geocode the address.
+                        //If it fails, or returns a null geocode, try again
                         try
                         {
                             geocodeResult = BingLocationServices.TryGeocode(address).FirstOrDefault();
@@ -168,8 +167,8 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
                             importedLocation = ConvertLocationSetRegionAndStatus(matchedLocation, regionName, ImportStatus.Linked);
                     }
 
-                    //If lat/long exist, try and match based on that and 
-                    if (latitude != "" && longitude != "")
+                    //If lat/long exist, try and match based on that
+                    if (latitude != "" && longitude != "" && importedLocation.StatusInt == (int)ImportStatus.Error)
                     {
                         var roundedLatitude = Math.Round(Convert.ToDecimal(latitude), 6);
                         var roundedLongitude = Math.Round(Convert.ToDecimal(longitude), 6);
@@ -467,10 +466,10 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
         /// 2) Set the Region on the location if it exists.
         /// 3) Set the Status of the Location.
         /// </summary>
-        /// <param name="matchedLocation"></param>
-        /// <param name="regionName"></param>
-        /// <param name="linked"></param>
-        /// <returns></returns>
+        /// <param name="matchedLocation">Location to be converted</param>
+        /// <param name="regionName">The name of the region the be added to the Locations</param>
+        /// <param name="status">The status to be assigned to the Location</param>
+        /// <returns>An API location to be imported</returns>
         private Models.Location ConvertLocationSetRegionAndStatus(Location matchedLocation, string regionName, ImportStatus status)
         {
             var location = Api.Models.Location.ConvertModel(matchedLocation);
@@ -485,8 +484,8 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
         /// <summary>
         /// Find the correct region(if it exists) for the location
         /// </summary>
-        /// <param name="regionName"></param>
-        /// <returns></returns>
+        /// <param name="regionName">The name of the region to be set</param>
+        /// <returns>The region if it exists</returns>
         private Region SetRegion(string regionName)
         {
             if (regionName != null)
