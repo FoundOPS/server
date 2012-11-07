@@ -69,6 +69,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="jSignature.Tools">
+      <HintPath>..\..\..\Common\FoundOps.Common.NET\Lib\jSignature.Tools.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp">
       <Private>True</Private>
     </Reference>
@@ -276,7 +279,6 @@
     <Compile Include="Tools\FormTools.cs" />
     <Compile Include="Tools\JsonpMediaTypeFormatter.cs" />
     <Compile Include="Tools\PartyTools.cs" />
-    <Compile Include="Tools\SignatureToImage.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
