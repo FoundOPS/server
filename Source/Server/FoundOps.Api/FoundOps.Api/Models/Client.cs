@@ -37,5 +37,15 @@ namespace FoundOps.Api.Models
 
             return client;
         }
+
+        public static Core.Models.CoreEntities.Client ConvertBack(Client clientModel)
+        {
+            var client = new Core.Models.CoreEntities.Client { Id = clientModel.Id, Name = clientModel.Name };
+
+            foreach (var contactInfo in clientModel.ContactInfoSet)
+                client.ContactInfoSet.Add(ContactInfo.ConvertBack(contactInfo));
+
+            return client;
+        }
     }
 }
