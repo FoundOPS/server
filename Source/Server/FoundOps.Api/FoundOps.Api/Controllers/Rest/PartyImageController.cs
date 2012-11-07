@@ -17,7 +17,7 @@ namespace FoundOps.Api.Controllers.Rest
         /// The Request should send a form with 6 inputs: imageData, imageFileName, x, y, w, h
         /// </summary>
         /// <returns>The image url, expiring in 1 hour</returns>
-        public string Post(Guid id, Guid roleId)
+        public string Post(Guid roleId, Guid id)
         {
             var party = CoreEntitiesContainer.Parties.First(p => p.Id == id);
             party.PartyImageReference.Load();

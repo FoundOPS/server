@@ -2,8 +2,6 @@
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
 using System;
-using System.Net;
-using System.Net.Http;
 using System.Linq;
 
 namespace FoundOps.Api.Controllers.Rest

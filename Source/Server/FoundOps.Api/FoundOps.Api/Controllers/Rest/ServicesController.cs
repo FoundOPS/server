@@ -5,8 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using DateTimeField = FoundOps.Core.Models.CoreEntities.DateTimeField;
 using LocationField = FoundOps.Core.Models.CoreEntities.LocationField;
 using NumericField = FoundOps.Core.Models.CoreEntities.NumericField;

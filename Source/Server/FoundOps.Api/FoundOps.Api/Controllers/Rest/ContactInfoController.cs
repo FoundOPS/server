@@ -55,11 +55,11 @@ namespace FoundOps.Api.Controllers.Rest
             SaveWithRetry();
         }
 
-        public void Delete(Guid contactInfoId)
+        public void Delete(Guid id)
         {
-            var contactInfo = CoreEntitiesContainer.ContactInfoSet.FirstOrDefault(ci => ci.Id == contactInfoId);
+            var contactInfo = CoreEntitiesContainer.ContactInfoSet.FirstOrDefault(ci => ci.Id == id);
             if (contactInfo == null)
-                throw Request.BadRequest();
+                return;
 
             CoreEntitiesContainer.ContactInfoSet.DeleteObject(contactInfo);
 
