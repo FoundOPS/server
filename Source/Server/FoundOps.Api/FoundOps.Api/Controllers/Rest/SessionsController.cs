@@ -45,9 +45,7 @@ namespace FoundOps.Api.Controllers.Rest
             
             Request.CheckAuthentication();
 
-            var currentUsersEmail = "jperl@foundops.com";
-            if (HttpContext.Current != null)
-                currentUsersEmail = HttpContext.Current.User.Identity.Name;
+            var currentUsersEmail = AuthenticationLogic.CurrentUsersEmail();
 
             const string sql = @"SELECT * FROM dbo.Parties_UserAccount
                         INNER JOIN dbo.Roles
