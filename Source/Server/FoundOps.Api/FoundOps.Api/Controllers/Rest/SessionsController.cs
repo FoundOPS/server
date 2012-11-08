@@ -47,7 +47,7 @@ namespace FoundOps.Api.Controllers.Rest
 
             var currentUsersEmail = AuthenticationLogic.CurrentUsersEmail();
 
-            const string sql = @"SELECT ua.*, r.*, ba.*, b.* FROM dbo.Parties_UserAccount ua
+            const string sql = @"SELECT ua.*, r.*, ba.Id, ba.MaxRoutes, ba.Name, ba.QuickBooksAccessToken, ba.QuickBooksAccessTokenSecret, ba.QuickBooksEnabled, ba.QuickBooksSessionXml, ba.RouteManifestSettings, b.* FROM dbo.Parties_UserAccount ua
                         INNER JOIN dbo.Roles r
                         ON r.Id IN (
 						                        SELECT RoleMembership_Id FROM dbo.PartyRole 
