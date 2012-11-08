@@ -42,33 +42,33 @@ namespace FoundOps.Api.Controllers.Rest
                 var isAuthenticated = !string.IsNullOrEmpty(AuthenticationLogic.CurrentUsersEmail());
                 return Request.CreateResponse(HttpStatusCode.Accepted, isAuthenticated);
             }
-            
+
             Request.CheckAuthentication();
 
             var currentUsersEmail = AuthenticationLogic.CurrentUsersEmail();
 
-            const string sql = @"SELECT * FROM dbo.Parties_UserAccount
-                        INNER JOIN dbo.Roles
-                        ON dbo.Roles.Id IN (
+            const string sql = @"SELECT ua.*, r.*, ba.*, b.* FROM dbo.Parties_UserAccount ua
+                        INNER JOIN dbo.Roles r
+                        ON r.Id IN (
 						                        SELECT RoleMembership_Id FROM dbo.PartyRole 
 						                        WHERE MemberParties_Id = (SELECT Id FROM dbo.Parties_UserAccount WHERE EmailAddress = @emailAddress)
 				                           ) 
-                        AND dbo.Parties_UserAccount.EmailAddress = @emailAddress
-                        INNER JOIN dbo.Blocks
-                        ON dbo.Blocks.Id IN (
+                        AND ua.EmailAddress = @emailAddress
+                        INNER JOIN dbo.Parties_BusinessAccount ba
+                        ON r.OwnerBusinessAccountId = ba.Id
+                        INNER JOIN dbo.Blocks b
+                        ON b.Id IN (
 						                        SELECT Blocks_Id FROM dbo.RoleBlock 
 						                        WHERE Roles_Id IN (
 											                        SELECT RoleMembership_Id FROM dbo.PartyRole 
 											                        WHERE MemberParties_Id = (SELECT Id FROM dbo.Parties_UserAccount WHERE EmailAddress = @emailAddress)
 										                          ) 
-						                        AND dbo.Roles.Id = dbo.RoleBlock.Roles_Id
+						                        AND r.Id = dbo.RoleBlock.Roles_Id
 					                        )
-                        AND dbo.Roles.Id IN (
+                        AND r.Id IN (
 						                        SELECT RoleMembership_Id FROM dbo.PartyRole 
 						                        WHERE MemberParties_Id = (SELECT Id FROM dbo.Parties_UserAccount WHERE EmailAddress = @emailAddress)
-					                        )
-                        INNER JOIN dbo.Parties_BusinessAccount
-                        ON dbo.Roles.OwnerBusinessAccountId = dbo.Parties_BusinessAccount.Id";
+					                        )";
 
             UserAccount currentUser = null;
             Role currentRole = null;
@@ -82,7 +82,7 @@ namespace FoundOps.Api.Controllers.Rest
                 var parameters = new DynamicParameters();
                 parameters.Add("@emailAddress", currentUsersEmail);
 
-                user = conn.Query<UserAccount, Role, Block, BusinessAccount, UserAccount>(sql, (userAccount, role, block, businessAccount) =>
+                user = conn.Query<UserAccount, Role, BusinessAccount, Block, UserAccount>(sql, (userAccount, role, businessAccount, block) =>
                 {
                     if (currentUser == null)
                     {
@@ -92,6 +92,7 @@ namespace FoundOps.Api.Controllers.Rest
                     {
                         currentRole = role;
                         currentRole.OwnerBusinessAccount = businessAccount;
+                        var test = businessAccount.Name;
                         currentUser.RoleMembership.Add(role);
                     }
                     currentRole.Blocks.Add(block);
