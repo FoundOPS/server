@@ -391,9 +391,9 @@ namespace FoundOps.Api.Tests.Controllers
             var getResponseFromSearch = SimpleGetTest<LocationsController, Models.Location>(lc => lc.Get(_roleId, null, null, false, "12414 english garden, 20171"))
                 .FirstOrDefault();
 
-            Assert.AreEqual("20171", getResponseFromSearch.ZipCode);
-            Assert.AreEqual("Herndon", getResponseFromSearch.City);
-            Assert.AreEqual("VA", getResponseFromSearch.State);
+            Assert.AreEqual("20171", getResponseFromSearch.PostalCode);
+            Assert.AreEqual("Herndon", getResponseFromSearch.AdminDistrictTwo);
+            Assert.AreEqual("VA", getResponseFromSearch.AdminDistrictOne);
             Assert.IsTrue(getResponseFromSearch.Latitude.Contains("38.8981361"));
             Assert.IsTrue(getResponseFromSearch.Longitude.Contains("-77.3790054"));
 
@@ -405,9 +405,9 @@ namespace FoundOps.Api.Tests.Controllers
                 Name = "New Location",
                 AddressLineOne = "2827 Floral Drive",
                 AddressLineTwo = "Room 2",
-                City = "Northbrook",
-                State = "Illinois",
-                ZipCode = "60062",
+                AdminDistrictTwo = "Northbrook",
+                AdminDistrictOne = "Illinois",
+                PostalCode = "60062",
                 CountryCode = "US"
             };
 
@@ -417,9 +417,9 @@ namespace FoundOps.Api.Tests.Controllers
 
             newLocation.AddressLineOne = "1305 Cumberland Ave";
             newLocation.AddressLineTwo = "Suite 205";
-            newLocation.City = "West Lafayette";
-            newLocation.State = "Indiana";
-            newLocation.ZipCode = "47906";
+            newLocation.AdminDistrictTwo = "West Lafayette";
+            newLocation.AdminDistrictOne = "Indiana";
+            newLocation.PostalCode = "47906";
 
             controller.Put(_roleId, newLocation);
         }

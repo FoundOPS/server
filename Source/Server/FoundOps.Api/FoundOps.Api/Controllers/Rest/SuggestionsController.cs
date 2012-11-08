@@ -79,9 +79,9 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
             var clientNameCol = Array.IndexOf(headers, "Client Name");
             var addressLineOneCol = Array.IndexOf(headers, "Address Line One");
             var addressLineTwoCol = Array.IndexOf(headers, "Address Line Two");
-            var cityCol = Array.IndexOf(headers, "City");
-            var stateCol = Array.IndexOf(headers, "State");
-            var zipCodeCol = Array.IndexOf(headers, "Zipcode");
+            var cityCol = Array.IndexOf(headers, "AdminDistrictTwo");
+            var stateCol = Array.IndexOf(headers, "AdminDistrictOne");
+            var zipCodeCol = Array.IndexOf(headers, "PostalCode");
             var countryCodeCol = Array.IndexOf(headers, "Country Code");
             var regionNameCol = Array.IndexOf(headers, "Region Name");
             var latitudeCol = Array.IndexOf(headers, "Latitude");
@@ -116,9 +116,9 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
                     var longitude = longitudeCol != -1 ? row[longitudeCol] : "";
                     var addressLineOne = addressLineOneCol != -1 ? row[addressLineOneCol] : null;
                     var addressLineTwo = addressLineTwoCol != -1 ? row[addressLineTwoCol] : null;
-                    var city = cityCol != -1 ? row[cityCol] : null;
-                    var state = stateCol != -1 ? row[stateCol] : null;
-                    var zipCode = zipCodeCol != -1 ? row[zipCodeCol] : null;
+                    var adminDistrictTwo = cityCol != -1 ? row[cityCol] : null;
+                    var adminDistrictOne = stateCol != -1 ? row[stateCol] : null;
+                    var postalCode = zipCodeCol != -1 ? row[zipCodeCol] : null;
                     var regionName = regionNameCol != -1 ? row[regionNameCol] : null;
 
                     //If Lat/Lon dont have values, try to GeoCode
@@ -128,10 +128,10 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
 
                         var address = new Address
                         {
-                            AddressLineOne = addressLineOne ?? null,
-                            City = city ?? null,
-                            State = state ?? null,
-                            ZipCode = zipCode ?? null
+                            AddressLineOne = addressLineOne ?? "",
+                            City = adminDistrictTwo ?? "",
+                            State = adminDistrictOne ?? "",
+                            ZipCode = postalCode ?? ""
                         };
 
                         //Attempt to Geocode the address.
@@ -159,7 +159,7 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
 
                         //Matched the entire address to a location (AddressLineOne, AddressLineTwo, City, State and ZipCode)
                         var matchedLocation = _locations.FirstOrDefault(l => l.AddressLineOne == addressLineOne && l.AddressLineTwo == addressLineTwo
-                                                            && l.AdminDistrictTwo == city && l.AdminDistrictOne == state && l.PostalCode == zipCode);
+                                                            && l.AdminDistrictTwo == adminDistrictTwo && l.AdminDistrictOne == adminDistrictOne && l.PostalCode == postalCode);
 
                         if (matchedLocation != null)
                             importedLocation = ConvertLocationSetRegionAndStatus(matchedLocation, regionName, ImportStatus.Linked);
@@ -207,9 +207,9 @@ SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id";
                             Id = Guid.NewGuid(),
                             AddressLineOne = addressLineOne,
                             AddressLineTwo = addressLineTwo ?? null,
-                            City = city,
-                            State = state,
-                            ZipCode = zipCode,
+                            AdminDistrictTwo = adminDistrictTwo,
+                            AdminDistrictOne = adminDistrictOne,
+                            PostalCode = postalCode,
                             CountryCode = "US",
                             ContactInfoSet = new List<ContactInfo>(),
                             Latitude = latitude,
