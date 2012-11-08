@@ -1,4 +1,9 @@
-﻿using FoundOps.Api.Tools;
+﻿using System.Data;
+using System.Data.SqlClient;
+using System.Web;
+using Dapper;
+using FoundOps.Api.Tools;
+using FoundOps.Core.Models;
 using FoundOps.Core.Models.Authentication;
 using FoundOps.Core.Models.Azure;
 using FoundOps.Core.Models.CoreEntities;
@@ -40,8 +45,65 @@ namespace FoundOps.Api.Controllers.Rest
             
             Request.CheckAuthentication();
 
-            var user = CoreEntitiesContainer.CurrentUserAccount().Include(ua => ua.RoleMembership)
-                .Include("RoleMembership.Blocks").Include("RoleMembership.OwnerBusinessAccount").First();
+            var currentUsersEmail = AuthenticationLogic.CurrentUsersEmail();
+
+            const string sql = @"SELECT * FROM dbo.Parties_UserAccount
+                        INNER JOIN dbo.Roles
+                        ON dbo.Roles.Id IN (
+						                        SELECT RoleMembership_Id FROM dbo.PartyRole 
+						                        WHERE MemberParties_Id = (SELECT Id FROM dbo.Parties_UserAccount WHERE EmailAddress = @emailAddress)
+				                           ) 
+                        AND dbo.Parties_UserAccount.EmailAddress = @emailAddress
+                        INNER JOIN dbo.Blocks
+                        ON dbo.Blocks.Id IN (
+						                        SELECT Blocks_Id FROM dbo.RoleBlock 
+						                        WHERE Roles_Id IN (
+											                        SELECT RoleMembership_Id FROM dbo.PartyRole 
+											                        WHERE MemberParties_Id = (SELECT Id FROM dbo.Parties_UserAccount WHERE EmailAddress = @emailAddress)
+										                          ) 
+						                        AND dbo.Roles.Id = dbo.RoleBlock.Roles_Id
+					                        )
+                        AND dbo.Roles.Id IN (
+						                        SELECT RoleMembership_Id FROM dbo.PartyRole 
+						                        WHERE MemberParties_Id = (SELECT Id FROM dbo.Parties_UserAccount WHERE EmailAddress = @emailAddress)
+					                        )
+                        INNER JOIN dbo.Parties_BusinessAccount
+                        ON dbo.Roles.OwnerBusinessAccountId = dbo.Parties_BusinessAccount.Id";
+
+            UserAccount currentUser = null;
+            Role currentRole = null;
+
+            UserAccount user;
+
+            using (var conn = new SqlConnection(ServerConstants.SqlConnectionString))
+            {
+                conn.Open();
+
+                var parameters = new DynamicParameters();
+                parameters.Add("@emailAddress", currentUsersEmail);
+
+                user = conn.Query<UserAccount, Role, Block, BusinessAccount, UserAccount>(sql, (userAccount, role, block, businessAccount) =>
+                {
+                    if (currentUser == null)
+                    {
+                        currentUser = userAccount;
+                    }
+                    if (currentRole == null || currentRole.Id != role.Id)
+                    {
+                        currentRole = role;
+                        currentRole.OwnerBusinessAccount = businessAccount;
+                        currentUser.RoleMembership.Add(role);
+                    }
+                    currentRole.Blocks.Add(block);
+
+                    return userAccount;
+                }, new { emailAddress = currentUsersEmail }).FirstOrDefault();
+
+                conn.Close();
+            }
+
+            //var user = CoreEntitiesContainer.CurrentUserAccount().Include(ua => ua.RoleMembership)
+            //    .Include("RoleMembership.Blocks").Include("RoleMembership.OwnerBusinessAccount").First();
 
             //apply timezone
 
@@ -89,11 +151,12 @@ namespace FoundOps.Api.Controllers.Rest
                 jRole.name = role.OwnerBusinessAccount.Name;
                 jRole.type = role.RoleType.ToString();
 
+                //TODO: Take a good look at this and determine its future?
                 //Set the business's logo
-                if (role.OwnerBusinessAccount.PartyImage != null)
-                {
-                    jRole.businessLogoUrl = partyImageUrls[role.OwnerBusinessAccount.PartyImage.Id];
-                }
+                //if (role.OwnerBusinessAccount.PartyImage != null)
+                //{
+                //    jRole.businessLogoUrl = partyImageUrls[role.OwnerBusinessAccount.PartyImage.Id];
+                //}
 
                 var availableSections = role.Blocks.Where(s => !s.HideFromNavigation).OrderBy(r => r.Name).ToList();
                 //remove all silverlight sections if this is a mobile session
