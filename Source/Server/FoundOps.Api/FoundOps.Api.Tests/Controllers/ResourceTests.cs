@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using System.Text.RegularExpressions;
+using Dapper;
 using FoundOps.Api.Controllers.Mvc;
 using FoundOps.Api.Controllers.Rest;
 using FoundOps.Api.Models;
@@ -12,13 +13,13 @@ using System;
 using System.Data;
 using System.Data.Entity;
 using System.Data.SqlClient;
-using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Hosting;
+using Newtonsoft.Json.Linq;
 using BusinessAccount = FoundOps.Core.Models.CoreEntities.BusinessAccount;
 using Client = FoundOps.Core.Models.CoreEntities.Client;
 using DateTimeField = FoundOps.Core.Models.CoreEntities.DateTimeField;
@@ -369,16 +370,23 @@ namespace FoundOps.Api.Tests.Controllers
             var headers = new Dictionary<string, string> { { "ops-details", "true" } };
             var controller = CreateRequest<SessionsController>(HttpMethod.Get, headers);
 
-            var getResponseWithHeader = controller.Get();
+            var wholeSession = controller.Get();
 
-            Assert.AreEqual(HttpStatusCode.OK, getResponseWithHeader.StatusCode);
+            Assert.AreEqual(HttpStatusCode.OK, wholeSession.StatusCode);
+
+            var expected = "{\n  \"name\": \"Jonathan Perl\",\n  \"email\": \"jperl@foundops.com\",\n  \"settingsUrl\": \"#view/personalSettings.html\",\n  \"logOutUrl\": \"../Account/LogOut\",\n  \"avatarUrl\": \"img/emptyPerson.png\",\n  \"userTimeZoneMinutes\": -300.0,\n  \"roles\": [\n    {\n      \"id\": \"e5a36679-c047-4a10-bd12-38f389f74dc4\",\n      \"name\": \"AB Couriers\",\n      \"type\": \"Administrator\",\n      \"sections\": [\n        \"Clients\",\n        \"Dispatcher\",\n        \"Employees\",\n        \"Locations\",\n        \"Regions\",\n        \"Routes\",\n        \"Services\",\n        \"Support\",\n        \"Vehicles\"\n      ]\n    },\n    {\n      \"id\": \"36cb71b9-0959-4185-bc6d-eb7c934709e4\",\n      \"name\": \"FoundOPS\",\n      \"type\": \"Administrator\",\n      \"sections\": [\n        \"Business Accounts\"\n      ]\n    },\n    {\n      \"id\": \"7e6202a1-6f8a-4ac5-92e8-20ce1f3d798e\",\n      \"name\": \"Generic Oil Collector\",\n      \"type\": \"Administrator\",\n      \"sections\": [\n        \"Clients\",\n        \"Dispatcher\",\n        \"Employees\",\n        \"Locations\",\n        \"Regions\",\n        \"Routes\",\n        \"Services\",\n        \"Support\",\n        \"Vehicles\"\n      ]\n    },\n    {\n      \"id\": \"5618d382-6e24-4ca5-9f53-2553079159ce\",\n      \"name\": \"GotGrease?\",\n      \"type\": \"Administrator\",\n      \"sections\": [\n        \"Clients\",\n        \"Dispatcher\",\n        \"Employees\",\n        \"Locations\",\n        \"Regions\",\n        \"Routes\",\n        \"Services\",\n        \"Support\",\n        \"Vehicles\"\n      ]\n    }\n  ],\n  \"sections\": [\n    {\n      \"name\": \"Business Accounts\",\n      \"color\": \"black\",\n      \"iconUrl\": \"img/businessAccounts.png\",\n      \"hoverIconUrl\": \"img/businessAccountsColor.png\",\n      \"isSilverlight\": true\n    },\n    {\n      \"name\": \"Clients\",\n      \"color\": \"blue\",\n      \"iconUrl\": \"img/clients.png\",\n      \"hoverIconUrl\": \"img/clientsColor.png\",\n      \"isSilverlight\": true\n    },\n    {\n      \"name\": \"Dispatcher\",\n      \"color\": \"green\",\n      \"iconUrl\": \"img/dispatcher.png\",\n      \"hoverIconUrl\": \"img/dispatcherColor.png\",\n      \"isSilverlight\": true\n    },\n    {\n      \"name\": \"Employees\",\n      \"color\": \"red\",\n      \"iconUrl\": \"img/employees.png\",\n      \"hoverIconUrl\": \"img/employeesColor.png\",\n      \"isSilverlight\": true\n    },\n    {\n      \"name\": \"Locations\",\n      \"color\": \"orange\",\n      \"iconUrl\": \"img/locations.png\",\n      \"hoverIconUrl\": \"img/locationsColor.png\",\n      \"isSilverlight\": true\n    },\n    {\n      \"name\": \"Regions\",\n      \"color\": \"orange\",\n      \"iconUrl\": \"img/regions.png\",\n      \"hoverIconUrl\": \"img/regionsColor.png\",\n      \"isSilverlight\": true\n    },\n    {\n      \"name\": \"Routes\",\n      \"color\": \"green\",\n      \"url\": \"#view/routes.html\",\n      \"iconUrl\": \"img/routes.png\",\n      \"hoverIconUrl\": \"img/routesColor.png\"\n    },\n    {\n      \"name\": \"Services\",\n      \"color\": \"green\",\n      \"url\": \"#view/services.html\",\n      \"iconUrl\": \"img/services.png\",\n      \"hoverIconUrl\": \"img/servicesColor.png\"\n    },\n    {\n      \"name\": \"Support\",\n      \"color\": \"blue\",\n      \"iconUrl\": \"img/uservoice.png\",\n      \"hoverIconUrl\": \"img/uservoiceColor.png\"\n    },\n    {\n      \"name\": \"Vehicles\",\n      \"color\": \"red\",\n      \"iconUrl\": \"img/vehicles.png\",\n      \"hoverIconUrl\": \"img/vehiclesColor.png\",\n      \"isSilverlight\": true\n    }\n  ]\n}";
+            expected = Regex.Replace(expected, @"\r\n?|\n", "").Replace(" ", "");
+            var result = ((ObjectContent<JObject>)wholeSession.Content).Value.ToString();
+            result = Regex.Replace(result, @"\r\n?|\n", "").Replace(" ", "");
+
+            Assert.AreEqual(expected, result);
 
             //now test simple response
             controller = CreateRequest<SessionsController>(HttpMethod.Get);
 
-            var getResponseWithoutHeader = controller.Get();
-
-            Assert.AreEqual(HttpStatusCode.Accepted, getResponseWithoutHeader.StatusCode);
+            var simpleSession = controller.Get();
+            Assert.AreEqual(true, ((ObjectContent<bool>)simpleSession.Content).Value);
+            Assert.AreEqual(HttpStatusCode.Accepted, simpleSession.StatusCode);
         }
 
         [TestMethod]
