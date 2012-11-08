@@ -39,7 +39,7 @@ namespace FoundOps.SLClient.Data.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value.ToString() == "Email Address")
+            if (value.ToString() == "Email")
             {
                 const string source = "/FoundOps.Common.Silverlight;component/Resources/EmailSymbol.png";
                 return source;
@@ -49,12 +49,12 @@ namespace FoundOps.SLClient.Data.Converters
                 const string source = "/FoundOps.Common.Silverlight;component/Resources/WebsiteSymbol.png";
                 return source;
             }
-            if (value.ToString() == "Phone Number")
+            if (value.ToString() == "Phone")
             {
                 const string source = "/FoundOps.Common.Silverlight;component/Resources/PhoneSymbol.png";
                 return source;
             }
-            if (value.ToString() == "Fax Number")
+            if (value.ToString() == "Fax")
             {
                 const string source = "/FoundOps.Common.Silverlight;component/Resources/FaxSymbol.png";
                 return source;
@@ -81,9 +81,9 @@ namespace FoundOps.SLClient.Data.Converters
 
             switch (type)
             {
-                case "Email Address":
+                case "Email":
                     return EmailAddressTemplate;
-                case "Phone Number":
+                case "Phone":
                     return PhoneNumberTemplate;
                 case "Website":
                     return WebsiteTemplate;

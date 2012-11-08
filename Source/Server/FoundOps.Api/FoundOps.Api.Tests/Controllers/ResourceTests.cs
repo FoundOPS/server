@@ -237,7 +237,7 @@ namespace FoundOps.Api.Tests.Controllers
             {
                 Id = newId,
                 Data = "(123) 456-7890",
-                Type = "Phone Number",
+                Type = "Phone",
                 Label = "FoundOPS HQ",
                 ClientId = CoreEntitiesContainer.Clients.First(c => !c.DateDeleted.HasValue).Id,
                 LocationId = null
@@ -314,8 +314,8 @@ namespace FoundOps.Api.Tests.Controllers
                 .FirstOrDefault();
 
             Assert.AreEqual("20171", getResponseFromSearch.ZipCode);
-            Assert.AreEqual("Herndon", getResponseFromSearch.City);
-            Assert.AreEqual("VA", getResponseFromSearch.State);
+            Assert.AreEqual("Herndon", getResponseFromSearch.AdminDistrictTwo);
+            Assert.AreEqual("VA", getResponseFromSearch.AdminDistrictOne);
             Assert.IsTrue(getResponseFromSearch.Latitude.Contains("38.8981361"));
             Assert.IsTrue(getResponseFromSearch.Longitude.Contains("-77.3790054"));
 
@@ -327,8 +327,8 @@ namespace FoundOps.Api.Tests.Controllers
                 Name = "New Location",
                 AddressLineOne = "2827 Floral Drive",
                 AddressLineTwo = "Room 2",
-                City = "Northbrook",
-                State = "Illinois",
+                AdminDistrictTwo = "Northbrook",
+                AdminDistrictOne = "Illinois",
                 ZipCode = "60062",
                 CountryCode = "US"
             };
@@ -339,8 +339,8 @@ namespace FoundOps.Api.Tests.Controllers
 
             newLocation.AddressLineOne = "1305 Cumberland Ave";
             newLocation.AddressLineTwo = "Suite 205";
-            newLocation.City = "West Lafayette";
-            newLocation.State = "Indiana";
+            newLocation.AdminDistrictTwo = "West Lafayette";
+            newLocation.AdminDistrictOne = "Indiana";
             newLocation.ZipCode = "47906";
 
             controller.Put(_roleId, newLocation);

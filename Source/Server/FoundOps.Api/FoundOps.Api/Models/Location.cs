@@ -28,7 +28,7 @@ namespace FoundOps.Api.Models
         /// <summary>
         /// The City of this Location
         /// </summary>
-        public string City { get; set; }
+        public string AdminDistrictTwo { get; set; }
 
         /// <summary>
         /// The latitude of this Location
@@ -43,7 +43,7 @@ namespace FoundOps.Api.Models
         /// <summary>
         /// The State of this location
         /// </summary>
-        public string State { get; set; }
+        public string AdminDistrictOne { get; set; }
 
         /// <summary>
         /// The Zipcode of this location
@@ -75,8 +75,8 @@ namespace FoundOps.Api.Models
                 AddressLineTwo = locationModel.AddressLineTwo,
                 Longitude = locationModel.Longitude.ToString(),
                 Latitude = locationModel.Latitude.ToString(),
-                City = locationModel.AdminDistrictTwo,
-                State = locationModel.AdminDistrictOne,
+                AdminDistrictTwo = locationModel.AdminDistrictTwo,
+                AdminDistrictOne = locationModel.AdminDistrictOne,
                 CountryCode = locationModel.CountryCode,
                 ZipCode = locationModel.PostalCode
             };
@@ -93,8 +93,8 @@ namespace FoundOps.Api.Models
             {
                 AddressLineOne = geocoderResult.AddressLineOne,
                 AddressLineTwo = geocoderResult.AddressLineTwo,
-                City = geocoderResult.City,
-                State = geocoderResult.State,
+                AdminDistrictTwo = geocoderResult.City,
+                AdminDistrictOne = geocoderResult.State,
                 CountryCode = geocoderResult.CountryCode,
                 ZipCode = geocoderResult.ZipCode,
                 Latitude = Decimal.Round(Convert.ToDecimal(geocoderResult.Latitude), 8).ToString(),
@@ -115,8 +115,8 @@ namespace FoundOps.Api.Models
                     AddressLineOne = location.AddressLineOne,
                     AddressLineTwo = location.AddressLineTwo,
                     Name = location.Name,
-                    AdminDistrictOne = location.State,
-                    AdminDistrictTwo = location.City,
+                    AdminDistrictOne = location.AdminDistrictOne,
+                    AdminDistrictTwo = location.AdminDistrictTwo,
                     PostalCode = location.ZipCode,
                     CountryCode = location.CountryCode,
                     Latitude = Convert.ToDecimal(location.Latitude),

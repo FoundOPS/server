@@ -4,8 +4,8 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 {
     public class ContactInfoDesignData
     {
-        public static List<string> DesignContactInfoTypes = new List<string> { "Phone Number", "Email Address", "Website", "Fax Number", "Other" };
-        public static List<string> DesignContactInfoLabels = new List<string> { "Primary", "Home", "Cell Phone" };
+        public static List<string> DesignContactInfoTypes = new List<string> { "Phone", "Email", "Website", "Fax", "Other" };
+        public static List<string> DesignContactInfoLabels = new List<string> { "Primary", "Home", "Cell" };
 
         public List<ContactInfo> DesignUserContactInfoList = new List<ContactInfo>
                                                                     {
@@ -13,13 +13,13 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                                                                             {
                                                                                 Label = "Home",
                                                                                 Data = "703-582-1810",
-                                                                                Type = "Phone Number"
+                                                                                Type = "Phone"
                                                                             },
                                                                         new ContactInfo
                                                                             {
                                                                                 Label = "Primary Email",
                                                                                 Data = "jrice@purdue.edu",
-                                                                                Type = "Email Address"
+                                                                                Type = "Email"
                                                                             },
                                                                         new ContactInfo
                                                                             {
@@ -35,13 +35,13 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                                                                             {
                                                                                 Label = "Zach Bright",
                                                                                 Data = "703-582-1810",
-                                                                                Type = "Phone Number"
+                                                                                Type = "Phone"
                                                                             },
                                                                         new ContactInfo
                                                                             {
                                                                                 Label = "Jason Rice",
                                                                                 Data = "jrice@purdue.edu",
-                                                                                Type = "Email Address"
+                                                                                Type = "Email"
                                                                             },
                                                                         new ContactInfo
                                                                             {

@@ -175,51 +175,6 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         #region ContactInfo
 
-        public IEnumerable<string> ContactInfoLabelsForParty(Guid currentPartyId)
-        {
-            var contactInfoLabels = new List<string> { "Primary", "Mobile" };
-
-            var currentParty = this.ObjectContext.Parties.FirstOrDefault(a => a.Id == currentPartyId);
-
-            if (currentParty == null)
-                return contactInfoLabels.OrderBy(s => s);
-
-            //TODO?
-            //Add all labels current user can administer that are the same account type. (Business Labels might be different than User Labels)
-            var accountsCurrentUserCanAdminister = ObjectContext.RolesCurrentUserHasAccessTo(new[] { RoleType.Administrator }).Select(r => r.OwnerBusinessAccount);
-
-            MethodInfo method = typeof(Queryable).GetMethod("OfType");
-            MethodInfo generic = method.MakeGenericMethod(new Type[] { currentParty.GetType() });
-            var accountsCurrentUserCanAdministerOfSameType = (IEnumerable<Party>)generic.Invoke(null, new object[] { accountsCurrentUserCanAdminister });
-
-            //foreach (var accountCurrentUserCanAdministerOfSameType in accountsCurrentUserCanAdministerOfSameType)
-            //{
-            //accountCurrentUserCanAdministerOfSameType.ContactInfoSet.Load();
-            //contactInfoLabels.AddRange(accountCurrentUserCanAdministerOfSameType.ContactInfoSet.Select(ci => ci.Label));
-            //}
-
-            contactInfoLabels = new List<string>(contactInfoLabels.Distinct());
-
-            return contactInfoLabels.OrderBy(s => s);
-        }
-
-        public IEnumerable<string> ContactInfoTypesForParty(Guid currentPartyId)
-        {
-            var contactInfoTypes = new List<string> { "Phone Number", "Email Address", "Website", "Fax Number", "Other" };
-
-            var currentParty = this.ObjectContext.Parties.FirstOrDefault(a => a.Id == currentPartyId);
-
-            if (currentParty == null)
-                return contactInfoTypes.OrderBy(s => s);
-
-            //currentParty.ContactInfoSet.Load();
-
-            //contactInfoTypes.AddRange(currentParty.ContactInfoSet.Select(ci => ci.Type));
-            contactInfoTypes = new List<string>(contactInfoTypes.Distinct());
-
-            return contactInfoTypes.OrderBy(s => s);
-        }
-
         public IQueryable<ContactInfo> GetContactInfoSet()
         {
             return this.ObjectContext.ContactInfoSet;

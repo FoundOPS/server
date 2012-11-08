@@ -1,6 +1,6 @@
-using FoundOps.Framework.Views.Converters;
 using System.Collections;
 using System.Windows;
+using FoundOps.SLClient.UI.Converters;
 using ServiceTemplate = FoundOps.Core.Models.CoreEntities.ServiceTemplate;
 
 // Needs to be in the same namespace, because it is a partial class

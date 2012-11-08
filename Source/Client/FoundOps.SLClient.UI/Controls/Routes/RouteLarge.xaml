@@ -4,12 +4,12 @@
              xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit" xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL"
              xmlns:SaveDiscardCancel="clr-namespace:FoundOps.Common.Silverlight.UI.Controls.SaveDiscardCancel;assembly=FoundOps.Common.Silverlight.UI"
              xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI"
-             xmlns:Converters1="clr-namespace:FoundOps.Framework.Views.Converters"
-             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation" mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="RoutesInfiniteAccordionVM" 
+             xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+             xmlns:converters="clr-namespace:FoundOps.SLClient.UI.Converters" mc:Ignorable="d" ViewModelLocator:ViewModelLocator.SharedViewModel="RoutesInfiniteAccordionVM" 
              d:DesignWidth="400" Visibility="{Binding SelectedEntity, Converter={StaticResource VisibilityConverter}}">
     <UserControl.Resources>
         <Converters:DateTimeToLongDateConverter x:Key="DateTimeToLongDateConverter" />
-        <Converters1:RouteLogTimeConverter x:Key="RouteLogTimeConverter"/>
+        <converters:RouteLogTimeConverter x:Key="RouteLogTimeConverter"/>
     </UserControl.Resources>
     <!--Use grid to allow scrollviewer to work-->
     <Grid x:Name="LayoutRoot" Background="White" DataContext="{Binding SelectedEntity}">

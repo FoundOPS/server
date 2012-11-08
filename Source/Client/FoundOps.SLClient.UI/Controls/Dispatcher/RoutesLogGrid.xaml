@@ -2,14 +2,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.GridView" xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL"
-             xmlns:Converters="clr-namespace:FoundOps.Framework.Views.Converters" xmlns:Converters2="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI" 
+             xmlns:converters="clr-namespace:FoundOps.SLClient.UI.Converters"
              mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="400" ViewModelLocator:ViewModelLocator.SharedViewModel="RoutesInfiniteAccordionVM"
              IsEnabled="{Binding IsLoading, Converter={StaticResource NotExistsBoolConverter}}">
     <UserControl.Resources>
-        <Converters:RouteLogVehiclesConverter x:Key="RouteLogVehiclesConverter"/>
-        <Converters:RouteLogTechniciansConverter x:Key="RouteLogTechniciansConverter"/>
-        <Converters:RouteLogTimeConverter x:Key="RouteLogTimeConverter"/>
-        <Converters2:DateTimeToLongDateConverter x:Key="DateTimeToLongDateConverter"/>
+        <converters:RouteLogVehiclesConverter x:Key="RouteLogVehiclesConverter"/>
+        <converters:RouteLogTechniciansConverter x:Key="RouteLogTechniciansConverter"/>
+        <converters:RouteLogTimeConverter x:Key="RouteLogTimeConverter"/>
     </UserControl.Resources>
     <Grid x:Name="LayoutRoot" Background="White">
         <telerik:RadGridView x:Name="RouteLogRadGridView" AutoGenerateColumns="False" IsReadOnly="True" ShowGroupPanel="False" 

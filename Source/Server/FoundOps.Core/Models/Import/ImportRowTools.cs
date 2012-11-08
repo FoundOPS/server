@@ -224,7 +224,7 @@ namespace FoundOps.Core.Models.Import
             var emailCategoryCells = importRow.Where(r => r.DataCategory == DataCategory.ContactInfoEmailAddressLabel || r.DataCategory == DataCategory.ContactInfoEmailAddressData).ToArray();
             if (emailCategoryCells.Any(ecv => !string.IsNullOrEmpty(ecv.Value)))
             {
-                var email = new ContactInfo { Type = "Email Address" };
+                var email = new ContactInfo { Type = "Email" };
                 SetProperties(email, emailCategoryCells);
                 contactInfoSet.Add(email);
             }
@@ -233,7 +233,7 @@ namespace FoundOps.Core.Models.Import
             var faxCategoryValues = importRow.Where(r => r.DataCategory == DataCategory.ContactInfoFaxNumberLabel || r.DataCategory == DataCategory.ContactInfoFaxNumberData).ToArray();
             if (faxCategoryValues.Any(ecv => !string.IsNullOrEmpty(ecv.Value)))
             {
-                var fax = new ContactInfo { Type = "Fax Number" };
+                var fax = new ContactInfo { Type = "Fax" };
                 SetProperties(fax, faxCategoryValues);
                 contactInfoSet.Add(fax);
             }
@@ -242,7 +242,7 @@ namespace FoundOps.Core.Models.Import
             var phoneCategoryValues = importRow.Where(r => r.DataCategory == DataCategory.ContactInfoPhoneNumberLabel || r.DataCategory == DataCategory.ContactInfoPhoneNumberData).ToArray();
             if (phoneCategoryValues.Any(ecv => !string.IsNullOrEmpty(ecv.Value)))
             {
-                var phone = new ContactInfo { Type = "Phone Number" };
+                var phone = new ContactInfo { Type = "Phone" };
                 SetProperties(phone, phoneCategoryValues);
                 contactInfoSet.Add(phone);
             }

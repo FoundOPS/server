@@ -1,16 +1,14 @@
 <UserControl x:Class="FoundOps.Framework.Views.Controls.CustomFields.FieldsDefineGrid" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.GridView" 
-    xmlns:CustomFields="clr-namespace:FoundOps.Framework.Views.Controls.CustomFields" xmlns:Define="clr-namespace:FoundOps.SLClient.UI.Controls.CustomFields.Define"
-             xmlns:Converters="clr-namespace:FoundOps.Framework.Views.Converters" 
-    xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL"
-             xmlns:Tools1="clr-namespace:FoundOps.SLClient.Data.Tools;assembly=FoundOps.SLClient.Data"
-             xmlns:CoreEntities1="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data"
-             xmlns:Converters1="clr-namespace:FoundOps.SLClient.Data.Converters;assembly=FoundOps.SLClient.Data"
-             xmlns:Selectors="clr-namespace:FoundOps.SLClient.UI.Selectors" mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="400" ViewModelLocator:ViewModelLocator.SharedViewModel="FieldsVM">
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.GridView"
+             xmlns:CustomFields="clr-namespace:FoundOps.Framework.Views.Controls.CustomFields" xmlns:Define="clr-namespace:FoundOps.SLClient.UI.Controls.CustomFields.Define"
+             xmlns:ViewModelLocator="clr-namespace:MEFedMVVM.ViewModelLocator;assembly=MEFedMVVM.SL" xmlns:Tools1="clr-namespace:FoundOps.SLClient.Data.Tools;assembly=FoundOps.SLClient.Data"
+             xmlns:CoreEntities1="clr-namespace:FoundOps.Core.Models.CoreEntities;assembly=FoundOps.SLClient.Data" xmlns:Converters1="clr-namespace:FoundOps.SLClient.Data.Converters;assembly=FoundOps.SLClient.Data"
+             xmlns:Selectors="clr-namespace:FoundOps.SLClient.UI.Selectors" xmlns:converters="clr-namespace:FoundOps.SLClient.UI.Converters"
+             mc:Ignorable="d" d:DesignHeight="300" d:DesignWidth="400" ViewModelLocator:ViewModelLocator.SharedViewModel="FieldsVM">
     <UserControl.Resources>
-        <Converters:FieldToTypeStringConverter x:Key="FieldToTypeStringConverter"/>
-        <Converters:FieldDefaultValueStringConverter x:Key="FieldDefaultValueStringConverter"/>
+        <converters:FieldToTypeStringConverter x:Key="FieldToTypeStringConverter"/>
+        <converters:FieldDefaultValueStringConverter x:Key="FieldDefaultValueStringConverter"/>
         <Converters1:FoundOPSBoolConverter x:Key="FoundOPSBoolConverter" />
         <!--Only enable the detail templates if the current business account context is FoundOPS-->
         <DataTemplate x:Key="CheckBoxTemplate">

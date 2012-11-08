@@ -6,7 +6,7 @@ namespace FoundOps.Api.Models
     {
         public Guid Id { get; set; }
         /// <summary>
-        /// The type of contact info (ex: Phone number, email, fax)
+        /// The type of contact info (ex: Phone, email, fax)
         /// </summary>
         public string Type { get; set; }
 
@@ -16,7 +16,7 @@ namespace FoundOps.Api.Models
         public string Label { get; set; }
 
         /// <summary>
-        /// The actual contact info (ex: Phone Number-847-598-5324, email-info@foundops.com, etc.)
+        /// The actual contact info (ex: Phone-847-598-5324, email-info@foundops.com, etc.)
         /// </summary>
         public string Data { get; set; }
 

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
 using FoundOps.Core.Models.CoreEntities;
 
-namespace FoundOps.Framework.Views.Converters
+namespace FoundOps.SLClient.UI.Converters
 {
     public class RouteLogVehiclesConverter : IValueConverter
     {

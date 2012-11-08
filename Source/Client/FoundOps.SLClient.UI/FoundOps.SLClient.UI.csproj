@@ -442,15 +442,10 @@
     <Compile Include="Controls\Vehicles\VehiclesGrid.xaml.cs">
       <DependentUpon>VehiclesGrid.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Converters\ContactInfoDataTemplateSelector.cs" />
-    <Compile Include="Converters\RouteDestinationsOpacityConverters.cs" />
     <Compile Include="Converters\FilterConverters.cs" />
     <Compile Include="Converters\RouteLogConverters.cs" />
-    <Compile Include="Converters\NumericFieldConverters.cs" />
     <Compile Include="Converters\OptionsFieldConverters.cs" />
     <Compile Include="Converters\FieldConverters.cs" />
-    <Compile Include="Converters\ScheduleModeBoolConverters.cs" />
-    <Compile Include="Converters\RepeatConverters.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Selectors\FieldDataTemplateSelector.cs" />
     <Compile Include="Tools\AutoCompleteBoxTools.cs" />

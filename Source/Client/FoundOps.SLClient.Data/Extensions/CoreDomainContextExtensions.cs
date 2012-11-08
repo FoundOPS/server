@@ -83,7 +83,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// </summary>
         public IObservable<ChangedRejectedEventArgs> ChangesRejectedObservable { get { return _changesRejectedSubject.AsObservable(); } }
 
-        private readonly List<string> _contactInfoTypes = new List<string> { "Phone Number", "Email Address", "Website", "Fax Number", "Other" };
+        private readonly List<string> _contactInfoTypes = new List<string> { "Phone", "Email", "Website", "Fax", "Other" };
 
         partial void OnCreated()
         {

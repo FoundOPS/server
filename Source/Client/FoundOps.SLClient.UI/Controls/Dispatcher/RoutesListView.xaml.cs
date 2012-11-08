@@ -1,10 +1,8 @@
 ﻿using FoundOps.Common.Silverlight.UI.Tools.ExtensionMethods;
 using FoundOps.Core.Models.CoreEntities;
-using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.UI.Tools;
 using System.Collections.Generic;
 using System;
-using System.Collections.ObjectModel;
 using System.Globalization;
 using System.Linq;
 using System.Reactive.Linq;
@@ -16,7 +14,6 @@ using FoundOps.SLClient.UI.ViewModels;
 using Telerik.Windows.Controls;
 using Telerik.Windows.Controls.DragDrop;
 using Telerik.Windows.Controls.TreeView;
-using System.ServiceModel.DomainServices.Client;
 
 namespace FoundOps.SLClient.UI.Controls.Dispatcher
 {

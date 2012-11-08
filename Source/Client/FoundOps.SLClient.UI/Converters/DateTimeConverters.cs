@@ -59,5 +59,4 @@ namespace FoundOps.SLClient.UI.Converters
 
         #endregion
     }
-
 }

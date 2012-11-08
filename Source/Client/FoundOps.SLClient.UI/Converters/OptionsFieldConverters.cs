@@ -1,10 +1,10 @@
-﻿using System;
+﻿using FoundOps.Core.Models.CoreEntities;
+using System;
 using System.Globalization;
 using System.Windows.Data;
 using System.Linq;
-using FoundOps.Core.Models.CoreEntities;
 
-namespace FoundOps.Framework.Views.Converters
+namespace FoundOps.SLClient.UI.Converters
 {
     public class ComboBoxSelectedItemConverter : IValueConverter
     {
