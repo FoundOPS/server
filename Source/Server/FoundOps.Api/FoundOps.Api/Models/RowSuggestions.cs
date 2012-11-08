@@ -7,13 +7,15 @@ namespace FoundOps.Api.Models
     {
         public List<Guid> ClientSuggestions { get; set; }
         public List<Guid> LocationSuggestions { get; set; }
-        public List<Repeat> Repeat { get; set; } 
+        public List<Repeat> Repeats { get; set; }
+        public List<ContactInfo> ContactInfoSuggestions { get; set; }
 
         public RowSuggestions()
         {
             ClientSuggestions = new List<Guid>();
             LocationSuggestions = new List<Guid>();
-            Repeat = new List<Repeat>();
+            ContactInfoSuggestions = new List<ContactInfo>();
+            Repeats = new List<Repeat>();
         }
     }
 }

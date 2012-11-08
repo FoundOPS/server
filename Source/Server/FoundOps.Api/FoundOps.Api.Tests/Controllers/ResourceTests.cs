@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using System.Collections.Concurrent;
+using Dapper;
 using FoundOps.Api.Controllers.Mvc;
 using FoundOps.Api.Controllers.Rest;
 using FoundOps.Api.Models;
@@ -21,6 +22,7 @@ using System.Web.Http;
 using System.Web.Http.Hosting;
 using BusinessAccount = FoundOps.Core.Models.CoreEntities.BusinessAccount;
 using Client = FoundOps.Core.Models.CoreEntities.Client;
+using ContactInfo = FoundOps.Api.Models.ContactInfo;
 using DateTimeField = FoundOps.Core.Models.CoreEntities.DateTimeField;
 using Field = FoundOps.Core.Models.CoreEntities.Field;
 using Location = FoundOps.Core.Models.CoreEntities.Location;
@@ -223,7 +225,7 @@ namespace FoundOps.Api.Tests.Controllers
 
             var random = new Random();
 
-            for (int i = 0; i < 30; i++)
+            for (int i = 0; i < 500; i++)
             {
                 var client = CoreEntitiesContainer.Clients.ToArray().ElementAt(random.Next(48));
                 var location = CoreEntitiesContainer.Locations.Where(l => l.BusinessAccountIdIfDepot == null).Include(l => l.Region).ToArray().ElementAt(random.Next(51));
@@ -427,6 +429,13 @@ namespace FoundOps.Api.Tests.Controllers
         [TestMethod]
         public void ImporterSuggestionsTests()
         {
+            var dic = new ConcurrentDictionary<Guid, ContactInfo>();
+
+            dic.GetOrAdd(Guid.NewGuid(), new ContactInfo());
+            
+            var test = dic.FirstOrDefault(d => d.Key == Guid.NewGuid());
+
+            var t = test;
             #region ValidateInput
 
             //Importing Client, Location and Repeat for each row
@@ -478,8 +487,6 @@ namespace FoundOps.Api.Tests.Controllers
             #endregion
         }
 
-
-
         private void TestValidateAndSuggest(bool importClients, bool importLocations, bool importRepeats, bool testValidateInput, bool testSuggestEntites)
         {
             var controller = new SuggestionsController();
@@ -507,7 +514,6 @@ namespace FoundOps.Api.Tests.Controllers
             if (importLocations)
             {
                 //Test Location output
-                var notMatched = suggestions.Locations.Where(l => l.StatusInt == 1);
                 var locationSuggestions = suggestions.RowSuggestions.SelectMany(rs => rs.LocationSuggestions).Distinct().ToArray();
                 var locations = suggestions.Locations.Select(l => l.Id).ToArray();
                 var except = locations.Except(locationSuggestions);
@@ -517,8 +523,8 @@ namespace FoundOps.Api.Tests.Controllers
             if (importRepeats)
             {
                 //Test Repeat output
-                var repeat = suggestions.RowSuggestions.SelectMany(rs => rs.Repeat);
-                Assert.AreEqual(suggestions.RowSuggestions.Count(), repeat.Count());
+                var repeats = suggestions.RowSuggestions.SelectMany(rs => rs.Repeats);
+                Assert.AreEqual(suggestions.RowSuggestions.Count(), repeats.Count());
             }
         }
 
