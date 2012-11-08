@@ -256,6 +256,7 @@
     <Content Include="Models\CoreEntities\SQL Tests\PropagateNewServiceTemplatesToClientTest.sql" />
     <Content Include="Models\CoreEntities\SQL\DeleteClientBasedOnId.sql" />
     <Content Include="Models\CoreEntities\SQL\DeleteLocationBasedOnId.sql" />
+    <Content Include="Models\CoreEntities\SQL\LoadUserAccountAndRoleDetails.sql" />
     <Content Include="Models\CoreEntities\SQL\TestFieldPropagationSuccess.sql" />
     <Content Include="Models\CoreEntities\SQL\TestNewServiceTemplatePropagationSuccess.sql" />
     <Content Include="Models\CoreEntities\SQL\TestServiceTemplateNamePropagationSuccess.sql" />

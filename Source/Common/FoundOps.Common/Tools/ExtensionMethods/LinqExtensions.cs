@@ -100,5 +100,27 @@ namespace FoundOps.Common.Tools.ExtensionMethods
 
             return returnCount;
         }
+
+        public static IEnumerable<T> Distinct<T, TKey>(this IEnumerable<T> list, Func<T, TKey> lookup)
+        {
+            return list.Distinct(new EqualityComparer<T, TKey>(lookup));
+        }
+
+        class EqualityComparer<T, TKey> : IEqualityComparer<T>
+        {
+            Func<T, TKey> lookup;
+            public EqualityComparer(Func<T, TKey> lookup)
+            {
+                this.lookup = lookup;
+            }
+            public bool Equals(T x, T y)
+            {
+                return lookup(x).Equals(lookup(y));
+            }
+            public int GetHashCode(T obj)
+            {
+                return lookup(obj).GetHashCode();
+            }
+        }
     }
 }
