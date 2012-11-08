@@ -1,10 +1,4 @@
-﻿using System.Data;
-using System.Data.SqlClient;
-using System.Web;
-using Dapper;
 using FoundOps.Api.Tools;
-using FoundOps.Common.Tools.ExtensionMethods;
-using FoundOps.Core.Models;
 using FoundOps.Core.Models.Authentication;
 using FoundOps.Core.Models.Azure;
 using FoundOps.Core.Models.CoreEntities;
@@ -43,54 +37,20 @@ namespace FoundOps.Api.Controllers.Rest
                 var isAuthenticated = !string.IsNullOrEmpty(AuthenticationLogic.CurrentUsersEmail());
                 return Request.CreateResponse(HttpStatusCode.Accepted, isAuthenticated);
             }
-
+            
             Request.CheckAuthentication();
 
-            var currentUsersEmail = AuthenticationLogic.CurrentUsersEmail();
-
-            UserAccount currentUser = null;
-            Role currentRole = null;
-
-            UserAccount user;
-
-            using (var conn = new SqlConnection(ServerConstants.SqlConnectionString))
-            {
-                conn.Open();
-
-                var parameters = new DynamicParameters();
-                parameters.Add("@emailAddress", currentUsersEmail);
-
-                user = conn.Query<UserAccount, Role, BusinessAccount, Block, UserAccount>("LoadUserAccountAndRoleDetails", (userAccount, role, businessAccount, block) =>
-                {
-                    if (currentUser == null)
-                    {
-                        currentUser = userAccount;
-                    }
-                    if (currentRole == null || currentRole.Id != role.Id)
-                    {
-                        currentRole = role;
-                        currentRole.OwnerBusinessAccount = businessAccount;
-                        currentUser.RoleMembership.Add(role);
-                    }
-                    currentRole.Blocks.Add(block);
-
-                    return userAccount;
-                }, parameters, commandType: CommandType.StoredProcedure).FirstOrDefault();
-
-                conn.Close();
-            }
-
-            //var user = CoreEntitiesContainer.CurrentUserAccount().Include(ua => ua.RoleMembership)
-            //    .Include("RoleMembership.Blocks").Include("RoleMembership.OwnerBusinessAccount").First();
+            var user = CoreEntitiesContainer.CurrentUserAccount().Include(ua => ua.RoleMembership)
+                .Include("RoleMembership.Blocks").Include("RoleMembership.OwnerBusinessAccount").First();
 
             //apply timezone
 
             //Load all of the party images for the owner's of roles, and the current user account
-            var partyIds = user.RoleMembership.Select(r => r.OwnerBusinessAccountId).Distinct(e => e.Value)
+            var partyIds = user.RoleMembership.Select(r => r.OwnerBusinessAccountId).Distinct()
                 .Union(new[] { new Guid?(user.Id) }).ToArray();
 
             var partyImages = CoreEntitiesContainer.Files.OfType<PartyImage>()
-                .Where(pi => partyIds.Contains(pi.Id)).Distinct(e => e.Id).ToList();
+                .Where(pi => partyIds.Contains(pi.Id)).Distinct().ToList();
 
             //Go through each party image and get the url with the shared access key
             var partyImageUrls = new Dictionary<Guid, string>();
@@ -100,8 +60,8 @@ namespace FoundOps.Api.Controllers.Rest
                 partyImageUrls.Add(partyImage.OwnerParty.Id, imageUrl);
             }
 
-            var roles = user.RoleMembership.Distinct(e => e.Id).OrderBy(r => r.OwnerBusinessAccount.DisplayName);
-            var sections = roles.SelectMany(r => r.Blocks).Where(s => !s.HideFromNavigation).Distinct(e => e.Name).OrderBy(b => b.Name).ToList();
+            var roles = user.RoleMembership.Distinct().OrderBy(r => r.OwnerBusinessAccount.DisplayName);
+            var sections = roles.SelectMany(r => r.Blocks).Where(s => !s.HideFromNavigation).Distinct().OrderBy(b => b.Name).ToList();
 
             //remove all silverlight sections if this is a mobile session
             if (isMobile)
@@ -129,12 +89,11 @@ namespace FoundOps.Api.Controllers.Rest
                 jRole.name = role.OwnerBusinessAccount.Name;
                 jRole.type = role.RoleType.ToString();
 
-                //TODO: Take a good look at this and determine its future?
                 //Set the business's logo
-                //if (role.OwnerBusinessAccount.PartyImage != null)
-                //{
-                //    jRole.businessLogoUrl = partyImageUrls[role.OwnerBusinessAccount.PartyImage.Id];
-                //}
+                if (role.OwnerBusinessAccount.PartyImage != null)
+                {
+                    jRole.businessLogoUrl = partyImageUrls[role.OwnerBusinessAccount.PartyImage.Id];
+                }
 
                 var availableSections = role.Blocks.Where(s => !s.HideFromNavigation).OrderBy(r => r.Name).ToList();
                 //remove all silverlight sections if this is a mobile session
