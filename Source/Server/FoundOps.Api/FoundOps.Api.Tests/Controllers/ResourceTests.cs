@@ -205,7 +205,11 @@ namespace FoundOps.Api.Tests.Controllers
         /// <summary>
         /// Setup a fake import using random existing Clients, Locations and Repeats
         /// </summary>
-        /// <returns></returns>
+        /// <param name="importClients">Whether or not to import Clients</param>
+        /// <param name="importLocations">Whether or not to import Locations</param>
+        /// <param name="importContactInfo">Whether or not to import ContactInfo</param>
+        /// <param name="importRepeats">Whether or not to import Repeats</param>
+        /// <returns>A list of string[] to be used in ValidateThenSuggestEntities</returns>
         private List<string[]> SetupRowsWithHeaders(bool importClients, bool importLocations, bool importContactInfo, bool importRepeats)
         {
             var headers = new List<string>();
@@ -270,7 +274,15 @@ namespace FoundOps.Api.Tests.Controllers
             return rowsWithHeaders;
         }
 
-        private ImportRow[] SetupRows(bool importClients, bool importLocations, bool importRepeats)
+        /// <summary>
+        /// Setup a fake import using random existing Clients, Locations and Repeats
+        /// </summary>
+        /// <param name="importClients">Whether or not to import Clients</param>
+        /// <param name="importLocations">Whether or not to import Locations</param>
+        /// <param name="importContactInfo">Whether or not to import ContactInfo</param>
+        /// <param name="importRepeats">Whether or not to import Repeats</param>
+        /// <returns></returns>
+        private ImportRow[] SetupRows(bool importClients, bool importLocations, bool importContactInfo, bool importRepeats)
         {
             var random = new Random();
             var rows = new List<ImportRow>();
@@ -280,6 +292,10 @@ namespace FoundOps.Api.Tests.Controllers
                 var client = CoreEntitiesContainer.Clients.ToArray().ElementAt(random.Next(48));
                 var location = CoreEntitiesContainer.Locations.Where(l => l.BusinessAccountIdIfDepot == null).Include(l => l.Region).ToArray().ElementAt(random.Next(51));
                 var repeat = CoreEntitiesContainer.Repeats.Where(r => r.FrequencyInt == 3).ToArray().ElementAt(random.Next(144));
+                var phoneContactInfo = CoreEntitiesContainer.ContactInfoSet.Where(c => c.Type == "Phone Number").ToArray().ElementAt(random.Next(70));
+                var emailContactInfo = CoreEntitiesContainer.ContactInfoSet.Where(c => c.Type == "Email Address").ToArray().ElementAt(random.Next(70));
+                var websiteContactInfo = CoreEntitiesContainer.ContactInfoSet.Where(c => c.Type == "Website").ToArray().ElementAt(random.Next(70));
+
 
                 var newRow = new ImportRow();
 
@@ -287,6 +303,8 @@ namespace FoundOps.Api.Tests.Controllers
                     newRow.Client = Api.Models.Client.ConvertModel(client);
                 if (importLocations)
                     newRow.Location = Api.Models.Location.ConvertModel(location);
+                if (importContactInfo)
+                    newRow.ContactInfoSet.AddRange(new List<ContactInfo> {ContactInfo.Convert(phoneContactInfo), ContactInfo.Convert(emailContactInfo), ContactInfo.Convert(websiteContactInfo)});
                 if (importRepeats)
                     newRow.Repeat = Api.Models.Repeat.ConvertModel(repeat);
                 
@@ -294,6 +312,53 @@ namespace FoundOps.Api.Tests.Controllers
             }
 
             return rows.ToArray();
+        }
+
+        private void TestValidateAndSuggest(bool importClients, bool importLocations, bool importContactInfo, bool importRepeats, bool testValidateInput, bool testSuggestEntites)
+        {
+            var controller = new SuggestionsController();
+
+            //If both are false, or both are true => return because this would cause an exception to occur in the controller
+            if (testValidateInput == testSuggestEntites)
+                return;
+
+            //If testValidateInput is true, make a new SuggestionRequest with RowsWithHeaders only
+            //Else, make a new SuggestionRequest with Rows only
+            var suggestionRequest = testValidateInput
+                ? new SuggestionsRequest { RowsWithHeaders = SetupRowsWithHeaders(importClients, importLocations, importContactInfo, importRepeats) }
+                : new SuggestionsRequest { Rows = SetupRows(importClients, importLocations, importContactInfo, importRepeats) };
+
+            var suggestions = controller.Put(_roleId, suggestionRequest);
+
+            if (importClients)
+            {
+                //Test Client output
+                var clientSuggestions = suggestions.RowSuggestions.SelectMany(rs => rs.ClientSuggestions).Distinct().ToArray();
+                var clients = suggestions.Clients.Select(c => c.Id).ToArray();
+                var except = clients.Except(clientSuggestions);
+                Assert.AreEqual(0, except.Count());
+            }
+            if (importLocations)
+            {
+                //Test Location output
+                var locationSuggestions = suggestions.RowSuggestions.SelectMany(rs => rs.LocationSuggestions).Distinct().ToArray();
+                var locations = suggestions.Locations.Select(l => l.Id).ToArray();
+                var except = locations.Except(locationSuggestions);
+                Assert.AreEqual(0, except.Count());
+            }
+            if (importRepeats)
+            {
+                //Test Repeat output
+                var repeats = suggestions.RowSuggestions.SelectMany(rs => rs.Repeats);
+                Assert.AreEqual(suggestions.RowSuggestions.Count(), repeats.Count());
+            }
+            if (importContactInfo)
+            {
+                var contactInfoSuggestions = suggestions.RowSuggestions.SelectMany(rs => rs.ContactInfoSuggestions).Distinct().ToArray();
+                var contactInfoSets = suggestions.ContactInfoSet.Select(l => l.Id).ToArray();
+                var except = contactInfoSets.Except(contactInfoSuggestions);
+                Assert.AreEqual(0, except.Count());
+            }
         }
 
         #endregion
@@ -450,7 +515,7 @@ namespace FoundOps.Api.Tests.Controllers
             //Importing Client, Location and Repeat for each row
             TestValidateAndSuggest(importClients: true, importLocations: true, importContactInfo: true, importRepeats: true, testValidateInput: true, testSuggestEntites: false);
             TestValidateAndSuggest(importClients: true, importLocations: true, importContactInfo: false, importRepeats: true, testValidateInput: true, testSuggestEntites: false);
-            
+
             //Importing a Client and Location
             TestValidateAndSuggest(importClients: true, importLocations: true, importContactInfo: true, importRepeats: false, testValidateInput: true, testSuggestEntites: false);
             TestValidateAndSuggest(importClients: true, importLocations: true, importContactInfo: false, importRepeats: false, testValidateInput: true, testSuggestEntites: false);
@@ -508,53 +573,6 @@ namespace FoundOps.Api.Tests.Controllers
             TestValidateAndSuggest(importClients: false, importLocations: false, importContactInfo: false, importRepeats: true, testValidateInput: false, testSuggestEntites: true);
 
             #endregion
-        }
-
-        private void TestValidateAndSuggest(bool importClients, bool importLocations, bool importContactInfo, bool importRepeats, bool testValidateInput, bool testSuggestEntites)
-        {
-            var controller = new SuggestionsController();
-
-            //If both are false, or both are true => return because this would cause an exception to occur in the controller
-            if(testValidateInput == testSuggestEntites)
-                return;
-
-            //If testValidateInput is true, make a new SuggestionRequest with RowsWithHeaders only
-            //Else, make a new SuggestionRequest with Rows only
-            var suggestionRequest = testValidateInput 
-                ? new SuggestionsRequest {RowsWithHeaders = SetupRowsWithHeaders(importClients, importLocations, importContactInfo, importRepeats)}
-                : new SuggestionsRequest {Rows = SetupRows(importClients, importLocations, importRepeats)};
-
-            var suggestions = controller.Put(_roleId, suggestionRequest); 
-
-            if (importClients)
-            {
-                //Test Client output
-                var clientSuggestions = suggestions.RowSuggestions.SelectMany(rs => rs.ClientSuggestions).Distinct().ToArray();
-                var clients = suggestions.Clients.Select(c => c.Id).ToArray();
-                var except = clients.Except(clientSuggestions);
-                Assert.AreEqual(0, except.Count());
-            }
-            if (importLocations)
-            {
-                //Test Location output
-                var locationSuggestions = suggestions.RowSuggestions.SelectMany(rs => rs.LocationSuggestions).Distinct().ToArray();
-                var locations = suggestions.Locations.Select(l => l.Id).ToArray();
-                var except = locations.Except(locationSuggestions);
-                Assert.AreEqual(0, except.Count());
-            }
-            if (importRepeats)
-            {
-                //Test Repeat output
-                var repeats = suggestions.RowSuggestions.SelectMany(rs => rs.Repeats);
-                Assert.AreEqual(suggestions.RowSuggestions.Count(), repeats.Count());
-            }
-            if (importContactInfo)
-            {
-                var contactInfoSuggestions = suggestions.RowSuggestions.SelectMany(rs => rs.ContactInfoSuggestions).Distinct().ToArray();
-                var contactInfoSets = suggestions.ContactInfoSet.Select(l => l.Id).ToArray();
-                var except = contactInfoSets.Except(contactInfoSuggestions);
-                Assert.AreEqual(0, except.Count());
-            }
         }
 
         [TestMethod]

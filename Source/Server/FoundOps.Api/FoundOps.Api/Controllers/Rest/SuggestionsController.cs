@@ -478,7 +478,7 @@ namespace FoundOps.Api.Controllers.Rest
             var suggestionToReturn = new Suggestions();
             var clients = new List<FoundOps.Api.Models.Client>();
             var locations = new List<FoundOps.Api.Models.Location>();
-            var contactInfoSets = new List<FoundOps.Api.Models.ContactInfo>();
+            var contactInfoSets = new ConcurrentDictionary<Guid, ContactInfo>();
 
             Parallel.For((long)0, rows.Count(), rowIndex =>
             {
@@ -542,7 +542,9 @@ namespace FoundOps.Api.Controllers.Rest
                 if (row.ContactInfoSet.Count != 0)
                 {
                     rowSuggestions.ContactInfoSuggestions.AddRange(row.ContactInfoSet.Select(ci => ci.Id));
-                    contactInfoSets.AddRange(row.ContactInfoSet);
+
+                    foreach (var contactInfoSet in row.ContactInfoSet)
+                        contactInfoSets.GetOrAdd(contactInfoSet.Id, contactInfoSet);
                 }
                     //rowSuggestions.ContactInfoSuggestions.AddRange(row.ContactInfoSet);
 
@@ -561,7 +563,7 @@ namespace FoundOps.Api.Controllers.Rest
             suggestionToReturn.Locations.AddRange(distinctLocations);
 
             //Only add distinct ContactInfo
-            var distinctContactInfo = contactInfoSets.Distinct();
+            var distinctContactInfo = contactInfoSets.Select(ci => ci.Value).Distinct();
             suggestionToReturn.ContactInfoSet.AddRange(distinctContactInfo);
 
             return suggestionToReturn;
