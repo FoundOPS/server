@@ -50,7 +50,7 @@ BEGIN
 			( Id, Name, Type )
 	VALUES	( NEWID(), -- Id - uniqueidentifier
 			  'Service Status', -- Name - nvarchar(max)
-			  'status'  -- Type - nvarchar(max)
+			  'string'  -- Type - nvarchar(max)
 			  )
 
 	SELECT Name, [Type] FROM @fields
