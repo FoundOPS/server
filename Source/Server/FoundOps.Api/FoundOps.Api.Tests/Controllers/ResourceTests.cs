@@ -1,4 +1,4 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Collections.Concurrent;
 using Dapper;
 using FoundOps.Api.Controllers.Mvc;
 using FoundOps.Api.Controllers.Rest;
@@ -22,6 +22,7 @@ using System.Web.Http.Hosting;
 using Newtonsoft.Json.Linq;
 using BusinessAccount = FoundOps.Core.Models.CoreEntities.BusinessAccount;
 using Client = FoundOps.Core.Models.CoreEntities.Client;
+using ContactInfo = FoundOps.Api.Models.ContactInfo;
 using DateTimeField = FoundOps.Core.Models.CoreEntities.DateTimeField;
 using Field = FoundOps.Core.Models.CoreEntities.Field;
 using Location = FoundOps.Core.Models.CoreEntities.Location;
@@ -201,6 +202,100 @@ namespace FoundOps.Api.Tests.Controllers
             return result;
         }
 
+        /// <summary>
+        /// Setup a fake import using random existing Clients, Locations and Repeats
+        /// </summary>
+        /// <returns></returns>
+        private List<string[]> SetupRowsWithHeaders(bool importClients, bool importLocations, bool importContactInfo, bool importRepeats)
+        {
+            var headers = new List<string>();
+
+            if (importClients)
+                headers.Add("Client Name");
+            if (importLocations)
+            {
+                headers.AddRange(new[] { "Address Line One", "Address Line Two", "AdminDistrictTwo", "AdminDistrictOne", "PostalCode", "Country Code", "Region Name", "Latitude", "Longitude" });
+            }
+            if (importContactInfo)
+            {
+                headers.AddRange(new[] { "Phone Number #1", "Phone Label #1", "Phone Number #2", "Phone Label #2" });
+                headers.AddRange(new[] { "Email Address #1", "Email Label #1", "Email Address #2", "Email Label #2"});
+                headers.AddRange(new[] { "Website Url #1", "Website Label #1", "Website Url #2", "Website Label #2" });
+                headers.AddRange(new[] { "Other Data #1", "Other Label #1", "Other Data #2", "Other Label #2" });
+            }
+            if (importRepeats)
+            {
+                headers.AddRange(new string[] { "Frequency", "Repeat Every", "Start Date", "End Date", "End After Times", "Frequency Detail" });
+            }
+
+            var rowsWithHeaders = new List<string[]> { headers.ToArray() };
+
+            var random = new Random();
+
+            for (int i = 0; i < 5; i++)
+            {
+                var client = CoreEntitiesContainer.Clients.ToArray().ElementAt(random.Next(48));
+                var location = CoreEntitiesContainer.Locations.Where(l => l.BusinessAccountIdIfDepot == null).Include(l => l.Region).ToArray().ElementAt(random.Next(51));
+                var repeat = CoreEntitiesContainer.Repeats.Where(r => r.FrequencyInt == 3).ToArray().ElementAt(random.Next(144));
+                var phoneContactInfo1 = CoreEntitiesContainer.ContactInfoSet.Where(c => c.Type == "Phone Number").ToArray().ElementAt(random.Next(70));
+                var phoneContactInfo2 = CoreEntitiesContainer.ContactInfoSet.Where(c => c.Type == "Phone Number").ToArray().ElementAt(random.Next(70));
+                var emailContactInfo1 = CoreEntitiesContainer.ContactInfoSet.Where(c => c.Type == "Email Address").ToArray().ElementAt(random.Next(70));
+                var emailContactInfo2 = CoreEntitiesContainer.ContactInfoSet.Where(c => c.Type == "Email Address").ToArray().ElementAt(random.Next(70));
+                var websiteContactInfo1 = CoreEntitiesContainer.ContactInfoSet.Where(c => c.Type == "Website").ToArray().ElementAt(random.Next(70));
+                var websiteContactInfo2 = CoreEntitiesContainer.ContactInfoSet.Where(c => c.Type == "Website").ToArray().ElementAt(random.Next(70));
+                
+                var newRow = new List<string>();
+
+                if (importClients)
+                    newRow.Add(client.Name);
+                if (importLocations)
+                {
+                    newRow.AddRange(new[] { location.AddressLineOne, location.AddressLineTwo, location.AdminDistrictTwo, location.AdminDistrictOne, location.PostalCode, location.CountryCode });
+
+                    if (location.Region != null)
+                        newRow.Add(location.Region.Name);
+
+                    //Add an empty Lat/Long
+                    newRow.AddRange(new[] { "", "" });
+                }
+                if (importContactInfo)
+                    newRow.AddRange(new[] {phoneContactInfo1.Data, phoneContactInfo1.Label, phoneContactInfo2.Data, phoneContactInfo2.Type, emailContactInfo1.Data, emailContactInfo1.Type, emailContactInfo2.Data, emailContactInfo2.Type, websiteContactInfo1.Data, websiteContactInfo1.Type, websiteContactInfo2.Data, websiteContactInfo2.Type});
+                
+                if (importRepeats)
+                    newRow.AddRange(new[] { repeat.Frequency.ToString(), repeat.RepeatEveryTimes.ToString(), repeat.StartDate.ToString(), repeat.EndDate.ToString(), repeat.EndAfterTimes.ToString(), repeat.FrequencyDetailAsWeeklyFrequencyDetail.First().ToString() });
+
+                rowsWithHeaders.Add(newRow.ToArray());
+            }
+
+            return rowsWithHeaders;
+        }
+
+        private ImportRow[] SetupRows(bool importClients, bool importLocations, bool importRepeats)
+        {
+            var random = new Random();
+            var rows = new List<ImportRow>();
+
+            for (int i = 0; i < 30; i++)
+            {
+                var client = CoreEntitiesContainer.Clients.ToArray().ElementAt(random.Next(48));
+                var location = CoreEntitiesContainer.Locations.Where(l => l.BusinessAccountIdIfDepot == null).Include(l => l.Region).ToArray().ElementAt(random.Next(51));
+                var repeat = CoreEntitiesContainer.Repeats.Where(r => r.FrequencyInt == 3).ToArray().ElementAt(random.Next(144));
+
+                var newRow = new ImportRow();
+
+                if (importClients)
+                    newRow.Client = Api.Models.Client.ConvertModel(client);
+                if (importLocations)
+                    newRow.Location = Api.Models.Location.ConvertModel(location);
+                if (importRepeats)
+                    newRow.Repeat = Api.Models.Repeat.ConvertModel(repeat);
+                
+                rows.Add(newRow);
+            }
+
+            return rows.ToArray();
+        }
+
         #endregion
 
         //private const string CoreConnectionsString = "metadata=res://*/Models.CoreEntities.CoreEntities.csdl|res://*/Models.CoreEntities.CoreEntities.ssdl|res://*/Models.CoreEntities.CoreEntities.msl;provider=System.Data.SqlClient;provider connection string=';Data Source=f77m2u3n4m.database.windows.net;Initial Catalog=TestCore;Persist Security Info=True;User ID=perladmin;Password=QOI1m7DzVUJiNPMofFkk;MultipleActiveResultSets=True;Min Pool Size=100;Max Pool Size=1000;Pooling=true';";
@@ -314,7 +409,7 @@ namespace FoundOps.Api.Tests.Controllers
             var getResponseFromSearch = SimpleGetTest<LocationsController, Models.Location>(lc => lc.Get(_roleId, null, null, false, "12414 english garden, 20171"))
                 .FirstOrDefault();
 
-            Assert.AreEqual("20171", getResponseFromSearch.ZipCode);
+            Assert.AreEqual("20171", getResponseFromSearch.PostalCode);
             Assert.AreEqual("Herndon", getResponseFromSearch.AdminDistrictTwo);
             Assert.AreEqual("VA", getResponseFromSearch.AdminDistrictOne);
             Assert.IsTrue(getResponseFromSearch.Latitude.Contains("38.8981361"));
@@ -330,7 +425,7 @@ namespace FoundOps.Api.Tests.Controllers
                 AddressLineTwo = "Room 2",
                 AdminDistrictTwo = "Northbrook",
                 AdminDistrictOne = "Illinois",
-                ZipCode = "60062",
+                PostalCode = "60062",
                 CountryCode = "US"
             };
 
@@ -342,9 +437,106 @@ namespace FoundOps.Api.Tests.Controllers
             newLocation.AddressLineTwo = "Suite 205";
             newLocation.AdminDistrictTwo = "West Lafayette";
             newLocation.AdminDistrictOne = "Indiana";
-            newLocation.ZipCode = "47906";
+            newLocation.PostalCode = "47906";
 
             controller.Put(_roleId, newLocation);
+        }
+
+        [TestMethod]
+        public void ImporterSuggestionsTests()
+        {
+            #region ValidateInput
+
+            TestValidateAndSuggest(importClients: false, importLocations: false, importContactInfo: true, importRepeats: false, testValidateInput: true, testSuggestEntites: false);
+
+            //Importing Client, Location and Repeat for each row
+            TestValidateAndSuggest(importClients: true, importLocations: true, importContactInfo: true, importRepeats: true, testValidateInput: true, testSuggestEntites: false);
+            
+            //Importing a Client and Location
+            TestValidateAndSuggest(importClients: true, importLocations: true, importContactInfo: true, importRepeats: false, testValidateInput: true, testSuggestEntites: false);
+
+            //Importing a Client and a Repeat
+            TestValidateAndSuggest(importClients: true, importLocations: false, importContactInfo: true, importRepeats: true, testValidateInput: true, testSuggestEntites: false);
+
+            //Importing a Location and a Repeat
+            TestValidateAndSuggest(importClients: false, importLocations: true, importContactInfo: true, importRepeats: true, testValidateInput: true, testSuggestEntites: false);
+
+            //Importing only a Client
+            TestValidateAndSuggest(importClients: true, importLocations: false, importContactInfo: true, importRepeats: false, testValidateInput: true, testSuggestEntites: false);
+
+            //Importing only a Location
+            TestValidateAndSuggest(importClients: false, importLocations: true, importContactInfo: true, importRepeats: false, testValidateInput: true, testSuggestEntites: false);
+
+            //Importing only a Repeat
+            TestValidateAndSuggest(importClients: false, importLocations: false, importContactInfo: true, importRepeats: true, testValidateInput: true, testSuggestEntites: false);
+
+            #endregion
+
+            #region SuggestEntites
+
+            //Importing Client, Location and Repeat for each row
+            TestValidateAndSuggest(importClients: true, importLocations: true, importContactInfo: false, importRepeats: true, testValidateInput: false, testSuggestEntites: true);
+
+            //Importing a Client and Location
+            TestValidateAndSuggest(importClients: true, importLocations: true, importContactInfo: false, importRepeats: false, testValidateInput: false, testSuggestEntites: true);
+
+            //Importing a Client and a Repeat
+            TestValidateAndSuggest(importClients: true, importLocations: false, importContactInfo: false, importRepeats: true, testValidateInput: false, testSuggestEntites: true);
+
+            //Importing a Location and a Repeat
+            TestValidateAndSuggest(importClients: false, importLocations: true, importContactInfo: false, importRepeats: true, testValidateInput: false, testSuggestEntites: true);
+
+            //Importing only a Client
+            TestValidateAndSuggest(importClients: true, importLocations: false, importContactInfo: false, importRepeats: false, testValidateInput: false, testSuggestEntites: true);
+
+            //Importing only a Location
+            TestValidateAndSuggest(importClients: false, importLocations: true, importContactInfo: false, importRepeats: false, testValidateInput: false, testSuggestEntites: true);
+
+            //Importing only a Repeat
+            TestValidateAndSuggest(importClients: false, importLocations: false, importContactInfo: false, importRepeats: true, testValidateInput: false, testSuggestEntites: true);
+
+            #endregion
+        }
+
+        private void TestValidateAndSuggest(bool importClients, bool importLocations, bool importContactInfo, bool importRepeats, bool testValidateInput, bool testSuggestEntites)
+        {
+            var controller = new SuggestionsController();
+
+            //If both are false, or both are true => return because this would cause an exception to occur in the controller
+            if(testValidateInput == testSuggestEntites)
+                return;
+
+            //If testValidateInput is true, make a new SuggestionRequest with RowsWithHeaders only
+            //Else, make a new SuggestionRequest with Rows only
+            var suggestionRequest = testValidateInput 
+                ? new SuggestionsRequest {RowsWithHeaders = SetupRowsWithHeaders(importClients, importLocations, importContactInfo, importRepeats)}
+                : new SuggestionsRequest {Rows = SetupRows(importClients, importLocations, importRepeats)};
+
+            var suggestions = controller.Put(_roleId, suggestionRequest); 
+
+            if (importClients)
+            {
+                //Test Client output
+                var clientSuggestions = suggestions.RowSuggestions.SelectMany(rs => rs.ClientSuggestions).Distinct().ToArray();
+                var clients = suggestions.Clients.Select(c => c.Id).ToArray();
+                var except = clients.Except(clientSuggestions);
+                Assert.AreEqual(0, except.Count());
+            }
+            if (importLocations)
+            {
+                //Test Location output
+                var locationSuggestions = suggestions.RowSuggestions.SelectMany(rs => rs.LocationSuggestions).Distinct().ToArray();
+                var locations = suggestions.Locations.Select(l => l.Id).ToArray();
+                var except = locations.Except(locationSuggestions);
+                Assert.AreEqual(0, except.Count());
+
+            }
+            if (importRepeats)
+            {
+                //Test Repeat output
+                var repeats = suggestions.RowSuggestions.SelectMany(rs => rs.Repeats);
+                Assert.AreEqual(suggestions.RowSuggestions.Count(), repeats.Count());
+            }
         }
 
         [TestMethod]
@@ -880,7 +1072,7 @@ namespace FoundOps.Api.Tests.Controllers
                 //Then it will return all RouteTasks that are not in a route joined with their Locations, Location.Regions and Clients
                 //Dapper will then map the output table to RouteTasks, RouteTasks.Location, RouteTasks.Location.Region and RouteTasks.Client
                 //While that is being mapped we also attach the Client, Location and Region to the objectContext
-                var data = conn.Query<FoundOps.Core.Models.CoreEntities.RouteTask, Location, Region, Client, TaskStatus, FoundOps.Core.Models.CoreEntities.RouteTask>("sp_GetUnroutedServicesForDate", (routeTask, location, region, client, taskStatus) =>
+                var data = conn.Query<FoundOps.Core.Models.CoreEntities.RouteTask, Location, FoundOps.Core.Models.CoreEntities.Region, Client, TaskStatus, FoundOps.Core.Models.CoreEntities.RouteTask>("sp_GetUnroutedServicesForDate", (routeTask, location, region, client, taskStatus) =>
                 {
                     if (location != null)
                     {

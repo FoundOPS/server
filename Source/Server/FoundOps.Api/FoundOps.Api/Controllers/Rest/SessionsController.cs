@@ -49,8 +49,7 @@ namespace FoundOps.Api.Controllers.Rest
             var partyIds = user.RoleMembership.Select(r => r.OwnerBusinessAccountId).Distinct()
                 .Union(new[] { new Guid?(user.Id) }).ToArray();
 
-            var partyImages = CoreEntitiesContainer.Files.OfType<PartyImage>()
-                .Where(pi => partyIds.Contains(pi.Id)).Distinct().ToList();
+            var partyImages = CoreEntitiesContainer.Files.OfType<PartyImage>().Where(pi => partyIds.Contains(pi.Id)).Distinct().ToList();
 
             //Go through each party image and get the url with the shared access key
             var partyImageUrls = new Dictionary<Guid, string>();
