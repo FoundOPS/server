@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using FoundOps.Api.Tools;
+using FoundOps.Common.Tools.ExtensionMethods;
 using FoundOps.Core.Models;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.ServiceEntites;
@@ -197,7 +198,7 @@ namespace FoundOps.Api.Controllers.Rest
 
                 var id = st.ServiceId.HasValue ? st.ServiceId.Value : st.RecurringServiceId.Value;
 
-                var fields = simpleTaskStatuses[id].Union(simpleDateFields[id]).Union(simpleNumericFields[id]).Union(simpleTextFields[id]).Union(simpleSignatureFields[id]).Union(
+                var fields = simpleTaskStatuses[id].Distinct(ts => ts.Name).Union(simpleDateFields[id]).Union(simpleNumericFields[id]).Union(simpleTextFields[id]).Union(simpleSignatureFields[id]).Union(
                         simpleOptionsFields[id]).Union(simpleLocationFields[id]).ToDictionary(f => f.Name);
 
                 foreach (var name in javaScriptFields.Select(f => f.Name))
