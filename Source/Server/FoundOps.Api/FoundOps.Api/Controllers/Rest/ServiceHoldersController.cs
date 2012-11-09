@@ -74,6 +74,7 @@ namespace FoundOps.Api.Controllers.Rest
             ILookup<Guid, ISimpleField> simpleOptionsFields;
             ILookup<Guid, ISimpleField> simpleLocationFields;
             ILookup<Guid, ISimpleField> simpleSignatureFields;
+            ILookup<Guid, ISimpleField> simpleTaskStatuses;
 
             using (var db = new DbContext(ServerConstants.SqlConnectionString))
             {
@@ -153,6 +154,10 @@ namespace FoundOps.Api.Controllers.Rest
 
                 reader.NextResult();
 
+                simpleTaskStatuses = CoreEntitiesContainer.Translate<SimpleStatusField>(reader).ToLookup(f => f.ServiceTemplateId, f => (ISimpleField)f);
+
+                reader.NextResult();
+
                 simpleDateFields = CoreEntitiesContainer.Translate<SimpleDateField>(reader).AsParallel().ToLookup(f => f.ServiceTemplateId, f => (ISimpleField)f);
 
                 reader.NextResult();
@@ -192,7 +197,7 @@ namespace FoundOps.Api.Controllers.Rest
 
                 var id = st.ServiceId.HasValue ? st.ServiceId.Value : st.RecurringServiceId.Value;
 
-                var fields = simpleDateFields[id].Union(simpleNumericFields[id]).Union(simpleTextFields[id]).Union(simpleSignatureFields[id]).Union(
+                var fields = simpleTaskStatuses[id].Union(simpleDateFields[id]).Union(simpleNumericFields[id]).Union(simpleTextFields[id]).Union(simpleSignatureFields[id]).Union(
                         simpleOptionsFields[id]).Union(simpleLocationFields[id]).ToDictionary(f => f.Name);
 
                 foreach (var name in javaScriptFields.Select(f => f.Name))

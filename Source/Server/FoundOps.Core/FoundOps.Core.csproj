@@ -138,6 +138,7 @@
     <Compile Include="Models\CoreEntities\ServiceEntites\SimpleDateField.cs" />
     <Compile Include="Models\CoreEntities\ServiceEntites\SimpleNumericField.cs" />
     <Compile Include="Models\CoreEntities\ServiceEntites\SimpleSignatureField.cs" />
+    <Compile Include="Models\CoreEntities\ServiceEntites\SimpleStatusField.cs" />
     <Compile Include="Models\CoreEntities\ServiceEntites\SimpleTextField.cs" />
     <Compile Include="Models\ServerConstants.cs" />
     <Compile Include="Models\CoreEntities\BlocksData.cs" />

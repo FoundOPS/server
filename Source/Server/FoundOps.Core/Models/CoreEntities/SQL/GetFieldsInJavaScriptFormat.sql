@@ -46,6 +46,13 @@ BEGIN
 	SET [Type] = 'date'
 	WHERE [@fields].Id IN (SELECT Id FROM dbo.Fields_DateTimeField WHERE TypeInt = 2)
 
+	INSERT INTO @fields
+			( Id, Name, Type )
+	VALUES	( NEWID(), -- Id - uniqueidentifier
+			  'Service Status', -- Name - nvarchar(max)
+			  'status'  -- Type - nvarchar(max)
+			  )
+
 	SELECT Name, [Type] FROM @fields
 
 RETURN  
