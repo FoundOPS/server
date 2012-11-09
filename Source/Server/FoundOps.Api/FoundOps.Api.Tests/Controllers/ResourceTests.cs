@@ -206,7 +206,7 @@ namespace FoundOps.Api.Tests.Controllers
         /// Setup a fake import using random existing Clients, Locations and Repeats
         /// </summary>
         /// <returns></returns>
-        private List<string[]> SetupRowsWithHeaders(bool importClients, bool importLocations, bool importRepeats)
+        private List<string[]> SetupRowsWithHeaders(bool importClients, bool importLocations, bool importContactInfo, bool importRepeats)
         {
             var headers = new List<string>();
 
@@ -214,7 +214,14 @@ namespace FoundOps.Api.Tests.Controllers
                 headers.Add("Client Name");
             if (importLocations)
             {
-                headers.AddRange(new[] { "Address Line One", "Address Line Two", "City", "State", "Zipcode", "Country Code", "Region Name", "Latitude", "Longitude" });
+                headers.AddRange(new[] { "Address Line One", "Address Line Two", "AdminDistrictTwo", "AdminDistrictOne", "PostalCode", "Country Code", "Region Name", "Latitude", "Longitude" });
+            }
+            if (importContactInfo)
+            {
+                headers.AddRange(new[] { "Phone Number #1", "Phone Label #1", "Phone Number #2", "Phone Label #2" });
+                headers.AddRange(new[] { "Email Address #1", "Email Label #1", "Email Address #2", "Email Label #2"});
+                headers.AddRange(new[] { "Website Url #1", "Website Label #1", "Website Url #2", "Website Label #2" });
+                headers.AddRange(new[] { "Other Data #1", "Other Label #1", "Other Data #2", "Other Label #2" });
             }
             if (importRepeats)
             {
@@ -225,12 +232,18 @@ namespace FoundOps.Api.Tests.Controllers
 
             var random = new Random();
 
-            for (int i = 0; i < 500; i++)
+            for (int i = 0; i < 5; i++)
             {
                 var client = CoreEntitiesContainer.Clients.ToArray().ElementAt(random.Next(48));
                 var location = CoreEntitiesContainer.Locations.Where(l => l.BusinessAccountIdIfDepot == null).Include(l => l.Region).ToArray().ElementAt(random.Next(51));
                 var repeat = CoreEntitiesContainer.Repeats.Where(r => r.FrequencyInt == 3).ToArray().ElementAt(random.Next(144));
-
+                var phoneContactInfo1 = CoreEntitiesContainer.ContactInfoSet.Where(c => c.Type == "Phone Number").ToArray().ElementAt(random.Next(70));
+                var phoneContactInfo2 = CoreEntitiesContainer.ContactInfoSet.Where(c => c.Type == "Phone Number").ToArray().ElementAt(random.Next(70));
+                var emailContactInfo1 = CoreEntitiesContainer.ContactInfoSet.Where(c => c.Type == "Email Address").ToArray().ElementAt(random.Next(70));
+                var emailContactInfo2 = CoreEntitiesContainer.ContactInfoSet.Where(c => c.Type == "Email Address").ToArray().ElementAt(random.Next(70));
+                var websiteContactInfo1 = CoreEntitiesContainer.ContactInfoSet.Where(c => c.Type == "Website").ToArray().ElementAt(random.Next(70));
+                var websiteContactInfo2 = CoreEntitiesContainer.ContactInfoSet.Where(c => c.Type == "Website").ToArray().ElementAt(random.Next(70));
+                
                 var newRow = new List<string>();
 
                 if (importClients)
@@ -245,6 +258,9 @@ namespace FoundOps.Api.Tests.Controllers
                     //Add an empty Lat/Long
                     newRow.AddRange(new[] { "", "" });
                 }
+                if (importContactInfo)
+                    newRow.AddRange(new[] {phoneContactInfo1.Data, phoneContactInfo1.Label, phoneContactInfo2.Data, phoneContactInfo2.Type, emailContactInfo1.Data, emailContactInfo1.Type, emailContactInfo2.Data, emailContactInfo2.Type, websiteContactInfo1.Data, websiteContactInfo1.Type, websiteContactInfo2.Data, websiteContactInfo2.Type});
+                
                 if (importRepeats)
                     newRow.AddRange(new[] { repeat.Frequency.ToString(), repeat.RepeatEveryTimes.ToString(), repeat.StartDate.ToString(), repeat.EndDate.ToString(), repeat.EndAfterTimes.ToString(), repeat.FrequencyDetailAsWeeklyFrequencyDetail.First().ToString() });
 
@@ -429,65 +445,60 @@ namespace FoundOps.Api.Tests.Controllers
         [TestMethod]
         public void ImporterSuggestionsTests()
         {
-            var dic = new ConcurrentDictionary<Guid, ContactInfo>();
-
-            dic.GetOrAdd(Guid.NewGuid(), new ContactInfo());
-            
-            var test = dic.FirstOrDefault(d => d.Key == Guid.NewGuid());
-
-            var t = test;
             #region ValidateInput
 
+            TestValidateAndSuggest(importClients: false, importLocations: false, importContactInfo: true, importRepeats: false, testValidateInput: true, testSuggestEntites: false);
+
             //Importing Client, Location and Repeat for each row
-            TestValidateAndSuggest(importClients: true, importLocations: true, importRepeats: true, testValidateInput: true, testSuggestEntites: false);
+            TestValidateAndSuggest(importClients: true, importLocations: true, importContactInfo: true, importRepeats: true, testValidateInput: true, testSuggestEntites: false);
             
             //Importing a Client and Location
-            TestValidateAndSuggest(importClients: true, importLocations: true, importRepeats: false, testValidateInput: true, testSuggestEntites: false);
+            TestValidateAndSuggest(importClients: true, importLocations: true, importContactInfo: true, importRepeats: false, testValidateInput: true, testSuggestEntites: false);
 
             //Importing a Client and a Repeat
-            TestValidateAndSuggest(importClients: true, importLocations: false, importRepeats: true, testValidateInput: true, testSuggestEntites: false);
+            TestValidateAndSuggest(importClients: true, importLocations: false, importContactInfo: true, importRepeats: true, testValidateInput: true, testSuggestEntites: false);
 
             //Importing a Location and a Repeat
-            TestValidateAndSuggest(importClients: false, importLocations: true, importRepeats: true, testValidateInput: true, testSuggestEntites: false);
+            TestValidateAndSuggest(importClients: false, importLocations: true, importContactInfo: true, importRepeats: true, testValidateInput: true, testSuggestEntites: false);
 
             //Importing only a Client
-            TestValidateAndSuggest(importClients: true, importLocations: false, importRepeats: false, testValidateInput: true, testSuggestEntites: false);
+            TestValidateAndSuggest(importClients: true, importLocations: false, importContactInfo: true, importRepeats: false, testValidateInput: true, testSuggestEntites: false);
 
             //Importing only a Location
-            TestValidateAndSuggest(importClients: false, importLocations: true, importRepeats: false, testValidateInput: true, testSuggestEntites: false);
+            TestValidateAndSuggest(importClients: false, importLocations: true, importContactInfo: true, importRepeats: false, testValidateInput: true, testSuggestEntites: false);
 
             //Importing only a Repeat
-            TestValidateAndSuggest(importClients: false, importLocations: false, importRepeats: true, testValidateInput: true, testSuggestEntites: false);
+            TestValidateAndSuggest(importClients: false, importLocations: false, importContactInfo: true, importRepeats: true, testValidateInput: true, testSuggestEntites: false);
 
             #endregion
 
             #region SuggestEntites
 
             //Importing Client, Location and Repeat for each row
-            TestValidateAndSuggest(importClients: true, importLocations: true, importRepeats: true, testValidateInput: false, testSuggestEntites: true);
+            TestValidateAndSuggest(importClients: true, importLocations: true, importContactInfo: false, importRepeats: true, testValidateInput: false, testSuggestEntites: true);
 
             //Importing a Client and Location
-            TestValidateAndSuggest(importClients: true, importLocations: true, importRepeats: false, testValidateInput: false, testSuggestEntites: true);
+            TestValidateAndSuggest(importClients: true, importLocations: true, importContactInfo: false, importRepeats: false, testValidateInput: false, testSuggestEntites: true);
 
             //Importing a Client and a Repeat
-            TestValidateAndSuggest(importClients: true, importLocations: false, importRepeats: true, testValidateInput: false, testSuggestEntites: true);
+            TestValidateAndSuggest(importClients: true, importLocations: false, importContactInfo: false, importRepeats: true, testValidateInput: false, testSuggestEntites: true);
 
             //Importing a Location and a Repeat
-            TestValidateAndSuggest(importClients: false, importLocations: true, importRepeats: true, testValidateInput: false, testSuggestEntites: true);
+            TestValidateAndSuggest(importClients: false, importLocations: true, importContactInfo: false, importRepeats: true, testValidateInput: false, testSuggestEntites: true);
 
             //Importing only a Client
-            TestValidateAndSuggest(importClients: true, importLocations: false, importRepeats: false, testValidateInput: false, testSuggestEntites: true);
+            TestValidateAndSuggest(importClients: true, importLocations: false, importContactInfo: false, importRepeats: false, testValidateInput: false, testSuggestEntites: true);
 
             //Importing only a Location
-            TestValidateAndSuggest(importClients: false, importLocations: true, importRepeats: false, testValidateInput: false, testSuggestEntites: true);
+            TestValidateAndSuggest(importClients: false, importLocations: true, importContactInfo: false, importRepeats: false, testValidateInput: false, testSuggestEntites: true);
 
             //Importing only a Repeat
-            TestValidateAndSuggest(importClients: false, importLocations: false, importRepeats: true, testValidateInput: false, testSuggestEntites: true);
+            TestValidateAndSuggest(importClients: false, importLocations: false, importContactInfo: false, importRepeats: true, testValidateInput: false, testSuggestEntites: true);
 
             #endregion
         }
 
-        private void TestValidateAndSuggest(bool importClients, bool importLocations, bool importRepeats, bool testValidateInput, bool testSuggestEntites)
+        private void TestValidateAndSuggest(bool importClients, bool importLocations, bool importContactInfo, bool importRepeats, bool testValidateInput, bool testSuggestEntites)
         {
             var controller = new SuggestionsController();
 
@@ -498,7 +509,7 @@ namespace FoundOps.Api.Tests.Controllers
             //If testValidateInput is true, make a new SuggestionRequest with RowsWithHeaders only
             //Else, make a new SuggestionRequest with Rows only
             var suggestionRequest = testValidateInput 
-                ? new SuggestionsRequest {RowsWithHeaders = SetupRowsWithHeaders(importClients, importLocations, importRepeats)}
+                ? new SuggestionsRequest {RowsWithHeaders = SetupRowsWithHeaders(importClients, importLocations, importContactInfo, importRepeats)}
                 : new SuggestionsRequest {Rows = SetupRows(importClients, importLocations, importRepeats)};
 
             var suggestions = controller.Put(_roleId, suggestionRequest); 

@@ -129,16 +129,16 @@ namespace FoundOps.Api.Controllers.Rest
             var frequencyDetailCol = Array.IndexOf(headers, "Frequency Detail");
 
             //Contact Info
-            var phoneNumberValueCols = headers.Where(h => h.Contains("Phone Number Value")).ToArray();
-            var phoneNumberLabelCols = headers.Where(h => h.Contains("Phone Number Label")).ToArray();
+            var phoneNumberValueCols = headers.Where(h => h.Contains("Phone Number")).ToArray();
+            var phoneNumberLabelCols = headers.Where(h => h.Contains("Phone Label")).ToArray();
 
-            var emailValueCols = headers.Where(h => h.Contains("Email Address Value")).ToArray();
-            var emailLabelCols = headers.Where(h => h.Contains("Email Address Label")).ToArray();
+            var emailValueCols = headers.Where(h => h.Contains("Email Address")).ToArray();
+            var emailLabelCols = headers.Where(h => h.Contains("Email Label")).ToArray();
 
-            var websiteValueCols = headers.Where(h => h.Contains("Website Value")).ToArray();
+            var websiteValueCols = headers.Where(h => h.Contains("Website Url")).ToArray();
             var websiteLabelCols = headers.Where(h => h.Contains("Website Label")).ToArray();
 
-            var otherValueCols = headers.Where(h => h.Contains("Other Value")).ToArray();
+            var otherValueCols = headers.Where(h => h.Contains("Other Data")).ToArray();
             var otherLabelCols = headers.Where(h => h.Contains("Other Label")).ToArray();
 
             #endregion
@@ -193,7 +193,7 @@ namespace FoundOps.Api.Controllers.Rest
 
                         //Matched the entire address to a location (AddressLineOne, AddressLineTwo, City, State and ZipCode)
                         var matchedLocation = _locations.FirstOrDefault(l => l.Value.AddressLineOne == addressLineOne && l.Value.AddressLineTwo == addressLineTwo
-                                                            && l.AdminDistrictTwo == adminDistrictTwo && l.AdminDistrictOne == adminDistrictOne && l.PostalCode == postalCode);
+                                                            && l.Value.AdminDistrictTwo == adminDistrictTwo && l.Value.AdminDistrictOne == adminDistrictOne && l.Value.PostalCode == postalCode);
 
                         if (matchedLocation.Key != Guid.Empty)
                             importedLocation = ConvertLocationSetRegionAndStatus(matchedLocation.Value, regionName, ImportStatus.Linked);
