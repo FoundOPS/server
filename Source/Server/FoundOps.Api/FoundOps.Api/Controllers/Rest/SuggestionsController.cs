@@ -414,17 +414,17 @@ namespace FoundOps.Api.Controllers.Rest
 
                 #region Contact Info
 
-                var phoneValueDictionary = phoneNumberValueCols.ToDictionary(p => Convert.ToInt32(p.Split('#').ElementAt(1)), p => row[Convert.ToInt32(p.Split('#').ElementAt(1).Trim())]);
-                var phoneLabelDictionary = phoneNumberLabelCols.ToDictionary(p => Convert.ToInt32(p.Split('#').ElementAt(1)), p => row[Convert.ToInt32(p.Split('#').ElementAt(1).Trim())]);
+                var phoneValueDictionary = phoneNumberValueCols.ToDictionary(p => Convert.ToInt32(p.Split('#').ElementAt(1)), p => row[Array.IndexOf(headers, p)]);
+                var phoneLabelDictionary = phoneNumberLabelCols.ToDictionary(p => Convert.ToInt32(p.Split('#').ElementAt(1)), p => row[Array.IndexOf(headers, p)]);
 
-                var emailValueDictionary = emailValueCols.ToDictionary(e => Convert.ToInt32(e.Split('#').ElementAt(1)), e => row[Convert.ToInt32(e.Split('#').ElementAt(1).Trim())]);
-                var emailLabelDictionary = emailLabelCols.ToDictionary(e => Convert.ToInt32(e.Split('#').ElementAt(1)), e => row[Convert.ToInt32(e.Split('#').ElementAt(1).Trim())]);
+                var emailValueDictionary = emailValueCols.ToDictionary(e => Convert.ToInt32(e.Split('#').ElementAt(1)), e => row[Array.IndexOf(headers, e)]);
+                var emailLabelDictionary = emailLabelCols.ToDictionary(e => Convert.ToInt32(e.Split('#').ElementAt(1)), e => row[Array.IndexOf(headers, e)]);
 
-                var websiteValueDictionary = websiteValueCols.ToDictionary(w => Convert.ToInt32(w.Split('#').ElementAt(1)), w => row[Convert.ToInt32(w.Split('#').ElementAt(1).Trim())]);
-                var websiteLabelDictionary = websiteLabelCols.ToDictionary(w => Convert.ToInt32(w.Split('#').ElementAt(1)), w => row[Convert.ToInt32(w.Split('#').ElementAt(1).Trim())]);
+                var websiteValueDictionary = websiteValueCols.ToDictionary(w => Convert.ToInt32(w.Split('#').ElementAt(1)), w => row[Array.IndexOf(headers, w)]);
+                var websiteLabelDictionary = websiteLabelCols.ToDictionary(w => Convert.ToInt32(w.Split('#').ElementAt(1)), w => row[Array.IndexOf(headers, w)]);
 
-                var otherValueDictionary = otherValueCols.ToDictionary(o => Convert.ToInt32(o.Split('#').ElementAt(1)), o => row[Convert.ToInt32(o.Split('#').ElementAt(1).Trim())]);
-                var otherLabelDictionary = otherLabelCols.ToDictionary(o => Convert.ToInt32(o.Split('#').ElementAt(1)), o => row[Convert.ToInt32(o.Split('#').ElementAt(1).Trim())]);
+                var otherValueDictionary = otherValueCols.ToDictionary(o => Convert.ToInt32(o.Split('#').ElementAt(1)), o => row[Array.IndexOf(headers, o)]);
+                var otherLabelDictionary = otherLabelCols.ToDictionary(o => Convert.ToInt32(o.Split('#').ElementAt(1)), o => row[Array.IndexOf(headers, o)]);
 
                 //Find which type of contact info is being imported the most
                 //This way we only have one loop
@@ -432,22 +432,22 @@ namespace FoundOps.Api.Controllers.Rest
 
                 var concurrentContactInfoDictionary = new ConcurrentDictionary<Guid, ContactInfo>();
 
-                Parallel.For((long)0, max, contactIndex =>
+                Parallel.For((long)1, max + 1, contactIndex =>
                 {
                     //Phone
-                    if (phoneLabelDictionary.Count > contactIndex)
+                    if (phoneLabelDictionary.Count >= contactIndex)
                         MatchContactInfo(phoneLabelDictionary, phoneValueDictionary, contactIndex, concurrentContactInfoDictionary, "Phone Number");
 
                     //Email
-                    if (emailLabelDictionary.Count > contactIndex)
+                    if (emailLabelDictionary.Count >= contactIndex)
                         MatchContactInfo(emailLabelDictionary, emailValueDictionary, contactIndex, concurrentContactInfoDictionary, "Email Address");
 
                     //Website
-                    if (websiteLabelDictionary.Count > contactIndex)
+                    if (websiteLabelDictionary.Count >= contactIndex)
                         MatchContactInfo(websiteLabelDictionary, websiteValueDictionary, contactIndex, concurrentContactInfoDictionary, "Website");
 
                     //Other
-                    if (otherLabelDictionary.Count > contactIndex)
+                    if (otherLabelDictionary.Count >= contactIndex)
                         MatchContactInfo(otherLabelDictionary, otherValueDictionary, contactIndex, concurrentContactInfoDictionary, "Other");
                 });
 
@@ -478,6 +478,7 @@ namespace FoundOps.Api.Controllers.Rest
             var suggestionToReturn = new Suggestions();
             var clients = new List<FoundOps.Api.Models.Client>();
             var locations = new List<FoundOps.Api.Models.Location>();
+            var contactInfoSets = new List<FoundOps.Api.Models.ContactInfo>();
 
             Parallel.For((long)0, rows.Count(), rowIndex =>
             {
@@ -537,6 +538,14 @@ namespace FoundOps.Api.Controllers.Rest
                 if (row.Repeat != null)
                     rowSuggestions.Repeats.Add(row.Repeat);
 
+                //Contact Info
+                if (row.ContactInfoSet.Count != 0)
+                {
+                    rowSuggestions.ContactInfoSuggestions.AddRange(row.ContactInfoSet.Select(ci => ci.Id));
+                    contactInfoSets.AddRange(row.ContactInfoSet);
+                }
+                    //rowSuggestions.ContactInfoSuggestions.AddRange(row.ContactInfoSet);
+
                 //Add this row's suggestions to the list to be returned
                 concurrentDictionary.GetOrAdd((int)rowIndex, rowSuggestions);
             });
@@ -550,6 +559,10 @@ namespace FoundOps.Api.Controllers.Rest
             //Only add distinct Locations
             var distinctLocations = locations.Distinct();
             suggestionToReturn.Locations.AddRange(distinctLocations);
+
+            //Only add distinct ContactInfo
+            var distinctContactInfo = contactInfoSets.Distinct();
+            suggestionToReturn.ContactInfoSet.AddRange(distinctContactInfo);
 
             return suggestionToReturn;
         }
