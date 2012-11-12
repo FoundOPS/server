@@ -120,7 +120,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 var designCheckListField = new OptionsField
                 {
                     Id = Guid.NewGuid(),
-                    Name = "Barrel TODO",
+                    Name = "Barrel Todo",
                     Tooltip = "Things to do with the barrels",
                     AllowMultipleSelection = true,
                     OptionsType = OptionsType.Checklist,
