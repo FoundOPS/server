@@ -775,6 +775,7 @@ GO
 -- Creating table 'Fields_SignatureField'
 CREATE TABLE [dbo].[Fields_SignatureField] (
     [Value] nvarchar(max)  NULL,
+    [Signed] datetime NOT NULL,
     [Id] uniqueidentifier  NOT NULL
 );
 GO

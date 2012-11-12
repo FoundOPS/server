@@ -1,8 +1,11 @@
-﻿namespace FoundOps.Api.Models
+﻿using System;
+
+namespace FoundOps.Api.Models
 {
     public class SignatureField : Field
     {
         public string Value { get; set; }
+        public DateTime Signed { get; set; }
 
         /// <summary>
         /// Converts from the FoundOPS model to the API model
@@ -19,6 +22,7 @@
                 ToolTip = fieldModel.Tooltip,
                 ParentFieldId = fieldModel.ParentFieldId,
                 ServiceTemplateId = fieldModel.ServiceTemplateId,
+                Signed = fieldModel.Signed,
                 Value = fieldModel.Value
             };
 
@@ -40,6 +44,7 @@
                 Tooltip = signatureField.ToolTip,
                 ParentFieldId = signatureField.ParentFieldId,
                 ServiceTemplateId = signatureField.ServiceTemplateId,
+                Signed = signatureField.Signed,
                 Value = signatureField.Value
             };
 

@@ -478,6 +478,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Value" Type="nvarchar(max)" />
+          <Property Name="Signed" Type="datetime" Nullable="false" />
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="Fields_TextBoxField">
@@ -2244,6 +2245,7 @@
         </EntityType>
         <EntityType Name="SignatureField" BaseType="CoreEntities.Field">
           <Property Type="String" Name="Value" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
+          <Property Type="DateTime" Name="Signed" Nullable="false" Precision="3" />
         </EntityType>
         <Association Name="LocationContactInfo">
           <End Type="CoreEntities.Location" Role="Location" Multiplicity="0..1" />
@@ -3417,6 +3419,7 @@
       <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.SignatureField)">
         <MappingFragment StoreEntitySet="Fields_SignatureField">
           <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Signed" ColumnName="Signed" />
           <ScalarProperty Name="Value" ColumnName="Value" />
         </MappingFragment>
       </EntityTypeMapping>

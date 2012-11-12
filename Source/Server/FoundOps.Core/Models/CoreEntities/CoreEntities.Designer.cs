@@ -10171,12 +10171,14 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
         /// <param name="required">Initial value of the Required property.</param>
-        public static SignatureField CreateSignatureField(global::System.Guid id, global::System.String name, global::System.Boolean required)
+        /// <param name="signed">Initial value of the Signed property.</param>
+        public static SignatureField CreateSignatureField(global::System.Guid id, global::System.String name, global::System.Boolean required, global::System.DateTime signed)
         {
             SignatureField signatureField = new SignatureField();
             signatureField.Id = id;
             signatureField.Name = name;
             signatureField.Required = required;
+            signatureField.Signed = signed;
             return signatureField;
         }
 
@@ -10207,6 +10209,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.String _Value;
         partial void OnValueChanging(global::System.String value);
         partial void OnValueChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime Signed
+        {
+            get
+            {
+                return _Signed;
+            }
+            set
+            {
+                OnSignedChanging(value);
+                ReportPropertyChanging("Signed");
+                _Signed = StructuralObject.SetValidValue(value, "Signed");
+                ReportPropertyChanged("Signed");
+                OnSignedChanged();
+            }
+        }
+        private global::System.DateTime _Signed;
+        partial void OnSignedChanging(global::System.DateTime value);
+        partial void OnSignedChanged();
 
         #endregion
 

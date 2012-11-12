@@ -21,7 +21,7 @@ namespace FoundOps.Api.Models
         /// </summary>
         public Guid? VehicleId { get; set; }
 
-        public static ResourceWithLastPoint ConvertToModel(FoundOps.Core.Models.CoreEntities.ResourceWithLastPoint modelResource)
+        public static ResourceWithLastPoint ConvertToModel(Core.Models.CoreEntities.ResourceWithLastPoint modelResource)
         {
             var resource = new ResourceWithLastPoint
             {
@@ -34,7 +34,7 @@ namespace FoundOps.Api.Models
                 Speed = modelResource.Speed,
                 Source = modelResource.Source,
                 VehicleId = modelResource.VehicleId,
-                Accuracy = modelResource.Accuracy
+                Accuracy = modelResource.Accuracy.HasValue ? modelResource.Accuracy.Value : 0
             };
 
             if (modelResource.CollectedTimeStamp.HasValue)

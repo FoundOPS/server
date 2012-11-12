@@ -1,5 +1,4 @@
-﻿using System.Text.RegularExpressions;
-using Dapper;
+﻿using Dapper;
 using FoundOps.Api.Controllers.Mvc;
 using FoundOps.Api.Controllers.Rest;
 using FoundOps.Api.Models;
@@ -7,8 +6,10 @@ using FoundOps.Common.NET;
 using FoundOps.Common.Tools.ExtensionMethods;
 using FoundOps.Core.Models;
 using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Core.Models.CoreEntities.DesignData;
 using KellermanSoftware.CompareNetObjects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Data;
 using System.Data.Entity;
@@ -19,21 +20,14 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Hosting;
-using Newtonsoft.Json.Linq;
 using BusinessAccount = FoundOps.Core.Models.CoreEntities.BusinessAccount;
 using Client = FoundOps.Core.Models.CoreEntities.Client;
-using DateTimeField = FoundOps.Core.Models.CoreEntities.DateTimeField;
 using Field = FoundOps.Core.Models.CoreEntities.Field;
 using Location = FoundOps.Core.Models.CoreEntities.Location;
-using NumericField = FoundOps.Core.Models.CoreEntities.NumericField;
-using OptionsField = FoundOps.Core.Models.CoreEntities.OptionsField;
-using LocationField = FoundOps.Core.Models.CoreEntities.LocationField;
 using RouteTask = FoundOps.Api.Models.RouteTask;
 using ServiceHoldersController = FoundOps.Api.Controllers.Rest.ServiceHoldersController;
 using ServiceTemplate = FoundOps.Core.Models.CoreEntities.ServiceTemplate;
-using SignatureField = FoundOps.Core.Models.CoreEntities.SignatureField;
 using TaskStatus = FoundOps.Core.Models.CoreEntities.TaskStatus;
-using TextBoxField = FoundOps.Core.Models.CoreEntities.TextBoxField;
 using UserAccount = FoundOps.Core.Models.CoreEntities.UserAccount;
 
 namespace FoundOps.Api.Tests.Controllers
@@ -42,122 +36,10 @@ namespace FoundOps.Api.Tests.Controllers
     public class ResourceTests
     {
         protected readonly CoreEntitiesContainer CoreEntitiesContainer;
-        private static readonly DateTime Today = DateTime.UtcNow.Date;
 
         private readonly Guid _roleId;
         private readonly Guid _gotGreaseId = new Guid("8528E50D-E2B9-4779-9B29-759DBEA53B61");
         private readonly Guid _foundOpsId = new Guid("5606A728-B99F-4AA1-B0CD-0AB38A649000");
-
-        #region Fields
-
-        private OptionsField NewCheckListField()
-        {
-            return new OptionsField
-                {
-                    Id = Guid.NewGuid(),
-                    AllowMultipleSelection = true,
-                    Name = "Checklist Test",
-                    TypeInt = ((int)OptionsType.Checklist),
-                    OptionsString = "Option 1,Option 2,Option 3",
-                    Value = "0,2"
-                };
-        }
-
-        private OptionsField NewCheckBoxField()
-        {
-            return new OptionsField
-                {
-                    Id = Guid.NewGuid(),
-                    AllowMultipleSelection = false,
-                    Name = "Checkbox Test",
-                    TypeInt = ((int)OptionsType.Checkbox),
-                    OptionsString = "Option 1",
-                    Value = "0"
-                };
-        }
-
-        private OptionsField NewComboBoxField()
-        {
-            return new OptionsField
-                {
-                    Id = Guid.NewGuid(),
-                    AllowMultipleSelection = true,
-                    Name = "Combobox Test",
-                    TypeInt = ((int)OptionsType.Combobox),
-                    OptionsString = "Option 1,Option 2,Option 3",
-                    Value = "1,2"
-                };
-        }
-
-        private LocationField NewLocationField()
-        {
-            return new LocationField
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Location Test",
-                    LocationFieldTypeInt = 0,
-                    LocationId = CoreEntitiesContainer.Locations.First().Id
-                };
-        }
-
-        private NumericField NewNumericField()
-        {
-            return new NumericField
-            {
-                Id = Guid.NewGuid(),
-                Name = "Numeric Test",
-                Minimum = 10,
-                Maximum = 20,
-                Mask = "c"
-            };
-        }
-
-        private SignatureField NewSignatureField()
-        {
-            return new SignatureField
-            {
-                Id = Guid.NewGuid(),
-                Name = "Test Signature",
-                Tooltip = "Sign Here",
-                Value = "7UZ32232263353223222333242_3w546647c9b96646475765444_6uZ69647544533210Y33544a67585ba897757988676545444_4G10Z22433223545633322411111000Y11211100000Z121223_8G56676646432Z166878886543300Y136574a487464_6GZ11122223344510000Y224333466642223222120Z2_dyZ75546542Y3656536444Z1435465443_5v0112223431121344337442222223_gHZ3424245334653141200Y142345566645_2D5546489657db46b95976443321Z12322_ey76686686676_4y00000000000"
-            };
-        }
-
-        private TextBoxField NewSmallTextBoxField()
-        {
-            return new TextBoxField
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Small TextBox Test",
-                    IsMultiline = false,
-                    Value = "Small TextBox"
-                };
-        }
-
-        private TextBoxField NewLargeTextBoxField()
-        {
-            return new TextBoxField
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Large TextBox Test",
-                    IsMultiline = true,
-                    Value = "Large TextBox"
-                };
-        }
-
-        private DateTimeField NewDateTimeField()
-        {
-            return new DateTimeField
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "DateTime Test",
-                    Earliest = new DateTime(Today.Year, Today.Month, Today.Day, Today.AddHours(-2).Hour, 0, 0),
-                    Latest = new DateTime(Today.Year, Today.Month, Today.Day, Today.AddHours(2).Hour, 0, 0),
-                    TypeInt = ((int)DateTimeType.DateTime)
-                };
-        }
-
-        #endregion
 
         #region Helpers
 
@@ -202,9 +84,6 @@ namespace FoundOps.Api.Tests.Controllers
         }
 
         #endregion
-
-        //private const string CoreConnectionsString = "metadata=res://*/Models.CoreEntities.CoreEntities.csdl|res://*/Models.CoreEntities.CoreEntities.ssdl|res://*/Models.CoreEntities.CoreEntities.msl;provider=System.Data.SqlClient;provider connection string=';Data Source=f77m2u3n4m.database.windows.net;Initial Catalog=TestCore;Persist Security Info=True;User ID=perladmin;Password=QOI1m7DzVUJiNPMofFkk;MultipleActiveResultSets=True;Min Pool Size=100;Max Pool Size=1000;Pooling=true';";
-        //private const string CoreConnectionsString = "Data Source=f77m2u3n4m.database.windows.net;Initial Catalog=TestCore;Persist Security Info=True;User ID=perladmin;Password=QOI1m7DzVUJiNPMofFkk;MultipleActiveResultSets=True;Min Pool Size=100;Max Pool Size=1000;Pooling=true";
 
         public ResourceTests()
         {
@@ -492,7 +371,7 @@ namespace FoundOps.Api.Tests.Controllers
         [TestMethod]
         public void SignatureTests()
         {
-            var signatureField = NewSignatureField();
+            var signatureField = FieldsDesignData.NewSignatureField();
 
             CoreEntitiesContainer.Fields.AddObject(signatureField);
             CoreEntitiesContainer.SaveChanges();
@@ -921,34 +800,31 @@ namespace FoundOps.Api.Tests.Controllers
             var template = CoreEntitiesContainer.ServiceTemplates.Where(st => st.LevelInt == 1 && st.Name == "WVO Collection" && st.OwnerServiceProviderId == _gotGreaseId).Include(st => st.Fields).First();
 
             //Numeric field
-            var propagationSuccess = PropagateFieldToTemplateAndChildren(template, NewNumericField());
-            Assert.AreEqual(true, propagationSuccess);
-
-            //CheckList fields
-            propagationSuccess = PropagateFieldToTemplateAndChildren(template, NewCheckListField());
+            var propagationSuccess = PropagateFieldToTemplateAndChildren(template, FieldsDesignData.NewNumericField(NumericFieldType.Numeric));
             Assert.AreEqual(true, propagationSuccess);
 
             //CheckBox fields
-            propagationSuccess = PropagateFieldToTemplateAndChildren(template, NewCheckBoxField());
+            propagationSuccess = PropagateFieldToTemplateAndChildren(template, FieldsDesignData.NewOptionsField(OptionsType.Checkbox));
+            Assert.AreEqual(true, propagationSuccess);
+
+            //CheckList fields
+            propagationSuccess = PropagateFieldToTemplateAndChildren(template, FieldsDesignData.NewOptionsField(OptionsType.Checklist));
             Assert.AreEqual(true, propagationSuccess);
 
             //ComboBox fields
-            propagationSuccess = PropagateFieldToTemplateAndChildren(template, NewComboBoxField());
+            propagationSuccess = PropagateFieldToTemplateAndChildren(template, FieldsDesignData.NewOptionsField(OptionsType.Combobox));
             Assert.AreEqual(true, propagationSuccess);
 
             //Location fields
-            propagationSuccess = PropagateFieldToTemplateAndChildren(template, NewLocationField());
+            propagationSuccess = PropagateFieldToTemplateAndChildren(template, FieldsDesignData.NewLocationField(CoreEntitiesContainer.Locations.First().Id));
             Assert.AreEqual(true, propagationSuccess);
 
             //Single line TextBox field
-            propagationSuccess = PropagateFieldToTemplateAndChildren(template, NewSmallTextBoxField());
+            propagationSuccess = PropagateFieldToTemplateAndChildren(template, FieldsDesignData.NewTextBoxField(TextBoxFieldType.Small));
             Assert.AreEqual(true, propagationSuccess);
 
             //Multi-line TextBox field
-            propagationSuccess = PropagateFieldToTemplateAndChildren(template, NewLargeTextBoxField());
-            Assert.AreEqual(true, propagationSuccess);
-
-            propagationSuccess = PropagateFieldToTemplateAndChildren(template, NewDateTimeField());
+            propagationSuccess = PropagateFieldToTemplateAndChildren(template, FieldsDesignData.NewTextBoxField(TextBoxFieldType.Large));
             Assert.AreEqual(true, propagationSuccess);
         }
 
@@ -1026,14 +902,8 @@ namespace FoundOps.Api.Tests.Controllers
             };
 
             //Add Fields
-            foundOpsServiceTemplate.Fields.Add(NewCheckBoxField());
-            foundOpsServiceTemplate.Fields.Add(NewCheckListField());
-            foundOpsServiceTemplate.Fields.Add(NewComboBoxField());
-            foundOpsServiceTemplate.Fields.Add(NewDateTimeField());
-            foundOpsServiceTemplate.Fields.Add(NewLargeTextBoxField());
-            foundOpsServiceTemplate.Fields.Add(NewSmallTextBoxField());
-            foundOpsServiceTemplate.Fields.Add(NewNumericField());
-            foundOpsServiceTemplate.Fields.Add(NewLocationField());
+            foreach (var field in new FieldsDesignData().DesignFields)
+                foundOpsServiceTemplate.Fields.Add(field);
 
             //Make a child and set it to be on GotGrease?
             var serviceTemplate = foundOpsServiceTemplate.MakeChild(ServiceTemplateLevel.ServiceProviderDefined);
