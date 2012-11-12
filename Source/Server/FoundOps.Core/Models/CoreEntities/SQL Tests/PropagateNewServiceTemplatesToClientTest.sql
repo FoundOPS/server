@@ -253,8 +253,10 @@ BEGIN --Propagate all the fields down to the new Service Templates created above
 			BEGIN
 				INSERT INTO Fields_SignatureField
 				        ( Value, 
+						  Signed,
 						  Id )
 				VALUES  ( (SELECT Value FROM dbo.Fields_SignatureField WHERE Id = @currentId), -- Value - nvarchar(max)
+						  (SELECT Signed FROM dbo.Fields_SignatureField WHERE Id = @currentId), -- Value - nvarchar(max)
 				          @newFieldId  -- Id - uniqueidentifier
 				          )	    
 			END

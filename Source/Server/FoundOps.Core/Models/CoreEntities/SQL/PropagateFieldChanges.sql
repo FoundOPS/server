@@ -150,9 +150,11 @@ CREATE PROCEDURE [dbo].[PropagateNewFields]
 				IF @FieldId IN (SELECT Id FROM dbo.Fields_SignatureField) --Copy Signature field, set new Id's
 				BEGIN
 					INSERT INTO Fields_SignatureField
-							( Value, 
+							( Value,
+								Signed, 
 								Id )
 					VALUES  ((SELECT Value FROM dbo.Fields_SignatureField WHERE Id = @FieldId), -- Value - nvarchar(max)
+								(SELECT Signed FROM dbo.Fields_SignatureField WHERE Id = @FieldId), -- Signed - datetime
 								@newFieldId  -- Id - uniqueidentifier
 								)	    
 				END

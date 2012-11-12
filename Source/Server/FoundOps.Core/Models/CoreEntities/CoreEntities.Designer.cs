@@ -10171,14 +10171,12 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
         /// <param name="required">Initial value of the Required property.</param>
-        /// <param name="signed">Initial value of the Signed property.</param>
-        public static SignatureField CreateSignatureField(global::System.Guid id, global::System.String name, global::System.Boolean required, global::System.DateTime signed)
+        public static SignatureField CreateSignatureField(global::System.Guid id, global::System.String name, global::System.Boolean required)
         {
             SignatureField signatureField = new SignatureField();
             signatureField.Id = id;
             signatureField.Name = name;
             signatureField.Required = required;
-            signatureField.Signed = signed;
             return signatureField;
         }
 
@@ -10213,9 +10211,9 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public global::System.DateTime Signed
+        public Nullable<global::System.DateTime> Signed
         {
             get
             {
@@ -10230,8 +10228,8 @@ namespace FoundOps.Core.Models.CoreEntities
                 OnSignedChanged();
             }
         }
-        private global::System.DateTime _Signed;
-        partial void OnSignedChanging(global::System.DateTime value);
+        private Nullable<global::System.DateTime> _Signed;
+        partial void OnSignedChanging(Nullable<global::System.DateTime> value);
         partial void OnSignedChanged();
 
         #endregion

@@ -774,7 +774,7 @@ GO
 -- Creating table 'Fields_SignatureField'
 CREATE TABLE [dbo].[Fields_SignatureField] (
     [Value] nvarchar(max)  NULL,
-    [Signed] datetime NOT NULL,
+    [Signed] datetime	   NULL,
     [Id] uniqueidentifier  NOT NULL
 );
 GO
@@ -5717,9 +5717,11 @@ CREATE PROCEDURE [dbo].[PropagateNewFields]
 				IF @FieldId IN (SELECT Id FROM dbo.Fields_SignatureField) --Copy Signature field, set new Id's
 				BEGIN
 					INSERT INTO Fields_SignatureField
-							( Value, 
+							( Value,
+								Signed, 
 								Id )
 					VALUES  ((SELECT Value FROM dbo.Fields_SignatureField WHERE Id = @FieldId), -- Value - nvarchar(max)
+								(SELECT Signed FROM dbo.Fields_SignatureField WHERE Id = @FieldId), -- Signed - datetime
 								@newFieldId  -- Id - uniqueidentifier
 								)	    
 				END
@@ -6077,9 +6079,11 @@ BEGIN
 					IF @currentId IN (SELECT Id FROM dbo.Fields_SignatureField) --Copy Signature field, set new Id's
 					BEGIN
 						INSERT INTO Fields_SignatureField
-								( Value, 
+								( Value,
+								  Signed,
 								  Id )
-						VALUES  ( (SELECT Value FROM dbo.Fields_TextBoxField WHERE Id = @currentId), -- Value - nvarchar(max)
+						VALUES  ( (SELECT Value FROM dbo.Fields_SignatureField WHERE Id = @currentId), -- Value - nvarchar(max)
+								  (SELECT Signed FROM dbo.Fields_SignatureField WHERE Id = @currentId), -- Value - datetime
 								  @newFieldId  -- Id - uniqueidentifier
 								  )	    
 					END

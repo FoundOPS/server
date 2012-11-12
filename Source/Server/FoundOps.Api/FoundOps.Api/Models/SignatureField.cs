@@ -4,8 +4,8 @@ namespace FoundOps.Api.Models
 {
     public class SignatureField : Field
     {
+        public DateTime? Signed { get; set; }
         public string Value { get; set; }
-        public DateTime Signed { get; set; }
 
         /// <summary>
         /// Converts from the FoundOPS model to the API model
