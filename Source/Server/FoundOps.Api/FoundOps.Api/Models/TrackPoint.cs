@@ -58,7 +58,7 @@ namespace FoundOps.Api.Models
         /// The accuracy of the GPS coordinates from PhoneGap
         /// In Meters
         /// </summary>
-        public int? Accuracy { get; set; }
+        public int Accuracy { get; set; }
 
         #region Implementation of IGeoLocation
 

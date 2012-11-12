@@ -149,7 +149,8 @@ namespace FoundOps.Api.Controllers.Rest
                 throw Request.NotFound("Employee");
 
             //order the new track points by their TimeStamps
-            var orderedModelTrackPoints = trackPoints.OrderBy(tp => tp.CollectedTimeStamp).ToArray();
+            //remove inaccurate trackpoints
+            var orderedModelTrackPoints = trackPoints.Where(tp => tp.Accuracy < 50).OrderBy(tp => tp.CollectedTimeStamp).ToArray();
 
             var latestTrackPoint = orderedModelTrackPoints.LastOrDefault();
 
@@ -173,6 +174,7 @@ namespace FoundOps.Api.Controllers.Rest
                 employee.LastSource = latestTrackPoint.Source;
                 employee.LastSpeed = (double?)latestTrackPoint.Speed;
                 employee.LastTimeStamp = latestTrackPoint.CollectedTimeStamp;
+                employee.LastAccuracy = latestTrackPoint.Accuracy;
             }
 
             //Push TrackPoints to Azure as long as either
@@ -254,7 +256,8 @@ namespace FoundOps.Api.Controllers.Rest
                 RouteId = routeId,
                 Latitude = (double?)trackPoint.Latitude,
                 Longitude = (double?)trackPoint.Longitude,
-                CollectedTimeStamp = trackPoint.CollectedTimeStamp
+                CollectedTimeStamp = trackPoint.CollectedTimeStamp,
+                Accuracy = trackPoint.Accuracy
             };
 
             //Push to Azure Table
