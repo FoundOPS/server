@@ -186,23 +186,6 @@ BEGIN --Propagate all the fields down to the new Service Templates created above
 			
 			BEGIN --Copy field to its appropriate inherited table
 				
-			IF @currentId IN (SELECT Id FROM dbo.Fields_DateTimeField) --Copy the DateTime field, set new Id's
-			BEGIN 
-				INSERT INTO Fields_DateTimeField
-				        ( Earliest ,
-				          Latest ,
-				          TypeInt ,
-				          VALUE ,
-				          Id
-				        )
-				VALUES  ( (SELECT Earliest FROM Fields_DateTimeField WHERE Id = @currentId) , -- Earliest - datetime
-				          (SELECT Latest FROM Fields_DateTimeField WHERE Id = @currentId) , -- Latest - datetime
-				          (SELECT TypeInt FROM Fields_DateTimeField WHERE Id = @currentId) , -- TypeInt - smallint
-				          (SELECT Value FROM Fields_DateTimeField WHERE Id = @currentId) , -- Value - datetime
-				         @newFieldId  -- Id - uniqueidentifier
-				        )
-			END
-    
 			IF @currentId IN (SELECT Id FROM dbo.Fields_LocationField) --Copy Location field, set new Id's
 			BEGIN   
 			 

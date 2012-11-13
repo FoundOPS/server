@@ -39,13 +39,6 @@ namespace FoundOps.SLClient.UI.Converters
             {
                 return ((TextBoxField)field).Value;
             }
-            if (field is DateTimeField)
-            {
-                var dateTimeField = (DateTimeField)field;
-
-                if (dateTimeField.DateTimeType == DateTimeType.TimeOnly)
-                    return dateTimeField.Value.HasValue ? dateTimeField.Value.Value.ToShortTimeString() : "";
-            }
 
             return "Not setup yet";
         }
@@ -96,14 +89,6 @@ namespace FoundOps.SLClient.UI.Converters
             if (field is SignatureField)
             {
                 return "Signature";
-            }
-
-            if (field is DateTimeField)
-            {
-                var dateTimeField = (DateTimeField)field;
-
-                if (dateTimeField.DateTimeType == DateTimeType.TimeOnly)
-                    return "Time";
             }
 
             if (field is LocationField)
@@ -159,13 +144,6 @@ namespace FoundOps.SLClient.UI.Converters
                         "______________________________\r\n______________________________\r\n______________________________";
                 if (!textBoxField.IsMultiline)
                     return textBoxField.Value != null ? ((TextBoxField)field).Value : "_________________________";
-            }
-            if (field is DateTimeField)
-            {
-                var dateTimeField = (DateTimeField)field;
-
-                if (dateTimeField.DateTimeType == DateTimeType.TimeOnly)
-                    return dateTimeField.Value.HasValue ? dateTimeField.Value.Value.ToShortTimeString() : "____:____";
             }
 
             return "Not setup yet";

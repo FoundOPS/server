@@ -51,49 +51,5 @@ namespace FoundOps.Core.Models.CoreEntities.Validation
 
             return IsValueValidHelper(numericField.Value, numericField.Minimum, (decimal)maximum, numericField);
         }
-
-        private static ValidationResult IsTimeValueValidHelper(DateTime? value, DateTime earliest, DateTime latest, DateTimeField dateTimeField)
-        {
-            if (dateTimeField.DateTimeType == DateTimeType.TimeOnly && dateTimeField.Value.HasValue && value.HasValue)
-            {
-                if (value.Value.TimeOfDay < earliest.TimeOfDay)
-                    return new ValidationResult(String.Format("The Value must be after the earliest ({0})", earliest.ToLongTimeString()), new[] { "Value", "Earliest" });
-
-                if (value.Value.TimeOfDay > latest.TimeOfDay)
-                    return new ValidationResult(String.Format("The Value must be before the latest ({0})", latest.ToLongTimeString()), new[] { "Value", "Latest" });
-            }
-
-            return ValidationResult.Success;
-        }
-
-        public static ValidationResult IsTimeValueValid(DateTime? value, ValidationContext validationContext)
-        {
-            if (validationContext == null || value == null)
-                return ValidationResult.Success;
-
-            var dateTimeField = (DateTimeField)validationContext.ObjectInstance;
-
-            return IsTimeValueValidHelper(value, dateTimeField.Earliest, dateTimeField.Latest, dateTimeField);
-        }
-
-        public static ValidationResult IsTimeValueWithinEarliest(DateTime? earliest, ValidationContext validationContext)
-        {
-            if (validationContext == null || earliest == null)
-                return ValidationResult.Success;
-
-            var dateTimeField = (DateTimeField)validationContext.ObjectInstance;
-
-            return IsTimeValueValidHelper(dateTimeField.Value, (DateTime)earliest, dateTimeField.Latest, dateTimeField);
-        }
-
-        public static ValidationResult IsTimeValueWithinLatest(DateTime? latest, ValidationContext validationContext)
-        {
-            if (validationContext == null || latest == null)
-                return ValidationResult.Success;
-
-            var dateTimeField = (DateTimeField)validationContext.ObjectInstance;
-
-            return IsTimeValueValidHelper(dateTimeField.Value, dateTimeField.Earliest, (DateTime)latest, dateTimeField);
-        }
     }
 }

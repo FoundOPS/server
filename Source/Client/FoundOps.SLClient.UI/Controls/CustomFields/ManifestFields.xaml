@@ -108,13 +108,6 @@
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
-        <DataTemplate x:Key="TimeTemplate">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Width="245">
-                <TextBlock x:Name="NameText" Text="{Binding Name}"/>
-                <TextBlock x:Name="SpacerText" Text=": "/>
-                <TextBlock x:Name="ValueText" Text="{Binding ThisField, Converter={StaticResource ManifestFieldValueConverter}}"/>
-            </StackPanel>
-        </DataTemplate>
         <DataTemplate x:Key="SignatureTemplate">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Width="245">
                 <TextBlock x:Name="NameText" Text="{Binding Name}"/>
@@ -125,7 +118,7 @@
                    CheckListTemplate="{StaticResource CheckListTemplate}" ComboBoxTemplate="{StaticResource ComboBoxTemplate}" 
                    CurrencyTemplate="{StaticResource CurrencyTemplate}" NumberTemplate="{StaticResource NumberTemplate}" 
                    PercentageTemplate="{StaticResource PercentageTemplate}" LocationTemplate="{StaticResource LocationTemplate}" 
-                   TextLgTemplate="{StaticResource TextLargeTemplate}" TextSmTemplate="{StaticResource TextSmallTemplate}" TimeTemplate="{StaticResource TimeTemplate}" 
+                   TextLgTemplate="{StaticResource TextLargeTemplate}" TextSmTemplate="{StaticResource TextSmallTemplate}" 
                                              SignatureTemplate="{StaticResource SignatureTemplate}"/>
     </UserControl.Resources>
     <telerik:ItemsControl x:Name="FieldsItemsControl" Width="500" ItemTemplateSelector="{StaticResource FieldDataTemplateSelector}" />

@@ -27,24 +27,16 @@ BEGIN
 
 	UPDATE @fields
 	SET [Type] = 'string'
-	WHERE [@fields].Id NOT IN (SELECT Id FROM dbo.Fields_DateTimeField) 
-	AND [@fields].Id NOT IN (SELECT Id FROM dbo.Fields_NumericField) 
+	WHERE [@fields].Id NOT IN (SELECT Id FROM dbo.Fields_NumericField) 
+	AND [@fields].Id NOT IN (SELECT Id FROM dbo.Fields_SignatureField) 
 
 	UPDATE @fields
 	SET [Type] = 'number'
 	WHERE [@fields].Id IN (SELECT Id FROM dbo.Fields_NumericField) 
 
 	UPDATE @fields
-	SET [Type] = 'dateTime'
-	WHERE [@fields].Id IN (SELECT Id FROM dbo.Fields_DateTimeField WHERE TypeInt = 0)
-
-	UPDATE @fields
-	SET [Type] = 'time'
-	WHERE [@fields].Id IN (SELECT Id FROM dbo.Fields_DateTimeField WHERE TypeInt = 1)
-
-	UPDATE @fields
-	SET [Type] = 'date'
-	WHERE [@fields].Id IN (SELECT Id FROM dbo.Fields_DateTimeField WHERE TypeInt = 2)
+	SET [Type] = 'signature'
+	WHERE [@fields].Id IN (SELECT Id FROM dbo.Fields_SignatureField)
 
 	INSERT INTO @fields
 			( Id, Name, Type )

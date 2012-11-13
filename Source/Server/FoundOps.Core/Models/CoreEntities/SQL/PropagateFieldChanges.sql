@@ -84,23 +84,6 @@ CREATE PROCEDURE [dbo].[PropagateNewFields]
 				    ) 
 				
 			BEGIN --Copy field to its appropriate inherited table
-				IF @FieldId IN (SELECT Id FROM dbo.Fields_DateTimeField) --Copy the DateTime field, set new Id's
-				BEGIN 
-					INSERT INTO Fields_DateTimeField
-							( Earliest ,
-								Latest ,
-								TypeInt ,
-								VALUE ,
-								Id
-							)
-					VALUES  ( (SELECT Earliest FROM Fields_DateTimeField WHERE Id = @FieldId) , -- Earliest - datetime
-								(SELECT Latest FROM Fields_DateTimeField WHERE Id = @FieldId) , -- Latest - datetime
-								(SELECT TypeInt FROM Fields_DateTimeField WHERE Id = @FieldId) , -- TypeInt - smallint
-								(SELECT Value FROM Fields_DateTimeField WHERE Id = @FieldId) , -- Value - datetime
-								@newFieldId  -- Id - uniqueidentifier
-							)
-				END
-    
 				IF @FieldId IN (SELECT Id FROM dbo.Fields_LocationField) --Copy Location field, set new Id's
 				BEGIN   
 			 

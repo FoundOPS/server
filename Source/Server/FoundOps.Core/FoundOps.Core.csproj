@@ -135,7 +135,6 @@
     <Compile Include="Models\CoreEntities\ServiceEntites\SimpleOptionsField.cs" />
     <Compile Include="Models\CoreEntities\ServiceEntites\ISimpleField.cs" />
     <Compile Include="Models\CoreEntities\ServiceEntites\ServiceTemplateWithDate.cs" />
-    <Compile Include="Models\CoreEntities\ServiceEntites\SimpleDateField.cs" />
     <Compile Include="Models\CoreEntities\ServiceEntites\SimpleNumericField.cs" />
     <Compile Include="Models\CoreEntities\ServiceEntites\SimpleSignatureField.cs" />
     <Compile Include="Models\CoreEntities\ServiceEntites\SimpleStatusField.cs" />
@@ -180,7 +179,6 @@
     <Compile Include="Models\CoreEntities\Extensions\Dispatching\RouteDestination.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Dispatching\RouteExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Dispatching\RouteTaskExtensions.shared.cs" />
-    <Compile Include="Models\CoreEntities\Extensions\Fields\DateTimeFieldExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Fields\FieldExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Fields\LocationFieldExtensions.shared.cs" />
     <Compile Include="Models\CoreEntities\Extensions\Fields\OptionsFieldExtensions.shared.cs" />

@@ -130,12 +130,6 @@ AS
 		SELECT * FROM #TaskStatusWithServiceTemplateId
 		
 		SELECT t2.Id, t2.ServiceTemplateId, t2.Name, t1.Value 
-		FROM dbo.Fields_DateTimeField t1
-		JOIN dbo.Fields t2
-		ON t2.Id = t1.Id AND t2.Id IN (SELECT Id FROM #FieldIds)
-		ORDER BY t2.ServiceTemplateId
-
-		SELECT t2.Id, t2.ServiceTemplateId, t2.Name, t1.Value 
 		FROM dbo.Fields_NumericField t1
 		JOIN dbo.Fields t2
 		ON t2.Id = t1.Id AND t2.Id IN (SELECT Id FROM #FieldIds)

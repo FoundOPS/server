@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using DateTimeField = FoundOps.Core.Models.CoreEntities.DateTimeField;
 using LocationField = FoundOps.Core.Models.CoreEntities.LocationField;
 using NumericField = FoundOps.Core.Models.CoreEntities.NumericField;
 using OptionsField = FoundOps.Core.Models.CoreEntities.OptionsField;
@@ -147,15 +146,11 @@ namespace FoundOps.Api.Controllers.Rest
                     if (existingField == null)
                         throw Request.NotFound("Service");
 
-                    var dateTimeField = existingField as DateTimeField;
                     var numericField = existingField as NumericField;
                     var textBoxField = existingField as TextBoxField;
                     var signatureField = existingField as SignatureField;
                     var locationField = existingField as LocationField;
                     var optionsField = existingField as OptionsField;
-
-                    if (dateTimeField != null)
-                        dateTimeField.Value = ((Models.DateTimeField) field).Value;
 
                     if (numericField != null)
                         numericField.Value = ((Models.NumericField) field).Value;

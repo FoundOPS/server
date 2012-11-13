@@ -56,9 +56,6 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_ClientServiceTemplate]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[ServiceTemplates] DROP CONSTRAINT [FK_ClientServiceTemplate];
 GO
-IF OBJECT_ID(N'[dbo].[FK_DateTimeField_inherits_Field]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Fields_DateTimeField] DROP CONSTRAINT [FK_DateTimeField_inherits_Field];
-GO
 IF OBJECT_ID(N'[dbo].[FK_EmployeeBusinessAccount]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Employees] DROP CONSTRAINT [FK_EmployeeBusinessAccount];
 GO
@@ -246,9 +243,6 @@ IF OBJECT_ID(N'[dbo].[Errors]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[Fields]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Fields];
-GO
-IF OBJECT_ID(N'[dbo].[Fields_DateTimeField]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Fields_DateTimeField];
 GO
 IF OBJECT_ID(N'[dbo].[Fields_LocationField]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Fields_LocationField];
@@ -801,16 +795,6 @@ CREATE TABLE [dbo].[Fields_NumericField] (
 );
 GO
 
--- Creating table 'Fields_DateTimeField'
-CREATE TABLE [dbo].[Fields_DateTimeField] (
-    [Earliest] datetime  NOT NULL,
-    [Latest] datetime  NOT NULL,
-    [TypeInt] smallint  NOT NULL,
-    [Value] datetime  NULL,
-    [Id] uniqueidentifier  NOT NULL
-);
-GO
-
 -- Creating table 'RoleBlock'
 CREATE TABLE [dbo].[RoleBlock] (
     [Roles_Id] uniqueidentifier  NOT NULL,
@@ -1062,12 +1046,6 @@ GO
 -- Creating primary key on [Id] in table 'Fields_NumericField'
 ALTER TABLE [dbo].[Fields_NumericField]
 ADD CONSTRAINT [PK_Fields_NumericField]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
--- Creating primary key on [Id] in table 'Fields_DateTimeField'
-ALTER TABLE [dbo].[Fields_DateTimeField]
-ADD CONSTRAINT [PK_Fields_DateTimeField]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -1946,15 +1924,6 @@ GO
 -- Creating foreign key on [Id] in table 'Fields_NumericField'
 ALTER TABLE [dbo].[Fields_NumericField]
 ADD CONSTRAINT [FK_NumericField_inherits_Field]
-    FOREIGN KEY ([Id])
-    REFERENCES [dbo].[Fields]
-        ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
-GO
-
--- Creating foreign key on [Id] in table 'Fields_DateTimeField'
-ALTER TABLE [dbo].[Fields_DateTimeField]
-ADD CONSTRAINT [FK_DateTimeField_inherits_Field]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Fields]
         ([Id])

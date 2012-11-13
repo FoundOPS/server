@@ -84,10 +84,6 @@ namespace FoundOps.Core.Tools
 
                 reader.NextResult();
 
-                var dateTimeFields = container.Translate<DateTimeField>(reader, "Fields", MergeOption.AppendOnly).ToList();
-
-                reader.NextResult();
-
                 var numericFields = container.Translate<NumericField>(reader, "Fields", MergeOption.AppendOnly).ToList();
 
                 reader.NextResult();

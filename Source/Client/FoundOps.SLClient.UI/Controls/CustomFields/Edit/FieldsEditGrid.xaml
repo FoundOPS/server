@@ -7,7 +7,6 @@
              xmlns:Selectors="clr-namespace:FoundOps.SLClient.UI.Selectors" mc:Ignorable="d">
     <UserControl.Resources>
         <Converters2:ComboBoxSelectedItemConverter x:Key="ComboBoxSelectedItemConverter"/>
-        <Converters2:DateTimeWithTodaysDateConverter x:Key="DateTimeWithTodaysDateConverter"/>
         <Converters:ElementFromEnumerableConverter x:Key="ElementFromEnumerableConverter"/>
         <Converters2:OrderByNameConverter x:Key="OrderByNameConverter"/>
         <DataTemplate x:Key="CheckBoxTemplate">
@@ -146,47 +145,11 @@
                 <TextBox Grid.Column="2" TextWrapping="NoWrap" Text="{Binding Value, Mode=TwoWay}" AcceptsReturn="{Binding IsMultiline}" MaxLength="30" />
             </Grid>
         </DataTemplate>
-        <DataTemplate x:Key="TimeTemplate">
-            <Grid Margin="0,0,0,5" HorizontalAlignment="Center">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="{StaticResource ExtraLargeLabelColumn}"/>
-                    <ColumnDefinition Width="5" />
-                    <ColumnDefinition Width="{StaticResource SmallValueColumn}" />
-                </Grid.ColumnDefinitions>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <TextBlock Text="{Binding Name}" ToolTipService.ToolTip="{Binding Tooltip}" TextWrapping="Wrap" MaxWidth="135"/>
-                    <TextBlock Text=": " />
-                </StackPanel>
-                <telerik:RadDateTimePicker x:Name="DefaultDateTimePicker" Grid.Column="2" DateTimeWatermarkContent="Enter time" InputMode="TimePicker"
-                                           SelectedValue="{Binding Value, Mode=TwoWay, Converter={StaticResource DateTimeWithTodaysDateConverter}}"/>
-                <!--bind text to text, bind textwrapping to small or large text box-->
-            </Grid>
-        </DataTemplate>
-        <DataTemplate x:Key="ImageTemplate">
-            <Grid Margin="0,0,0,5" HorizontalAlignment="Center">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="{StaticResource ExtraLargeLabelColumn}"/>
-                    <ColumnDefinition Width="5" />
-                    <ColumnDefinition Width="{StaticResource SmallValueColumn}" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                    <TextBlock Text="{Binding Name}" ToolTipService.ToolTip="{Binding Tooltip}" TextWrapping="Wrap" MaxWidth="135"/>
-                    <TextBlock Text=":" />
-                </StackPanel>
-                <Button Grid.Column="2" Content="Upload A File"/>
-                <Image HorizontalAlignment="Center" Height="200" Width="200"/>
-                <!--bind to image-->
-            </Grid>
-        </DataTemplate>
         <Selectors:FieldDataTemplateSelector x:Key="FieldDataTemplateSelector" CheckBoxTemplate="{StaticResource CheckBoxTemplate}" 
                    CheckListTemplate="{StaticResource CheckListTemplate}" ComboBoxTemplate="{StaticResource ComboBoxTemplate}" 
                    CurrencyTemplate="{StaticResource CurrencyTemplate}" LocationTemplate="{StaticResource LocationTemplate}"  NumberTemplate="{StaticResource NumberTemplate}" 
                    PercentageTemplate="{StaticResource PercentageTemplate}" TextLgTemplate="{StaticResource TextLgTemplate}" 
-                   TextSmTemplate="{StaticResource TextSmTemplate}" TimeTemplate="{StaticResource TimeTemplate}"/>
+                   TextSmTemplate="{StaticResource TextSmTemplate}"/>
     </UserControl.Resources>
     <Grid>
         <Controls:ItemsControl ItemTemplateSelector="{StaticResource FieldDataTemplateSelector}" 

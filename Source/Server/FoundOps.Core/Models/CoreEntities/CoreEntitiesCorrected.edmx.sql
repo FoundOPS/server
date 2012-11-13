@@ -57,9 +57,6 @@ GO
 IF OBJECT_ID(N'[dbo].[FK_ClientServiceTemplate]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[ServiceTemplates] DROP CONSTRAINT [FK_ClientServiceTemplate];
 GO
-IF OBJECT_ID(N'[dbo].[FK_DateTimeField_inherits_Field]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[Fields_DateTimeField] DROP CONSTRAINT [FK_DateTimeField_inherits_Field];
-GO
 IF OBJECT_ID(N'[dbo].[FK_EmployeeBusinessAccount]', 'F') IS NOT NULL
     ALTER TABLE [dbo].[Employees] DROP CONSTRAINT [FK_EmployeeBusinessAccount];
 GO
@@ -247,9 +244,6 @@ IF OBJECT_ID(N'[dbo].[Errors]', 'U') IS NOT NULL
 GO
 IF OBJECT_ID(N'[dbo].[Fields]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Fields];
-GO
-IF OBJECT_ID(N'[dbo].[Fields_DateTimeField]', 'U') IS NOT NULL
-    DROP TABLE [dbo].[Fields_DateTimeField];
 GO
 IF OBJECT_ID(N'[dbo].[Fields_LocationField]', 'U') IS NOT NULL
     DROP TABLE [dbo].[Fields_LocationField];
@@ -800,16 +794,6 @@ CREATE TABLE [dbo].[Fields_NumericField] (
 );
 GO
 
--- Creating table 'Fields_DateTimeField'
-CREATE TABLE [dbo].[Fields_DateTimeField] (
-    [Earliest] datetime  NOT NULL,
-    [Latest] datetime  NOT NULL,
-    [TypeInt] smallint  NOT NULL,
-    [Value] datetime  NULL,
-    [Id] uniqueidentifier  NOT NULL
-);
-GO
-
 -- Creating table 'RoleBlock'
 CREATE TABLE [dbo].[RoleBlock] (
     [Roles_Id] uniqueidentifier  NOT NULL,
@@ -1061,12 +1045,6 @@ GO
 -- Creating primary key on [Id] in table 'Fields_NumericField'
 ALTER TABLE [dbo].[Fields_NumericField]
 ADD CONSTRAINT [PK_Fields_NumericField]
-    PRIMARY KEY CLUSTERED ([Id] ASC);
-GO
-
--- Creating primary key on [Id] in table 'Fields_DateTimeField'
-ALTER TABLE [dbo].[Fields_DateTimeField]
-ADD CONSTRAINT [PK_Fields_DateTimeField]
     PRIMARY KEY CLUSTERED ([Id] ASC);
 GO
 
@@ -1959,15 +1937,6 @@ GO
 -- Creating foreign key on [Id] in table 'Fields_NumericField'
 ALTER TABLE [dbo].[Fields_NumericField]
 ADD CONSTRAINT [FK_NumericField_inherits_Field]
-    FOREIGN KEY ([Id])
-    REFERENCES [dbo].[Fields]
-        ([Id])
-    ON DELETE CASCADE ON UPDATE NO ACTION;
-GO
-
--- Creating foreign key on [Id] in table 'Fields_DateTimeField'
-ALTER TABLE [dbo].[Fields_DateTimeField]
-ADD CONSTRAINT [FK_DateTimeField_inherits_Field]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Fields]
         ([Id])
@@ -3760,24 +3729,16 @@ BEGIN
 
 	UPDATE @fields
 	SET [Type] = 'string'
-	WHERE [@fields].Id NOT IN (SELECT Id FROM dbo.Fields_DateTimeField) 
-	AND [@fields].Id NOT IN (SELECT Id FROM dbo.Fields_NumericField) 
+	WHERE [@fields].Id NOT IN (SELECT Id FROM dbo.Fields_NumericField) 
+	AND [@fields].Id NOT IN (SELECT Id FROM dbo.Fields_SignatureField) 
 
 	UPDATE @fields
 	SET [Type] = 'number'
 	WHERE [@fields].Id IN (SELECT Id FROM dbo.Fields_NumericField) 
 
 	UPDATE @fields
-	SET [Type] = 'dateTime'
-	WHERE [@fields].Id IN (SELECT Id FROM dbo.Fields_DateTimeField WHERE TypeInt = 0)
-
-	UPDATE @fields
-	SET [Type] = 'time'
-	WHERE [@fields].Id IN (SELECT Id FROM dbo.Fields_DateTimeField WHERE TypeInt = 1)
-
-	UPDATE @fields
-	SET [Type] = 'date'
-	WHERE [@fields].Id IN (SELECT Id FROM dbo.Fields_DateTimeField WHERE TypeInt = 2)
+	SET [Type] = 'signature'
+	WHERE [@fields].Id IN (SELECT Id FROM dbo.Fields_SignatureField)
 
 	INSERT INTO @fields
 			( Id, Name, Type )
@@ -4858,10 +4819,6 @@ BEGIN
 
 	SELECT * FROM dbo.Fields WHERE Id IN (SELECT Id FROM @fieldIds)
 
-  	SELECT t1.*, t2.* FROM dbo.Fields t1 
-	JOIN dbo.Fields_DateTimeField t2 
-	ON t1.Id = t2.Id and t1.Id IN (SELECT Id FROM @fieldIds)
-
 	SELECT t1.*, t2.* FROM dbo.Fields t1 
 	JOIN dbo.Fields_NumericField t2 
 	ON t1.Id = t2.Id and t1.Id IN (SELECT Id FROM @fieldIds)
@@ -5020,12 +4977,6 @@ AS
 
 		SELECT * FROM #TaskStatusWithServiceTemplateId
 		
-		SELECT t2.Id, t2.ServiceTemplateId, t2.Name, t1.Value 
-		FROM dbo.Fields_DateTimeField t1
-		JOIN dbo.Fields t2
-		ON t2.Id = t1.Id AND t2.Id IN (SELECT Id FROM #FieldIds)
-		ORDER BY t2.ServiceTemplateId
-
 		SELECT t2.Id, t2.ServiceTemplateId, t2.Name, t1.Value 
 		FROM dbo.Fields_NumericField t1
 		JOIN dbo.Fields t2
@@ -5651,23 +5602,6 @@ CREATE PROCEDURE [dbo].[PropagateNewFields]
 				    ) 
 				
 			BEGIN --Copy field to its appropriate inherited table
-				IF @FieldId IN (SELECT Id FROM dbo.Fields_DateTimeField) --Copy the DateTime field, set new Id's
-				BEGIN 
-					INSERT INTO Fields_DateTimeField
-							( Earliest ,
-								Latest ,
-								TypeInt ,
-								VALUE ,
-								Id
-							)
-					VALUES  ( (SELECT Earliest FROM Fields_DateTimeField WHERE Id = @FieldId) , -- Earliest - datetime
-								(SELECT Latest FROM Fields_DateTimeField WHERE Id = @FieldId) , -- Latest - datetime
-								(SELECT TypeInt FROM Fields_DateTimeField WHERE Id = @FieldId) , -- TypeInt - smallint
-								(SELECT Value FROM Fields_DateTimeField WHERE Id = @FieldId) , -- Value - datetime
-								@newFieldId  -- Id - uniqueidentifier
-							)
-				END
-    
 				IF @FieldId IN (SELECT Id FROM dbo.Fields_LocationField) --Copy Location field, set new Id's
 				BEGIN   
 			 
@@ -6013,23 +5947,6 @@ BEGIN
 				        ) 
 				
 				BEGIN --Copy field to its appropriate inherited table			
-					IF @currentId IN (SELECT Id FROM dbo.Fields_DateTimeField) --Copy the DateTime field, set new Id's
-					BEGIN 
-						INSERT INTO Fields_DateTimeField
-								( Earliest ,
-								  Latest ,
-								  TypeInt ,
-								  VALUE ,
-								  Id
-								)
-						VALUES  ( (SELECT Earliest FROM Fields_DateTimeField WHERE Id = @currentId) , -- Earliest - datetime
-								  (SELECT Latest FROM Fields_DateTimeField WHERE Id = @currentId) , -- Latest - datetime
-								  (SELECT TypeInt FROM Fields_DateTimeField WHERE Id = @currentId) , -- TypeInt - smallint
-								  (SELECT Value FROM Fields_DateTimeField WHERE Id = @currentId) , -- Value - datetime
-								 @newFieldId  -- Id - uniqueidentifier
-								)
-					END
-    
 					IF @currentId IN (SELECT Id FROM dbo.Fields_LocationField) --Copy Location field, set new Id's
 					BEGIN   
 			 

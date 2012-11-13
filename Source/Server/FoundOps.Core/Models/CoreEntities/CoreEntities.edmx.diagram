@@ -356,21 +356,6 @@
           <edmx:ConnectorPoint PointX="26.5" PointY="197.125" />
           <edmx:ConnectorPoint PointX="29.625" PointY="14.75" />
         </edmx:InheritanceConnector>
-        <edmx:EntityTypeShape EntityType="CoreEntities.DateTimeField" Width="1.5" PointX="27.375" PointY="14.75" Height="1.7879850260416674" />
-        <edmx:InheritanceConnector EntityType="CoreEntities.DateTimeField" ManuallyRouted="false">
-          <edmx:ConnectorPoint PointX="21.125" PointY="11.25" />
-          <edmx:ConnectorPoint PointX="18" PointY="197.125" />
-          <edmx:ConnectorPoint PointX="18.249748012631454" PointY="197.125" />
-          <edmx:ConnectorPoint PointX="18.463579951248835" PointY="197.125" />
-          <edmx:ConnectorPoint PointX="19.947919166666669" PointY="197.125" />
-          <edmx:ConnectorPoint PointX="20.114585833333333" PointY="197.125" />
-          <edmx:ConnectorPoint PointX="20.680507634741186" PointY="197.125" />
-          <edmx:ConnectorPoint PointX="20.847174301407851" PointY="197.125" />
-          <edmx:ConnectorPoint PointX="21.961646104637882" PointY="197.125" />
-          <edmx:ConnectorPoint PointX="22.128312771304547" PointY="197.125" />
-          <edmx:ConnectorPoint PointX="24.25" PointY="197.125" />
-          <edmx:ConnectorPoint PointX="27.375" PointY="14.75" />
-        </edmx:InheritanceConnector>
         <edmx:EntityTypeShape EntityType="CoreEntities.EmployeeHistoryEntry" Width="1.5" PointX="9.125" PointY="29.625" Height="2.3648893229166106" />
         <edmx:AssociationConnector Association="CoreEntities.EmployeeHistoryEntryEmployee">
           <edmx:ConnectorPoint PointX="5.9687474999999832" PointY="212.375" />

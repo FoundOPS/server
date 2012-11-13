@@ -265,7 +265,6 @@
     <Compile Include="Models\OptionsField.cs" />
     <Compile Include="Models\TaskStatus.cs" />
     <Compile Include="Models\TextBoxField.cs" />
-    <Compile Include="Models\DateTimeField.cs" />
     <Compile Include="Models\NumericField.cs" />
     <Compile Include="Models\Field.cs" />
     <Compile Include="Models\Location.cs" />

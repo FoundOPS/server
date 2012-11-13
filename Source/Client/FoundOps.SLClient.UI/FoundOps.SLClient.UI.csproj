@@ -296,9 +296,6 @@
     <Compile Include="Controls\CustomFields\Define\TextSmallDefine.xaml.cs">
       <DependentUpon>TextSmallDefine.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\CustomFields\Define\TimeDefine.xaml.cs">
-      <DependentUpon>TimeDefine.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\CustomFields\Edit\LocationFieldEdit.xaml.cs">
       <DependentUpon>LocationFieldEdit.xaml</DependentUpon>
     </Compile>
@@ -576,10 +573,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\CustomFields\Define\TextSmallDefine.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Controls\CustomFields\Define\TimeDefine.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

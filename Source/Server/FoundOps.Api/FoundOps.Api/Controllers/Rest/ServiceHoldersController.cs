@@ -69,7 +69,6 @@ namespace FoundOps.Api.Controllers.Rest
             #region Load Service Templates and Fields
 
             ServiceTemplateWithDate[] serviceTemplates;
-            ILookup<Guid, ISimpleField> simpleDateFields;
             ILookup<Guid, ISimpleField> simpleNumericFields;
             ILookup<Guid, ISimpleField> simpleTextFields;
             ILookup<Guid, ISimpleField> simpleOptionsFields;
@@ -159,10 +158,6 @@ namespace FoundOps.Api.Controllers.Rest
 
                 reader.NextResult();
 
-                simpleDateFields = CoreEntitiesContainer.Translate<SimpleDateField>(reader).AsParallel().ToLookup(f => f.ServiceTemplateId, f => (ISimpleField)f);
-
-                reader.NextResult();
-
                 simpleNumericFields = CoreEntitiesContainer.Translate<SimpleNumericField>(reader).AsParallel().ToLookup(f => f.ServiceTemplateId, f => (ISimpleField)f);
 
                 reader.NextResult();
@@ -198,7 +193,7 @@ namespace FoundOps.Api.Controllers.Rest
 
                 var id = st.ServiceId.HasValue ? st.ServiceId.Value : st.RecurringServiceId.Value;
 
-                var fields = simpleTaskStatuses[id].Distinct(ts => ts.Name).Union(simpleDateFields[id]).Union(simpleNumericFields[id]).Union(simpleTextFields[id]).Union(simpleSignatureFields[id]).Union(
+                var fields = simpleTaskStatuses[id].Distinct(ts => ts.Name).Union(simpleNumericFields[id]).Union(simpleTextFields[id]).Union(simpleSignatureFields[id]).Union(
                         simpleOptionsFields[id]).Union(simpleLocationFields[id]).ToDictionary(f => f.Name);
 
                 foreach (var name in javaScriptFields.Select(f => f.Name))

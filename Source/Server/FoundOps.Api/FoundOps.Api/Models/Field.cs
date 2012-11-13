@@ -1,6 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
-using FoundOps.Core.Models.CoreEntities;
 
 namespace FoundOps.Api.Models
 {
@@ -32,7 +30,6 @@ namespace FoundOps.Api.Models
             var locationField = fieldModel as Core.Models.CoreEntities.LocationField;
             var numericField = fieldModel as Core.Models.CoreEntities.NumericField;
             var optionsField = fieldModel as Core.Models.CoreEntities.OptionsField;
-            var dateTimeField = fieldModel as Core.Models.CoreEntities.DateTimeField;
 
             Field field;
 
@@ -49,9 +46,6 @@ namespace FoundOps.Api.Models
             //If the field is a OptionsField, convert the field to an API OptionsField and it's Options to API Options, then return
             else if (optionsField != null)
                 field = OptionsField.ConvertModel(optionsField);
-
-            else if (dateTimeField != null)
-                field = DateTimeField.ConvertModel(dateTimeField);
 
             else
                 throw new Exception("Field does not exist");
@@ -75,7 +69,6 @@ namespace FoundOps.Api.Models
             var locationField = field as LocationField;
             var numericField = field as NumericField;
             var optionsField = field as OptionsField;
-            var dateTimeField = field as DateTimeField;
 
             if (textBoxField != null)
                 return TextBoxField.ConvertBack(textBoxField);
@@ -92,39 +85,7 @@ namespace FoundOps.Api.Models
             if (optionsField != null)
                 return OptionsField.ConvertBack(optionsField);
 
-            if (dateTimeField != null)
-                return DateTimeField.ConvertBack(dateTimeField);
-
             throw new Exception("Field does not exist");
-        }
-
-        /// <summary>
-        /// Gets the type recognized by the javascript application that the field's value is.
-        /// </summary>
-        /// <param name="field"></param>
-        /// <returns></returns>
-        public static string GetJavascriptFormat(Core.Models.CoreEntities.Field field)
-        {
-            var numericField = field as Core.Models.CoreEntities.NumericField;
-            var dateTimeField = field as Core.Models.CoreEntities.DateTimeField;
-
-            if (numericField != null)
-                return "number";
-
-            if (dateTimeField != null)
-            {
-                switch (dateTimeField.DateTimeType)
-                {
-                    case DateTimeType.DateOnly:
-                        return "date";
-                    case DateTimeType.TimeOnly:
-                        return "time";
-                    case DateTimeType.DateTime:
-                        return "dateTime";
-                }
-            }
-
-            return "string";
         }
     }
 }

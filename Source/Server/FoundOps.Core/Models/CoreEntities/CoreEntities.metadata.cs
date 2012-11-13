@@ -108,27 +108,6 @@ namespace FoundOps.Core.Models.CoreEntities
         }
     }
 
-    [MetadataTypeAttribute(typeof(DateTimeField.DateTimeFieldMetadata))]
-    public partial class DateTimeField
-    {
-        internal sealed class DateTimeFieldMetadata
-        {
-            // Metadata classes are not meant to be instantiated.
-            private DateTimeFieldMetadata()
-            {
-            }
-
-            [CustomValidation(typeof(FieldValidators), "IsTimeValueValid")]
-            public DateTime? Value { get; set; }
-
-            [CustomValidation(typeof(FieldValidators), "IsTimeValueWithinEarliest")]
-            public DateTime Earliest { get; set; }
-
-            [CustomValidation(typeof(FieldValidators), "IsTimeValueWithinLatest")]
-            public DateTime Latest { get; set; }
-        }
-    }
-
     [MetadataTypeAttribute(typeof(FieldMetadata))]
     public partial class Field
     {

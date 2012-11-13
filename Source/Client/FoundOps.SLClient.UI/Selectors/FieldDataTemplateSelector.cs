@@ -15,21 +15,12 @@ namespace FoundOps.SLClient.UI.Selectors
         public DataTemplate PercentageTemplate { get; set; }
         public DataTemplate TextLgTemplate { get; set; }
         public DataTemplate TextSmTemplate { get; set; }
-        public DataTemplate TimeTemplate { get; set; }
 
         public DataTemplate SignatureTemplate { get; set; }
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
             var field = (Field)item;
-
-            if (field is DateTimeField)
-            {
-                var dateTimeField = (DateTimeField)field;
-
-                if (dateTimeField.DateTimeType == DateTimeType.TimeOnly)
-                    return TimeTemplate;
-            }
 
             if (field is LocationField)
             {

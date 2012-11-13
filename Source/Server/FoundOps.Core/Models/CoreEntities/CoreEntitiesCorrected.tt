@@ -147,16 +147,16 @@ ADD CONSTRAINT [FK_NumericField_inherits_Field]
     ON DELETE CASCADE ON UPDATE NO ACTION;
 GO");
 	
-	//10. FK_DateTimeField_inherits_Field with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete Field when a DateTimeField is deleted
-	oldTextArray.Add(@"ALTER TABLE [dbo].[Fields_DateTimeField]
-ADD CONSTRAINT [FK_DateTimeField_inherits_Field]
+	//10. FK_SignatureField_inherits_Field with ON DELETE CASCADE ON UPDATE NO ACTION; //This will delete Field when a SignatureField is deleted
+	oldTextArray.Add(@"ALTER TABLE [dbo].[Fields_SignatureField]
+ADD CONSTRAINT [FK_SignatureField_inherits_Field]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Fields]
         ([Id])
     ON DELETE NO ACTION ON UPDATE NO ACTION;");
 
-	newTextArray.Add(@"ALTER TABLE [dbo].[Fields_DateTimeField]
-ADD CONSTRAINT [FK_DateTimeField_inherits_Field]
+	newTextArray.Add(@"ALTER TABLE [dbo].[Fields_SignatureField]
+ADD CONSTRAINT [FK_SignatureField_inherits_Field]
     FOREIGN KEY ([Id])
     REFERENCES [dbo].[Fields]
         ([Id])
