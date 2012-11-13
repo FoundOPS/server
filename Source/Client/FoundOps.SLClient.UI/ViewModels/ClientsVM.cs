@@ -214,6 +214,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                 var availableServiceTemplate = serviceTemplate.MakeChild(ServiceTemplateLevel.ClientDefined);
                 newClient.ServiceTemplates.Add(availableServiceTemplate);
             }
+
+            Analytics.Track("Add Client");
         }
 
         protected override void OnDeleteEntity(Client entityToDelete)
@@ -248,6 +250,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                 {
                     deleteLocationNotifier.Close();
                     this.DeleteEntity(selectedClient);
+
+                    Analytics.Track("Delete Client");
                 };
 
                 deleteLocationNotifier.Show();

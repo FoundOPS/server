@@ -7,31 +7,17 @@
         <telerik:RadToolBar Height="24" GripVisibility="Collapsed" OverflowButtonVisibility="Collapsed" HorizontalContentAlignment="Left" FlowDirection="LeftToRight">
             <telerik:RadButton Content="Today" Command="{Binding SetSelectedDayToToday}"/>
             <!--If SelectedDate=Today, Then IsEnabled=False-->
-            <telerik:RadButton Padding="0"  Command="{Binding SetSelectedDayOneDayPrevious}" Click="PreviousDayButtonClick">
+            <telerik:RadButton Padding="0"  Command="{Binding SetSelectedDayOneDayPrevious}">
                 <Image Source="/FoundOps.Common.Silverlight;component/Resources/LeftArrow.png"/>
             </telerik:RadButton>
             <!--1 day previous-->
             <telerik:RadDatePicker SelectedDate="{Binding SelectedDate, Mode=TwoWay}" SelectionChanged="DateChanged"/>
             <!--Bind SelectedDate-->
-            <telerik:RadButton Padding="0"  Command="{Binding SetSelectedDayOneDayForward}" Click="NextDayButtonClick">
+            <telerik:RadButton Padding="0"  Command="{Binding SetSelectedDayOneDayForward}">
                 <Image Source="/FoundOps.Common.Silverlight;component/Resources/RightArrow.png"/>
             </telerik:RadButton>
             <!--1 day forward-->
             <telerik:RadToolBarSeparator/>
-            <!--<telerik:RadDropDownButton Visibility="Collapsed">
-                <telerik:RadDropDownButton.Content>
-                    <StackPanel Orientation="Horizontal">
-                        <Image Stretch="Fill" Source="/FoundOps.Common.Silverlight;component/Resources/New.png"/>
-                        <TextBlock Text=" New" VerticalAlignment="Center"/>
-                    </StackPanel>
-                </telerik:RadDropDownButton.Content>
-                <telerik:RadDropDownButton.DropDownContent>
-                    <telerik:RadContextMenu Placement="Bottom">
-                        <telerik:RadMenuItem Header="Route" Command="{Binding AddCommand}" Click="AddNewRouteClick"/>
-                        <telerik:RadMenuItem Header="Route Task" Command="{Binding AddRouteTask}"/>
-                    </telerik:RadContextMenu>
-                </telerik:RadDropDownButton.DropDownContent>
-            </telerik:RadDropDownButton>-->
             <telerik:RadButton Command="{Binding AddCommand}" Click="AddNewRouteClick">
                 <!--Launch a confirmation box-->
                 <StackPanel Orientation="Horizontal">

@@ -14,6 +14,7 @@ using System.Reactive.Linq;
 using System.ServiceModel.DomainServices.Client;
 using System.Windows;
 using Telerik.Windows.Data;
+using Analytics = FoundOps.SLClient.Data.Services.Analytics;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -82,6 +83,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             //If there is only one location, try to set the destination (assuming this Service Template has a destination field)
             if (clientContext.Locations.Count == 1)
                 newRecurringService.ServiceTemplate.SetDestination(clientContext.Locations.First());
+
+            Analytics.Track("Add RecurringService");
 
             return newRecurringService;
         }

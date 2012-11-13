@@ -1,13 +1,12 @@
-using System.Diagnostics;
 using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Silverlight.UI.Tools.ExtensionMethods;
 using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Framework.Views.Controls.CustomFields;
 using FoundOps.SLClient.Data.Models;
-using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.UI.Tools;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reactive.Linq;
@@ -99,6 +98,8 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
             Loaded += (s, e) =>
             {
                 VM.Routes.ManifestOpen = true;
+
+                Data.Services.Analytics.Track("Open Manifests");
 
                 //Set the busy indicator if the SelectedEntity != null && the SelectedEntity's manifest details are loaded
                 if (VM.Routes.SelectedEntity != null && !VM.Routes.SelectedEntity.ManifestDetailsLoaded)
@@ -417,67 +418,8 @@ namespace FoundOps.SLClient.UI.Controls.Dispatcher.Manifest
         private void PrintButtonClick(object sender, RoutedEventArgs e)
         {
             ManifestRichTextBox.Print(GetFileName(), PrintMode.Native);
-
-            #region Analytics
-
-            //check for route manifest options
-            if (Settings.IsHeaderVisible)
-            {
-                Data.Services.Analytics.Track(Event.ManifestOption, detail: "Header");
-                if (Settings.IsRouteNameVisible)
-                    Data.Services.Analytics.Track(Event.ManifestOption, detail: "Route Name");
-                if (Settings.IsRouteDateVisible)
-                    Data.Services.Analytics.Track(Event.ManifestOption, detail: "Route Date");
-                if (Settings.IsAssignedVehiclesVisible)
-                    Data.Services.Analytics.Track(Event.ManifestOption, detail: "Assigned Vehicles");
-            }
-
-            if (Settings.IsSummaryVisible)
-            {
-                Data.Services.Analytics.Track(Event.ManifestOption, detail: "Summary");
-                if (Settings.IsRouteSummaryVisible)
-                    Data.Services.Analytics.Track(Event.ManifestOption, detail: "Route Summary");
-                if (Settings.IsScheduledStartTimeVisible)
-                    Data.Services.Analytics.Track(Event.ManifestOption, detail: "Start Time");
-                if (Settings.IsScheduledEndTimeVisible)
-                    Data.Services.Analytics.Track(Event.ManifestOption, detail: "End Time");
-                if (Settings.IsDestinationsSummaryVisible)
-                    Data.Services.Analytics.Track(Event.ManifestOption, detail: "Destinations Summary");
-                if (Settings.IsNumberofDestinationsVisible)
-                    Data.Services.Analytics.Track(Event.ManifestOption, detail: "Number of Destinations");
-                if (Settings.IsTaskSummaryVisible)
-                    Data.Services.Analytics.Track(Event.ManifestOption, detail: "Task Summary");
-                if (Settings.IsNumberOfTasksVisible)
-                    Data.Services.Analytics.Track(Event.ManifestOption, detail: "Number Of Tasks");
-            }
-
-            if (Settings.IsDestinationsVisible)
-            {
-                Data.Services.Analytics.Track(Event.ManifestOption, detail: "Destinations");
-                if (Settings.IsAddressVisible)
-                    Data.Services.Analytics.Track(Event.ManifestOption, detail: "Address");
-                if (Settings.IsContactInfoVisible)
-                    Data.Services.Analytics.Track(Event.ManifestOption, detail: "Contact Info");
-                if (Settings.IsRouteTasksVisible)
-                    Data.Services.Analytics.Track(Event.ManifestOption, detail: "RouteTasks");
-                if (Settings.Is2DBarcodeVisible)
-                    Data.Services.Analytics.Track(Event.ManifestOption, detail: "Barcode");
-            }
-
-            if (Settings.IsFooterVisible)
-            {
-                Data.Services.Analytics.Track(Event.ManifestOption, detail: "Footer");
-                if (Settings.IsPageNumbersVisible)
-                    Data.Services.Analytics.Track(Event.ManifestOption, detail: "Page Numbers");
-                if (Settings.IsCustomMessageVisible)
-                    Data.Services.Analytics.Track(Event.ManifestOption, detail: "Custom Message");
-            }
-
-            //Analytics - Track when manifests are printed
-            Data.Services.Analytics.Track(Event.PrintedManifest, detail: DateTime.UtcNow.ToShortTimeString());
-
-            #endregion
         }
+
         private void SaveButtonClick(object sender, RoutedEventArgs e)
         {
             //TODO: Need to scroll through to force generation of items controls

@@ -110,6 +110,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             ContactInfoSet.Add(new ContactInfo { Type = "Phone", Label = "" });
             RaisePropertyChanged("ContactInfoSet");
+
+            Analytics.Track("Add ContactInfo");
         }
 
         /// <summary>

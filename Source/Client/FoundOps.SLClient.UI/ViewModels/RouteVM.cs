@@ -8,6 +8,7 @@ using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.ViewModels;
 using FoundOps.SLClient.UI.Tools;
+using Analytics = FoundOps.SLClient.Data.Services.Analytics;
 
 namespace FoundOps.SLClient.UI.ViewModels
 {
@@ -210,6 +211,9 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                 var newEmployee = VM.Employees.CreateNewItem(name);
                 Route.Employees.Add(newEmployee);
+
+                Analytics.Track("Add Employee To Route");
+
                 return newEmployee;
             };
 
@@ -220,6 +224,8 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                 if (!Route.Employees.Contains(existingItem))
                     Route.Employees.Add((Employee)existingItem);
+
+                Analytics.Track("Add Employee To Route");
             };
             RemoveItemEmployee = () =>
             {
@@ -261,6 +267,9 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                 var newVehicle = VM.Vehicles.CreateNewItem(name);
                 this.Route.Vehicles.Add(newVehicle);
+
+                Analytics.Track("Add Vehicle To Route");
+
                 return newVehicle;
             };
 
@@ -271,6 +280,8 @@ namespace FoundOps.SLClient.UI.ViewModels
 
                 if (!Route.Vehicles.Contains(existingItem))
                     Route.Vehicles.Add((Vehicle)existingItem);
+
+                Analytics.Track("Add Vehicle To Route");
             };
 
             RemoveItemVehicle = () =>

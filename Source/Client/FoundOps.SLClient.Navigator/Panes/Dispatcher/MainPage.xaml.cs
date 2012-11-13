@@ -9,7 +9,6 @@ using Telerik.Windows.Controls.DragDrop;
 using Telerik.Windows.Controls.GridView;
 using Telerik.Windows.Controls.TreeView;
 using FoundOps.SLClient.UI.Controls.Dispatcher;
-using Analytics = FoundOps.SLClient.Data.Services.Analytics;
 using System;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
@@ -511,9 +510,6 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
         {
             //save the Layout whenever it changes
             SaveLayout();
-
-            //call the analytic for handling layout changing in dispatcher
-            Analytics.Track(Event.DispatcherLayoutChanged);
         }
 
         #endregion
@@ -525,9 +521,6 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
         {
             LoadDefaultLayout();
             SaveLayout();
-
-            //call the analytic for handling layout reset in dispatcher
-            Analytics.Track(Event.DispatcherLayoutReset);
         }
 
         #endregion

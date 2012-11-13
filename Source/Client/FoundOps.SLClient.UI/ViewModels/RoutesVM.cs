@@ -22,6 +22,7 @@ using System.Reactive.Subjects;
 using System.ServiceModel.DomainServices.Client;
 using System.Threading.Tasks;
 using System.Windows;
+using Analytics = FoundOps.SLClient.Data.Services.Analytics;
 using TaskStatus = FoundOps.Core.Models.CoreEntities.TaskStatus;
 
 namespace FoundOps.SLClient.UI.ViewModels
@@ -730,19 +731,6 @@ namespace FoundOps.SLClient.UI.ViewModels
             foreach (var routeTask in tasksForTaskBoard)
                 routeTask.RemoveRouteDestination();
 
-            //Add the task holders to keep back to the task board
-            //foreach (var routeTask in tasksForTaskBoard)
-            //{
-            //    //Get the ParentRouteTaskHolder
-            //    var taskHolder = routeTask.ParentRouteTaskHolder;
-
-            //    //Sets that RouteTasks Status to be the Created Default for the OwnerBusinessAccount
-            //    routeTask.TaskStatus = routeTask.TaskStatus.GetDefaultTaskStatus(routeTask.OwnerBusinessAccount, StatusDetail.CreatedDefault);
-
-            //    //Add the TaskHolder back to VM.TaskBoard.LoadedTaskHolders 
-            //    ((ObservableCollection<TaskHolder>)VM.TaskBoard.CollectionView.SourceCollection).Add(taskHolder);
-            //}
-
             //Delete the Route, RouteDestinations, and RouteTasks
             DataManager.RemoveEntities(new Entity[] { deletedRoute }.Union(deletedRoute.RouteDestinations).ToArray());
         }
@@ -754,6 +742,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         protected override void AfterDeleteSaved()
         {
             VM.TaskBoard.ForceReloadTasks.OnNext(true);
+
+            Analytics.Track("Delete Route");
         }
 
         /// <summary>

@@ -60,6 +60,8 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         protected override Vehicle AddNewEntity(object commandParameter)
         {
+            Analytics.Track("Add Vehicle");
+
             //Reuse the CreateNewItem method
             return CreateNewItem("");
         }
