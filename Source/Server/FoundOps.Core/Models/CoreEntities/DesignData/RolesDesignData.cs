@@ -18,6 +18,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
         private Role _genericOilCollectorAdminRole;
         private Role _genericOilCollectorMobileRole;
 
+        private Role _genericBiodieselAdminRole;
+        private Role _genericBiodieselMobileRole;
+
         public RolesDesignData()
             : this(new BusinessAccountsDesignData(), new UserAccountsDesignData())
         {
@@ -50,13 +53,23 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
             #endregion
 
-            #region Oren's Kosher Steakhouse
+            #region Generic Oil Collector
 
             _genericOilCollectorAdminRole.MemberParties.Add(_userAccountsDesignData.Andrew);
             _genericOilCollectorAdminRole.MemberParties.Add(_userAccountsDesignData.Jon);
             _genericOilCollectorAdminRole.MemberParties.Add(_userAccountsDesignData.Zach);
 
             _genericOilCollectorMobileRole.MemberParties.Add(_userAccountsDesignData.Oren);
+
+            #endregion
+
+            #region Generic Biodiesel
+
+            _genericBiodieselAdminRole.MemberParties.Add(_userAccountsDesignData.Andrew);
+            _genericBiodieselAdminRole.MemberParties.Add(_userAccountsDesignData.Jon);
+            _genericBiodieselAdminRole.MemberParties.Add(_userAccountsDesignData.Zach);
+
+            _genericBiodieselMobileRole.MemberParties.Add(_userAccountsDesignData.Oren);
 
             #endregion
 
@@ -108,6 +121,11 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 {
                     _genericOilCollectorAdminRole = serviceProviderAdminRole;
                     _genericOilCollectorMobileRole = serviceProviderMobileRole;
+                }
+                else if (serviceProvider == _businessAccountsDesignData.GenericBiodiesel)
+                {
+                    _genericBiodieselAdminRole = serviceProviderAdminRole;
+                    _genericBiodieselMobileRole = serviceProviderMobileRole;
                 }
             }
         }

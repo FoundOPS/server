@@ -24,7 +24,8 @@ namespace FoundOps.Core.Tools
         /// <param name="allowedRoleTypes">Return null if the user does not have access to one of these role types.</param>
         public static IQueryable<BusinessAccount> Owner(this CoreEntitiesContainer coreEntitiesContainer, Guid roleId, RoleType[] allowedRoleTypes)
         {
-            var ownerParty = from role in RolesCurrentUserHasAccessTo(coreEntitiesContainer, allowedRoleTypes)
+            var roles = RolesCurrentUserHasAccessTo(coreEntitiesContainer, allowedRoleTypes);
+            var ownerParty = from role in roles
                              where role.Id == roleId
                              select role.OwnerBusinessAccount;
 

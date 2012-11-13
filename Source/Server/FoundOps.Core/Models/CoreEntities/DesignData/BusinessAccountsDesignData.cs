@@ -24,6 +24,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
         public BusinessAccount GotGrease { get; private set; }
         public BusinessAccount ABCouriers { get; private set; }
         public BusinessAccount GenericOilCollector { get; private set; }
+        public BusinessAccount GenericBiodiesel { get; private set; }
 
         public IEnumerable<BusinessAccount> DesignServiceProviders { get; private set; }
 
@@ -61,11 +62,19 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 MaxRoutes = 10
             };
 
-            DesignServiceProviders = new List<BusinessAccount> { GotGrease, ABCouriers, GenericOilCollector };
+            GenericBiodiesel = new BusinessAccount
+            {
+                Id = new Guid("BEB79E47-9B39-4730-BFEB-D15986438DAA"),
+                Name = "Generic Biodiesel",
+                QuickBooksEnabled = true,
+                MaxRoutes = 10
+            };
+
+            DesignServiceProviders = new List<BusinessAccount> { GotGrease, ABCouriers, GenericOilCollector, GenericBiodiesel };
 
 
             //Add ServiceTemplates
-            foreach (var serviceProvider in new[] { GotGrease, ABCouriers, GenericOilCollector })
+            foreach (var serviceProvider in new[] { GotGrease, ABCouriers, GenericOilCollector, GenericBiodiesel })
             {
                 //Add task statuses
                 var defaultStatuses = TaskStatuses.CreateDefaultTaskStatuses();
