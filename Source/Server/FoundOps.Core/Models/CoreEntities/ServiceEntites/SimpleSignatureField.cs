@@ -14,6 +14,26 @@ namespace FoundOps.Core.Models.CoreEntities.ServiceEntites
 
         public string Value { get; set; }
 
-        public object ObjectValue { get { return Value; } }
+        /// <summary>
+        /// Returns the url if there is a value
+        /// </summary>
+        private string Url
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(Value))
+                    return "";
+
+                return AppConstants.RootApiUrl + "/SignatureField/Image?Id=" + Id.ToString();
+            }
+        }
+
+        /// <summary>
+        /// Returns the url if there is a value
+        /// </summary>
+        public object ObjectValue
+        {
+            get { return Url; }
+        }
     }
 }
