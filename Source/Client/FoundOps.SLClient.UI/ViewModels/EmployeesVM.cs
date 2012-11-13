@@ -84,6 +84,8 @@ namespace FoundOps.SLClient.UI.ViewModels
 
         protected override Employee AddNewEntity(object commandParameter)
         {
+            Analytics.Track("Add Employee");
+
             //Reuse the CreateNewItem method
             return CreateNewItem("");
         }

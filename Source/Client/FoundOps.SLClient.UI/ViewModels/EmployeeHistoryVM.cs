@@ -1,7 +1,6 @@
 ﻿using FoundOps.Core.Models.CoreEntities;
 using FoundOps.SLClient.Data.Services;
 using FoundOps.SLClient.Data.ViewModels;
-using System;
 using System.ComponentModel.Composition;
 using MEFedMVVM.ViewModelLocator;
 
@@ -42,6 +41,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             //Jump to the proper context, if not already
             if (!IsInDetailsView)
                 MoveToDetailsView.Execute(null);
+
+            Analytics.Track("Add EmployeeHistory");
         }
 
         #endregion

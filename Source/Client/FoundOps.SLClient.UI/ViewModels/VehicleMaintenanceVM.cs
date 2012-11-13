@@ -53,6 +53,8 @@ namespace FoundOps.SLClient.UI.ViewModels
 
             if (!IsInDetailsView)
                 MoveToDetailsView.Execute(null);
+
+            Analytics.Track("Add VehicleMaintenance");
         }
 
         #endregion

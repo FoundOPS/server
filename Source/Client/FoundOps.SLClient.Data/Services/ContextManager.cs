@@ -1,9 +1,7 @@
-﻿using System.Threading.Tasks;
-using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
+﻿using FoundOps.Common.Silverlight.Tools.ExtensionMethods;
 using FoundOps.Common.Silverlight.UI.Controls.InfiniteAccordion;
 using FoundOps.Common.Tools;
 using FoundOps.Core.Models.CoreEntities;
-using FoundOps.Core.Models.CoreEntities.DesignData;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -12,6 +10,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
+using System.Threading.Tasks;
 
 namespace FoundOps.SLClient.Data.Services
 {
@@ -196,20 +195,6 @@ namespace FoundOps.SLClient.Data.Services
                     ccp.SelectedContextObservable.AsGeneric())); //Select the SelectedContextObservable changes
 
             #endregion
-
-            //Analytics - Track when a user moves to a details view
-            CurrentContextProviderObservable.Subscribe(newContextProvider =>
-            {
-                var currentContextType = CurrentContextProvider != null && CurrentContextProvider.SelectedContext != null
-                                             ? CurrentContextProvider.SelectedContext.GetType().ToString().Split('.').Last()
-                                             : "";
-                if ((newContextProvider == null)) return;
-                var nextContextType = newContextProvider.ObjectTypeProvided.ToString().Split('.').Last();
-
-                //Make sure that there is a context and the context is actually changing
-                if ((nextContextType == currentContextType) || (CurrentContext.Count == 0) || (currentContextType == "")) return;
-                Analytics.Track(Event.ContextChanged, null, String.Format("From {0} to {1}", currentContextType, nextContextType));
-            });
         }
 
         /// <summary>

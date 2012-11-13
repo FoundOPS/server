@@ -117,13 +117,6 @@ namespace FoundOps.SLClient.Data.Services
                     //Log error (if it is not a validation error)
                     if (submitOperationCallback.HasError)
                     {
-                        var errorUrl = String.Format("{0}/Error/SaveChangesError", UriExtensions.ThisRootUrl);
-                        var parameters = String.Format("roleId={0}&error={1}&innerException={2}", ContextManager.RoleId, submitOperationCallback.Error, submitOperationCallback.Error.InnerException);
-
-                        var wc = new WebClient();
-                        wc.Headers["Content-type"] = "application/x-www-form-urlencoded";
-                        wc.UploadStringAsync(new Uri(errorUrl), parameters);
-
                         DomainContext.RejectChanges();
                         _rejectChangesDueToErrorSubject.OnNext(true);
 
@@ -145,7 +138,7 @@ namespace FoundOps.SLClient.Data.Services
                         }
                         
                         //track error with analytics
-                        Analytics.Track(Event.ServerError);
+                        Analytics.Track("Server Error");
                         
                         return;
                     }

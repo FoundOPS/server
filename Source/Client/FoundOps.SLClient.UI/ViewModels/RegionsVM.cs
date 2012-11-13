@@ -54,6 +54,8 @@ namespace FoundOps.SLClient.UI.ViewModels
         {
             //Set the proper owner BusinessAccount
             newEntity.BusinessAccount = ContextManager.OwnerAccount as BusinessAccount;
+
+            Analytics.Track("Add Region");
         }
 
         #endregion

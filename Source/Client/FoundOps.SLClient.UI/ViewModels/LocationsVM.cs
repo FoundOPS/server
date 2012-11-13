@@ -223,6 +223,8 @@ namespace FoundOps.SLClient.UI.ViewModels
             var newLocation = CreateNewItem("New Location");
             this.QueryableCollectionView.AddNew(newLocation);
 
+            Analytics.Track("Add Location");
+
             return newLocation;
         }
 
@@ -274,6 +276,8 @@ namespace FoundOps.SLClient.UI.ViewModels
                         //force reload client details will load recurring services
                         VM.Clients.ForceLoadDetails();
                         VM.Services.ForceRefresh();
+
+                        Analytics.Track("Delete Location");
                     });
                 };
 
