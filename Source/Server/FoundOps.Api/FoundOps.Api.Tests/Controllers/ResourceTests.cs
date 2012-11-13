@@ -650,7 +650,7 @@ namespace FoundOps.Api.Tests.Controllers
 
                 //Note: This will only pass with if you did a CCDAPDD TODAY!
                 Assert.AreEqual(DateTime.UtcNow.Date.AddDays(-14), firstDate);
-                Assert.AreEqual(DateTime.UtcNow.Date.AddDays(322), lastDate);
+                Assert.AreEqual(DateTime.UtcNow.Date.AddDays(308), lastDate);
 
                 //Testing Recurring Service context
                 parameters = new DynamicParameters();
@@ -669,8 +669,8 @@ namespace FoundOps.Api.Tests.Controllers
                 lastDate = data.Read<DateTime>().Single();
 
                 //Note: This will only pass with if you did a CCDAPDD TODAY!
-                Assert.AreEqual(DateTime.UtcNow.Date.AddDays(-14), firstDate);
-                Assert.AreEqual(DateTime.UtcNow.Date.AddDays(700), lastDate);
+                Assert.AreEqual(DateTime.Now.Date.AddDays(1), firstDate);
+                Assert.AreEqual(DateTime.Now.Date.AddDays(182), lastDate);
 
                 conn.Close();
             }
@@ -799,32 +799,34 @@ namespace FoundOps.Api.Tests.Controllers
         {
             var template = CoreEntitiesContainer.ServiceTemplates.Where(st => st.LevelInt == 1 && st.Name == "WVO Collection" && st.OwnerServiceProviderId == _gotGreaseId).Include(st => st.Fields).First();
 
+            //Need to change the name of fields from the default, because you cannot add multiple fields with the same name
+
             //Numeric field
-            var propagationSuccess = PropagateFieldToTemplateAndChildren(template, FieldsDesignData.NewNumericField(NumericFieldType.Numeric));
+            var propagationSuccess = PropagateFieldToTemplateAndChildren(template, FieldsDesignData.NewNumericField(NumericFieldType.Numeric, "Numeric test"));
             Assert.AreEqual(true, propagationSuccess);
 
             //CheckBox fields
-            propagationSuccess = PropagateFieldToTemplateAndChildren(template, FieldsDesignData.NewOptionsField(OptionsType.Checkbox));
+            propagationSuccess = PropagateFieldToTemplateAndChildren(template, FieldsDesignData.NewOptionsField(OptionsType.Checkbox, "Checkbox test"));
             Assert.AreEqual(true, propagationSuccess);
 
             //CheckList fields
-            propagationSuccess = PropagateFieldToTemplateAndChildren(template, FieldsDesignData.NewOptionsField(OptionsType.Checklist));
+            propagationSuccess = PropagateFieldToTemplateAndChildren(template, FieldsDesignData.NewOptionsField(OptionsType.Checklist, "Checklist test"));
             Assert.AreEqual(true, propagationSuccess);
 
             //ComboBox fields
-            propagationSuccess = PropagateFieldToTemplateAndChildren(template, FieldsDesignData.NewOptionsField(OptionsType.Combobox));
+            propagationSuccess = PropagateFieldToTemplateAndChildren(template, FieldsDesignData.NewOptionsField(OptionsType.Combobox, "Combobox test"));
             Assert.AreEqual(true, propagationSuccess);
 
             //Location fields
-            propagationSuccess = PropagateFieldToTemplateAndChildren(template, FieldsDesignData.NewLocationField(CoreEntitiesContainer.Locations.First().Id));
+            propagationSuccess = PropagateFieldToTemplateAndChildren(template, FieldsDesignData.NewLocationField(CoreEntitiesContainer.Locations.First().Id, "Locations test"));
             Assert.AreEqual(true, propagationSuccess);
 
             //Single line TextBox field
-            propagationSuccess = PropagateFieldToTemplateAndChildren(template, FieldsDesignData.NewTextBoxField(TextBoxFieldType.Small));
+            propagationSuccess = PropagateFieldToTemplateAndChildren(template, FieldsDesignData.NewTextBoxField(TextBoxFieldType.Small, "Textbox small test"));
             Assert.AreEqual(true, propagationSuccess);
 
             //Multi-line TextBox field
-            propagationSuccess = PropagateFieldToTemplateAndChildren(template, FieldsDesignData.NewTextBoxField(TextBoxFieldType.Large));
+            propagationSuccess = PropagateFieldToTemplateAndChildren(template, FieldsDesignData.NewTextBoxField(TextBoxFieldType.Large, "Textbox large test"));
             Assert.AreEqual(true, propagationSuccess);
         }
 
@@ -940,6 +942,7 @@ namespace FoundOps.Api.Tests.Controllers
                 compare.ElementsToIgnore.Add("Id");
                 compare.ElementsToIgnore.Add("ServiceTemplateId");
                 compare.ElementsToIgnore.Add("ParentFieldId");
+                compare.ElementsToIgnore.Add("Signed");
 
                 compare.Compare(field, childField);
 
