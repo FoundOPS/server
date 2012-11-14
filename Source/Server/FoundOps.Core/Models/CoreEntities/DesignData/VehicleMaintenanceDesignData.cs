@@ -36,7 +36,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Comments = "",
                 Date = new DateTime(2009, 06, 09),
                 Mileage = 128675,
-                ServicedBy = "Linda Splenda"
+                ServicedBy = "Linda Splenda",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
             AddLineItems(DesignVehicleMaintenance);
 
@@ -45,7 +47,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Comments = "",
                 Date = new DateTime(2010, 06, 12),
                 Mileage = 67075,
-                ServicedBy = "Jim Smith"
+                ServicedBy = "Jim Smith",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
             AddLineItems(DesignVehicleMaintenanceTwo);
 
@@ -54,7 +58,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Comments = "",
                 Date = new DateTime(2008, 01, 20),
                 Mileage = 18615,
-                ServicedBy = "Tim"
+                ServicedBy = "Tim",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
             AddLineItems(DesignVehicleMaintenanceThree);
 
@@ -68,14 +74,18 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Type = "Changed Tires",
                 Cost = (decimal?) 230.52,
                 Details = "All 4",
-                VehicleMaintenanceLogEntry = vehicleMaintenanceLogEntry
+                VehicleMaintenanceLogEntry = vehicleMaintenanceLogEntry,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
             VehicleMaintenanceLineItemTwo = new VehicleMaintenanceLineItem
             {
                 Type = "Body Repair",
                 Cost = (decimal?)112.00,
                 Details = "Fixed Rust Spot",
-                VehicleMaintenanceLogEntry = vehicleMaintenanceLogEntry
+                VehicleMaintenanceLogEntry = vehicleMaintenanceLogEntry,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
 
             VehicleMaintenanceLineItemThree = new VehicleMaintenanceLineItem
@@ -83,7 +93,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Type = "Replaced Window",
                 Cost = (decimal?)90.34,
                 Details = "Right Rear",
-                VehicleMaintenanceLogEntry = vehicleMaintenanceLogEntry
+                VehicleMaintenanceLogEntry = vehicleMaintenanceLogEntry,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
             DesignLineItems = new List<VehicleMaintenanceLineItem> { DesignVehicleMaintenanceLineItem, VehicleMaintenanceLineItemTwo, VehicleMaintenanceLineItemThree };
         }

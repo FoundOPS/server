@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace FoundOps.Core.Models.CoreEntities.DesignData
 {
@@ -28,51 +29,67 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             {
                 Name = "South of Market",
                 Color = DesignRegionColors[0],
-                Notes = "Notes for this region"
+                Notes = "Notes for this region",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
 
             DesignRegionTwo = new Region
             {
                 Name = "North of Market",
                 Color = DesignRegionColors[1],
-                Notes = "Notes for this region"
+                Notes = "Notes for this region",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
 
             DesignRegionThree = new Region
             {
                 Name = "Richmond/Sunset",
                 Color = DesignRegionColors[2],
-                Notes = "Notes for this region"
+                Notes = "Notes for this region",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
             DesignRegionFour = new Region
             {
                 Name = "Mission/Potrero",
                 Color = DesignRegionColors[3],
-                Notes = "Notes for this region"
+                Notes = "Notes for this region",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
             DesignRegionFive = new Region
             {
                 Name = "North Beach & Piers",
                 Color = DesignRegionColors[4],
-                Notes = "Notes for this region"
+                Notes = "Notes for this region",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
             DesignRegionSix = new Region
             {
                 Name = "Marina/Western ave.",
                 Color = DesignRegionColors[5],
-                Notes = "Notes for this region"
+                Notes = "Notes for this region",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
             DesignRegionSeven = new Region
             {
                 Name = "East Bay",
                 Color = DesignRegionColors[6],
-                Notes = "Notes for this region"
+                Notes = "Notes for this region",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
             DesignRegionEight = new Region
             {
                 Name = "Peninsula",
                 Color = DesignRegionColors[7],
-                Notes = "Notes for this region"
+                Notes = "Notes for this region",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
 
             DesignRegions = new List<Region> { DesignRegion, DesignRegionTwo, DesignRegionThree, DesignRegionFour, DesignRegionFive, DesignRegionSix, DesignRegionSeven, DesignRegionEight};

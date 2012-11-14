@@ -15,7 +15,9 @@ namespace FoundOps.Core.Models.CoreEntities
                 Name = "Created",
                 Color = "#FFFFFF",
                 DefaultTypeInt = ((int)StatusDetail.CreatedDefault),
-                RemoveFromRoute = true
+                RemoveFromRoute = true,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
 
             taskStatuses.Add(taskStatus);
@@ -26,7 +28,9 @@ namespace FoundOps.Core.Models.CoreEntities
                 Name = "Routed",
                 Color = "#0D9EFF",
                 DefaultTypeInt = ((int)StatusDetail.RoutedDefault),
-                RemoveFromRoute = false
+                RemoveFromRoute = false,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
 
             taskStatuses.Add(taskStatus);
@@ -36,7 +40,9 @@ namespace FoundOps.Core.Models.CoreEntities
                 Id = Guid.NewGuid(),
                 Name = "On Hold",
                 Color = "#FFCC44",
-                RemoveFromRoute = false
+                RemoveFromRoute = false,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
 
             taskStatuses.Add(taskStatus);
@@ -47,7 +53,9 @@ namespace FoundOps.Core.Models.CoreEntities
                 Name = "Completed",
                 Color = "#32CD32",
                 DefaultTypeInt = ((int)StatusDetail.CompletedDefault),
-                RemoveFromRoute = false
+                RemoveFromRoute = false,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
 
             taskStatuses.Add(taskStatus);

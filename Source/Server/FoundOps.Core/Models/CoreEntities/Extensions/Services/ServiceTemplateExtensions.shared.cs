@@ -67,7 +67,8 @@ namespace FoundOps.Core.Models.CoreEntities
                 Id = Guid.NewGuid(),
                 Name = this.Name,
                 ParentServiceTemplate = this,
-                ServiceTemplateLevel = level
+                ServiceTemplateLevel = level,
+                CreatedDate = DateTime.UtcNow
             };
 
             if (serviceTemplateChild.ServiceTemplateLevel == ServiceTemplateLevel.ServiceProviderDefined)

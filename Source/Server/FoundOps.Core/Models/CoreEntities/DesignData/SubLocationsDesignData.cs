@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace FoundOps.Core.Models.CoreEntities.DesignData
 {
@@ -30,7 +31,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Notes = "Here are some notes",
                 Latitude = (decimal?) 40.454821,
                 Longitude = (decimal?) -86.935696,
-                Number = 1
+                Number = 1,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
 
             DesignSubLocationTwo = new SubLocation
@@ -39,7 +42,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Notes = "Many notes!",
                 Latitude = (decimal?)38.888934,
                 Longitude = (decimal?)-77.386901,
-                Number = 2
+                Number = 2,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
 
             DesignSubLocationThree = new SubLocation
@@ -48,7 +53,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Notes = "Small amount of notes",
                 Latitude = (decimal?)38.979607,
                 Longitude = (decimal?)-77.326368,
-                Number = 3
+                Number = 3,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
             DesignSubLocationFour = new SubLocation
             {
@@ -56,7 +63,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Notes = "More notes",
                 Latitude = (decimal?)37.979607,
                 Longitude = (decimal?)-75.326368,
-                Number = 4
+                Number = 4,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
             DesignSubLocationFive = new SubLocation
             {
@@ -64,7 +73,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Notes = "Important notes",
                 Latitude = (decimal?)38.879607,
                 Longitude = (decimal?)-77.226368,
-                Number = 5
+                Number = 5,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
             DesignSubLocationSix = new SubLocation
             {
@@ -72,7 +83,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Notes = "Unimportant notes",
                 Latitude = (decimal?)39.979607,
                 Longitude = (decimal?)-78.326368,
-                Number = 6
+                Number = 6,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
             DesignSubLocationSeven = new SubLocation
             {
@@ -80,7 +93,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Notes = "No notes here",
                 Latitude = (decimal?)38.679607,
                 Longitude = (decimal?)-77.626368,
-                Number = 7
+                Number = 7,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
             DesignSubLocationEight = new SubLocation
             {
@@ -88,7 +103,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Notes = "Lots of notes",
                 Latitude = (decimal?)38.379607,
                 Longitude = (decimal?)-77.526368,
-                Number = 8
+                Number = 8,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
             DesignSubLocationNine = new SubLocation
             {
@@ -96,7 +113,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Notes = "Notes Notes",
                 Latitude = (decimal?)37.979607,
                 Longitude = (decimal?)-78.126368,
-                Number = 9
+                Number = 9,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
 
             DesignSubLocations = new List<SubLocation> { DesignSubLocation, DesignSubLocationTwo, DesignSubLocationThree, DesignSubLocationFour, DesignSubLocationFive, 

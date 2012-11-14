@@ -21,7 +21,8 @@ CREATE PROCEDURE dbo.ArchiveLocationBasedOnId
 	BEGIN
   
 	UPDATE	dbo.Locations
-	SET		DateDeleted = @date
+	SET		DateDeleted = @date,
+			LastModifiedDate = GETUTCDATE()
 	WHERE	Id = @locationId   
 
 	CREATE TABLE #RecurringService (Id UNIQUEIDENTIFIER)

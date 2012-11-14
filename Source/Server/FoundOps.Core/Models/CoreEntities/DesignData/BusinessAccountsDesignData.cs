@@ -19,7 +19,13 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
     /// </summary>
     public class BusinessAccountsDesignData
     {
-        public static readonly BusinessAccount FoundOps = new BusinessAccount { Id = BusinessAccountsConstants.FoundOpsId, Name = "FoundOPS" };
+        public static readonly BusinessAccount FoundOps = new BusinessAccount
+        {
+            Id = BusinessAccountsConstants.FoundOpsId,
+            Name = "FoundOPS",
+            CreatedDate = DateTime.UtcNow,
+            LastModifiedDate = DateTime.UtcNow
+        };
 
         public BusinessAccount GotGrease { get; private set; }
         public BusinessAccount ABCouriers { get; private set; }
@@ -43,7 +49,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Id = new Guid("8528E50D-E2B9-4779-9B29-759DBEA53B61"),
                 Name = "GotGrease?",
                 QuickBooksEnabled = true,
-                MaxRoutes = 10
+                MaxRoutes = 10,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
 
             ABCouriers = new BusinessAccount
@@ -51,7 +59,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Id = new Guid("3281B373-101F-415A-B708-14B9BA95A618"),
                 Name = "AB Couriers",
                 QuickBooksEnabled = true,
-                MaxRoutes = 10
+                MaxRoutes = 10,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
 
             GenericOilCollector = new BusinessAccount
@@ -59,7 +69,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Id = new Guid("62047896-B2A1-49E4-BA10-72F0667B1DB0"),
                 Name = "Generic Oil Collector",
                 QuickBooksEnabled = true,
-                MaxRoutes = 10
+                MaxRoutes = 10,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
 
             GenericBiodiesel = new BusinessAccount
@@ -67,7 +79,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Id = new Guid("BEB79E47-9B39-4730-BFEB-D15986438DAA"),
                 Name = "Generic Biodiesel",
                 QuickBooksEnabled = true,
-                MaxRoutes = 10
+                MaxRoutes = 10,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
 
             DesignServiceProviders = new List<BusinessAccount> { GotGrease, ABCouriers, GenericOilCollector, GenericBiodiesel };
@@ -92,7 +106,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                     CountryCode = "US",
                     BusinessAccount = serviceProvider,
                     Latitude = (decimal?)40.460335,
-                    Longitude = (decimal?)(-86.929840)
+                    Longitude = (decimal?)(-86.929840),
+                    CreatedDate = DateTime.UtcNow,
+                    LastModifiedDate = DateTime.UtcNow
                 });
 
                 //Choose the right set of ServiceTemplates

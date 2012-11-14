@@ -62,7 +62,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 CountryCode = "US",
                 Latitude = (decimal?)40.418414,
                 Longitude = (decimal?)-86.894219,
-                BusinessAccountId = businessAccountId
+                BusinessAccountId = businessAccountId,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -75,7 +77,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 CountryCode = "US",
                 Latitude = (decimal?)40.671159,
                 Longitude = (decimal?)-86.145577,
-                BusinessAccountId = businessAccountId
+                BusinessAccountId = businessAccountId,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
 
             });
 
@@ -89,7 +93,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 CountryCode = "US",
                 Latitude = (decimal?)40.476616,
                 Longitude = (decimal?)-86.119251,
-                BusinessAccountId = businessAccountId
+                BusinessAccountId = businessAccountId,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -102,7 +108,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 CountryCode = "US",
                 Latitude = (decimal?)40.417552,
                 Longitude = (decimal?)-86.859526,
-                BusinessAccountId = businessAccountId
+                BusinessAccountId = businessAccountId,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -115,7 +123,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 CountryCode = "US",
                 Latitude = (decimal?)40.3955,
                 Longitude = (decimal?)-86.855914,
-                BusinessAccountId = businessAccountId
+                BusinessAccountId = businessAccountId,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -128,7 +138,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 CountryCode = "US",
                 Latitude = (decimal?)40.278846,
                 Longitude = (decimal?)-86.479537,
-                BusinessAccountId = businessAccountId
+                BusinessAccountId = businessAccountId,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -141,7 +153,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 CountryCode = "US",
                 Latitude = (decimal?)40.419119,
                 Longitude = (decimal?)-86.894604,
-                BusinessAccountId = businessAccountId
+                BusinessAccountId = businessAccountId,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -154,7 +168,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 CountryCode = "US",
                 Latitude = (decimal?)40.477384,
                 Longitude = (decimal?)-86.131005,
-                BusinessAccountId = businessAccountId
+                BusinessAccountId = businessAccountId,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -167,7 +183,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 CountryCode = "US",
                 Latitude = (decimal?)40.419142,
                 Longitude = (decimal?)-86.891727,
-                BusinessAccountId = businessAccountId
+                BusinessAccountId = businessAccountId,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -180,7 +198,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 CountryCode = "US",
                 Latitude = (decimal?)40.417224,
                 Longitude = (decimal?)-86.893046,
-                BusinessAccountId = businessAccountId
+                BusinessAccountId = businessAccountId,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -194,7 +214,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 CountryCode = "US",
                 Latitude = (decimal?)40.041696,
                 Longitude = (decimal?)-86.901095,
-                BusinessAccountId = businessAccountId
+                BusinessAccountId = businessAccountId,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -207,7 +229,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 CountryCode = "US",
                 Latitude = (decimal?)39.769887,
                 Longitude = (decimal?)-86.154359,
-                BusinessAccountId = businessAccountId
+                BusinessAccountId = businessAccountId,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -220,7 +244,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 CountryCode = "US",
                 Latitude = (decimal?)40.422081,
                 Longitude = (decimal?)-86.903569,
-                BusinessAccountId = businessAccountId
+                BusinessAccountId = businessAccountId,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -233,7 +259,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 CountryCode = "US",
                 Latitude = (decimal?)40.417733,
                 Longitude = (decimal?)-86.824187,
-                BusinessAccountId = businessAccountId
+                BusinessAccountId = businessAccountId,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -246,7 +274,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 CountryCode = "US",
                 Latitude = (decimal?)40.395504,
                 Longitude = (decimal?)-86.868527,
-                BusinessAccountId = businessAccountId
+                BusinessAccountId = businessAccountId,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -259,7 +289,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 CountryCode = "US",
                 Latitude = (decimal?)40.388618,
                 Longitude = (decimal?)-86.838981,
-                BusinessAccountId = businessAccountId
+                BusinessAccountId = businessAccountId,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -272,7 +304,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 CountryCode = "US",
                 Latitude = (decimal?)40.041694,
                 Longitude = (decimal?)-86.901216,
-                BusinessAccountId = businessAccountId
+                BusinessAccountId = businessAccountId,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -285,7 +319,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 CountryCode = "US",
                 Latitude = (decimal?)39.768098,
                 Longitude = (decimal?)-86.159864,
-                BusinessAccountId = businessAccountId
+                BusinessAccountId = businessAccountId,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -298,7 +334,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 CountryCode = "US",
                 Latitude = (decimal?)39.968641,
                 Longitude = (decimal?)-87.472417,
-                BusinessAccountId = businessAccountId
+                BusinessAccountId = businessAccountId,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -311,7 +349,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 CountryCode = "US",
                 Latitude = (decimal?)40.422733,
                 Longitude = (decimal?)-86.902758,
-                BusinessAccountId = businessAccountId
+                BusinessAccountId = businessAccountId,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -324,7 +364,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 CountryCode = "US",
                 Latitude = (decimal?)40.388141,
                 Longitude = (decimal?)-86.837137,
-                BusinessAccountId = businessAccountId
+                BusinessAccountId = businessAccountId,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -337,7 +379,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 CountryCode = "US",
                 Latitude = (decimal?)40.367866516113281,
                 Longitude = (decimal?)-86.8621826171875,
-                BusinessAccountId = businessAccountId
+                BusinessAccountId = businessAccountId,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -350,7 +394,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 CountryCode = "US",
                 Latitude = (decimal?)40.046804,
                 Longitude = (decimal?)-86.879933,
-                BusinessAccountId = businessAccountId
+                BusinessAccountId = businessAccountId,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -363,7 +409,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 CountryCode = "US",
                 Latitude = (decimal?)40.012145,
                 Longitude = (decimal?)-86.903825,
-                BusinessAccountId = businessAccountId
+                BusinessAccountId = businessAccountId,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             });
 
             foreach (var location in DesignLocations)

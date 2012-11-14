@@ -18,7 +18,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             DesignOnceRepeat = new Repeat
             {
                 StartDate = date,
-                Frequency = Frequency.Once
+                Frequency = Frequency.Once,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
 
             DesignDailyRepeat = new Repeat
@@ -26,16 +28,19 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 StartDate = date.AddDays(-5),
                 Frequency = Frequency.Daily,
                 EndDate = date.Add(new TimeSpan(10, 0, 0, 0)),
-                RepeatEveryTimes = 2
+                RepeatEveryTimes = 2,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
 
             DesignWeeklyRepeat = new Repeat
             {
                 StartDate = date.AddDays(-14),
                 Frequency = Frequency.Weekly,
-                FrequencyDetailAsWeeklyFrequencyDetail =
-                    new[] { date.DayOfWeek },
-                RepeatEveryTimes = 2
+                FrequencyDetailAsWeeklyFrequencyDetail = new[] { date.DayOfWeek },
+                RepeatEveryTimes = 2,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
 
             DesignNeverEndingWeeklyRepeat = new Repeat
@@ -43,7 +48,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 StartDate = date.Date.AddDays(-14),
                 Frequency = Frequency.Weekly,
                 FrequencyDetailAsWeeklyFrequencyDetail = new[] { date.DayOfWeek },
-                RepeatEveryTimes = 2
+                RepeatEveryTimes = 2,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
 
             DesignMonthlyRepeat = new Repeat
@@ -51,7 +58,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 StartDate = date,
                 Frequency = Frequency.Monthly,
                 EndDate = date.AddMonths(6),
-                RepeatEveryTimes = 1
+                RepeatEveryTimes = 1,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
 
             DesignYearlyRepeat = new Repeat
@@ -59,7 +68,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 StartDate = date,
                 Frequency = Frequency.Yearly,
                 EndAfterTimes = 10,
-                RepeatEveryTimes = 2
+                RepeatEveryTimes = 2,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
         }
     }

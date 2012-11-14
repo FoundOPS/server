@@ -39,160 +39,181 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
 
                 clientIndex++;
             }
-
         }
 
         private void InitializeClients()
         {
-            var date = DateTime.UtcNow.Date;
-
             DesignClients = new List<Client>
-                {
-                    new Client
-                        {
-                            Id = Guid.NewGuid(),
-                            DateAdded = date,
-                            Name = "Adelino's Old World Kitchen"
-                        },
-                    new Client
-                        {
-                            Id = Guid.NewGuid(),
-                            DateAdded = date,
-                            Name = "Akropolis Restaraunt"
-                        },
-                    new Client
-                        {
-                            Id = Guid.NewGuid(),
-                            DateAdded = date,
-                            Name = "Apollo Lounge"
-                        },
-                    new Client
-                        {
-                            Id = Guid.NewGuid(),
-                            DateAdded = date,
-                            Name = "Applebee's Neighborhood Grill"
-                        },
-                    new Client
-                        {
-                            Id = Guid.NewGuid(),
-                            DateAdded = date,
-                            Name = "Arby's"
-                        },
-                    new Client
-                        {
-                            Id = Guid.NewGuid(),
-                            DateAdded = date,
-                            Name = "Arctic White Soft Serve Ice"
-                        },
-                    new Client
-                        {
-                            Id = Guid.NewGuid(),
-                            DateAdded = date,
-                            Name = "Arthur's"
-                        },
-                    new Client
-                        {
-                            Id = Guid.NewGuid(),
-                            DateAdded = date,
-                            Name = "Artie's Tenderloin"
-                        },
-                    new Client
-                        {
-                            Id = Guid.NewGuid(),
-                            DateAdded = date,
-                            Name = "Barcelona Tapas"
-                        },
-                    new Client
-                        {
-                            Id = Guid.NewGuid(),
-                            DateAdded = date,
-                            Name = "Bistro 501"
-                        },
-                    new Client
-                        {
-                            Id = Guid.NewGuid(),
-                            DateAdded = date,
-                            Name = "Black Sparrow"
-                        },
-                    new Client
-                        {
-                            Id = Guid.NewGuid(),
-                            DateAdded = date,
-                            Name = "Blue Fin Bistro Sushi Lafayette"
-                        },
-                    new Client
-                        {
-                            Id = Guid.NewGuid(),
-                            DateAdded = date,
-                            Name = "Bob Evans Restaurant"
-                        },
-                    new Client
-                        {
-                            Id = Guid.NewGuid(),
-                            DateAdded = date,
-                            Name = "Bruno's Pizza and Big O's Sports Room"
-                        },
-                    new Client
-                        {
-                            Id = Guid.NewGuid(),
-                            DateAdded = date,
-                            Name = "Buca di Beppo"
-                        },
-                    new Client
-                        {
-                            Id = Guid.NewGuid(),
-                            DateAdded = date,
-                            Name = "Buffalo Wild Wings Grill & Bar"
-                        },
-                    new Client
-                        {
-                            Id = Guid.NewGuid(),
-                            DateAdded = date,
-                            Name = "Burger King"
-                        },
-                    new Client
-                        {
-                            Id = Guid.NewGuid(),
-                            DateAdded = date,
-                            Name = "Campbell's On Main Street"
-                        },
-                    new Client
-                        {
-                            Id = Guid.NewGuid(),
-                            DateAdded = date,
-                            Name = "Covered Bridge Restaurant"
-                        },
-                    new Client
-                        {
-                            Id = Guid.NewGuid(),
-                            DateAdded = date,
-                            Name = "Crawfordsville Forum Family"
-                        },
-                    new Client
-                        {
-                            Id = Guid.NewGuid(),
-                            DateAdded = date,
-                            Name = "Dairy Queen"
-                        },
-                    new Client
-                        {
-                            Id = Guid.NewGuid(),
-                            DateAdded = date,
-                            Name = "Diamond Coffee Company"
-                        },
-                    new Client
-                        {
-                            Id = Guid.NewGuid(),
-                            DateAdded = date,
-                            Name = "Culver's"
-                        },
-                    new Client
-                        {
-                            Id = Guid.NewGuid(),
-                            DateAdded = date,
-                            Name = "El Rodeo"
-                        }
-                };
+            {
+            new Client
+            {
+                Id = Guid.NewGuid(),
+                Name = "Adelino's Old World Kitchen",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
+            },
+            new Client
+            {
+                Id = Guid.NewGuid(),
+                Name = "Akropolis Restaraunt",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
+            },
+            new Client
+            {
+                Id = Guid.NewGuid(),
+                Name = "Apollo Lounge",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
+            },
+            new Client
+            {
+                Id = Guid.NewGuid(),
+                Name = "Applebee's Neighborhood Grill",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
+            },
+            new Client
+            {
+                Id = Guid.NewGuid(),
+                Name = "Arby's",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
+            },
+            new Client
+            {
+                Id = Guid.NewGuid(),
+                Name = "Arctic White Soft Serve Ice",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
+            },
+            new Client
+            {
+                Id = Guid.NewGuid(),
+                Name = "Arthur's",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
+            },
+            new Client
+            {
+                Id = Guid.NewGuid(),
+                Name = "Artie's Tenderloin",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
+            },
+            new Client
+            {
+                Id = Guid.NewGuid(),
+                Name = "Barcelona Tapas",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
+            },
+            new Client
+            {
+                Id = Guid.NewGuid(),
+                Name = "Bistro 501",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
+            },
+            new Client
+            {
+                Id = Guid.NewGuid(),
+                Name = "Black Sparrow",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
+            },
+            new Client
+            {
+                Id = Guid.NewGuid(),
+                Name = "Blue Fin Bistro Sushi Lafayette",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
+            },
+            new Client
+            {
+                Id = Guid.NewGuid(),
+                Name = "Bob Evans Restaurant",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
+            },
+            new Client
+            {
+                Id = Guid.NewGuid(),
+                Name = "Bruno's Pizza and Big O's Sports Room",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
+            },
+            new Client
+            {
+                Id = Guid.NewGuid(),
+                Name = "Buca di Beppo",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
+            },
+            new Client
+            {
+                Id = Guid.NewGuid(),
+                Name = "Buffalo Wild Wings Grill & Bar",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
+            },
+            new Client
+            {
+                Id = Guid.NewGuid(),
+                Name = "Burger King",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
+            },
+            new Client
+            {
+                Id = Guid.NewGuid(),
+                Name = "Campbell's On Main Street",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
+            },
+            new Client
+            {
+                Id = Guid.NewGuid(),
+                Name = "Covered Bridge Restaurant",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
+            },
+            new Client
+            {
+                Id = Guid.NewGuid(),
+                Name = "Crawfordsville Forum Family",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
+            },
+            new Client
+            {
+                Id = Guid.NewGuid(),
+                Name = "Dairy Queen",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
+            },
+            new Client
+            {
+                Id = Guid.NewGuid(),
+                Name = "Diamond Coffee Company",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
+            },
+            new Client
+            {
+                Id = Guid.NewGuid(),
+                Name = "Culver's",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
+            },
+            new Client
+            {
+                Id = Guid.NewGuid(),
+                Name = "El Rodeo",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
+            }
+            };
         }
     }
 }

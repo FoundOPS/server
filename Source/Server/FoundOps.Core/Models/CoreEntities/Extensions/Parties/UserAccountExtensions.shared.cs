@@ -25,7 +25,7 @@ namespace FoundOps.Core.Models.CoreEntities
         void IEntityDefaultCreation.OnCreate()
         {
             Id = Guid.NewGuid();
-            CreationDate = DateTime.UtcNow;
+            CreatedDate = DateTime.UtcNow;
             OnCreation();
         }
         #endregion

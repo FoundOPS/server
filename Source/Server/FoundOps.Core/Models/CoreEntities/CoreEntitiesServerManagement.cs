@@ -1,3 +1,4 @@
+using System.Data;
 using System.Data.Services.Client;
 using System.Linq;
 using FoundOps.Common.NET;
@@ -24,7 +25,7 @@ namespace FoundOps.Core.Models.CoreEntities
             RootDirectory + @"\FoundOps.Core\Models\CoreEntities\ClearCoreEntities.edmx.sql";
 
         private static readonly string CreateCoreEntitiesDatabaseScriptLocation =
-            RootDirectory + @"\FoundOps.Core\Models\CoreEntities\CoreEntitiesCorrected.edmx.sql";
+            RootDirectory + @"\FoundOps.Core\Models\CoreEntities\CoreEntitiesCorrected2.edmx.sql";
 
         #endregion
 
@@ -79,9 +80,10 @@ namespace FoundOps.Core.Models.CoreEntities
                                                  AlanMcClure = { PasswordHash = EncryptionTools.Hash("youngster", new byte[] { 65, 0, 65 }), TimeZone = "Eastern Standard Time" }
                                              };
 
-
             //Setup roles
             new RolesDesignData(businessAccountsDesignData, userAccountsDesignData);
+
+            //var changes = container.ObjectStateManager.GetObjectStateEntries(EntityState.Added).Select(o => o.Entity).OfType<ServiceTemplate>().Where(st => st.CreatedDate < DateTime.UtcNow.AddDays(-1) || st.LastModifiedDate < DateTime.UtcNow.AddDays(-1));
 
             //container.SaveChanges();
 

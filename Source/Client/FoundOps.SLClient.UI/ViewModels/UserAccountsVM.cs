@@ -165,7 +165,7 @@ namespace FoundOps.SLClient.UI.ViewModels
                         TemporaryPassword = PasswordTools.GeneratePassword(),
                         PasswordSalt = new byte[] {65, 0, 65},
                         DisplayName = name,
-                        CreationDate = DateTime.UtcNow.Date
+                        CreatedDate = DateTime.UtcNow.Date
                     };
 
                 //Add the new entity to the Context so it gets tracked/saved

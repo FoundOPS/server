@@ -47,7 +47,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 LastLongitude = -86.92,
                 LastSource = "Catch Me If You Can",
                 LastSpeed = 25.65,
-                LastTimeStamp = date
+                LastTimeStamp = date,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
 
             DesignVehicleTwo = new Vehicle
@@ -66,7 +68,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 LastLongitude = -86.94,
                 LastSource = "Find Me",
                 LastSpeed = 48.82,
-                LastTimeStamp = date
+                LastTimeStamp = date,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
 
             DesignVehicleThree = new Vehicle
@@ -85,7 +89,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 LastLongitude = -86.93,
                 LastSource = "US Fleet Tracker",
                 LastSpeed = 15.2,
-                LastTimeStamp = date
+                LastTimeStamp = date,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
 
             DesignVehicles = new List<Vehicle> { DesignVehicle, DesignVehicleTwo, DesignVehicleThree };

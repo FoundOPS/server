@@ -72,7 +72,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Name = _routeNames.RandomItem(),
                 Date = date.Date,
                 RouteType = serviceTemplate.Name,
-                OwnerBusinessAccount = ownerBusinessAccount
+                OwnerBusinessAccount = ownerBusinessAccount,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
 
             //Add employees to the Route
@@ -102,7 +104,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                     ServiceDate = newRoute.Date,
                     ServiceTemplate = serviceTemplate.MakeChild(ServiceTemplateLevel.ServiceDefined),
                     Client = currentClient,
-                    ServiceProvider = ownerBusinessAccount
+                    ServiceProvider = ownerBusinessAccount,
+                    CreatedDate = DateTime.UtcNow,
+                    LastModifiedDate = DateTime.UtcNow
                 };
 
                 newService.ServiceTemplate.SetDestination(currentLocation);
@@ -117,10 +121,17 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                     EstimatedDuration = new TimeSpan(0, _random.Next(25), 0),
                     OwnerBusinessAccount = ownerBusinessAccount,
                     Service = newService,
-                    TaskStatus = ownerBusinessAccount.TaskStatuses.FirstOrDefault(ts => ts.DefaultTypeInt != null && ts.DefaultTypeInt == ((int)StatusDetail.RoutedDefault))
+                    TaskStatus = ownerBusinessAccount.TaskStatuses.FirstOrDefault(ts => ts.DefaultTypeInt != null && ts.DefaultTypeInt == ((int)StatusDetail.RoutedDefault)),
+                    CreatedDate = DateTime.UtcNow,
+                    LastModifiedDate = DateTime.UtcNow
                 };
 
-                var routeDestination = new RouteDestination { OrderInRoute = orderInRoute };
+                var routeDestination = new RouteDestination
+                {
+                    OrderInRoute = orderInRoute,
+                    CreatedDate = DateTime.UtcNow,
+                    LastModifiedDate = DateTime.UtcNow
+                };
                 routeDestination.RouteTasks.Add(routeTask);
                 newRoute.RouteDestinations.Add(routeDestination);
 

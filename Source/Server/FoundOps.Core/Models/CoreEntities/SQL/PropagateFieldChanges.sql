@@ -73,14 +73,16 @@ CREATE PROCEDURE [dbo].[PropagateNewFields]
 				        [Required] ,
 				        ToolTip ,
 				        ParentFieldId ,
-				        ServiceTemplateId
+				        ServiceTemplateId,
+						CreatedDate
 				    )
 			VALUES  ( @newFieldId , -- Id - uniqueidentifier
 				        @fieldName , -- Name - nvarchar(max)
 				        @fieldRequired , -- Required - bit
 				        @fieldToolTip , -- ToolTip - nvarchar(max)
 				        @FieldId , -- ParentFieldId - uniqueidentifier
-				        @currentServiceTemplateId  -- ServiceTemplateId - uniqueidentifier
+				        @currentServiceTemplateId , -- ServiceTemplateId - uniqueidentifier
+						GETUTCDATE()
 				    ) 
 				
 			BEGIN --Copy field to its appropriate inherited table

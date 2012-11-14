@@ -31,7 +31,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
             return new MembershipUser("CoreEntitiesProvider", this.EmailAddress,
                                       this.Id, this.EmailAddress, "", "", true,
-                                      false, this.CreationDate,
+                                      false, this.CreatedDate,
                                       lastLoginDateEntry != null ? lastLoginDateEntry.TimeStamp : DateTime.MinValue,
                                       lastActivityDateEntry != null ? lastActivityDateEntry.TimeStamp : DateTime.MinValue,
                                       lastPasswordChangeDateEntry != null

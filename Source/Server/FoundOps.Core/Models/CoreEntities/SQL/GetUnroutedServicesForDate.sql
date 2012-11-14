@@ -458,7 +458,8 @@ BEGIN
 			  OrderInRouteDestination INT,
 			  RecurringServiceId UNIQUEIDENTIFIER,
 			  DelayedChildId UNIQUEIDENTIFIER,
-			  TaskStatusId UNIQUEIDENTIFIER
+			  TaskStatusId UNIQUEIDENTIFIER,
+			  CreatedDate DATETIME
 			)
 
 	INSERT INTO #RouteTasks(Id, LocationId, ClientId, ServiceId, Name, [Date], RecurringServiceId)
@@ -471,7 +472,8 @@ BEGIN
 		EstimatedDuration = '0:0:16.00',
 		OrderInRouteDestination = 0,
 		TaskStatusId = (SELECT TOP 1 Id FROM dbo.TaskStatuses WHERE BusinessAccountId = @serviceProviderIdContext AND DefaultTypeInt = 1),
-		StatusInt = 0
+		StatusInt = 0,
+		CreatedDate = GETUTCDATE()
 
 	INSERT INTO dbo.RouteTasks
 	SELECT * FROM #RouteTasks

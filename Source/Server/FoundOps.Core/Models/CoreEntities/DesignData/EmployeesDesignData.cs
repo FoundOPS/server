@@ -56,7 +56,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 LastSource = "android",
                 LastSpeed = 25.65,
                 LastTimeStamp = dateTime,
-                LinkedUserAccountId = _userAccountDesignData.Jon.Id
+                LinkedUserAccountId = _userAccountDesignData.Jon.Id,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
 
             DesignEmployeeTwo = new Employee
@@ -80,7 +82,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 LastSource = "iphone",
                 LastSpeed = 15.2,
                 LastTimeStamp = dateTime,
-                LinkedUserAccountId = _userAccountDesignData.Zach.Id
+                LinkedUserAccountId = _userAccountDesignData.Zach.Id,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
 
             DesignEmployeeThree = new Employee
@@ -104,7 +108,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 LastSource = "winphone",
                 LastSpeed = 48.82,
                 LastTimeStamp = dateTime,
-                LinkedUserAccountId = _userAccountDesignData.Oren.Id
+                LinkedUserAccountId = _userAccountDesignData.Oren.Id,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
 
             DesignEmployees = new List<Employee> { DesignEmployee, DesignEmployeeTwo, DesignEmployeeThree };

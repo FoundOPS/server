@@ -46,7 +46,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 LocationFieldType = LocationFieldType.Destination,
                 LocationId = locationId,
                 Required = false,
-                Tooltip = "Where to go"
+                Tooltip = "Where to go",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
         }
 
@@ -66,7 +68,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                             Mask = "c",
                             Maximum = 1000,
                             Minimum = 0,
-                            Value = (decimal?)2.54
+                            Value = (decimal?)2.54,
+                            CreatedDate = DateTime.UtcNow,
+                            LastModifiedDate = DateTime.UtcNow
                         };
                     break;
                 case NumericFieldType.Numeric:
@@ -79,7 +83,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                             Maximum = 1000,
                             Name = "Oil Collected",
                             Tooltip = "in gallons",
-                            Value = 125
+                            Value = 125,
+                            CreatedDate = DateTime.UtcNow,
+                            LastModifiedDate = DateTime.UtcNow
                         };
                     break;
                 default:
@@ -92,7 +98,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                             Maximum = 1,
                             Minimum = 0,
                             Mask = "p",
-                            Value = (decimal?)0.25
+                            Value = (decimal?)0.25,
+                            CreatedDate = DateTime.UtcNow,
+                            LastModifiedDate = DateTime.UtcNow
                         };
                     break;
             }
@@ -117,7 +125,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                             Tooltip = "The type of barrel",
                             AllowMultipleSelection = false,
                             OptionsType = OptionsType.Combobox,
-                            Value = "1,2"
+                            Value = "1,2",
+                            CreatedDate = DateTime.UtcNow,
+                            LastModifiedDate = DateTime.UtcNow
                         };
                     optionsField.Options.Add(new Option { Name = "Small", IsChecked = false });
                     optionsField.Options.Add(new Option { Name = "Medium", IsChecked = false });
@@ -131,7 +141,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                             Tooltip = "Things to do with the barrels",
                             AllowMultipleSelection = true,
                             OptionsType = OptionsType.Checklist,
-                            Value = "0,2"
+                            Value = "0,2",
+                            CreatedDate = DateTime.UtcNow,
+                            LastModifiedDate = DateTime.UtcNow
                         };
                     optionsField.Options.Add(new Option { Name = "Empty Barrels", IsChecked = true });
                     optionsField.Options.Add(new Option { Name = "Assess Oil Quantity", IsChecked = true });
@@ -144,7 +156,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                             Name = "Paid",
                             Tooltip = "Has the client paid?",
                             AllowMultipleSelection = false,
-                            OptionsType = OptionsType.Checkbox
+                            OptionsType = OptionsType.Checkbox,
+                            CreatedDate = DateTime.UtcNow,
+                            LastModifiedDate = DateTime.UtcNow
                         };
                     optionsField.Options.Add(new Option { Name = "Collected paperwork", IsChecked = true });
                     break;
@@ -164,7 +178,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Name = name,
                 Tooltip = "Sign Here",
                 Signed = DateTime.UtcNow,
-                Value = "7UZ32232263353223222333242_3w546647c9b96646475765444_6uZ69647544533210Y33544a67585ba897757988676545444_4G10Z22433223545633322411111000Y11211100000Z121223_8G56676646432Z166878886543300Y136574a487464_6GZ11122223344510000Y224333466642223222120Z2_dyZ75546542Y3656536444Z1435465443_5v0112223431121344337442222223_gHZ3424245334653141200Y142345566645_2D5546489657db46b95976443321Z12322_ey76686686676_4y00000000000"
+                Value = "7UZ32232263353223222333242_3w546647c9b96646475765444_6uZ69647544533210Y33544a67585ba897757988676545444_4G10Z22433223545633322411111000Y11211100000Z121223_8G56676646432Z166878886543300Y136574a487464_6GZ11122223344510000Y224333466642223222120Z2_dyZ75546542Y3656536444Z1435465443_5v0112223431121344337442222223_gHZ3424245334653141200Y142345566645_2D5546489657db46b95976443321Z12322_ey76686686676_4y00000000000",
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
         }
 
@@ -180,7 +196,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                         Name = "Lock Info",
                         Tooltip = "The lock combination",
                         IsMultiline = false,
-                        Value = "124-1515-15155"
+                        Value = "124-1515-15155",
+                        CreatedDate = DateTime.UtcNow,
+                        LastModifiedDate = DateTime.UtcNow
                     };
             }
             else
@@ -191,7 +209,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                     Name = "Notes",
                     Tooltip = "Any miscellaneous service information",
                     IsMultiline = true,
-                    Value = "Be careful, there is a large scary dog"
+                    Value = "Be careful, there is a large scary dog",
+                    CreatedDate = DateTime.UtcNow,
+                    LastModifiedDate = DateTime.UtcNow
                 };
             }
 

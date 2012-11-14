@@ -1754,10 +1754,12 @@ namespace FoundOps.Core.Models.CoreEntities
         /// Create a new BusinessAccount object.
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
-        public static BusinessAccount CreateBusinessAccount(global::System.Guid id)
+        /// <param name="createdDate">Initial value of the CreatedDate property.</param>
+        public static BusinessAccount CreateBusinessAccount(global::System.Guid id, global::System.DateTime createdDate)
         {
             BusinessAccount businessAccount = new BusinessAccount();
             businessAccount.Id = id;
+            businessAccount.CreatedDate = createdDate;
             return businessAccount;
         }
 
@@ -2241,12 +2243,12 @@ namespace FoundOps.Core.Models.CoreEntities
         /// Create a new Client object.
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
-        /// <param name="dateAdded">Initial value of the DateAdded property.</param>
-        public static Client CreateClient(global::System.Guid id, global::System.DateTime dateAdded)
+        /// <param name="createdDate">Initial value of the CreatedDate property.</param>
+        public static Client CreateClient(global::System.Guid id, global::System.DateTime createdDate)
         {
             Client client = new Client();
             client.Id = id;
-            client.DateAdded = dateAdded;
+            client.CreatedDate = createdDate;
             return client;
         }
 
@@ -2280,30 +2282,6 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.Guid _Id;
         partial void OnIdChanging(global::System.Guid value);
         partial void OnIdChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.DateTime DateAdded
-        {
-            get
-            {
-                return _DateAdded;
-            }
-            set
-            {
-                OnDateAddedChanging(value);
-                ReportPropertyChanging("DateAdded");
-                _DateAdded = StructuralObject.SetValidValue(value, "DateAdded");
-                ReportPropertyChanged("DateAdded");
-                OnDateAddedChanged();
-            }
-        }
-        private global::System.DateTime _DateAdded;
-        partial void OnDateAddedChanging(global::System.DateTime value);
-        partial void OnDateAddedChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -2400,6 +2378,78 @@ namespace FoundOps.Core.Models.CoreEntities
         private Nullable<global::System.DateTime> _DateDeleted;
         partial void OnDateDeletedChanging(Nullable<global::System.DateTime> value);
         partial void OnDateDeletedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreatedDate
+        {
+            get
+            {
+                return _CreatedDate;
+            }
+            set
+            {
+                OnCreatedDateChanging(value);
+                ReportPropertyChanging("CreatedDate");
+                _CreatedDate = StructuralObject.SetValidValue(value, "CreatedDate");
+                ReportPropertyChanged("CreatedDate");
+                OnCreatedDateChanged();
+            }
+        }
+        private global::System.DateTime _CreatedDate;
+        partial void OnCreatedDateChanging(global::System.DateTime value);
+        partial void OnCreatedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> LastModifiedDate
+        {
+            get
+            {
+                return _LastModifiedDate;
+            }
+            set
+            {
+                OnLastModifiedDateChanging(value);
+                ReportPropertyChanging("LastModifiedDate");
+                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
+                ReportPropertyChanged("LastModifiedDate");
+                OnLastModifiedDateChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _LastModifiedDate;
+        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> LastModifyingUserId
+        {
+            get
+            {
+                return _LastModifyingUserId;
+            }
+            set
+            {
+                OnLastModifyingUserIdChanging(value);
+                ReportPropertyChanging("LastModifyingUserId");
+                _LastModifyingUserId = StructuralObject.SetValidValue(value, "LastModifyingUserId");
+                ReportPropertyChanged("LastModifyingUserId");
+                OnLastModifyingUserIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _LastModifyingUserId;
+        partial void OnLastModifyingUserIdChanging(Nullable<global::System.Guid> value);
+        partial void OnLastModifyingUserIdChanged();
 
         #endregion
 
@@ -2638,11 +2688,13 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="type">Initial value of the Type property.</param>
-        public static ContactInfo CreateContactInfo(global::System.Guid id, global::System.String type)
+        /// <param name="createdDate">Initial value of the CreatedDate property.</param>
+        public static ContactInfo CreateContactInfo(global::System.Guid id, global::System.String type, global::System.DateTime createdDate)
         {
             ContactInfo contactInfo = new ContactInfo();
             contactInfo.Id = id;
             contactInfo.Type = type;
+            contactInfo.CreatedDate = createdDate;
             return contactInfo;
         }
 
@@ -2820,6 +2872,78 @@ namespace FoundOps.Core.Models.CoreEntities
         private Nullable<global::System.Guid> _ClientId;
         partial void OnClientIdChanging(Nullable<global::System.Guid> value);
         partial void OnClientIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreatedDate
+        {
+            get
+            {
+                return _CreatedDate;
+            }
+            set
+            {
+                OnCreatedDateChanging(value);
+                ReportPropertyChanging("CreatedDate");
+                _CreatedDate = StructuralObject.SetValidValue(value, "CreatedDate");
+                ReportPropertyChanged("CreatedDate");
+                OnCreatedDateChanged();
+            }
+        }
+        private global::System.DateTime _CreatedDate;
+        partial void OnCreatedDateChanging(global::System.DateTime value);
+        partial void OnCreatedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> LastModifiedDate
+        {
+            get
+            {
+                return _LastModifiedDate;
+            }
+            set
+            {
+                OnLastModifiedDateChanging(value);
+                ReportPropertyChanging("LastModifiedDate");
+                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
+                ReportPropertyChanged("LastModifiedDate");
+                OnLastModifiedDateChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _LastModifiedDate;
+        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> LastModifyingUserId
+        {
+            get
+            {
+                return _LastModifyingUserId;
+            }
+            set
+            {
+                OnLastModifyingUserIdChanging(value);
+                ReportPropertyChanging("LastModifyingUserId");
+                _LastModifyingUserId = StructuralObject.SetValidValue(value, "LastModifyingUserId");
+                ReportPropertyChanged("LastModifyingUserId");
+                OnLastModifyingUserIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _LastModifyingUserId;
+        partial void OnLastModifyingUserIdChanging(Nullable<global::System.Guid> value);
+        partial void OnLastModifyingUserIdChanged();
 
         #endregion
 
@@ -2920,11 +3044,13 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="employerId">Initial value of the EmployerId property.</param>
-        public static Employee CreateEmployee(global::System.Guid id, global::System.Guid employerId)
+        /// <param name="createdDate">Initial value of the CreatedDate property.</param>
+        public static Employee CreateEmployee(global::System.Guid id, global::System.Guid employerId, global::System.DateTime createdDate)
         {
             Employee employee = new Employee();
             employee.Id = id;
             employee.EmployerId = employerId;
+            employee.CreatedDate = createdDate;
             return employee;
         }
 
@@ -3558,6 +3684,78 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.String _CountryCode;
         partial void OnCountryCodeChanging(global::System.String value);
         partial void OnCountryCodeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreatedDate
+        {
+            get
+            {
+                return _CreatedDate;
+            }
+            set
+            {
+                OnCreatedDateChanging(value);
+                ReportPropertyChanging("CreatedDate");
+                _CreatedDate = StructuralObject.SetValidValue(value, "CreatedDate");
+                ReportPropertyChanged("CreatedDate");
+                OnCreatedDateChanged();
+            }
+        }
+        private global::System.DateTime _CreatedDate;
+        partial void OnCreatedDateChanging(global::System.DateTime value);
+        partial void OnCreatedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> LastModifiedDate
+        {
+            get
+            {
+                return _LastModifiedDate;
+            }
+            set
+            {
+                OnLastModifiedDateChanging(value);
+                ReportPropertyChanging("LastModifiedDate");
+                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
+                ReportPropertyChanged("LastModifiedDate");
+                OnLastModifiedDateChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _LastModifiedDate;
+        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> LastModifyingUserId
+        {
+            get
+            {
+                return _LastModifyingUserId;
+            }
+            set
+            {
+                OnLastModifyingUserIdChanging(value);
+                ReportPropertyChanging("LastModifyingUserId");
+                _LastModifyingUserId = StructuralObject.SetValidValue(value, "LastModifyingUserId");
+                ReportPropertyChanged("LastModifyingUserId");
+                OnLastModifyingUserIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _LastModifyingUserId;
+        partial void OnLastModifyingUserIdChanging(Nullable<global::System.Guid> value);
+        partial void OnLastModifyingUserIdChanged();
 
         #endregion
 
@@ -3702,11 +3900,13 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="employeeId">Initial value of the EmployeeId property.</param>
-        public static EmployeeHistoryEntry CreateEmployeeHistoryEntry(global::System.Guid id, global::System.Guid employeeId)
+        /// <param name="createdDate">Initial value of the CreatedDate property.</param>
+        public static EmployeeHistoryEntry CreateEmployeeHistoryEntry(global::System.Guid id, global::System.Guid employeeId, global::System.DateTime createdDate)
         {
             EmployeeHistoryEntry employeeHistoryEntry = new EmployeeHistoryEntry();
             employeeHistoryEntry.Id = id;
             employeeHistoryEntry.EmployeeId = employeeId;
+            employeeHistoryEntry.CreatedDate = createdDate;
             return employeeHistoryEntry;
         }
 
@@ -3860,6 +4060,78 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.Guid _EmployeeId;
         partial void OnEmployeeIdChanging(global::System.Guid value);
         partial void OnEmployeeIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreatedDate
+        {
+            get
+            {
+                return _CreatedDate;
+            }
+            set
+            {
+                OnCreatedDateChanging(value);
+                ReportPropertyChanging("CreatedDate");
+                _CreatedDate = StructuralObject.SetValidValue(value, "CreatedDate");
+                ReportPropertyChanged("CreatedDate");
+                OnCreatedDateChanged();
+            }
+        }
+        private global::System.DateTime _CreatedDate;
+        partial void OnCreatedDateChanging(global::System.DateTime value);
+        partial void OnCreatedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> LastModifiedDate
+        {
+            get
+            {
+                return _LastModifiedDate;
+            }
+            set
+            {
+                OnLastModifiedDateChanging(value);
+                ReportPropertyChanging("LastModifiedDate");
+                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
+                ReportPropertyChanged("LastModifiedDate");
+                OnLastModifiedDateChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _LastModifiedDate;
+        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> LastModifyingUserId
+        {
+            get
+            {
+                return _LastModifyingUserId;
+            }
+            set
+            {
+                OnLastModifyingUserIdChanging(value);
+                ReportPropertyChanging("LastModifyingUserId");
+                _LastModifyingUserId = StructuralObject.SetValidValue(value, "LastModifyingUserId");
+                ReportPropertyChanged("LastModifyingUserId");
+                OnLastModifyingUserIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _LastModifyingUserId;
+        partial void OnLastModifyingUserIdChanging(Nullable<global::System.Guid> value);
+        partial void OnLastModifyingUserIdChanged();
 
         #endregion
 
@@ -4104,12 +4376,14 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
         /// <param name="required">Initial value of the Required property.</param>
-        public static Field CreateField(global::System.Guid id, global::System.String name, global::System.Boolean required)
+        /// <param name="createdDate">Initial value of the CreatedDate property.</param>
+        public static Field CreateField(global::System.Guid id, global::System.String name, global::System.Boolean required, global::System.DateTime createdDate)
         {
             Field field = new Field();
             field.Id = id;
             field.Name = name;
             field.Required = required;
+            field.CreatedDate = createdDate;
             return field;
         }
 
@@ -4263,6 +4537,78 @@ namespace FoundOps.Core.Models.CoreEntities
         private Nullable<global::System.Guid> _ServiceTemplateId;
         partial void OnServiceTemplateIdChanging(Nullable<global::System.Guid> value);
         partial void OnServiceTemplateIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreatedDate
+        {
+            get
+            {
+                return _CreatedDate;
+            }
+            set
+            {
+                OnCreatedDateChanging(value);
+                ReportPropertyChanging("CreatedDate");
+                _CreatedDate = StructuralObject.SetValidValue(value, "CreatedDate");
+                ReportPropertyChanged("CreatedDate");
+                OnCreatedDateChanged();
+            }
+        }
+        private global::System.DateTime _CreatedDate;
+        partial void OnCreatedDateChanging(global::System.DateTime value);
+        partial void OnCreatedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> LastModifiedDate
+        {
+            get
+            {
+                return _LastModifiedDate;
+            }
+            set
+            {
+                OnLastModifiedDateChanging(value);
+                ReportPropertyChanging("LastModifiedDate");
+                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
+                ReportPropertyChanged("LastModifiedDate");
+                OnLastModifiedDateChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _LastModifiedDate;
+        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> LastModifyingUserId
+        {
+            get
+            {
+                return _LastModifyingUserId;
+            }
+            set
+            {
+                OnLastModifyingUserIdChanging(value);
+                ReportPropertyChanging("LastModifyingUserId");
+                _LastModifyingUserId = StructuralObject.SetValidValue(value, "LastModifyingUserId");
+                ReportPropertyChanged("LastModifyingUserId");
+                OnLastModifyingUserIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _LastModifyingUserId;
+        partial void OnLastModifyingUserIdChanging(Nullable<global::System.Guid> value);
+        partial void OnLastModifyingUserIdChanged();
 
         #endregion
 
@@ -4387,12 +4733,14 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="data">Initial value of the Data property.</param>
         /// <param name="partyId">Initial value of the PartyId property.</param>
-        public static File CreateFile(global::System.Guid id, global::System.Byte data, global::System.Guid partyId)
+        /// <param name="createdDate">Initial value of the CreatedDate property.</param>
+        public static File CreateFile(global::System.Guid id, global::System.Byte data, global::System.Guid partyId, global::System.DateTime createdDate)
         {
             File file = new File();
             file.Id = id;
             file.Data = data;
             file.PartyId = partyId;
+            file.CreatedDate = createdDate;
             return file;
         }
 
@@ -4522,6 +4870,78 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.Guid _PartyId;
         partial void OnPartyIdChanging(global::System.Guid value);
         partial void OnPartyIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreatedDate
+        {
+            get
+            {
+                return _CreatedDate;
+            }
+            set
+            {
+                OnCreatedDateChanging(value);
+                ReportPropertyChanging("CreatedDate");
+                _CreatedDate = StructuralObject.SetValidValue(value, "CreatedDate");
+                ReportPropertyChanged("CreatedDate");
+                OnCreatedDateChanged();
+            }
+        }
+        private global::System.DateTime _CreatedDate;
+        partial void OnCreatedDateChanging(global::System.DateTime value);
+        partial void OnCreatedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> LastModifiedDate
+        {
+            get
+            {
+                return _LastModifiedDate;
+            }
+            set
+            {
+                OnLastModifiedDateChanging(value);
+                ReportPropertyChanging("LastModifiedDate");
+                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
+                ReportPropertyChanged("LastModifiedDate");
+                OnLastModifiedDateChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _LastModifiedDate;
+        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> LastModifyingUserId
+        {
+            get
+            {
+                return _LastModifyingUserId;
+            }
+            set
+            {
+                OnLastModifyingUserIdChanging(value);
+                ReportPropertyChanging("LastModifyingUserId");
+                _LastModifyingUserId = StructuralObject.SetValidValue(value, "LastModifyingUserId");
+                ReportPropertyChanged("LastModifyingUserId");
+                OnLastModifyingUserIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _LastModifyingUserId;
+        partial void OnLastModifyingUserIdChanging(Nullable<global::System.Guid> value);
+        partial void OnLastModifyingUserIdChanged();
 
         #endregion
 
@@ -5379,10 +5799,12 @@ namespace FoundOps.Core.Models.CoreEntities
         /// Create a new Location object.
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
-        public static Location CreateLocation(global::System.Guid id)
+        /// <param name="createdDate">Initial value of the CreatedDate property.</param>
+        public static Location CreateLocation(global::System.Guid id, global::System.DateTime createdDate)
         {
             Location location = new Location();
             location.Id = id;
+            location.CreatedDate = createdDate;
             return location;
         }
 
@@ -5776,6 +6198,78 @@ namespace FoundOps.Core.Models.CoreEntities
         private Nullable<global::System.DateTime> _DateDeleted;
         partial void OnDateDeletedChanging(Nullable<global::System.DateTime> value);
         partial void OnDateDeletedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreatedDate
+        {
+            get
+            {
+                return _CreatedDate;
+            }
+            set
+            {
+                OnCreatedDateChanging(value);
+                ReportPropertyChanging("CreatedDate");
+                _CreatedDate = StructuralObject.SetValidValue(value, "CreatedDate");
+                ReportPropertyChanged("CreatedDate");
+                OnCreatedDateChanged();
+            }
+        }
+        private global::System.DateTime _CreatedDate;
+        partial void OnCreatedDateChanging(global::System.DateTime value);
+        partial void OnCreatedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> LastModifiedDate
+        {
+            get
+            {
+                return _LastModifiedDate;
+            }
+            set
+            {
+                OnLastModifiedDateChanging(value);
+                ReportPropertyChanging("LastModifiedDate");
+                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
+                ReportPropertyChanged("LastModifiedDate");
+                OnLastModifiedDateChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _LastModifiedDate;
+        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> LastModifyingUserId
+        {
+            get
+            {
+                return _LastModifyingUserId;
+            }
+            set
+            {
+                OnLastModifyingUserIdChanging(value);
+                ReportPropertyChanging("LastModifyingUserId");
+                _LastModifyingUserId = StructuralObject.SetValidValue(value, "LastModifyingUserId");
+                ReportPropertyChanged("LastModifyingUserId");
+                OnLastModifyingUserIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _LastModifyingUserId;
+        partial void OnLastModifyingUserIdChanging(Nullable<global::System.Guid> value);
+        partial void OnLastModifyingUserIdChanged();
 
         #endregion
 
@@ -6107,13 +6601,15 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
         /// <param name="required">Initial value of the Required property.</param>
+        /// <param name="createdDate">Initial value of the CreatedDate property.</param>
         /// <param name="locationFieldTypeInt">Initial value of the LocationFieldTypeInt property.</param>
-        public static LocationField CreateLocationField(global::System.Guid id, global::System.String name, global::System.Boolean required, global::System.Int16 locationFieldTypeInt)
+        public static LocationField CreateLocationField(global::System.Guid id, global::System.String name, global::System.Boolean required, global::System.DateTime createdDate, global::System.Int16 locationFieldTypeInt)
         {
             LocationField locationField = new LocationField();
             locationField.Id = id;
             locationField.Name = name;
             locationField.Required = required;
+            locationField.CreatedDate = createdDate;
             locationField.LocationFieldTypeInt = locationFieldTypeInt;
             return locationField;
         }
@@ -6232,16 +6728,18 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
         /// <param name="required">Initial value of the Required property.</param>
+        /// <param name="createdDate">Initial value of the CreatedDate property.</param>
         /// <param name="mask">Initial value of the Mask property.</param>
         /// <param name="decimalPlaces">Initial value of the DecimalPlaces property.</param>
         /// <param name="minimum">Initial value of the Minimum property.</param>
         /// <param name="maximum">Initial value of the Maximum property.</param>
-        public static NumericField CreateNumericField(global::System.Guid id, global::System.String name, global::System.Boolean required, global::System.String mask, global::System.Int32 decimalPlaces, global::System.Decimal minimum, global::System.Decimal maximum)
+        public static NumericField CreateNumericField(global::System.Guid id, global::System.String name, global::System.Boolean required, global::System.DateTime createdDate, global::System.String mask, global::System.Int32 decimalPlaces, global::System.Decimal minimum, global::System.Decimal maximum)
         {
             NumericField numericField = new NumericField();
             numericField.Id = id;
             numericField.Name = name;
             numericField.Required = required;
+            numericField.CreatedDate = createdDate;
             numericField.Mask = mask;
             numericField.DecimalPlaces = decimalPlaces;
             numericField.Minimum = minimum;
@@ -6393,14 +6891,16 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
         /// <param name="required">Initial value of the Required property.</param>
+        /// <param name="createdDate">Initial value of the CreatedDate property.</param>
         /// <param name="allowMultipleSelection">Initial value of the AllowMultipleSelection property.</param>
         /// <param name="typeInt">Initial value of the TypeInt property.</param>
-        public static OptionsField CreateOptionsField(global::System.Guid id, global::System.String name, global::System.Boolean required, global::System.Boolean allowMultipleSelection, global::System.Int16 typeInt)
+        public static OptionsField CreateOptionsField(global::System.Guid id, global::System.String name, global::System.Boolean required, global::System.DateTime createdDate, global::System.Boolean allowMultipleSelection, global::System.Int16 typeInt)
         {
             OptionsField optionsField = new OptionsField();
             optionsField.Id = id;
             optionsField.Name = name;
             optionsField.Required = required;
+            optionsField.CreatedDate = createdDate;
             optionsField.AllowMultipleSelection = allowMultipleSelection;
             optionsField.TypeInt = typeInt;
             return optionsField;
@@ -6526,10 +7026,12 @@ namespace FoundOps.Core.Models.CoreEntities
         /// Create a new Party object.
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
-        public static Party CreateParty(global::System.Guid id)
+        /// <param name="createdDate">Initial value of the CreatedDate property.</param>
+        public static Party CreateParty(global::System.Guid id, global::System.DateTime createdDate)
         {
             Party party = new Party();
             party.Id = id;
+            party.CreatedDate = createdDate;
             return party;
         }
 
@@ -6563,6 +7065,78 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.Guid _Id;
         partial void OnIdChanging(global::System.Guid value);
         partial void OnIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreatedDate
+        {
+            get
+            {
+                return _CreatedDate;
+            }
+            set
+            {
+                OnCreatedDateChanging(value);
+                ReportPropertyChanging("CreatedDate");
+                _CreatedDate = StructuralObject.SetValidValue(value, "CreatedDate");
+                ReportPropertyChanged("CreatedDate");
+                OnCreatedDateChanged();
+            }
+        }
+        private global::System.DateTime _CreatedDate;
+        partial void OnCreatedDateChanging(global::System.DateTime value);
+        partial void OnCreatedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> LastModifiedDate
+        {
+            get
+            {
+                return _LastModifiedDate;
+            }
+            set
+            {
+                OnLastModifiedDateChanging(value);
+                ReportPropertyChanging("LastModifiedDate");
+                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
+                ReportPropertyChanged("LastModifiedDate");
+                OnLastModifiedDateChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _LastModifiedDate;
+        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> LastModifyingUserId
+        {
+            get
+            {
+                return _LastModifyingUserId;
+            }
+            set
+            {
+                OnLastModifyingUserIdChanging(value);
+                ReportPropertyChanging("LastModifyingUserId");
+                _LastModifyingUserId = StructuralObject.SetValidValue(value, "LastModifyingUserId");
+                ReportPropertyChanged("LastModifyingUserId");
+                OnLastModifyingUserIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _LastModifyingUserId;
+        partial void OnLastModifyingUserIdChanging(Nullable<global::System.Guid> value);
+        partial void OnLastModifyingUserIdChanged();
 
         #endregion
 
@@ -6670,12 +7244,14 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="data">Initial value of the Data property.</param>
         /// <param name="partyId">Initial value of the PartyId property.</param>
-        public static PartyImage CreatePartyImage(global::System.Guid id, global::System.Byte data, global::System.Guid partyId)
+        /// <param name="createdDate">Initial value of the CreatedDate property.</param>
+        public static PartyImage CreatePartyImage(global::System.Guid id, global::System.Byte data, global::System.Guid partyId, global::System.DateTime createdDate)
         {
             PartyImage partyImage = new PartyImage();
             partyImage.Id = id;
             partyImage.Data = data;
             partyImage.PartyId = partyId;
+            partyImage.CreatedDate = createdDate;
             return partyImage;
         }
 
@@ -6740,11 +7316,13 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="clientId">Initial value of the ClientId property.</param>
-        public static RecurringService CreateRecurringService(global::System.Guid id, global::System.Guid clientId)
+        /// <param name="createdDate">Initial value of the CreatedDate property.</param>
+        public static RecurringService CreateRecurringService(global::System.Guid id, global::System.Guid clientId, global::System.DateTime createdDate)
         {
             RecurringService recurringService = new RecurringService();
             recurringService.Id = id;
             recurringService.ClientId = clientId;
+            recurringService.CreatedDate = createdDate;
             return recurringService;
         }
 
@@ -6853,6 +7431,78 @@ namespace FoundOps.Core.Models.CoreEntities
         private Nullable<global::System.DateTime> _DateDeleted;
         partial void OnDateDeletedChanging(Nullable<global::System.DateTime> value);
         partial void OnDateDeletedChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreatedDate
+        {
+            get
+            {
+                return _CreatedDate;
+            }
+            set
+            {
+                OnCreatedDateChanging(value);
+                ReportPropertyChanging("CreatedDate");
+                _CreatedDate = StructuralObject.SetValidValue(value, "CreatedDate");
+                ReportPropertyChanged("CreatedDate");
+                OnCreatedDateChanged();
+            }
+        }
+        private global::System.DateTime _CreatedDate;
+        partial void OnCreatedDateChanging(global::System.DateTime value);
+        partial void OnCreatedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> LastModifiedDate
+        {
+            get
+            {
+                return _LastModifiedDate;
+            }
+            set
+            {
+                OnLastModifiedDateChanging(value);
+                ReportPropertyChanging("LastModifiedDate");
+                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
+                ReportPropertyChanged("LastModifiedDate");
+                OnLastModifiedDateChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _LastModifiedDate;
+        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> LastModifyingUserId
+        {
+            get
+            {
+                return _LastModifyingUserId;
+            }
+            set
+            {
+                OnLastModifyingUserIdChanging(value);
+                ReportPropertyChanging("LastModifyingUserId");
+                _LastModifyingUserId = StructuralObject.SetValidValue(value, "LastModifyingUserId");
+                ReportPropertyChanged("LastModifyingUserId");
+                OnLastModifyingUserIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _LastModifyingUserId;
+        partial void OnLastModifyingUserIdChanging(Nullable<global::System.Guid> value);
+        partial void OnLastModifyingUserIdChanged();
 
         #endregion
 
@@ -7035,11 +7685,13 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
-        public static Region CreateRegion(global::System.Guid id, global::System.String name)
+        /// <param name="createdDate">Initial value of the CreatedDate property.</param>
+        public static Region CreateRegion(global::System.Guid id, global::System.String name, global::System.DateTime createdDate)
         {
             Region region = new Region();
             region.Id = id;
             region.Name = name;
+            region.CreatedDate = createdDate;
             return region;
         }
 
@@ -7169,6 +7821,78 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.String _Notes;
         partial void OnNotesChanging(global::System.String value);
         partial void OnNotesChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreatedDate
+        {
+            get
+            {
+                return _CreatedDate;
+            }
+            set
+            {
+                OnCreatedDateChanging(value);
+                ReportPropertyChanging("CreatedDate");
+                _CreatedDate = StructuralObject.SetValidValue(value, "CreatedDate");
+                ReportPropertyChanged("CreatedDate");
+                OnCreatedDateChanged();
+            }
+        }
+        private global::System.DateTime _CreatedDate;
+        partial void OnCreatedDateChanging(global::System.DateTime value);
+        partial void OnCreatedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> LastModifiedDate
+        {
+            get
+            {
+                return _LastModifiedDate;
+            }
+            set
+            {
+                OnLastModifiedDateChanging(value);
+                ReportPropertyChanging("LastModifiedDate");
+                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
+                ReportPropertyChanged("LastModifiedDate");
+                OnLastModifiedDateChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _LastModifiedDate;
+        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> LastModifyingUserId
+        {
+            get
+            {
+                return _LastModifyingUserId;
+            }
+            set
+            {
+                OnLastModifyingUserIdChanging(value);
+                ReportPropertyChanging("LastModifyingUserId");
+                _LastModifyingUserId = StructuralObject.SetValidValue(value, "LastModifyingUserId");
+                ReportPropertyChanged("LastModifyingUserId");
+                OnLastModifyingUserIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _LastModifyingUserId;
+        partial void OnLastModifyingUserIdChanging(Nullable<global::System.Guid> value);
+        partial void OnLastModifyingUserIdChanged();
 
         #endregion
 
@@ -7255,13 +7979,15 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <param name="repeatEveryTimes">Initial value of the RepeatEveryTimes property.</param>
         /// <param name="frequencyInt">Initial value of the FrequencyInt property.</param>
         /// <param name="startDate">Initial value of the StartDate property.</param>
-        public static Repeat CreateRepeat(global::System.Guid id, global::System.Int32 repeatEveryTimes, global::System.Int32 frequencyInt, global::System.DateTime startDate)
+        /// <param name="createdDate">Initial value of the CreatedDate property.</param>
+        public static Repeat CreateRepeat(global::System.Guid id, global::System.Int32 repeatEveryTimes, global::System.Int32 frequencyInt, global::System.DateTime startDate, global::System.DateTime createdDate)
         {
             Repeat repeat = new Repeat();
             repeat.Id = id;
             repeat.RepeatEveryTimes = repeatEveryTimes;
             repeat.FrequencyInt = frequencyInt;
             repeat.StartDate = startDate;
+            repeat.CreatedDate = createdDate;
             return repeat;
         }
 
@@ -7439,6 +8165,78 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.DateTime _StartDate;
         partial void OnStartDateChanging(global::System.DateTime value);
         partial void OnStartDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreatedDate
+        {
+            get
+            {
+                return _CreatedDate;
+            }
+            set
+            {
+                OnCreatedDateChanging(value);
+                ReportPropertyChanging("CreatedDate");
+                _CreatedDate = StructuralObject.SetValidValue(value, "CreatedDate");
+                ReportPropertyChanged("CreatedDate");
+                OnCreatedDateChanged();
+            }
+        }
+        private global::System.DateTime _CreatedDate;
+        partial void OnCreatedDateChanging(global::System.DateTime value);
+        partial void OnCreatedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> LastModifiedDate
+        {
+            get
+            {
+                return _LastModifiedDate;
+            }
+            set
+            {
+                OnLastModifiedDateChanging(value);
+                ReportPropertyChanging("LastModifiedDate");
+                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
+                ReportPropertyChanged("LastModifiedDate");
+                OnLastModifiedDateChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _LastModifiedDate;
+        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> LastModifyingUserId
+        {
+            get
+            {
+                return _LastModifyingUserId;
+            }
+            set
+            {
+                OnLastModifyingUserIdChanging(value);
+                ReportPropertyChanging("LastModifyingUserId");
+                _LastModifyingUserId = StructuralObject.SetValidValue(value, "LastModifyingUserId");
+                ReportPropertyChanged("LastModifyingUserId");
+                OnLastModifyingUserIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _LastModifyingUserId;
+        partial void OnLastModifyingUserIdChanging(Nullable<global::System.Guid> value);
+        partial void OnLastModifyingUserIdChanged();
 
         #endregion
 
@@ -7743,7 +8541,8 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <param name="endTime">Initial value of the EndTime property.</param>
         /// <param name="ownerBusinessAccountId">Initial value of the OwnerBusinessAccountId property.</param>
         /// <param name="routeType">Initial value of the RouteType property.</param>
-        public static Route CreateRoute(global::System.Guid id, global::System.DateTime date, global::System.DateTime startTime, global::System.DateTime endTime, global::System.Guid ownerBusinessAccountId, global::System.String routeType)
+        /// <param name="createdDate">Initial value of the CreatedDate property.</param>
+        public static Route CreateRoute(global::System.Guid id, global::System.DateTime date, global::System.DateTime startTime, global::System.DateTime endTime, global::System.Guid ownerBusinessAccountId, global::System.String routeType, global::System.DateTime createdDate)
         {
             Route route = new Route();
             route.Id = id;
@@ -7752,6 +8551,7 @@ namespace FoundOps.Core.Models.CoreEntities
             route.EndTime = endTime;
             route.OwnerBusinessAccountId = ownerBusinessAccountId;
             route.RouteType = routeType;
+            route.CreatedDate = createdDate;
             return route;
         }
 
@@ -7929,6 +8729,78 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.String _RouteType;
         partial void OnRouteTypeChanging(global::System.String value);
         partial void OnRouteTypeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreatedDate
+        {
+            get
+            {
+                return _CreatedDate;
+            }
+            set
+            {
+                OnCreatedDateChanging(value);
+                ReportPropertyChanging("CreatedDate");
+                _CreatedDate = StructuralObject.SetValidValue(value, "CreatedDate");
+                ReportPropertyChanged("CreatedDate");
+                OnCreatedDateChanged();
+            }
+        }
+        private global::System.DateTime _CreatedDate;
+        partial void OnCreatedDateChanging(global::System.DateTime value);
+        partial void OnCreatedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> LastModifiedDate
+        {
+            get
+            {
+                return _LastModifiedDate;
+            }
+            set
+            {
+                OnLastModifiedDateChanging(value);
+                ReportPropertyChanging("LastModifiedDate");
+                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
+                ReportPropertyChanged("LastModifiedDate");
+                OnLastModifiedDateChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _LastModifiedDate;
+        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> LastModifyingUserId
+        {
+            get
+            {
+                return _LastModifyingUserId;
+            }
+            set
+            {
+                OnLastModifyingUserIdChanging(value);
+                ReportPropertyChanging("LastModifyingUserId");
+                _LastModifyingUserId = StructuralObject.SetValidValue(value, "LastModifyingUserId");
+                ReportPropertyChanged("LastModifyingUserId");
+                OnLastModifyingUserIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _LastModifyingUserId;
+        partial void OnLastModifyingUserIdChanging(Nullable<global::System.Guid> value);
+        partial void OnLastModifyingUserIdChanged();
 
         #endregion
 
@@ -8058,12 +8930,14 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="orderInRoute">Initial value of the OrderInRoute property.</param>
         /// <param name="routeId">Initial value of the RouteId property.</param>
-        public static RouteDestination CreateRouteDestination(global::System.Guid id, global::System.Int32 orderInRoute, global::System.Guid routeId)
+        /// <param name="createdDate">Initial value of the CreatedDate property.</param>
+        public static RouteDestination CreateRouteDestination(global::System.Guid id, global::System.Int32 orderInRoute, global::System.Guid routeId, global::System.DateTime createdDate)
         {
             RouteDestination routeDestination = new RouteDestination();
             routeDestination.Id = id;
             routeDestination.OrderInRoute = orderInRoute;
             routeDestination.RouteId = routeId;
+            routeDestination.CreatedDate = createdDate;
             return routeDestination;
         }
 
@@ -8193,6 +9067,78 @@ namespace FoundOps.Core.Models.CoreEntities
         private Nullable<global::System.Guid> _ClientId;
         partial void OnClientIdChanging(Nullable<global::System.Guid> value);
         partial void OnClientIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreatedDate
+        {
+            get
+            {
+                return _CreatedDate;
+            }
+            set
+            {
+                OnCreatedDateChanging(value);
+                ReportPropertyChanging("CreatedDate");
+                _CreatedDate = StructuralObject.SetValidValue(value, "CreatedDate");
+                ReportPropertyChanged("CreatedDate");
+                OnCreatedDateChanged();
+            }
+        }
+        private global::System.DateTime _CreatedDate;
+        partial void OnCreatedDateChanging(global::System.DateTime value);
+        partial void OnCreatedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> LastModifiedDate
+        {
+            get
+            {
+                return _LastModifiedDate;
+            }
+            set
+            {
+                OnLastModifiedDateChanging(value);
+                ReportPropertyChanging("LastModifiedDate");
+                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
+                ReportPropertyChanged("LastModifiedDate");
+                OnLastModifiedDateChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _LastModifiedDate;
+        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> LastModifyingUserId
+        {
+            get
+            {
+                return _LastModifyingUserId;
+            }
+            set
+            {
+                OnLastModifyingUserIdChanging(value);
+                ReportPropertyChanging("LastModifyingUserId");
+                _LastModifyingUserId = StructuralObject.SetValidValue(value, "LastModifyingUserId");
+                ReportPropertyChanged("LastModifyingUserId");
+                OnLastModifyingUserIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _LastModifyingUserId;
+        partial void OnLastModifyingUserIdChanging(Nullable<global::System.Guid> value);
+        partial void OnLastModifyingUserIdChanged();
 
         #endregion
 
@@ -8358,7 +9304,8 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <param name="statusInt">Initial value of the StatusInt property.</param>
         /// <param name="date">Initial value of the Date property.</param>
         /// <param name="orderInRouteDestination">Initial value of the OrderInRouteDestination property.</param>
-        public static RouteTask CreateRouteTask(global::System.Guid id, global::System.Guid businessAccountId, global::System.TimeSpan estimatedDuration, global::System.String name, global::System.Int32 statusInt, global::System.DateTime date, global::System.Int32 orderInRouteDestination)
+        /// <param name="createdDate">Initial value of the CreatedDate property.</param>
+        public static RouteTask CreateRouteTask(global::System.Guid id, global::System.Guid businessAccountId, global::System.TimeSpan estimatedDuration, global::System.String name, global::System.Int32 statusInt, global::System.DateTime date, global::System.Int32 orderInRouteDestination, global::System.DateTime createdDate)
         {
             RouteTask routeTask = new RouteTask();
             routeTask.Id = id;
@@ -8368,6 +9315,7 @@ namespace FoundOps.Core.Models.CoreEntities
             routeTask.StatusInt = statusInt;
             routeTask.Date = date;
             routeTask.OrderInRouteDestination = orderInRouteDestination;
+            routeTask.CreatedDate = createdDate;
             return routeTask;
         }
 
@@ -8737,6 +9685,78 @@ namespace FoundOps.Core.Models.CoreEntities
         private Nullable<global::System.Guid> _TaskStatusId;
         partial void OnTaskStatusIdChanging(Nullable<global::System.Guid> value);
         partial void OnTaskStatusIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreatedDate
+        {
+            get
+            {
+                return _CreatedDate;
+            }
+            set
+            {
+                OnCreatedDateChanging(value);
+                ReportPropertyChanging("CreatedDate");
+                _CreatedDate = StructuralObject.SetValidValue(value, "CreatedDate");
+                ReportPropertyChanged("CreatedDate");
+                OnCreatedDateChanged();
+            }
+        }
+        private global::System.DateTime _CreatedDate;
+        partial void OnCreatedDateChanging(global::System.DateTime value);
+        partial void OnCreatedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> LastModifiedDate
+        {
+            get
+            {
+                return _LastModifiedDate;
+            }
+            set
+            {
+                OnLastModifiedDateChanging(value);
+                ReportPropertyChanging("LastModifiedDate");
+                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
+                ReportPropertyChanged("LastModifiedDate");
+                OnLastModifiedDateChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _LastModifiedDate;
+        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> LastModifyingUserId
+        {
+            get
+            {
+                return _LastModifyingUserId;
+            }
+            set
+            {
+                OnLastModifyingUserIdChanging(value);
+                ReportPropertyChanging("LastModifyingUserId");
+                _LastModifyingUserId = StructuralObject.SetValidValue(value, "LastModifyingUserId");
+                ReportPropertyChanged("LastModifyingUserId");
+                OnLastModifyingUserIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _LastModifyingUserId;
+        partial void OnLastModifyingUserIdChanging(Nullable<global::System.Guid> value);
+        partial void OnLastModifyingUserIdChanged();
 
         #endregion
 
@@ -9161,13 +10181,15 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <param name="clientId">Initial value of the ClientId property.</param>
         /// <param name="serviceProviderId">Initial value of the ServiceProviderId property.</param>
         /// <param name="serviceDate">Initial value of the ServiceDate property.</param>
-        public static Service CreateService(global::System.Guid id, global::System.Guid clientId, global::System.Guid serviceProviderId, global::System.DateTime serviceDate)
+        /// <param name="createdDate">Initial value of the CreatedDate property.</param>
+        public static Service CreateService(global::System.Guid id, global::System.Guid clientId, global::System.Guid serviceProviderId, global::System.DateTime serviceDate, global::System.DateTime createdDate)
         {
             Service service = new Service();
             service.Id = id;
             service.ClientId = clientId;
             service.ServiceProviderId = serviceProviderId;
             service.ServiceDate = serviceDate;
+            service.CreatedDate = createdDate;
             return service;
         }
 
@@ -9297,6 +10319,78 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.DateTime _ServiceDate;
         partial void OnServiceDateChanging(global::System.DateTime value);
         partial void OnServiceDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreatedDate
+        {
+            get
+            {
+                return _CreatedDate;
+            }
+            set
+            {
+                OnCreatedDateChanging(value);
+                ReportPropertyChanging("CreatedDate");
+                _CreatedDate = StructuralObject.SetValidValue(value, "CreatedDate");
+                ReportPropertyChanged("CreatedDate");
+                OnCreatedDateChanged();
+            }
+        }
+        private global::System.DateTime _CreatedDate;
+        partial void OnCreatedDateChanging(global::System.DateTime value);
+        partial void OnCreatedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> LastModifiedDate
+        {
+            get
+            {
+                return _LastModifiedDate;
+            }
+            set
+            {
+                OnLastModifiedDateChanging(value);
+                ReportPropertyChanging("LastModifiedDate");
+                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
+                ReportPropertyChanged("LastModifiedDate");
+                OnLastModifiedDateChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _LastModifiedDate;
+        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> LastModifyingUserId
+        {
+            get
+            {
+                return _LastModifyingUserId;
+            }
+            set
+            {
+                OnLastModifyingUserIdChanging(value);
+                ReportPropertyChanging("LastModifyingUserId");
+                _LastModifyingUserId = StructuralObject.SetValidValue(value, "LastModifyingUserId");
+                ReportPropertyChanged("LastModifyingUserId");
+                OnLastModifyingUserIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _LastModifyingUserId;
+        partial void OnLastModifyingUserIdChanging(Nullable<global::System.Guid> value);
+        partial void OnLastModifyingUserIdChanged();
 
         #endregion
 
@@ -9495,11 +10589,13 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="levelInt">Initial value of the LevelInt property.</param>
-        public static ServiceTemplate CreateServiceTemplate(global::System.Guid id, global::System.Int16 levelInt)
+        /// <param name="createdDate">Initial value of the CreatedDate property.</param>
+        public static ServiceTemplate CreateServiceTemplate(global::System.Guid id, global::System.Int16 levelInt, global::System.DateTime createdDate)
         {
             ServiceTemplate serviceTemplate = new ServiceTemplate();
             serviceTemplate.Id = id;
             serviceTemplate.LevelInt = levelInt;
+            serviceTemplate.CreatedDate = createdDate;
             return serviceTemplate;
         }
 
@@ -9653,6 +10749,78 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.String _Name;
         partial void OnNameChanging(global::System.String value);
         partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreatedDate
+        {
+            get
+            {
+                return _CreatedDate;
+            }
+            set
+            {
+                OnCreatedDateChanging(value);
+                ReportPropertyChanging("CreatedDate");
+                _CreatedDate = StructuralObject.SetValidValue(value, "CreatedDate");
+                ReportPropertyChanged("CreatedDate");
+                OnCreatedDateChanged();
+            }
+        }
+        private global::System.DateTime _CreatedDate;
+        partial void OnCreatedDateChanging(global::System.DateTime value);
+        partial void OnCreatedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> LastModifiedDate
+        {
+            get
+            {
+                return _LastModifiedDate;
+            }
+            set
+            {
+                OnLastModifiedDateChanging(value);
+                ReportPropertyChanging("LastModifiedDate");
+                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
+                ReportPropertyChanged("LastModifiedDate");
+                OnLastModifiedDateChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _LastModifiedDate;
+        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> LastModifyingUserId
+        {
+            get
+            {
+                return _LastModifyingUserId;
+            }
+            set
+            {
+                OnLastModifyingUserIdChanging(value);
+                ReportPropertyChanging("LastModifyingUserId");
+                _LastModifyingUserId = StructuralObject.SetValidValue(value, "LastModifyingUserId");
+                ReportPropertyChanged("LastModifyingUserId");
+                OnLastModifyingUserIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _LastModifyingUserId;
+        partial void OnLastModifyingUserIdChanging(Nullable<global::System.Guid> value);
+        partial void OnLastModifyingUserIdChanged();
 
         #endregion
 
@@ -10035,12 +11203,14 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
         /// <param name="required">Initial value of the Required property.</param>
-        public static SignatureField CreateSignatureField(global::System.Guid id, global::System.String name, global::System.Boolean required)
+        /// <param name="createdDate">Initial value of the CreatedDate property.</param>
+        public static SignatureField CreateSignatureField(global::System.Guid id, global::System.String name, global::System.Boolean required, global::System.DateTime createdDate)
         {
             SignatureField signatureField = new SignatureField();
             signatureField.Id = id;
             signatureField.Name = name;
             signatureField.Required = required;
+            signatureField.CreatedDate = createdDate;
             return signatureField;
         }
 
@@ -10116,12 +11286,14 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
         /// <param name="number">Initial value of the Number property.</param>
-        public static SubLocation CreateSubLocation(global::System.Guid id, global::System.String name, global::System.Int32 number)
+        /// <param name="createdDate">Initial value of the CreatedDate property.</param>
+        public static SubLocation CreateSubLocation(global::System.Guid id, global::System.String name, global::System.Int32 number, global::System.DateTime createdDate)
         {
             SubLocation subLocation = new SubLocation();
             subLocation.Id = id;
             subLocation.Name = name;
             subLocation.Number = number;
+            subLocation.CreatedDate = createdDate;
             return subLocation;
         }
 
@@ -10299,6 +11471,78 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.Int32 _Number;
         partial void OnNumberChanging(global::System.Int32 value);
         partial void OnNumberChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreatedDate
+        {
+            get
+            {
+                return _CreatedDate;
+            }
+            set
+            {
+                OnCreatedDateChanging(value);
+                ReportPropertyChanging("CreatedDate");
+                _CreatedDate = StructuralObject.SetValidValue(value, "CreatedDate");
+                ReportPropertyChanged("CreatedDate");
+                OnCreatedDateChanged();
+            }
+        }
+        private global::System.DateTime _CreatedDate;
+        partial void OnCreatedDateChanging(global::System.DateTime value);
+        partial void OnCreatedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> LastModifiedDate
+        {
+            get
+            {
+                return _LastModifiedDate;
+            }
+            set
+            {
+                OnLastModifiedDateChanging(value);
+                ReportPropertyChanging("LastModifiedDate");
+                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
+                ReportPropertyChanged("LastModifiedDate");
+                OnLastModifiedDateChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _LastModifiedDate;
+        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> LastModifyingUserId
+        {
+            get
+            {
+                return _LastModifyingUserId;
+            }
+            set
+            {
+                OnLastModifyingUserIdChanging(value);
+                ReportPropertyChanging("LastModifyingUserId");
+                _LastModifyingUserId = StructuralObject.SetValidValue(value, "LastModifyingUserId");
+                ReportPropertyChanged("LastModifyingUserId");
+                OnLastModifyingUserIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _LastModifyingUserId;
+        partial void OnLastModifyingUserIdChanging(Nullable<global::System.Guid> value);
+        partial void OnLastModifyingUserIdChanged();
 
         #endregion
 
@@ -10361,11 +11605,13 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="removeFromRoute">Initial value of the RemoveFromRoute property.</param>
-        public static TaskStatus CreateTaskStatus(global::System.Guid id, global::System.Boolean removeFromRoute)
+        /// <param name="createdDate">Initial value of the CreatedDate property.</param>
+        public static TaskStatus CreateTaskStatus(global::System.Guid id, global::System.Boolean removeFromRoute, global::System.DateTime createdDate)
         {
             TaskStatus taskStatus = new TaskStatus();
             taskStatus.Id = id;
             taskStatus.RemoveFromRoute = removeFromRoute;
+            taskStatus.CreatedDate = createdDate;
             return taskStatus;
         }
 
@@ -10519,6 +11765,78 @@ namespace FoundOps.Core.Models.CoreEntities
         private Nullable<global::System.Guid> _BusinessAccountId;
         partial void OnBusinessAccountIdChanging(Nullable<global::System.Guid> value);
         partial void OnBusinessAccountIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreatedDate
+        {
+            get
+            {
+                return _CreatedDate;
+            }
+            set
+            {
+                OnCreatedDateChanging(value);
+                ReportPropertyChanging("CreatedDate");
+                _CreatedDate = StructuralObject.SetValidValue(value, "CreatedDate");
+                ReportPropertyChanged("CreatedDate");
+                OnCreatedDateChanged();
+            }
+        }
+        private global::System.DateTime _CreatedDate;
+        partial void OnCreatedDateChanging(global::System.DateTime value);
+        partial void OnCreatedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> LastModifiedDate
+        {
+            get
+            {
+                return _LastModifiedDate;
+            }
+            set
+            {
+                OnLastModifiedDateChanging(value);
+                ReportPropertyChanging("LastModifiedDate");
+                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
+                ReportPropertyChanged("LastModifiedDate");
+                OnLastModifiedDateChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _LastModifiedDate;
+        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> LastModifyingUserId
+        {
+            get
+            {
+                return _LastModifyingUserId;
+            }
+            set
+            {
+                OnLastModifyingUserIdChanging(value);
+                ReportPropertyChanging("LastModifyingUserId");
+                _LastModifyingUserId = StructuralObject.SetValidValue(value, "LastModifyingUserId");
+                ReportPropertyChanged("LastModifyingUserId");
+                OnLastModifyingUserIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _LastModifyingUserId;
+        partial void OnLastModifyingUserIdChanging(Nullable<global::System.Guid> value);
+        partial void OnLastModifyingUserIdChanged();
 
         #endregion
 
@@ -10604,13 +11922,15 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="name">Initial value of the Name property.</param>
         /// <param name="required">Initial value of the Required property.</param>
+        /// <param name="createdDate">Initial value of the CreatedDate property.</param>
         /// <param name="isMultiline">Initial value of the IsMultiline property.</param>
-        public static TextBoxField CreateTextBoxField(global::System.Guid id, global::System.String name, global::System.Boolean required, global::System.Boolean isMultiline)
+        public static TextBoxField CreateTextBoxField(global::System.Guid id, global::System.String name, global::System.Boolean required, global::System.DateTime createdDate, global::System.Boolean isMultiline)
         {
             TextBoxField textBoxField = new TextBoxField();
             textBoxField.Id = id;
             textBoxField.Name = name;
             textBoxField.Required = required;
+            textBoxField.CreatedDate = createdDate;
             textBoxField.IsMultiline = isMultiline;
             return textBoxField;
         }
@@ -10685,15 +12005,15 @@ namespace FoundOps.Core.Models.CoreEntities
         /// Create a new UserAccount object.
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
+        /// <param name="createdDate">Initial value of the CreatedDate property.</param>
         /// <param name="emailAddress">Initial value of the EmailAddress property.</param>
-        /// <param name="creationDate">Initial value of the CreationDate property.</param>
         /// <param name="passwordSalt">Initial value of the PasswordSalt property.</param>
-        public static UserAccount CreateUserAccount(global::System.Guid id, global::System.String emailAddress, global::System.DateTime creationDate, global::System.Byte[] passwordSalt)
+        public static UserAccount CreateUserAccount(global::System.Guid id, global::System.DateTime createdDate, global::System.String emailAddress, global::System.Byte[] passwordSalt)
         {
             UserAccount userAccount = new UserAccount();
             userAccount.Id = id;
+            userAccount.CreatedDate = createdDate;
             userAccount.EmailAddress = emailAddress;
-            userAccount.CreationDate = creationDate;
             userAccount.PasswordSalt = passwordSalt;
             return userAccount;
         }
@@ -10773,30 +12093,6 @@ namespace FoundOps.Core.Models.CoreEntities
         private Nullable<global::System.DateTime> _LastActivity;
         partial void OnLastActivityChanging(Nullable<global::System.DateTime> value);
         partial void OnLastActivityChanged();
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
-        [DataMemberAttribute()]
-        public global::System.DateTime CreationDate
-        {
-            get
-            {
-                return _CreationDate;
-            }
-            set
-            {
-                OnCreationDateChanging(value);
-                ReportPropertyChanging("CreationDate");
-                _CreationDate = StructuralObject.SetValidValue(value, "CreationDate");
-                ReportPropertyChanged("CreationDate");
-                OnCreationDateChanged();
-            }
-        }
-        private global::System.DateTime _CreationDate;
-        partial void OnCreationDateChanging(global::System.DateTime value);
-        partial void OnCreationDateChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -11279,11 +12575,13 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="businessAccountId">Initial value of the BusinessAccountId property.</param>
-        public static Vehicle CreateVehicle(global::System.Guid id, global::System.Guid businessAccountId)
+        /// <param name="createdDate">Initial value of the CreatedDate property.</param>
+        public static Vehicle CreateVehicle(global::System.Guid id, global::System.Guid businessAccountId, global::System.DateTime createdDate)
         {
             Vehicle vehicle = new Vehicle();
             vehicle.Id = id;
             vehicle.BusinessAccountId = businessAccountId;
+            vehicle.CreatedDate = createdDate;
             return vehicle;
         }
 
@@ -11725,6 +13023,78 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.Guid _BusinessAccountId;
         partial void OnBusinessAccountIdChanging(global::System.Guid value);
         partial void OnBusinessAccountIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreatedDate
+        {
+            get
+            {
+                return _CreatedDate;
+            }
+            set
+            {
+                OnCreatedDateChanging(value);
+                ReportPropertyChanging("CreatedDate");
+                _CreatedDate = StructuralObject.SetValidValue(value, "CreatedDate");
+                ReportPropertyChanged("CreatedDate");
+                OnCreatedDateChanged();
+            }
+        }
+        private global::System.DateTime _CreatedDate;
+        partial void OnCreatedDateChanging(global::System.DateTime value);
+        partial void OnCreatedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> LastModifiedDate
+        {
+            get
+            {
+                return _LastModifiedDate;
+            }
+            set
+            {
+                OnLastModifiedDateChanging(value);
+                ReportPropertyChanging("LastModifiedDate");
+                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
+                ReportPropertyChanged("LastModifiedDate");
+                OnLastModifiedDateChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _LastModifiedDate;
+        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> LastModifyingUserId
+        {
+            get
+            {
+                return _LastModifyingUserId;
+            }
+            set
+            {
+                OnLastModifyingUserIdChanging(value);
+                ReportPropertyChanging("LastModifyingUserId");
+                _LastModifyingUserId = StructuralObject.SetValidValue(value, "LastModifyingUserId");
+                ReportPropertyChanged("LastModifyingUserId");
+                OnLastModifyingUserIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _LastModifyingUserId;
+        partial void OnLastModifyingUserIdChanging(Nullable<global::System.Guid> value);
+        partial void OnLastModifyingUserIdChanged();
 
         #endregion
 
@@ -11831,11 +13201,13 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="vehicleMaintenanceLogEntryId">Initial value of the VehicleMaintenanceLogEntryId property.</param>
-        public static VehicleMaintenanceLineItem CreateVehicleMaintenanceLineItem(global::System.Guid id, global::System.Guid vehicleMaintenanceLogEntryId)
+        /// <param name="createdDate">Initial value of the CreatedDate property.</param>
+        public static VehicleMaintenanceLineItem CreateVehicleMaintenanceLineItem(global::System.Guid id, global::System.Guid vehicleMaintenanceLogEntryId, global::System.DateTime createdDate)
         {
             VehicleMaintenanceLineItem vehicleMaintenanceLineItem = new VehicleMaintenanceLineItem();
             vehicleMaintenanceLineItem.Id = id;
             vehicleMaintenanceLineItem.VehicleMaintenanceLogEntryId = vehicleMaintenanceLogEntryId;
+            vehicleMaintenanceLineItem.CreatedDate = createdDate;
             return vehicleMaintenanceLineItem;
         }
 
@@ -11965,6 +13337,78 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.Guid _VehicleMaintenanceLogEntryId;
         partial void OnVehicleMaintenanceLogEntryIdChanging(global::System.Guid value);
         partial void OnVehicleMaintenanceLogEntryIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreatedDate
+        {
+            get
+            {
+                return _CreatedDate;
+            }
+            set
+            {
+                OnCreatedDateChanging(value);
+                ReportPropertyChanging("CreatedDate");
+                _CreatedDate = StructuralObject.SetValidValue(value, "CreatedDate");
+                ReportPropertyChanged("CreatedDate");
+                OnCreatedDateChanged();
+            }
+        }
+        private global::System.DateTime _CreatedDate;
+        partial void OnCreatedDateChanging(global::System.DateTime value);
+        partial void OnCreatedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> LastModifiedDate
+        {
+            get
+            {
+                return _LastModifiedDate;
+            }
+            set
+            {
+                OnLastModifiedDateChanging(value);
+                ReportPropertyChanging("LastModifiedDate");
+                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
+                ReportPropertyChanged("LastModifiedDate");
+                OnLastModifiedDateChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _LastModifiedDate;
+        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> LastModifyingUserId
+        {
+            get
+            {
+                return _LastModifyingUserId;
+            }
+            set
+            {
+                OnLastModifyingUserIdChanging(value);
+                ReportPropertyChanging("LastModifyingUserId");
+                _LastModifyingUserId = StructuralObject.SetValidValue(value, "LastModifyingUserId");
+                ReportPropertyChanged("LastModifyingUserId");
+                OnLastModifyingUserIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _LastModifyingUserId;
+        partial void OnLastModifyingUserIdChanging(Nullable<global::System.Guid> value);
+        partial void OnLastModifyingUserIdChanged();
 
         #endregion
 
@@ -12027,11 +13471,13 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="vehicleId">Initial value of the VehicleId property.</param>
-        public static VehicleMaintenanceLogEntry CreateVehicleMaintenanceLogEntry(global::System.Guid id, global::System.Guid vehicleId)
+        /// <param name="createdDate">Initial value of the CreatedDate property.</param>
+        public static VehicleMaintenanceLogEntry CreateVehicleMaintenanceLogEntry(global::System.Guid id, global::System.Guid vehicleId, global::System.DateTime createdDate)
         {
             VehicleMaintenanceLogEntry vehicleMaintenanceLogEntry = new VehicleMaintenanceLogEntry();
             vehicleMaintenanceLogEntry.Id = id;
             vehicleMaintenanceLogEntry.VehicleId = vehicleId;
+            vehicleMaintenanceLogEntry.CreatedDate = createdDate;
             return vehicleMaintenanceLogEntry;
         }
 
@@ -12185,6 +13631,78 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.Guid _VehicleId;
         partial void OnVehicleIdChanging(global::System.Guid value);
         partial void OnVehicleIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime CreatedDate
+        {
+            get
+            {
+                return _CreatedDate;
+            }
+            set
+            {
+                OnCreatedDateChanging(value);
+                ReportPropertyChanging("CreatedDate");
+                _CreatedDate = StructuralObject.SetValidValue(value, "CreatedDate");
+                ReportPropertyChanged("CreatedDate");
+                OnCreatedDateChanged();
+            }
+        }
+        private global::System.DateTime _CreatedDate;
+        partial void OnCreatedDateChanging(global::System.DateTime value);
+        partial void OnCreatedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.DateTime> LastModifiedDate
+        {
+            get
+            {
+                return _LastModifiedDate;
+            }
+            set
+            {
+                OnLastModifiedDateChanging(value);
+                ReportPropertyChanging("LastModifiedDate");
+                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
+                ReportPropertyChanged("LastModifiedDate");
+                OnLastModifiedDateChanged();
+            }
+        }
+        private Nullable<global::System.DateTime> _LastModifiedDate;
+        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public Nullable<global::System.Guid> LastModifyingUserId
+        {
+            get
+            {
+                return _LastModifyingUserId;
+            }
+            set
+            {
+                OnLastModifyingUserIdChanging(value);
+                ReportPropertyChanging("LastModifyingUserId");
+                _LastModifyingUserId = StructuralObject.SetValidValue(value, "LastModifyingUserId");
+                ReportPropertyChanged("LastModifyingUserId");
+                OnLastModifyingUserIdChanged();
+            }
+        }
+        private Nullable<global::System.Guid> _LastModifyingUserId;
+        partial void OnLastModifyingUserIdChanging(Nullable<global::System.Guid> value);
+        partial void OnLastModifyingUserIdChanged();
 
         #endregion
 

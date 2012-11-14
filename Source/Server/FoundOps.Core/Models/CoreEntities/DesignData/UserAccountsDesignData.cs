@@ -45,7 +45,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 EmailAddress = "apohl@foundops.com",
                 FirstName = "Andrew",
                 LastName = "Pohl",
-                 PasswordSalt = new byte[]{65, 0, 65}
+                PasswordSalt = new byte[]{65, 0, 65},
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
 
             Jon = new UserAccount
@@ -54,7 +56,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 EmailAddress = "jperl@foundops.com",
                 FirstName = "Jonathan",
                 LastName = "Perl",
-                PasswordSalt = new byte[] { 65, 0, 65 }
+                PasswordSalt = new byte[] { 65, 0, 65 },
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
 
             Oren = new UserAccount
@@ -63,7 +67,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 EmailAddress = "oshatken@foundops.com",
                 FirstName = "Oren",
                 LastName = "Shatken",
-                PasswordSalt = new byte[] { 65, 0, 65 }
+                PasswordSalt = new byte[] { 65, 0, 65 },
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
 
             Zach = new UserAccount
@@ -72,7 +78,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 EmailAddress = "zbright@foundops.com",
                 FirstName = "Zach",
                 LastName = "Bright",
-                PasswordSalt = new byte[] { 65, 0, 65 }
+                PasswordSalt = new byte[] { 65, 0, 65 },
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
 
             #endregion
@@ -85,7 +93,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                  EmailAddress = "david@gotgrease.net",
                  FirstName = "David",
                  LastName = "Levenson",
-                 PasswordSalt = new byte[] { 65, 0, 65 }
+                 PasswordSalt = new byte[] { 65, 0, 65 },
+                 CreatedDate = DateTime.UtcNow,
+                 LastModifiedDate = DateTime.UtcNow
              };
 
             Linda = new UserAccount
@@ -94,7 +104,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 EmailAddress = "linda@gotgrease.net",
                 FirstName = "Linda",
                 LastName = "Levenson",
-                PasswordSalt = new byte[] { 65, 0, 65 }
+                PasswordSalt = new byte[] { 65, 0, 65 },
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
 
             Terri = new UserAccount
@@ -103,7 +115,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 EmailAddress = "terri@gotgrease.net",
                 FirstName = "Terri",
                 LastName = "Last",
-                PasswordSalt = new byte[] { 65, 0, 65 }
+                PasswordSalt = new byte[] { 65, 0, 65 },
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
 
             #endregion
@@ -116,7 +130,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 EmailAddress = "alanmcclure93@gmail.com",
                 FirstName = "Alan",
                 LastName = "McClure",
-                PasswordSalt = new byte[] { 65, 0, 65 }
+                PasswordSalt = new byte[] { 65, 0, 65 },
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
 
             #endregion

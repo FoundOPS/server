@@ -32,7 +32,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 ServiceDate = DateTime.UtcNow.AddDays(-1),
                 ServiceTemplate = _serviceTemplates.RandomItem().MakeChild(ServiceTemplateLevel.ServiceDefined),
                 Client = _client,
-                ServiceProvider = _serviceProvider
+                ServiceProvider = _serviceProvider,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
 
             SmallGreaseTrapService = new Service
@@ -40,7 +42,9 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 ServiceDate = DateTime.UtcNow,
                 ServiceTemplate = _serviceTemplates.RandomItem().MakeChild(ServiceTemplateLevel.ServiceDefined),
                 Client = _client,
-                ServiceProvider = _serviceProvider
+                ServiceProvider = _serviceProvider,
+                CreatedDate = DateTime.UtcNow,
+                LastModifiedDate = DateTime.UtcNow
             };
 
             DesignServices = new List<Service> { OilService, SmallGreaseTrapService };

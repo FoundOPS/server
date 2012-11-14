@@ -60,6 +60,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
             //Update the Id
             fieldChild.Id = Guid.NewGuid();
+            fieldChild.CreatedDate = DateTime.UtcNow;
 
             //Clear ServiceTemplate to prevent overriding ParentField's ServiceTemplate
             fieldChild.OwnerServiceTemplate = null;
