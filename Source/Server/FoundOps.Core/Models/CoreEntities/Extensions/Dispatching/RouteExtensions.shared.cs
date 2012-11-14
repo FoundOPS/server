@@ -29,6 +29,7 @@ namespace FoundOps.Core.Models.CoreEntities
             StartTime = DateTime.UtcNow;
             EndTime = DateTime.UtcNow;
             Name = "Route Name";
+            CreatedDate = DateTime.UtcNow;
             OnCreation();
         }
 

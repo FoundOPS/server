@@ -28,6 +28,7 @@ namespace FoundOps.Core.Models.CoreEntities
         public virtual void OnCreate()
         {
             Id = Guid.NewGuid();
+            CreatedDate = DateTime.UtcNow;
             var userAccount = this as UserAccount;
             if (userAccount != null)
             {

@@ -25,6 +25,7 @@ namespace FoundOps.Core.Models.CoreEntities
         {
             Id = Guid.NewGuid();
             Type = "";
+            CreatedDate = DateTime.UtcNow;
             OnCreation();
         }
 

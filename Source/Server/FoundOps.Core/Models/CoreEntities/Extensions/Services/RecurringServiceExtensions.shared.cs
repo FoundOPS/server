@@ -42,10 +42,12 @@ namespace FoundOps.Core.Models.CoreEntities
                 Id = this.Id,
                 StartDate = DateTime.UtcNow.Date,
                 Frequency = Frequency.Once,
-                RepeatEveryTimes = 1
+                RepeatEveryTimes = 1,
+                CreatedDate = DateTime.UtcNow
             };
 
             this.Repeat = repeat;
+            CreatedDate = DateTime.UtcNow;
         }
 
         /// <summary>

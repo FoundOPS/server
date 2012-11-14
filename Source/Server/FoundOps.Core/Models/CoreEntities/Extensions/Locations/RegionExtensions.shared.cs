@@ -30,6 +30,7 @@ namespace FoundOps.Core.Models.CoreEntities
             //Need to have a name that is not empty, or else Ria Services will convert it to null and throw a validation error
             Name = "New Region";
             Notes = "";
+            CreatedDate = DateTime.UtcNow;
             OnCreation();
         }
 

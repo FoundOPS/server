@@ -39,6 +39,7 @@ namespace FoundOps.Core.Models.CoreEntities
             PostalCode = "";
             CountryCode = "";
             SSN = "";
+            CreatedDate = DateTime.UtcNow;
             OnCreation();
         }
 

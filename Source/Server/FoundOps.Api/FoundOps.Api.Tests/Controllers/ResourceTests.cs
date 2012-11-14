@@ -7,6 +7,7 @@ using FoundOps.Common.Tools.ExtensionMethods;
 using FoundOps.Core.Models;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Models.CoreEntities.DesignData;
+using FoundOps.Core.Tools;
 using KellermanSoftware.CompareNetObjects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
@@ -901,7 +902,7 @@ namespace FoundOps.Api.Tests.Controllers
 
             //Save and propagate the name change
             CoreEntitiesContainer.SaveChanges();
-            CoreEntitiesContainer.PropagateNameChange(serviceTemplate.Id);
+            CoreEntitiesContainer.PropagateNameChange(serviceTemplate.Id, CoreEntitiesContainer.CurrentUserAccount().First().Id);
 
             //Use the function TestServiceTemplateNamePropagationSuccess to check that all Service Templates and Routes had their names changed
             using (var conn = new SqlConnection(ServerConstants.SqlConnectionString))

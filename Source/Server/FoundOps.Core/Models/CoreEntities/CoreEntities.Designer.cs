@@ -881,88 +881,183 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        /// <param name="serviceProviderIdContext">No Metadata Documentation available.</param>
-        /// <param name="serviceDate">No Metadata Documentation available.</param>
-        public int sp_GetUnroutedServicesForDate(Nullable<global::System.Guid> serviceProviderIdContext, Nullable<global::System.DateTime> serviceDate)
+        /// <param name="providerId">No Metadata Documentation available.</param>
+        public int DeleteBasicPartyBasedOnId(Nullable<global::System.Guid> providerId)
         {
-            ObjectParameter serviceProviderIdContextParameter;
-            if (serviceProviderIdContext.HasValue)
+            ObjectParameter providerIdParameter;
+            if (providerId.HasValue)
             {
-                serviceProviderIdContextParameter = new ObjectParameter("serviceProviderIdContext", serviceProviderIdContext);
+                providerIdParameter = new ObjectParameter("providerId", providerId);
             }
             else
             {
-                serviceProviderIdContextParameter = new ObjectParameter("serviceProviderIdContext", typeof(global::System.Guid));
+                providerIdParameter = new ObjectParameter("providerId", typeof(global::System.Guid));
             }
     
-            ObjectParameter serviceDateParameter;
-            if (serviceDate.HasValue)
-            {
-                serviceDateParameter = new ObjectParameter("serviceDate", serviceDate);
-            }
-            else
-            {
-                serviceDateParameter = new ObjectParameter("serviceDate", typeof(global::System.DateTime));
-            }
-    
-            return base.ExecuteFunction("sp_GetUnroutedServicesForDate", serviceProviderIdContextParameter, serviceDateParameter);
+            return base.ExecuteFunction("DeleteBasicPartyBasedOnId", providerIdParameter);
         }
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        /// <param name="serviceTemplateId">No Metadata Documentation available.</param>
-        public int PropagateNewServiceTemplateToClients(Nullable<global::System.Guid> serviceTemplateId)
+        /// <param name="providerId">No Metadata Documentation available.</param>
+        public int DeleteBusinessAccountBasedOnId(Nullable<global::System.Guid> providerId)
         {
-            ObjectParameter serviceTemplateIdParameter;
-            if (serviceTemplateId.HasValue)
+            ObjectParameter providerIdParameter;
+            if (providerId.HasValue)
             {
-                serviceTemplateIdParameter = new ObjectParameter("serviceTemplateId", serviceTemplateId);
+                providerIdParameter = new ObjectParameter("providerId", providerId);
             }
             else
             {
-                serviceTemplateIdParameter = new ObjectParameter("serviceTemplateId", typeof(global::System.Guid));
+                providerIdParameter = new ObjectParameter("providerId", typeof(global::System.Guid));
             }
     
-            return base.ExecuteFunction("PropagateNewServiceTemplateToClients", serviceTemplateIdParameter);
+            return base.ExecuteFunction("DeleteBusinessAccountBasedOnId", providerIdParameter);
         }
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        /// <param name="fieldId">No Metadata Documentation available.</param>
-        public int PropagateNewFields(Nullable<global::System.Guid> fieldId)
+        /// <param name="clientId">No Metadata Documentation available.</param>
+        public int DeleteClientBasedOnId(Nullable<global::System.Guid> clientId)
         {
-            ObjectParameter fieldIdParameter;
-            if (fieldId.HasValue)
+            ObjectParameter clientIdParameter;
+            if (clientId.HasValue)
             {
-                fieldIdParameter = new ObjectParameter("FieldId", fieldId);
+                clientIdParameter = new ObjectParameter("clientId", clientId);
             }
             else
             {
-                fieldIdParameter = new ObjectParameter("FieldId", typeof(global::System.Guid));
+                clientIdParameter = new ObjectParameter("clientId", typeof(global::System.Guid));
             }
     
-            return base.ExecuteFunction("PropagateNewFields", fieldIdParameter);
+            return base.ExecuteFunction("DeleteClientBasedOnId", clientIdParameter);
         }
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        /// <param name="serviceTemplateId">No Metadata Documentation available.</param>
-        public int PropagateNameChange(Nullable<global::System.Guid> serviceTemplateId)
+        /// <param name="parentFieldId">No Metadata Documentation available.</param>
+        public int DeleteFieldAndChildrenBasedOnFieldId(Nullable<global::System.Guid> parentFieldId)
         {
-            ObjectParameter serviceTemplateIdParameter;
-            if (serviceTemplateId.HasValue)
+            ObjectParameter parentFieldIdParameter;
+            if (parentFieldId.HasValue)
             {
-                serviceTemplateIdParameter = new ObjectParameter("serviceTemplateId", serviceTemplateId);
+                parentFieldIdParameter = new ObjectParameter("parentFieldId", parentFieldId);
             }
             else
             {
-                serviceTemplateIdParameter = new ObjectParameter("serviceTemplateId", typeof(global::System.Guid));
+                parentFieldIdParameter = new ObjectParameter("parentFieldId", typeof(global::System.Guid));
             }
     
-            return base.ExecuteFunction("PropagateNameChange", serviceTemplateIdParameter);
+            return base.ExecuteFunction("DeleteFieldAndChildrenBasedOnFieldId", parentFieldIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="locationId">No Metadata Documentation available.</param>
+        public int DeleteLocationBasedOnId(Nullable<global::System.Guid> locationId)
+        {
+            ObjectParameter locationIdParameter;
+            if (locationId.HasValue)
+            {
+                locationIdParameter = new ObjectParameter("locationId", locationId);
+            }
+            else
+            {
+                locationIdParameter = new ObjectParameter("locationId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteLocationBasedOnId", locationIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="recurringServiceId">No Metadata Documentation available.</param>
+        public int DeleteRecurringService(Nullable<global::System.Guid> recurringServiceId)
+        {
+            ObjectParameter recurringServiceIdParameter;
+            if (recurringServiceId.HasValue)
+            {
+                recurringServiceIdParameter = new ObjectParameter("recurringServiceId", recurringServiceId);
+            }
+            else
+            {
+                recurringServiceIdParameter = new ObjectParameter("recurringServiceId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteRecurringService", recurringServiceIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="parentTemplateId">No Metadata Documentation available.</param>
+        public int DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId(Nullable<global::System.Guid> parentTemplateId)
+        {
+            ObjectParameter parentTemplateIdParameter;
+            if (parentTemplateId.HasValue)
+            {
+                parentTemplateIdParameter = new ObjectParameter("parentTemplateId", parentTemplateId);
+            }
+            else
+            {
+                parentTemplateIdParameter = new ObjectParameter("parentTemplateId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId", parentTemplateIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="serviceProviderId">No Metadata Documentation available.</param>
+        /// <param name="ownerClientId">No Metadata Documentation available.</param>
+        public int DeleteServiceTemplatesAndChildrenBasedOnContextId(Nullable<global::System.Guid> serviceProviderId, Nullable<global::System.Guid> ownerClientId)
+        {
+            ObjectParameter serviceProviderIdParameter;
+            if (serviceProviderId.HasValue)
+            {
+                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", serviceProviderId);
+            }
+            else
+            {
+                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter ownerClientIdParameter;
+            if (ownerClientId.HasValue)
+            {
+                ownerClientIdParameter = new ObjectParameter("ownerClientId", ownerClientId);
+            }
+            else
+            {
+                ownerClientIdParameter = new ObjectParameter("ownerClientId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteServiceTemplatesAndChildrenBasedOnContextId", serviceProviderIdParameter, ownerClientIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="providerId">No Metadata Documentation available.</param>
+        public int DeleteUserAccountBasedOnId(Nullable<global::System.Guid> providerId)
+        {
+            ObjectParameter providerIdParameter;
+            if (providerId.HasValue)
+            {
+                providerIdParameter = new ObjectParameter("providerId", providerId);
+            }
+            else
+            {
+                providerIdParameter = new ObjectParameter("providerId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("DeleteUserAccountBasedOnId", providerIdParameter);
         }
     
         /// <summary>
@@ -971,10 +1066,12 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <param name="serviceProviderIdContext">No Metadata Documentation available.</param>
         /// <param name="clientIdContext">No Metadata Documentation available.</param>
         /// <param name="recurringServiceIdContext">No Metadata Documentation available.</param>
-        /// <param name="firstDate">No Metadata Documentation available.</param>
-        /// <param name="lastDate">No Metadata Documentation available.</param>
+        /// <param name="seedDate">No Metadata Documentation available.</param>
+        /// <param name="frontBackMinimum">No Metadata Documentation available.</param>
+        /// <param name="getPrevious">No Metadata Documentation available.</param>
+        /// <param name="getNext">No Metadata Documentation available.</param>
         /// <param name="serviceTypeContext">No Metadata Documentation available.</param>
-        public int GetServiceTemplatesWithDateAndDetails(Nullable<global::System.Guid> serviceProviderIdContext, Nullable<global::System.Guid> clientIdContext, Nullable<global::System.Guid> recurringServiceIdContext, Nullable<global::System.DateTime> firstDate, Nullable<global::System.DateTime> lastDate, global::System.String serviceTypeContext)
+        public ObjectResult<Nullable<global::System.DateTime>> GetDateRangeForServices(Nullable<global::System.Guid> serviceProviderIdContext, Nullable<global::System.Guid> clientIdContext, Nullable<global::System.Guid> recurringServiceIdContext, Nullable<global::System.DateTime> seedDate, Nullable<global::System.Int32> frontBackMinimum, Nullable<global::System.Boolean> getPrevious, Nullable<global::System.Boolean> getNext, global::System.String serviceTypeContext)
         {
             ObjectParameter serviceProviderIdContextParameter;
             if (serviceProviderIdContext.HasValue)
@@ -1006,24 +1103,44 @@ namespace FoundOps.Core.Models.CoreEntities
                 recurringServiceIdContextParameter = new ObjectParameter("recurringServiceIdContext", typeof(global::System.Guid));
             }
     
-            ObjectParameter firstDateParameter;
-            if (firstDate.HasValue)
+            ObjectParameter seedDateParameter;
+            if (seedDate.HasValue)
             {
-                firstDateParameter = new ObjectParameter("firstDate", firstDate);
+                seedDateParameter = new ObjectParameter("seedDate", seedDate);
             }
             else
             {
-                firstDateParameter = new ObjectParameter("firstDate", typeof(global::System.DateTime));
+                seedDateParameter = new ObjectParameter("seedDate", typeof(global::System.DateTime));
             }
     
-            ObjectParameter lastDateParameter;
-            if (lastDate.HasValue)
+            ObjectParameter frontBackMinimumParameter;
+            if (frontBackMinimum.HasValue)
             {
-                lastDateParameter = new ObjectParameter("lastDate", lastDate);
+                frontBackMinimumParameter = new ObjectParameter("frontBackMinimum", frontBackMinimum);
             }
             else
             {
-                lastDateParameter = new ObjectParameter("lastDate", typeof(global::System.DateTime));
+                frontBackMinimumParameter = new ObjectParameter("frontBackMinimum", typeof(global::System.Int32));
+            }
+    
+            ObjectParameter getPreviousParameter;
+            if (getPrevious.HasValue)
+            {
+                getPreviousParameter = new ObjectParameter("getPrevious", getPrevious);
+            }
+            else
+            {
+                getPreviousParameter = new ObjectParameter("getPrevious", typeof(global::System.Boolean));
+            }
+    
+            ObjectParameter getNextParameter;
+            if (getNext.HasValue)
+            {
+                getNextParameter = new ObjectParameter("getNext", getNext);
+            }
+            else
+            {
+                getNextParameter = new ObjectParameter("getNext", typeof(global::System.Boolean));
             }
     
             ObjectParameter serviceTypeContextParameter;
@@ -1036,59 +1153,37 @@ namespace FoundOps.Core.Models.CoreEntities
                 serviceTypeContextParameter = new ObjectParameter("serviceTypeContext", typeof(global::System.String));
             }
     
-            return base.ExecuteFunction("GetServiceTemplatesWithDateAndDetails", serviceProviderIdContextParameter, clientIdContextParameter, recurringServiceIdContextParameter, firstDateParameter, lastDateParameter, serviceTypeContextParameter);
+            return base.ExecuteFunction<Nullable<global::System.DateTime>>("GetDateRangeForServices", serviceProviderIdContextParameter, clientIdContextParameter, recurringServiceIdContextParameter, seedDateParameter, frontBackMinimumParameter, getPreviousParameter, getNextParameter, serviceTypeContextParameter);
         }
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        /// <param name="serviceProviderContextId">No Metadata Documentation available.</param>
-        /// <param name="clientContextId">No Metadata Documentation available.</param>
-        /// <param name="serviceTemplateContextId">No Metadata Documentation available.</param>
-        /// <param name="levelInt">No Metadata Documentation available.</param>
-        public int GetServiceTemplatesAndFields(Nullable<global::System.Guid> serviceProviderContextId, Nullable<global::System.Guid> clientContextId, Nullable<global::System.Guid> serviceTemplateContextId, Nullable<global::System.Int32> levelInt)
+        /// <param name="businessAccountId">No Metadata Documentation available.</param>
+        /// <param name="serviceType">No Metadata Documentation available.</param>
+        public ObjectResult<FieldJavaScript> GetFieldsInJavaScriptFormat(Nullable<global::System.Guid> businessAccountId, global::System.String serviceType)
         {
-            ObjectParameter serviceProviderContextIdParameter;
-            if (serviceProviderContextId.HasValue)
+            ObjectParameter businessAccountIdParameter;
+            if (businessAccountId.HasValue)
             {
-                serviceProviderContextIdParameter = new ObjectParameter("serviceProviderContextId", serviceProviderContextId);
+                businessAccountIdParameter = new ObjectParameter("businessAccountId", businessAccountId);
             }
             else
             {
-                serviceProviderContextIdParameter = new ObjectParameter("serviceProviderContextId", typeof(global::System.Guid));
+                businessAccountIdParameter = new ObjectParameter("businessAccountId", typeof(global::System.Guid));
             }
     
-            ObjectParameter clientContextIdParameter;
-            if (clientContextId.HasValue)
+            ObjectParameter serviceTypeParameter;
+            if (serviceType != null)
             {
-                clientContextIdParameter = new ObjectParameter("clientContextId", clientContextId);
+                serviceTypeParameter = new ObjectParameter("serviceType", serviceType);
             }
             else
             {
-                clientContextIdParameter = new ObjectParameter("clientContextId", typeof(global::System.Guid));
+                serviceTypeParameter = new ObjectParameter("serviceType", typeof(global::System.String));
             }
     
-            ObjectParameter serviceTemplateContextIdParameter;
-            if (serviceTemplateContextId.HasValue)
-            {
-                serviceTemplateContextIdParameter = new ObjectParameter("serviceTemplateContextId", serviceTemplateContextId);
-            }
-            else
-            {
-                serviceTemplateContextIdParameter = new ObjectParameter("serviceTemplateContextId", typeof(global::System.Guid));
-            }
-    
-            ObjectParameter levelIntParameter;
-            if (levelInt.HasValue)
-            {
-                levelIntParameter = new ObjectParameter("levelInt", levelInt);
-            }
-            else
-            {
-                levelIntParameter = new ObjectParameter("levelInt", typeof(global::System.Int32));
-            }
-    
-            return base.ExecuteFunction("GetServiceTemplatesAndFields", serviceProviderContextIdParameter, clientContextIdParameter, serviceTemplateContextIdParameter, levelIntParameter);
+            return base.ExecuteFunction<FieldJavaScript>("GetFieldsInJavaScriptFormat", businessAccountIdParameter, serviceTypeParameter);
         }
     
         /// <summary>
@@ -1179,61 +1274,53 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        /// <param name="serviceProviderId">No Metadata Documentation available.</param>
-        /// <param name="serviceDateUtc">No Metadata Documentation available.</param>
-        public ObjectResult<ResourceWithLastPoint> GetResourcesWithLatestPoint(Nullable<global::System.Guid> serviceProviderId, Nullable<global::System.DateTime> serviceDateUtc)
+        /// <param name="serviceProviderContextId">No Metadata Documentation available.</param>
+        /// <param name="clientContextId">No Metadata Documentation available.</param>
+        /// <param name="serviceTemplateContextId">No Metadata Documentation available.</param>
+        /// <param name="levelInt">No Metadata Documentation available.</param>
+        public int GetServiceTemplatesAndFields(Nullable<global::System.Guid> serviceProviderContextId, Nullable<global::System.Guid> clientContextId, Nullable<global::System.Guid> serviceTemplateContextId, Nullable<global::System.Int32> levelInt)
         {
-            ObjectParameter serviceProviderIdParameter;
-            if (serviceProviderId.HasValue)
+            ObjectParameter serviceProviderContextIdParameter;
+            if (serviceProviderContextId.HasValue)
             {
-                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", serviceProviderId);
+                serviceProviderContextIdParameter = new ObjectParameter("serviceProviderContextId", serviceProviderContextId);
             }
             else
             {
-                serviceProviderIdParameter = new ObjectParameter("serviceProviderId", typeof(global::System.Guid));
+                serviceProviderContextIdParameter = new ObjectParameter("serviceProviderContextId", typeof(global::System.Guid));
             }
     
-            ObjectParameter serviceDateUtcParameter;
-            if (serviceDateUtc.HasValue)
+            ObjectParameter clientContextIdParameter;
+            if (clientContextId.HasValue)
             {
-                serviceDateUtcParameter = new ObjectParameter("serviceDateUtc", serviceDateUtc);
+                clientContextIdParameter = new ObjectParameter("clientContextId", clientContextId);
             }
             else
             {
-                serviceDateUtcParameter = new ObjectParameter("serviceDateUtc", typeof(global::System.DateTime));
+                clientContextIdParameter = new ObjectParameter("clientContextId", typeof(global::System.Guid));
             }
     
-            return base.ExecuteFunction<ResourceWithLastPoint>("GetResourcesWithLatestPoint", serviceProviderIdParameter, serviceDateUtcParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        /// <param name="businessAccountId">No Metadata Documentation available.</param>
-        /// <param name="serviceType">No Metadata Documentation available.</param>
-        public ObjectResult<FieldJavaScript> GetFieldsInJavaScriptFormat(Nullable<global::System.Guid> businessAccountId, global::System.String serviceType)
-        {
-            ObjectParameter businessAccountIdParameter;
-            if (businessAccountId.HasValue)
+            ObjectParameter serviceTemplateContextIdParameter;
+            if (serviceTemplateContextId.HasValue)
             {
-                businessAccountIdParameter = new ObjectParameter("businessAccountId", businessAccountId);
+                serviceTemplateContextIdParameter = new ObjectParameter("serviceTemplateContextId", serviceTemplateContextId);
             }
             else
             {
-                businessAccountIdParameter = new ObjectParameter("businessAccountId", typeof(global::System.Guid));
+                serviceTemplateContextIdParameter = new ObjectParameter("serviceTemplateContextId", typeof(global::System.Guid));
             }
     
-            ObjectParameter serviceTypeParameter;
-            if (serviceType != null)
+            ObjectParameter levelIntParameter;
+            if (levelInt.HasValue)
             {
-                serviceTypeParameter = new ObjectParameter("serviceType", serviceType);
+                levelIntParameter = new ObjectParameter("levelInt", levelInt);
             }
             else
             {
-                serviceTypeParameter = new ObjectParameter("serviceType", typeof(global::System.String));
+                levelIntParameter = new ObjectParameter("levelInt", typeof(global::System.Int32));
             }
     
-            return base.ExecuteFunction<FieldJavaScript>("GetFieldsInJavaScriptFormat", businessAccountIdParameter, serviceTypeParameter);
+            return base.ExecuteFunction("GetServiceTemplatesAndFields", serviceProviderContextIdParameter, clientContextIdParameter, serviceTemplateContextIdParameter, levelIntParameter);
         }
     
         /// <summary>
@@ -1242,12 +1329,10 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <param name="serviceProviderIdContext">No Metadata Documentation available.</param>
         /// <param name="clientIdContext">No Metadata Documentation available.</param>
         /// <param name="recurringServiceIdContext">No Metadata Documentation available.</param>
-        /// <param name="seedDate">No Metadata Documentation available.</param>
-        /// <param name="frontBackMinimum">No Metadata Documentation available.</param>
-        /// <param name="getPrevious">No Metadata Documentation available.</param>
-        /// <param name="getNext">No Metadata Documentation available.</param>
+        /// <param name="firstDate">No Metadata Documentation available.</param>
+        /// <param name="lastDate">No Metadata Documentation available.</param>
         /// <param name="serviceTypeContext">No Metadata Documentation available.</param>
-        public int GetDateRangeForServices(Nullable<global::System.Guid> serviceProviderIdContext, Nullable<global::System.Guid> clientIdContext, Nullable<global::System.Guid> recurringServiceIdContext, Nullable<global::System.DateTime> seedDate, Nullable<global::System.Int32> frontBackMinimum, Nullable<global::System.Boolean> getPrevious, Nullable<global::System.Boolean> getNext, global::System.String serviceTypeContext)
+        public int GetServiceTemplatesWithDateAndDetails(Nullable<global::System.Guid> serviceProviderIdContext, Nullable<global::System.Guid> clientIdContext, Nullable<global::System.Guid> recurringServiceIdContext, Nullable<global::System.DateTime> firstDate, Nullable<global::System.DateTime> lastDate, global::System.String serviceTypeContext)
         {
             ObjectParameter serviceProviderIdContextParameter;
             if (serviceProviderIdContext.HasValue)
@@ -1279,44 +1364,24 @@ namespace FoundOps.Core.Models.CoreEntities
                 recurringServiceIdContextParameter = new ObjectParameter("recurringServiceIdContext", typeof(global::System.Guid));
             }
     
-            ObjectParameter seedDateParameter;
-            if (seedDate.HasValue)
+            ObjectParameter firstDateParameter;
+            if (firstDate.HasValue)
             {
-                seedDateParameter = new ObjectParameter("seedDate", seedDate);
+                firstDateParameter = new ObjectParameter("firstDate", firstDate);
             }
             else
             {
-                seedDateParameter = new ObjectParameter("seedDate", typeof(global::System.DateTime));
+                firstDateParameter = new ObjectParameter("firstDate", typeof(global::System.DateTime));
             }
     
-            ObjectParameter frontBackMinimumParameter;
-            if (frontBackMinimum.HasValue)
+            ObjectParameter lastDateParameter;
+            if (lastDate.HasValue)
             {
-                frontBackMinimumParameter = new ObjectParameter("frontBackMinimum", frontBackMinimum);
+                lastDateParameter = new ObjectParameter("lastDate", lastDate);
             }
             else
             {
-                frontBackMinimumParameter = new ObjectParameter("frontBackMinimum", typeof(global::System.Int32));
-            }
-    
-            ObjectParameter getPreviousParameter;
-            if (getPrevious.HasValue)
-            {
-                getPreviousParameter = new ObjectParameter("getPrevious", getPrevious);
-            }
-            else
-            {
-                getPreviousParameter = new ObjectParameter("getPrevious", typeof(global::System.Boolean));
-            }
-    
-            ObjectParameter getNextParameter;
-            if (getNext.HasValue)
-            {
-                getNextParameter = new ObjectParameter("getNext", getNext);
-            }
-            else
-            {
-                getNextParameter = new ObjectParameter("getNext", typeof(global::System.Boolean));
+                lastDateParameter = new ObjectParameter("lastDate", typeof(global::System.DateTime));
             }
     
             ObjectParameter serviceTypeContextParameter;
@@ -1329,34 +1394,192 @@ namespace FoundOps.Core.Models.CoreEntities
                 serviceTypeContextParameter = new ObjectParameter("serviceTypeContext", typeof(global::System.String));
             }
     
-            return base.ExecuteFunction("GetDateRangeForServices", serviceProviderIdContextParameter, clientIdContextParameter, recurringServiceIdContextParameter, seedDateParameter, frontBackMinimumParameter, getPreviousParameter, getNextParameter, serviceTypeContextParameter);
+            return base.ExecuteFunction("GetServiceTemplatesWithDateAndDetails", serviceProviderIdContextParameter, clientIdContextParameter, recurringServiceIdContextParameter, firstDateParameter, lastDateParameter, serviceTypeContextParameter);
         }
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        /// <param name="providerId">No Metadata Documentation available.</param>
-        public int DeleteUserAccountBasedOnId(Nullable<global::System.Guid> providerId)
+        /// <param name="serviceTemplateId">No Metadata Documentation available.</param>
+        /// <param name="userId">No Metadata Documentation available.</param>
+        public int PropagateNameChange(Nullable<global::System.Guid> serviceTemplateId, Nullable<global::System.Guid> userId)
         {
-            ObjectParameter providerIdParameter;
-            if (providerId.HasValue)
+            ObjectParameter serviceTemplateIdParameter;
+            if (serviceTemplateId.HasValue)
             {
-                providerIdParameter = new ObjectParameter("providerId", providerId);
+                serviceTemplateIdParameter = new ObjectParameter("serviceTemplateId", serviceTemplateId);
             }
             else
             {
-                providerIdParameter = new ObjectParameter("providerId", typeof(global::System.Guid));
+                serviceTemplateIdParameter = new ObjectParameter("serviceTemplateId", typeof(global::System.Guid));
             }
     
-            return base.ExecuteFunction("DeleteUserAccountBasedOnId", providerIdParameter);
+            ObjectParameter userIdParameter;
+            if (userId.HasValue)
+            {
+                userIdParameter = new ObjectParameter("userId", userId);
+            }
+            else
+            {
+                userIdParameter = new ObjectParameter("userId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("PropagateNameChange", serviceTemplateIdParameter, userIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="fieldId">No Metadata Documentation available.</param>
+        public int PropagateNewFields(Nullable<global::System.Guid> fieldId)
+        {
+            ObjectParameter fieldIdParameter;
+            if (fieldId.HasValue)
+            {
+                fieldIdParameter = new ObjectParameter("FieldId", fieldId);
+            }
+            else
+            {
+                fieldIdParameter = new ObjectParameter("FieldId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("PropagateNewFields", fieldIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="serviceTemplateId">No Metadata Documentation available.</param>
+        public int PropagateNewServiceTemplateToClients(Nullable<global::System.Guid> serviceTemplateId)
+        {
+            ObjectParameter serviceTemplateIdParameter;
+            if (serviceTemplateId.HasValue)
+            {
+                serviceTemplateIdParameter = new ObjectParameter("serviceTemplateId", serviceTemplateId);
+            }
+            else
+            {
+                serviceTemplateIdParameter = new ObjectParameter("serviceTemplateId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("PropagateNewServiceTemplateToClients", serviceTemplateIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="serviceProviderIdContext">No Metadata Documentation available.</param>
+        /// <param name="serviceDate">No Metadata Documentation available.</param>
+        public int sp_GetUnroutedServicesForDate(Nullable<global::System.Guid> serviceProviderIdContext, Nullable<global::System.DateTime> serviceDate)
+        {
+            ObjectParameter serviceProviderIdContextParameter;
+            if (serviceProviderIdContext.HasValue)
+            {
+                serviceProviderIdContextParameter = new ObjectParameter("serviceProviderIdContext", serviceProviderIdContext);
+            }
+            else
+            {
+                serviceProviderIdContextParameter = new ObjectParameter("serviceProviderIdContext", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter serviceDateParameter;
+            if (serviceDate.HasValue)
+            {
+                serviceDateParameter = new ObjectParameter("serviceDate", serviceDate);
+            }
+            else
+            {
+                serviceDateParameter = new ObjectParameter("serviceDate", typeof(global::System.DateTime));
+            }
+    
+            return base.ExecuteFunction("sp_GetUnroutedServicesForDate", serviceProviderIdContextParameter, serviceDateParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="serviceTemplateId">No Metadata Documentation available.</param>
+        /// <param name="fieldName">No Metadata Documentation available.</param>
+        public int TestFieldPropagationSuccess(Nullable<global::System.Guid> serviceTemplateId, global::System.String fieldName)
+        {
+            ObjectParameter serviceTemplateIdParameter;
+            if (serviceTemplateId.HasValue)
+            {
+                serviceTemplateIdParameter = new ObjectParameter("serviceTemplateId", serviceTemplateId);
+            }
+            else
+            {
+                serviceTemplateIdParameter = new ObjectParameter("serviceTemplateId", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter fieldNameParameter;
+            if (fieldName != null)
+            {
+                fieldNameParameter = new ObjectParameter("fieldName", fieldName);
+            }
+            else
+            {
+                fieldNameParameter = new ObjectParameter("fieldName", typeof(global::System.String));
+            }
+    
+            return base.ExecuteFunction("TestFieldPropagationSuccess", serviceTemplateIdParameter, fieldNameParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="serviceTemplateId">No Metadata Documentation available.</param>
+        public int TestNewServiceTemplatePropagationSuccess(Nullable<global::System.Guid> serviceTemplateId)
+        {
+            ObjectParameter serviceTemplateIdParameter;
+            if (serviceTemplateId.HasValue)
+            {
+                serviceTemplateIdParameter = new ObjectParameter("serviceTemplateId", serviceTemplateId);
+            }
+            else
+            {
+                serviceTemplateIdParameter = new ObjectParameter("serviceTemplateId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("TestNewServiceTemplatePropagationSuccess", serviceTemplateIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="serviceTemplateId">No Metadata Documentation available.</param>
+        /// <param name="oldName">No Metadata Documentation available.</param>
+        public int TestServiceTemplateNamePropagationSuccess(Nullable<global::System.Guid> serviceTemplateId, global::System.String oldName)
+        {
+            ObjectParameter serviceTemplateIdParameter;
+            if (serviceTemplateId.HasValue)
+            {
+                serviceTemplateIdParameter = new ObjectParameter("serviceTemplateId", serviceTemplateId);
+            }
+            else
+            {
+                serviceTemplateIdParameter = new ObjectParameter("serviceTemplateId", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter oldNameParameter;
+            if (oldName != null)
+            {
+                oldNameParameter = new ObjectParameter("oldName", oldName);
+            }
+            else
+            {
+                oldNameParameter = new ObjectParameter("oldName", typeof(global::System.String));
+            }
+    
+            return base.ExecuteFunction("TestServiceTemplateNamePropagationSuccess", serviceTemplateIdParameter, oldNameParameter);
         }
     
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
         /// <param name="serviceProviderId">No Metadata Documentation available.</param>
-        /// <param name="ownerClientId">No Metadata Documentation available.</param>
-        public int DeleteServiceTemplatesAndChildrenBasedOnContextId(Nullable<global::System.Guid> serviceProviderId, Nullable<global::System.Guid> ownerClientId)
+        /// <param name="serviceDateUtc">No Metadata Documentation available.</param>
+        public ObjectResult<ResourceWithLastPoint> GetResourcesWithLatestPoint(Nullable<global::System.Guid> serviceProviderId, Nullable<global::System.DateTime> serviceDateUtc)
         {
             ObjectParameter serviceProviderIdParameter;
             if (serviceProviderId.HasValue)
@@ -1368,112 +1591,17 @@ namespace FoundOps.Core.Models.CoreEntities
                 serviceProviderIdParameter = new ObjectParameter("serviceProviderId", typeof(global::System.Guid));
             }
     
-            ObjectParameter ownerClientIdParameter;
-            if (ownerClientId.HasValue)
+            ObjectParameter serviceDateUtcParameter;
+            if (serviceDateUtc.HasValue)
             {
-                ownerClientIdParameter = new ObjectParameter("ownerClientId", ownerClientId);
+                serviceDateUtcParameter = new ObjectParameter("serviceDateUtc", serviceDateUtc);
             }
             else
             {
-                ownerClientIdParameter = new ObjectParameter("ownerClientId", typeof(global::System.Guid));
+                serviceDateUtcParameter = new ObjectParameter("serviceDateUtc", typeof(global::System.DateTime));
             }
     
-            return base.ExecuteFunction("DeleteServiceTemplatesAndChildrenBasedOnContextId", serviceProviderIdParameter, ownerClientIdParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        /// <param name="parentTemplateId">No Metadata Documentation available.</param>
-        public int DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId(Nullable<global::System.Guid> parentTemplateId)
-        {
-            ObjectParameter parentTemplateIdParameter;
-            if (parentTemplateId.HasValue)
-            {
-                parentTemplateIdParameter = new ObjectParameter("parentTemplateId", parentTemplateId);
-            }
-            else
-            {
-                parentTemplateIdParameter = new ObjectParameter("parentTemplateId", typeof(global::System.Guid));
-            }
-    
-            return base.ExecuteFunction("DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId", parentTemplateIdParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        /// <param name="recurringServiceId">No Metadata Documentation available.</param>
-        public int DeleteRecurringService(Nullable<global::System.Guid> recurringServiceId)
-        {
-            ObjectParameter recurringServiceIdParameter;
-            if (recurringServiceId.HasValue)
-            {
-                recurringServiceIdParameter = new ObjectParameter("recurringServiceId", recurringServiceId);
-            }
-            else
-            {
-                recurringServiceIdParameter = new ObjectParameter("recurringServiceId", typeof(global::System.Guid));
-            }
-    
-            return base.ExecuteFunction("DeleteRecurringService", recurringServiceIdParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        /// <param name="parentFieldId">No Metadata Documentation available.</param>
-        public int DeleteFieldAndChildrenBasedOnFieldId(Nullable<global::System.Guid> parentFieldId)
-        {
-            ObjectParameter parentFieldIdParameter;
-            if (parentFieldId.HasValue)
-            {
-                parentFieldIdParameter = new ObjectParameter("parentFieldId", parentFieldId);
-            }
-            else
-            {
-                parentFieldIdParameter = new ObjectParameter("parentFieldId", typeof(global::System.Guid));
-            }
-    
-            return base.ExecuteFunction("DeleteFieldAndChildrenBasedOnFieldId", parentFieldIdParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        /// <param name="providerId">No Metadata Documentation available.</param>
-        public int DeleteBusinessAccountBasedOnId(Nullable<global::System.Guid> providerId)
-        {
-            ObjectParameter providerIdParameter;
-            if (providerId.HasValue)
-            {
-                providerIdParameter = new ObjectParameter("providerId", providerId);
-            }
-            else
-            {
-                providerIdParameter = new ObjectParameter("providerId", typeof(global::System.Guid));
-            }
-    
-            return base.ExecuteFunction("DeleteBusinessAccountBasedOnId", providerIdParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        /// <param name="providerId">No Metadata Documentation available.</param>
-        public int DeleteBasicPartyBasedOnId(Nullable<global::System.Guid> providerId)
-        {
-            ObjectParameter providerIdParameter;
-            if (providerId.HasValue)
-            {
-                providerIdParameter = new ObjectParameter("providerId", providerId);
-            }
-            else
-            {
-                providerIdParameter = new ObjectParameter("providerId", typeof(global::System.Guid));
-            }
-    
-            return base.ExecuteFunction("DeleteBasicPartyBasedOnId", providerIdParameter);
+            return base.ExecuteFunction<ResourceWithLastPoint>("GetResourcesWithLatestPoint", serviceProviderIdParameter, serviceDateUtcParameter);
         }
 
         #endregion

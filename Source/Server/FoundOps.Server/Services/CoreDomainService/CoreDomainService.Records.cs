@@ -145,6 +145,9 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void UpdateClient(Client currentClient)
         {
+            currentClient.LastModifiedDate = DateTime.UtcNow;
+            currentClient.LastModifyingUserId = CurrentUserAccount().Id;
+
             this.ObjectContext.Clients.AttachAsModified(currentClient);
         }
 
@@ -231,6 +234,9 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void UpdateEmployee(Employee currentEmployee)
         {
+            currentEmployee.LastModifiedDate = DateTime.UtcNow;
+            currentEmployee.LastModifyingUserId = CurrentUserAccount().Id;
+
             this.ObjectContext.Employees.AttachAsModified(currentEmployee);
         }
 
@@ -279,6 +285,9 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void UpdateEmployeeHistoryEntry(EmployeeHistoryEntry currentEmployeeHistoryEntry)
         {
+            currentEmployeeHistoryEntry.LastModifiedDate = DateTime.UtcNow;
+            currentEmployeeHistoryEntry.LastModifyingUserId = CurrentUserAccount().Id;
+
             this.ObjectContext.EmployeeHistoryEntries.AttachAsModified(currentEmployeeHistoryEntry);
         }
 
@@ -483,6 +492,9 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void UpdateLocation(Location currentLocation)
         {
+            currentLocation.LastModifiedDate = DateTime.UtcNow;
+            currentLocation.LastModifyingUserId = CurrentUserAccount().Id;
+
             this.ObjectContext.Locations.AttachAsModified(currentLocation);
         }
 
@@ -556,6 +568,9 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void UpdateRegion(Region currentRegion)
         {
+            currentRegion.LastModifiedDate = DateTime.UtcNow;
+            currentRegion.LastModifyingUserId = CurrentUserAccount().Id;
+
             this.ObjectContext.Regions.AttachAsModified(currentRegion);
         }
 
@@ -603,6 +618,9 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void UpdateSubLocation(SubLocation currentSubLocation)
         {
+            currentSubLocation.LastModifiedDate = DateTime.UtcNow;
+            currentSubLocation.LastModifyingUserId = CurrentUserAccount().Id;
+
             this.ObjectContext.SubLocations.AttachAsModified(currentSubLocation);
         }
 
@@ -671,6 +689,9 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void UpdateVehicle(Vehicle currentVehicle)
         {
+            currentVehicle.LastModifiedDate = DateTime.UtcNow;
+            currentVehicle.LastModifyingUserId = CurrentUserAccount().Id;
+
             this.ObjectContext.Vehicles.AttachAsModified(currentVehicle);
         }
 
@@ -731,6 +752,9 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void UpdateVehicleMaintenanceLineItem(VehicleMaintenanceLineItem currentVehicleMaintenanceLineItem)
         {
+            currentVehicleMaintenanceLineItem.LastModifiedDate = DateTime.UtcNow;
+            currentVehicleMaintenanceLineItem.LastModifyingUserId = CurrentUserAccount().Id;
+
             this.ObjectContext.VehicleMaintenanceLineItems.AttachAsModified(currentVehicleMaintenanceLineItem);
         }
 
@@ -773,6 +797,9 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void UpdateVehicleMaintenanceLogEntry(VehicleMaintenanceLogEntry currentVehicleMaintenanceLogEntry)
         {
+            currentVehicleMaintenanceLogEntry.LastModifiedDate = DateTime.UtcNow;
+            currentVehicleMaintenanceLogEntry.LastModifyingUserId = CurrentUserAccount().Id;
+
             this.ObjectContext.VehicleMaintenanceLog.AttachAsModified(currentVehicleMaintenanceLogEntry);
         }
 

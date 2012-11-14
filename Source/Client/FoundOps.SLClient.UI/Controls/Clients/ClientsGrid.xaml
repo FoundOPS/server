@@ -14,7 +14,7 @@
             <telerik:RadGridView.Columns>
                 <!--Filtering and sorting does not work/is not setup because Name is a generated property. Consider looking into http://damieng.com/blog/2009/06/24/client-side-properties-and-any-remote-linq-provider-->
                 <telerik:GridViewDataColumn UniqueName="OwnedPartyDisplayName" Header="Name" IsReadOnly="True" IsFilterable="True" IsSortable="True" DataMemberBinding="{Binding Name}" />
-                <telerik:GridViewDataColumn Header="Date Added" IsReadOnly="True" DataMemberBinding="{Binding DateAdded}" DataFormatString="{}{0:d}" Width="*" />
+                <telerik:GridViewDataColumn Header="Date Added" IsReadOnly="True" DataMemberBinding="{Binding CreatedDate}" DataFormatString="{}{0:d}" Width="*" />
             </telerik:RadGridView.Columns>
         </telerik:RadGridView>
     </Grid>

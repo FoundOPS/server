@@ -27,6 +27,7 @@ namespace FoundOps.Core.Models.CoreEntities
             Id = Guid.NewGuid();
             ServicedBy = "";
             Comments = "";
+            CreatedDate = DateTime.UtcNow;
             OnCreation();
         }
 

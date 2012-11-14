@@ -31,6 +31,7 @@ namespace FoundOps.Core.Models.CoreEntities
             this.AdminDistrictTwo = "";
             this.AdminDistrictOne = "";
             this.CountryCode = "";
+            CreatedDate = DateTime.UtcNow;
             OnCreation();
         }
 

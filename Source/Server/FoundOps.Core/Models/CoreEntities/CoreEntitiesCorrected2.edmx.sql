@@ -5536,7 +5536,6 @@ BEGIN
 			  RouteDestinationId UNIQUEIDENTIFIER,
 			  ClientId UNIQUEIDENTIFIER,
 			  ServiceId UNIQUEIDENTIFIER,
-			  ReadOnly BIT,
 			  BusinessAccountId UNIQUEIDENTIFIER,
 			  EstimatedDuration TIME,
 			  Name NVARCHAR(MAX),
@@ -5554,15 +5553,14 @@ BEGIN
 	FROM #ServicesTableToReturn
 
 	UPDATE #RouteTasks
-	SET ReadOnly = 0,
-		BusinessAccountId = @serviceProviderIdContext,
+	SET BusinessAccountId = @serviceProviderIdContext,
 		EstimatedDuration = '0:0:16.00',
 		OrderInRouteDestination = 0,
 		TaskStatusId = (SELECT TOP 1 Id FROM dbo.TaskStatuses WHERE BusinessAccountId = @serviceProviderIdContext AND DefaultTypeInt = 1),
 		StatusInt = 0,
 		CreatedDate = GETUTCDATE()
 
-	INSERT INTO dbo.RouteTasks
+	INSERT INTO dbo.RouteTasks (Id, LocationId, RouteDestinationId, ClientId, ServiceId, BusinessAccountId, EstimatedDuration, Name, StatusInt, [Date], OrderInRouteDestination, RecurringServiceId, DelayedChildId, TaskStatusId, CreatedDate)
 	SELECT * FROM #RouteTasks
 
 	SELECT * FROM dbo.RouteTasks
@@ -5768,7 +5766,8 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE PROCEDURE [dbo].[PropagateNameChange] 
-	(@serviceTemplateId uniqueidentifier)
+	(@serviceTemplateId UNIQUEIDENTIFIER,
+	 @userId UNIQUEIDENTIFIER)
 
 AS
 BEGIN
@@ -5813,7 +5812,9 @@ BEGIN
 					) AND Name <> @newName)
 
 	UPDATE dbo.ServiceTemplates
-	SET Name = @newName
+	SET Name = @newName,
+		LastModifiedDate = GETUTCDATE(),
+		LastModifyingUserId = @userId
 	WHERE Id IN
 	(
 		SELECT Id
@@ -5821,7 +5822,9 @@ BEGIN
 	) 
 
 	UPDATE dbo.[Routes] 
-	SET RouteType = @newName
+	SET RouteType = @newName,
+		LastModifiedDate = GETUTCDATE(),
+		LastModifyingUserId = @userId
 	WHERE RouteType = @oldName   
 
 	DROP TABLE  #TempTable

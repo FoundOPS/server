@@ -7,7 +7,8 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE PROCEDURE [dbo].[PropagateNameChange] 
-	(@serviceTemplateId uniqueidentifier)
+	(@serviceTemplateId UNIQUEIDENTIFIER,
+	 @userId UNIQUEIDENTIFIER)
 
 AS
 BEGIN
@@ -52,7 +53,9 @@ BEGIN
 					) AND Name <> @newName)
 
 	UPDATE dbo.ServiceTemplates
-	SET Name = @newName
+	SET Name = @newName,
+		LastModifiedDate = GETUTCDATE(),
+		LastModifyingUserId = @userId
 	WHERE Id IN
 	(
 		SELECT Id
@@ -60,7 +63,9 @@ BEGIN
 	) 
 
 	UPDATE dbo.[Routes] 
-	SET RouteType = @newName
+	SET RouteType = @newName,
+		LastModifiedDate = GETUTCDATE(),
+		LastModifyingUserId = @userId
 	WHERE RouteType = @oldName   
 
 	DROP TABLE  #TempTable

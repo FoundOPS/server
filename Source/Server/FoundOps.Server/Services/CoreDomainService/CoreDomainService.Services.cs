@@ -115,8 +115,14 @@ namespace FoundOps.Server.Services.CoreDomainService
                     routeTask.Date = currentService.ServiceDate;
 
                     routeTask.TaskStatus = this.ObjectContext.TaskStatuses.FirstOrDefault(ts => ts.BusinessAccountId == routeTask.BusinessAccountId && ts.DefaultTypeInt == ((int)StatusDetail.CreatedDefault));
+
+                    routeTask.LastModifiedDate = DateTime.UtcNow;
+                    routeTask.LastModifyingUserId = CurrentUserAccount().Id;
                 }
             }
+
+            currentService.LastModifiedDate = DateTime.UtcNow;
+            currentService.LastModifyingUserId = CurrentUserAccount().Id;
 
             this.ObjectContext.Services.AttachAsModified(currentService);
         }
@@ -503,6 +509,9 @@ namespace FoundOps.Server.Services.CoreDomainService
 
                 DeleteServices(servicesToDelete);
             }
+
+            currentRecurringService.LastModifiedDate = DateTime.UtcNow;
+            currentRecurringService.LastModifyingUserId = CurrentUserAccount().Id;
 
             this.ObjectContext.RecurringServices.AttachAsModified(currentRecurringService);
         }

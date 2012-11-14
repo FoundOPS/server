@@ -303,9 +303,12 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             this.ObjectContext.ServiceTemplates.AttachAsModified(currentServiceTemplate);
 
+            currentServiceTemplate.LastModifiedDate = DateTime.UtcNow;
+            currentServiceTemplate.LastModifyingUserId = CurrentUserAccount().Id;
+
             ObjectContext.SaveChanges();
 
-            ObjectContext.PropagateNameChange(currentServiceTemplate.Id);
+            ObjectContext.PropagateNameChange(currentServiceTemplate.Id, CurrentUserAccount().Id);
         }
 
         #endregion

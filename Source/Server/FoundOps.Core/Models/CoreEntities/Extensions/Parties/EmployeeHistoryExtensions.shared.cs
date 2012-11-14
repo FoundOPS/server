@@ -27,6 +27,7 @@ namespace FoundOps.Core.Models.CoreEntities
             Type = "";
             Summary = "";
             Notes = "";
+            CreatedDate = DateTime.UtcNow;
             OnCreation();
         }
 

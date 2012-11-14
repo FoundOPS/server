@@ -29,6 +29,7 @@ namespace FoundOps.Core.Models.CoreEntities
         public new void OnCreate()
         {
             base.OnCreate();
+            CreatedDate = DateTime.UtcNow;
             OnCreation();
         }
 
@@ -58,6 +59,7 @@ namespace FoundOps.Core.Models.CoreEntities
         {
             var child = (LocationField)base.MakeChild();
             child.Value = this.Value;
+            child.CreatedDate = this.CreatedDate;
             return child;
         }
 #endif

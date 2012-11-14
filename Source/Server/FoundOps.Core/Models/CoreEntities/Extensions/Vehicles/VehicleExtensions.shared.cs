@@ -29,6 +29,7 @@ namespace FoundOps.Core.Models.CoreEntities
             Make = "";
             Model = "";
             Notes = "";
+            CreatedDate = DateTime.UtcNow;
             OnCreation();
         }
 
