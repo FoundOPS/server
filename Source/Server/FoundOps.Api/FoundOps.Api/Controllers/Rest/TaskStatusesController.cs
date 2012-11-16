@@ -38,6 +38,9 @@ namespace FoundOps.Api.Controllers.Rest
 
             var status = TaskStatus.CreateFromModel(taskStatus);
 
+            status.LastModifiedDate = DateTime.UtcNow;
+            status.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().First().Id;
+
             businessAccount.TaskStatuses.Add(status);
             SaveWithRetry();
         }

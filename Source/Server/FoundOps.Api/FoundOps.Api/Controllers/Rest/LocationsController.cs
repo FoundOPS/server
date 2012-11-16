@@ -92,6 +92,7 @@ namespace FoundOps.Api.Controllers.Rest
 
             //Convert the API model back to the FoundOPS model of Locations
             var newLocation = Location.ConvertBack(location);
+            newLocation.CreatedDate = DateTime.UtcNow;
 
             //Update the locations business account
             newLocation.BusinessAccountId = currentBusinessAccount.Id;
@@ -129,6 +130,8 @@ namespace FoundOps.Api.Controllers.Rest
             original.AdminDistrictTwo = location.AdminDistrictTwo;
             original.PostalCode = location.ZipCode;
             original.CountryCode = location.CountryCode;
+            original.LastModifiedDate = DateTime.UtcNow;
+            original.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().First().Id;
 
             SaveWithRetry();
         }

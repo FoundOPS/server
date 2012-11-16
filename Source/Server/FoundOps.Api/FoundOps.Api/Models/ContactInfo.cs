@@ -23,9 +23,24 @@ namespace FoundOps.Api.Models
         public Guid? LocationId { get; set; }
         public Guid? ClientId { get; set; }
 
+        public DateTime CreatedDate { get; set; }
+        public DateTime? LastModifiedDate { get; set; }
+        public Guid? LastModifyingUserId { get; set; }
+
         public static ContactInfo Convert(FoundOps.Core.Models.CoreEntities.ContactInfo contactInfoModel)
         {
-            var contactInfo = new ContactInfo { Id = contactInfoModel.Id, Type = contactInfoModel.Type, Label = contactInfoModel.Label, Data = contactInfoModel.Data, ClientId = contactInfoModel.ClientId, LocationId = contactInfoModel.LocationId};
+            var contactInfo = new ContactInfo
+                {
+                    Id = contactInfoModel.Id, 
+                    Type = contactInfoModel.Type, 
+                    Label = contactInfoModel.Label, 
+                    Data = contactInfoModel.Data, 
+                    ClientId = contactInfoModel.ClientId, 
+                    LocationId = contactInfoModel.LocationId,
+                    CreatedDate = contactInfoModel.CreatedDate,
+                    LastModifiedDate = contactInfoModel.LastModifiedDate,
+                    LastModifyingUserId = contactInfoModel.LastModifyingUserId
+                };
             //TODO Generalize this everywhere
             if (string.IsNullOrEmpty(contactInfo.Type))
                 contactInfo.Type = "";
@@ -39,7 +54,18 @@ namespace FoundOps.Api.Models
 
         public static FoundOps.Core.Models.CoreEntities.ContactInfo ConvertBack(Api.Models.ContactInfo contactInfoModel)
         {
-            var contactInfo = new FoundOps.Core.Models.CoreEntities.ContactInfo { Id = contactInfoModel.Id, Type = contactInfoModel.Type, Label = contactInfoModel.Label, Data = contactInfoModel.Data, ClientId = contactInfoModel.ClientId, LocationId = contactInfoModel.LocationId };
+            var contactInfo = new FoundOps.Core.Models.CoreEntities.ContactInfo
+                {
+                    Id = contactInfoModel.Id, 
+                    Type = contactInfoModel.Type, 
+                    Label = contactInfoModel.Label, 
+                    Data = contactInfoModel.Data, 
+                    ClientId = contactInfoModel.ClientId,
+                    LocationId = contactInfoModel.LocationId,
+                    CreatedDate = contactInfoModel.CreatedDate,
+                    LastModifiedDate = contactInfoModel.LastModifiedDate,
+                    LastModifyingUserId = contactInfoModel.LastModifyingUserId
+                };
 
             //TODO Generalize this everywhere
             if (string.IsNullOrEmpty(contactInfo.Type))

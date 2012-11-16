@@ -22,7 +22,10 @@
                 ParentFieldId = fieldModel.ParentFieldId,
                 ServiceTemplateId = fieldModel.ServiceTemplateId,
                 IsMultiLine = fieldModel.IsMultiline,
-                Value = fieldModel.Value
+                Value = fieldModel.Value,
+                CreatedDate = fieldModel.CreatedDate,
+                LastModifiedDate = fieldModel.LastModifiedDate,
+                LastModifyingUserId = fieldModel.LastModifyingUserId
             };
 
             return field;
@@ -44,7 +47,10 @@
                 ParentFieldId = textBoxField.ParentFieldId,
                 ServiceTemplateId = textBoxField.ServiceTemplateId,
                 IsMultiline = textBoxField.IsMultiLine,
-                Value = textBoxField.Value
+                Value = textBoxField.Value,
+                CreatedDate = textBoxField.CreatedDate,
+                LastModifiedDate = textBoxField.LastModifiedDate,
+                LastModifyingUserId = textBoxField.LastModifyingUserId
             };
 
             return field;

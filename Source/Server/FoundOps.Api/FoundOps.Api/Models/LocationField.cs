@@ -24,7 +24,10 @@ namespace FoundOps.Api.Models
                 ParentFieldId = fieldModel.ParentFieldId,
                 ServiceTemplateId = fieldModel.ServiceTemplateId,
                 LocationId = fieldModel.LocationId,
-                LocationFieldTypeInt = fieldModel.LocationFieldTypeInt
+                LocationFieldTypeInt = fieldModel.LocationFieldTypeInt,
+                CreatedDate = fieldModel.CreatedDate,
+                LastModifiedDate = fieldModel.LastModifiedDate,
+                LastModifyingUserId = fieldModel.LastModifyingUserId
             };
 
             return field;
@@ -46,7 +49,10 @@ namespace FoundOps.Api.Models
                 ParentFieldId = locationField.ParentFieldId,
                 ServiceTemplateId = locationField.ServiceTemplateId,
                 LocationId = locationField.LocationId,
-                LocationFieldTypeInt = locationField.LocationFieldTypeInt
+                LocationFieldTypeInt = locationField.LocationFieldTypeInt,
+                CreatedDate = locationField.CreatedDate,
+                LastModifiedDate = locationField.LastModifiedDate,
+                LastModifyingUserId = locationField.LastModifyingUserId
             };
 
             return field;

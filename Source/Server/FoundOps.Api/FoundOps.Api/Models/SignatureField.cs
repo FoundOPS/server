@@ -23,7 +23,10 @@ namespace FoundOps.Api.Models
                 ParentFieldId = fieldModel.ParentFieldId,
                 ServiceTemplateId = fieldModel.ServiceTemplateId,
                 Signed = fieldModel.Signed,
-                Value = fieldModel.Value
+                Value = fieldModel.Value,
+                CreatedDate = fieldModel.CreatedDate,
+                LastModifiedDate = fieldModel.LastModifiedDate,
+                LastModifyingUserId = fieldModel.LastModifyingUserId
             };
 
             return field;
@@ -45,7 +48,10 @@ namespace FoundOps.Api.Models
                 ParentFieldId = signatureField.ParentFieldId,
                 ServiceTemplateId = signatureField.ServiceTemplateId,
                 Signed = signatureField.Signed,
-                Value = signatureField.Value
+                Value = signatureField.Value,
+                CreatedDate = signatureField.CreatedDate,
+                LastModifiedDate = signatureField.LastModifiedDate,
+                LastModifyingUserId = signatureField.LastModifyingUserId
             };
 
             return field;

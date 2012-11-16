@@ -14,6 +14,10 @@ namespace FoundOps.Api.Models
 
         public List<RouteDestination> RouteDestinations { get; set; }
 
+        public DateTime CreatedDate { get; set; }
+        public DateTime? LastModifiedDate { get; set; }
+        public Guid? LastModifyingUserId { get; set; }
+
         public Route()
         {
             RouteDestinations = new List<RouteDestination>();
@@ -26,7 +30,15 @@ namespace FoundOps.Api.Models
         /// <returns>The corresponding API model for Route.</returns>
         public static Route ConvertModel(FoundOps.Core.Models.CoreEntities.Route routeModel)
         {
-            var route = new Route { Id = routeModel.Id, Name = routeModel.Name, BusinessAccountId = routeModel.OwnerBusinessAccountId };
+            var route = new Route
+                {
+                    Id = routeModel.Id, 
+                    Name = routeModel.Name, 
+                    BusinessAccountId = routeModel.OwnerBusinessAccountId,
+                    CreatedDate = routeModel.CreatedDate,
+                    LastModifiedDate = routeModel.LastModifiedDate,
+                    LastModifyingUserId = routeModel.LastModifyingUserId
+                };
 
             foreach (var routeDestinationModel in routeModel.RouteDestinations.OrderBy(rd => rd.OrderInRoute))
                 route.RouteDestinations.Add(RouteDestination.ConvertModel(routeDestinationModel));

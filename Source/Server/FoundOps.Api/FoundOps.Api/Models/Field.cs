@@ -18,6 +18,11 @@ namespace FoundOps.Api.Models
 
         public Guid? ServiceTemplateId { get; set; }
 
+        public DateTime CreatedDate { get; set; }
+        public DateTime? LastModifiedDate { get; set; }
+        public Guid? LastModifyingUserId { get; set; }
+
+
         /// <summary>
         /// Converts from the FoundOPS model to the API model
         /// </summary>

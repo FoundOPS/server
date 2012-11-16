@@ -30,6 +30,10 @@ namespace FoundOps.Api.Models
         /// </summary>
         public string Role { get; set; }
 
+        public DateTime CreatedDate { get; set; }
+        public DateTime? LastModifiedDate { get; set; }
+        public Guid? LastModifyingUserId { get; set; }
+
         public static UserAccount Convert(Core.Models.CoreEntities.UserAccount model)
         {
             var userAccount = new UserAccount
@@ -38,7 +42,10 @@ namespace FoundOps.Api.Models
                 EmailAddress = model.EmailAddress,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                TimeZone = TimeZone.ConvertModel(model.TimeZoneInfo)
+                TimeZone = TimeZone.ConvertModel(model.TimeZoneInfo),
+                CreatedDate = model.CreatedDate,
+                LastModifiedDate = model.LastModifiedDate,
+                LastModifyingUserId = model.LastModifyingUserId
             };
             
             //Load image url

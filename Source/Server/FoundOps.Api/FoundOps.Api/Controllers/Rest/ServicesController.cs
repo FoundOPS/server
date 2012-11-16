@@ -202,6 +202,9 @@ namespace FoundOps.Api.Controllers.Rest
                 }
 
                 #endregion
+
+                service.LastModifiedDate = DateTime.UtcNow;
+                service.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().First().Id;
             }
             //the service was generated, insert a new Service and set the appropriate field values
             else
@@ -213,7 +216,8 @@ namespace FoundOps.Api.Controllers.Rest
                     ServiceProviderId = service.ServiceProviderId,
                     ClientId = service.ClientId,
                     RecurringServiceId = service.RecurringServiceId,
-                    ServiceTemplate = new ServiceTemplate { Id = service.Id, Name = service.Name, ServiceTemplateLevel = ServiceTemplateLevel.ServiceDefined, OwnerServiceTemplateId = service.RecurringServiceId }
+                    ServiceTemplate = new ServiceTemplate { Id = service.Id, Name = service.Name, ServiceTemplateLevel = ServiceTemplateLevel.ServiceDefined, OwnerServiceTemplateId = service.RecurringServiceId },
+                    CreatedDate = DateTime.UtcNow
                 };
 
                 //Add all fields from the generated Service to the Service Template

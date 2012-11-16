@@ -10,6 +10,9 @@ namespace FoundOps.Api.Models
         public Guid? BusinessAccountId { get; set; }
         public int? DefaultTypeInt { get; set; }
         public bool RemoveFromRoute { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime? LastModifiedDate { get; set; }
+        public Guid? LastModifyingUserId { get; set; }
 
         public static TaskStatus ConvertModel(FoundOps.Core.Models.CoreEntities.TaskStatus model)
         {
@@ -20,7 +23,10 @@ namespace FoundOps.Api.Models
                 Color = model.Color,
                 DefaultTypeInt = model.DefaultTypeInt,
                 RemoveFromRoute = model.RemoveFromRoute,
-                BusinessAccountId = model.BusinessAccountId
+                BusinessAccountId = model.BusinessAccountId,
+                CreatedDate = model.CreatedDate,
+                LastModifiedDate = model.LastModifiedDate,
+                LastModifyingUserId = model.LastModifyingUserId
             };
 
             return status;
@@ -35,7 +41,10 @@ namespace FoundOps.Api.Models
                 Color = taskStatus.Color,
                 DefaultTypeInt = taskStatus.DefaultTypeInt,
                 RemoveFromRoute = taskStatus.RemoveFromRoute,
-                BusinessAccountId = taskStatus.BusinessAccountId
+                BusinessAccountId = taskStatus.BusinessAccountId,
+                CreatedDate = taskStatus.CreatedDate,
+                LastModifiedDate = taskStatus.LastModifiedDate,
+                LastModifyingUserId = taskStatus.LastModifyingUserId
             };
 
             return status;

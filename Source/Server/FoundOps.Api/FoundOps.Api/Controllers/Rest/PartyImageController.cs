@@ -89,6 +89,7 @@ namespace FoundOps.Api.Controllers.Rest
             blob.SetProperties();
 
             party.PartyImage.Name = imageFileName;
+            party.PartyImage.CreatedDate = DateTime.UtcNow;
 
             SaveWithRetry();
 

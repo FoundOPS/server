@@ -126,7 +126,8 @@ namespace FoundOps.Api.Tests.Controllers
                 Type = "Phone",
                 Label = "FoundOPS HQ",
                 ClientId = CoreEntitiesContainer.Clients.First(c => !c.DateDeleted.HasValue).Id,
-                LocationId = null
+                LocationId = null,
+                CreatedDate = DateTime.UtcNow
             };
 
             var controller = CreateRequest<ContactInfoController>(HttpMethod.Put);
@@ -216,7 +217,8 @@ namespace FoundOps.Api.Tests.Controllers
                 AdminDistrictTwo = "Northbrook",
                 AdminDistrictOne = "Illinois",
                 ZipCode = "60062",
-                CountryCode = "US"
+                CountryCode = "US",
+                CreatedDate = DateTime.UtcNow
             };
 
             var controller = CreateRequest<LocationsController>(HttpMethod.Post);
@@ -269,7 +271,7 @@ namespace FoundOps.Api.Tests.Controllers
 
             Assert.IsTrue(roles.Any(r => r.Value<string>("name") == "GotGrease?" && r.Value<string>("type") == "Administrator"
                                          && r["sections"].Count() == 9));
-            Assert.IsTrue(roles.Count() == 4);
+            Assert.IsTrue(roles.Count() == 5);
 
             //check sections
             var sections = result.GetValue("sections").ToArray();
@@ -495,7 +497,8 @@ namespace FoundOps.Api.Tests.Controllers
                 Color = "488FCD",
                 Name = "Test Status",
                 DefaultTypeInt = null,
-                RemoveFromRoute = false
+                RemoveFromRoute = false,
+                CreatedDate = DateTime.UtcNow
             };
 
             var controller = CreateRequest<TaskStatusesController>(HttpMethod.Put);
@@ -895,7 +898,7 @@ namespace FoundOps.Api.Tests.Controllers
         [TestMethod]
         public void PropagateServiceTemplateNameChanges()
         {
-            var serviceTemplate = CoreEntitiesContainer.ServiceTemplates.Where(st => st.LevelInt == 1 && st.OwnerServiceProviderId == _gotGreaseId).Include(st => st.Fields).First();
+            var serviceTemplate = CoreEntitiesContainer.ServiceTemplates.Where(st => st.LevelInt == 1 && st.OwnerServiceProviderId == _genericBiodiesel).Include(st => st.Fields).First();
             var oldName = serviceTemplate.Name;
 
             serviceTemplate.Name = "This Name has changed!!";
@@ -929,7 +932,8 @@ namespace FoundOps.Api.Tests.Controllers
                 Id = Guid.NewGuid(),
                 Name = "This is New!!",
                 ServiceTemplateLevel = ServiceTemplateLevel.FoundOpsDefined,
-                OwnerServiceProviderId = _foundOpsId
+                OwnerServiceProviderId = _foundOpsId,
+                CreatedDate = DateTime.UtcNow
             };
 
             //Add Fields
@@ -972,6 +976,8 @@ namespace FoundOps.Api.Tests.Controllers
                 compare.ElementsToIgnore.Add("ServiceTemplateId");
                 compare.ElementsToIgnore.Add("ParentFieldId");
                 compare.ElementsToIgnore.Add("Signed");
+                compare.ElementsToIgnore.Add("CreatedDate");
+                compare.ElementsToIgnore.Add("LastModifiedDate");
 
                 compare.Compare(field, childField);
 

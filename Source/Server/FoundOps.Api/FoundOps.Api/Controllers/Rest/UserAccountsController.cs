@@ -121,11 +121,18 @@ namespace FoundOps.Api.Controllers.Rest
                     FirstName = userAccount.FirstName,
                     LastName = userAccount.LastName,
                     TimeZone = "Eastern Standard Time",
+                    CreatedDate = DateTime.UtcNow,
                     //PasswordHash and PasswordSalt are not nullable 
                     //set temporary values (even though they will not be used)
                     PasswordHash = EmailPasswordTools.GeneratePassword(),
                     PasswordSalt = EncryptionTools.GenerateSalt()
                 };
+            }
+            //If the user does exist, track the changes
+            else
+            {
+                user.LastModifiedDate = DateTime.UtcNow;
+                user.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().First().Id;
             }
 
             //add the user to the role
@@ -302,7 +309,8 @@ namespace FoundOps.Api.Controllers.Rest
                 {
                     FirstName = userAccount.FirstName,
                     LastName = userAccount.LastName,
-                    EmployerId = businessAccount.Id
+                    EmployerId = businessAccount.Id,
+                    CreatedDate = DateTime.UtcNow
                 };
             }
             //find the existing employee

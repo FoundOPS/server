@@ -60,6 +60,10 @@ namespace FoundOps.Api.Models
         /// </summary>
         public List<ContactInfo> ContactInfoSet { get; set; }
 
+        public DateTime CreatedDate { get; set; }
+        public DateTime? LastModifiedDate { get; set; }
+        public Guid? LastModifyingUserId { get; set; }
+
         public Location()
         {
             ContactInfoSet = new List<ContactInfo>();
@@ -78,7 +82,10 @@ namespace FoundOps.Api.Models
                 AdminDistrictTwo = locationModel.AdminDistrictTwo,
                 AdminDistrictOne = locationModel.AdminDistrictOne,
                 CountryCode = locationModel.CountryCode,
-                ZipCode = locationModel.PostalCode
+                ZipCode = locationModel.PostalCode,
+                CreatedDate = locationModel.CreatedDate,
+                LastModifiedDate = locationModel.LastModifiedDate,
+                LastModifyingUserId = locationModel.LastModifyingUserId
             };
 
             foreach (var contactInfo in locationModel.ContactInfoSet)
@@ -120,7 +127,10 @@ namespace FoundOps.Api.Models
                     PostalCode = location.ZipCode,
                     CountryCode = location.CountryCode,
                     Latitude = Convert.ToDecimal(location.Latitude),
-                    Longitude = Convert.ToDecimal(location.Longitude)
+                    Longitude = Convert.ToDecimal(location.Longitude),
+                    CreatedDate = location.CreatedDate,
+                    LastModifiedDate = location.LastModifiedDate,
+                    LastModifyingUserId = location.LastModifyingUserId
                 };
 
             return newLocation;

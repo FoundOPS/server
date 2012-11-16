@@ -31,7 +31,10 @@
                 DecimalPlaces = fieldModel.DecimalPlaces,
                 Minimum = fieldModel.Minimum,
                 Maximum = fieldModel.Maximum,
-                Value = fieldModel.Value
+                Value = fieldModel.Value,
+                CreatedDate = fieldModel.CreatedDate,
+                LastModifiedDate = fieldModel.LastModifiedDate,
+                LastModifyingUserId = fieldModel.LastModifyingUserId
             };
 
             return field;
@@ -56,7 +59,10 @@
                 DecimalPlaces = numericField.DecimalPlaces,
                 Minimum = numericField.Minimum,
                 Maximum = numericField.Maximum,
-                Value = numericField.Value
+                Value = numericField.Value,
+                CreatedDate = numericField.CreatedDate,
+                LastModifiedDate = numericField.LastModifiedDate,
+                LastModifyingUserId = numericField.LastModifyingUserId
             };
 
             return field;

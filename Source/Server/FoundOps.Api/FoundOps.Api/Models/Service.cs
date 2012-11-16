@@ -22,6 +22,10 @@ namespace FoundOps.Api.Models
         public Guid? RecurringServiceId { get; set; }
         public Guid ServiceProviderId { get; set; }
 
+        public DateTime CreatedDate { get; set; }
+        public DateTime? LastModifiedDate { get; set; }
+        public Guid? LastModifyingUserId { get; set; }
+
         public Service()
         {
             Fields = new List<Field>();
@@ -42,7 +46,10 @@ namespace FoundOps.Api.Models
                 ServiceDate = serviceModel.ServiceDate,
                 ClientId = serviceModel.ClientId,
                 ServiceProviderId = serviceModel.ServiceProviderId,
-                RecurringServiceId = serviceModel.RecurringServiceId
+                RecurringServiceId = serviceModel.RecurringServiceId,
+                CreatedDate = serviceModel.CreatedDate,
+                LastModifiedDate = serviceModel.LastModifiedDate,
+                LastModifyingUserId = serviceModel.LastModifyingUserId
             };
 
             if(serviceModel.Client!=null)

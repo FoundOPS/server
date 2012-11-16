@@ -45,6 +45,9 @@ namespace FoundOps.Api.Controllers.Rest
                 throw Request.NotAuthorized();
 
             modelBusinessAccount.Name = businessAccount.Name;
+            modelBusinessAccount.LastModifiedDate = DateTime.UtcNow;
+            modelBusinessAccount.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().First().Id;
+
 
             SaveWithRetry();
         }

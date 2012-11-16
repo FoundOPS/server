@@ -24,9 +24,20 @@ namespace FoundOps.Api.Models
             RouteTasks = new List<RouteTask>();
         }
 
+        public DateTime CreatedDate { get; set; }
+        public DateTime? LastModifiedDate { get; set; }
+        public Guid? LastModifyingUserId { get; set; }
+
         public static RouteDestination ConvertModel(FoundOps.Core.Models.CoreEntities.RouteDestination routeDestinationModel)
         {
-            var routeDestination = new RouteDestination {Id = routeDestinationModel.Id, OrderInRoute = routeDestinationModel.OrderInRoute};
+            var routeDestination = new RouteDestination
+                {
+                    Id = routeDestinationModel.Id, 
+                    OrderInRoute = routeDestinationModel.OrderInRoute,
+                    CreatedDate = routeDestinationModel.CreatedDate,
+                    LastModifiedDate = routeDestinationModel.LastModifiedDate,
+                    LastModifyingUserId = routeDestinationModel.LastModifyingUserId
+                };
 
             foreach (var routeTaskModel in routeDestinationModel.RouteTasks.OrderBy(rt => rt.Name))
                 routeDestination.RouteTasks.Add(RouteTask.ConvertModel(routeTaskModel));

@@ -1,4 +1,5 @@
-﻿using FoundOps.Api.Tools;
+﻿using System;
+using FoundOps.Api.Tools;
 using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
 using System.Linq;
@@ -51,6 +52,9 @@ namespace FoundOps.Api.Controllers.Rest
                     routeTaskModel.RouteDestinationId = null;
                 }
             }
+
+            routeTaskModel.LastModifiedDate = DateTime.UtcNow;
+            routeTaskModel.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().First().Id;
 
             SaveWithRetry();
         }

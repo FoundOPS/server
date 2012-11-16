@@ -20,6 +20,10 @@ namespace FoundOps.Api.Models
         /// </summary>
         public List<ContactInfo> ContactInfoSet { get; set; }
 
+        public DateTime CreatedDate { get; set; }
+        public DateTime? LastModifiedDate { get; set; }
+        public Guid? LastModifyingUserId { get; set; }
+
         public Client()
         {
             ContactInfoSet = new List<ContactInfo>();
@@ -27,7 +31,7 @@ namespace FoundOps.Api.Models
 
         public static Client ConvertModel(FoundOps.Core.Models.CoreEntities.Client clientModel)
         {
-            var client = new Client { Id = clientModel.Id, Name = clientModel.Name };
+            var client = new Client { Id = clientModel.Id, Name = clientModel.Name, CreatedDate = clientModel.CreatedDate, LastModifiedDate = clientModel.LastModifiedDate, LastModifyingUserId = clientModel.LastModifyingUserId};
 
             foreach (var contactInfo in clientModel.ContactInfoSet)
                 client.ContactInfoSet.Add(ContactInfo.Convert(contactInfo));

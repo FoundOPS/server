@@ -32,7 +32,10 @@ namespace FoundOps.Api.Models
                 ParentFieldId = fieldModel.ParentFieldId,
                 ServiceTemplateId = fieldModel.ServiceTemplateId,
                 AllowMultipleSelection = fieldModel.AllowMultipleSelection,
-                TypeInt = fieldModel.TypeInt
+                TypeInt = fieldModel.TypeInt,
+                CreatedDate = fieldModel.CreatedDate,
+                LastModifiedDate = fieldModel.LastModifiedDate,
+                LastModifyingUserId = fieldModel.LastModifyingUserId
             };
 
             foreach (var option in fieldModel.Options.OrderBy(o => o.Name))
@@ -57,7 +60,10 @@ namespace FoundOps.Api.Models
                 ParentFieldId = optionsField.ParentFieldId,
                 ServiceTemplateId = optionsField.ServiceTemplateId,
                 AllowMultipleSelection = optionsField.AllowMultipleSelection,
-                TypeInt = optionsField.TypeInt
+                TypeInt = optionsField.TypeInt,
+                CreatedDate = optionsField.CreatedDate,
+                LastModifiedDate = optionsField.LastModifiedDate,
+                LastModifyingUserId = optionsField.LastModifyingUserId
             };
 
             foreach (var option in optionsField.Options)
