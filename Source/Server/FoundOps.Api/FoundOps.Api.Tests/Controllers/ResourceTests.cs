@@ -105,7 +105,7 @@ namespace FoundOps.Api.Tests.Controllers
             var attached = CoreEntitiesContainer.ObjectStateManager.GetObjectStateEntries(EntityState.Added | EntityState.Deleted | EntityState.Modified | EntityState.Unchanged);
             foreach (var objectStateEntry in attached)
                 CoreEntitiesContainer.Detach(objectStateEntry.Entity);
-        }
+        } 
 
         [TestMethod]
         public void ClientsTests()
