@@ -48,7 +48,6 @@ namespace FoundOps.Api.Controllers.Rest
             modelBusinessAccount.LastModifiedDate = DateTime.UtcNow;
             modelBusinessAccount.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().First().Id;
 
-
             SaveWithRetry();
         }
 

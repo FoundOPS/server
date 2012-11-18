@@ -12,8 +12,14 @@ namespace FoundOps.Api.Models
         public bool RemoveFromRoute { get; set; }
 
         public DateTime CreatedDate { get; private set; }
-        public DateTime? LastModifiedDate { get; set; }
-        public Guid? LastModifyingUserId { get; set; }
+        public DateTime? LastModifiedDate { get; private set; }
+        public Guid? LastModifyingUserId { get; private set; }
+        
+        public void SetLastModified(DateTime? lastModified, Guid? userId)
+        {
+            LastModifiedDate = lastModified;
+            LastModifyingUserId = userId;
+        }
 
         public TaskStatus(DateTime createdDate)
         {
@@ -29,10 +35,10 @@ namespace FoundOps.Api.Models
                 Color = model.Color,
                 DefaultTypeInt = model.DefaultTypeInt,
                 RemoveFromRoute = model.RemoveFromRoute,
-                BusinessAccountId = model.BusinessAccountId,
-                LastModifiedDate = model.LastModifiedDate,
-                LastModifyingUserId = model.LastModifyingUserId
+                BusinessAccountId = model.BusinessAccountId
             };
+
+            status.SetLastModified(model.LastModifiedDate, model.LastModifyingUserId);
 
             return status;
         }

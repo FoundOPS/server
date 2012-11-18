@@ -33,10 +33,10 @@ namespace FoundOps.Api.Models
                 ParentFieldId = fieldModel.ParentFieldId,
                 ServiceTemplateId = fieldModel.ServiceTemplateId,
                 AllowMultipleSelection = fieldModel.AllowMultipleSelection,
-                TypeInt = fieldModel.TypeInt,
-                LastModifiedDate = fieldModel.LastModifiedDate,
-                LastModifyingUserId = fieldModel.LastModifyingUserId
+                TypeInt = fieldModel.TypeInt
             };
+
+            field.SetLastModified(fieldModel.LastModifiedDate, fieldModel.LastModifyingUserId);
 
             foreach (var option in fieldModel.Options.OrderBy(o => o.Name))
                 field.Options.Add(Option.ConvertModel(option));

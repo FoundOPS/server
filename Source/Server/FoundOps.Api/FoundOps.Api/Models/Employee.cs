@@ -2,7 +2,7 @@
 
 namespace FoundOps.Api.Models
 {
-    public class Employee
+    public class Employee : ITrackable
     {
         public Guid Id { get; set; }
 
@@ -15,8 +15,14 @@ namespace FoundOps.Api.Models
         public string DisplayName { get { return FirstName + " " + LastName; }}
 
         public DateTime CreatedDate { get; private set; }
-        public DateTime? LastModifiedDate { get; set; }
-        public Guid? LastModifyingUserId { get; set; }
+        public DateTime? LastModifiedDate { get; private set; }
+        public Guid? LastModifyingUserId { get; private set; }
+        
+        public void SetLastModified(DateTime? lastModified, Guid? userId)
+        {
+            LastModifiedDate = lastModified;
+            LastModifyingUserId = userId;
+        }
 
         public Employee(DateTime currentDate)
         {
@@ -31,10 +37,10 @@ namespace FoundOps.Api.Models
                 LinkedUserAccountId = model.LinkedUserAccountId,
                 FirstName = model.FirstName,
                 MiddleInitial = model.MiddleInitial,
-                LastName = model.LastName,
-                LastModifiedDate = model.LastModifiedDate,
-                LastModifyingUserId = model.LastModifyingUserId
+                LastName = model.LastName
             };
+
+            employee.SetLastModified(model.LastModifiedDate, model.LastModifyingUserId);
 
             return employee;
         }

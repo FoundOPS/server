@@ -31,8 +31,14 @@ namespace FoundOps.Api.Models
         public string Role { get; set; }
 
         public DateTime CreatedDate { get; private set; }
-        public DateTime? LastModifiedDate { get; set; }
-        public Guid? LastModifyingUserId { get; set; }
+        public DateTime? LastModifiedDate { get; private set; }
+        public Guid? LastModifyingUserId { get; private set; }
+
+        public void SetLastModified(DateTime? lastModified, Guid? userId)
+        {
+            LastModifiedDate = lastModified;
+            LastModifyingUserId = userId;
+        }
 
         public UserAccount(DateTime createdDate)
         {
@@ -47,11 +53,11 @@ namespace FoundOps.Api.Models
                 EmailAddress = model.EmailAddress,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                TimeZone = TimeZone.ConvertModel(model.TimeZoneInfo),
-                LastModifiedDate = model.LastModifiedDate,
-                LastModifyingUserId = model.LastModifyingUserId
+                TimeZone = TimeZone.ConvertModel(model.TimeZoneInfo)
             };
             
+            userAccount.SetLastModified(model.LastModifiedDate, model.LastModifyingUserId);
+
             //Load image url
             if (model.PartyImage == null)
                 userAccount.ImageUrl = "img/emptyPerson.png";

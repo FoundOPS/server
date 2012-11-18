@@ -61,13 +61,41 @@ namespace FoundOps.Api.Models
         public List<ContactInfo> ContactInfoSet { get; set; }
 
         public DateTime CreatedDate { get; private set; }
-        public DateTime? LastModifiedDate { get; set; }
-        public Guid? LastModifyingUserId { get; set; }
+        public DateTime? LastModifiedDate { get; private set; }
+        public Guid? LastModifyingUserId { get; private set; }
+        
+        public void SetLastModified(DateTime? lastModified, Guid? userId)
+        {
+            LastModifiedDate = lastModified;
+            LastModifyingUserId = userId;
+        }
 
         public Location(DateTime createdDate)
         {
             ContactInfoSet = new List<ContactInfo>();
             CreatedDate = createdDate;
+        }
+
+        public static Core.Models.CoreEntities.Location ConvertBack(Location location)
+        {
+            var newLocation = new Core.Models.CoreEntities.Location
+            {
+                Id = location.Id,
+                AddressLineOne = location.AddressLineOne,
+                AddressLineTwo = location.AddressLineTwo,
+                Name = location.Name,
+                AdminDistrictOne = location.AdminDistrictOne,
+                AdminDistrictTwo = location.AdminDistrictTwo,
+                PostalCode = location.ZipCode,
+                CountryCode = location.CountryCode,
+                Latitude = Convert.ToDecimal(location.Latitude),
+                Longitude = Convert.ToDecimal(location.Longitude),
+                CreatedDate = location.CreatedDate,
+                LastModifiedDate = location.LastModifiedDate,
+                LastModifyingUserId = location.LastModifyingUserId
+            };
+
+            return newLocation;
         }
 
         public static Location ConvertModel(Core.Models.CoreEntities.Location locationModel)
@@ -83,10 +111,10 @@ namespace FoundOps.Api.Models
                 AdminDistrictTwo = locationModel.AdminDistrictTwo,
                 AdminDistrictOne = locationModel.AdminDistrictOne,
                 CountryCode = locationModel.CountryCode,
-                ZipCode = locationModel.PostalCode,
-                LastModifiedDate = locationModel.LastModifiedDate,
-                LastModifyingUserId = locationModel.LastModifyingUserId
+                ZipCode = locationModel.PostalCode
             };
+
+            location.SetLastModified(locationModel.LastModifiedDate, locationModel.LastModifyingUserId);
 
             foreach (var contactInfo in locationModel.ContactInfoSet)
                 location.ContactInfoSet.Add(ContactInfo.Convert(contactInfo));
@@ -96,7 +124,7 @@ namespace FoundOps.Api.Models
 
         public static Location ConvertGeocode(FoundOps.Common.NET.GeocoderResult geocoderResult)
         {
-            var location = new Location (DateTime.UtcNow)
+            var location = new Location(DateTime.UtcNow)
             {
                 AddressLineOne = geocoderResult.AddressLineOne,
                 AddressLineTwo = geocoderResult.AddressLineTwo,
@@ -112,28 +140,6 @@ namespace FoundOps.Api.Models
                 location.CountryCode = "US";
 
             return location;
-        }
-
-        public static Core.Models.CoreEntities.Location ConvertBack(Location location)
-        {
-            var newLocation = new Core.Models.CoreEntities.Location
-                {
-                    Id = location.Id,
-                    AddressLineOne = location.AddressLineOne,
-                    AddressLineTwo = location.AddressLineTwo,
-                    Name = location.Name,
-                    AdminDistrictOne = location.AdminDistrictOne,
-                    AdminDistrictTwo = location.AdminDistrictTwo,
-                    PostalCode = location.ZipCode,
-                    CountryCode = location.CountryCode,
-                    Latitude = Convert.ToDecimal(location.Latitude),
-                    Longitude = Convert.ToDecimal(location.Longitude),
-                    CreatedDate = location.CreatedDate,
-                    LastModifiedDate = location.LastModifiedDate,
-                    LastModifyingUserId = location.LastModifyingUserId
-                };
-
-            return newLocation;
         }
     }
 }

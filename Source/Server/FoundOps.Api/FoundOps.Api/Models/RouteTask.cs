@@ -15,8 +15,14 @@ namespace FoundOps.Api.Models
         public Guid? TaskStatusId { get; set; }
 
         public DateTime CreatedDate { get; private set; }
-        public DateTime? LastModifiedDate { get; set; }
-        public Guid? LastModifyingUserId { get; set; }
+        public DateTime? LastModifiedDate { get; private set; }
+        public Guid? LastModifyingUserId { get; private set; }
+        
+        public void SetLastModified(DateTime? lastModified, Guid? userId)
+        {
+            LastModifiedDate = lastModified;
+            LastModifyingUserId = userId;
+        }
 
         public RouteTask(DateTime createdDate)
         {
@@ -32,10 +38,10 @@ namespace FoundOps.Api.Models
                     Date = routeTaskModel.Date, 
                     RecurringServiceId = routeTaskModel.RecurringServiceId, 
                     ServiceId = routeTaskModel.ServiceId, 
-                    TaskStatusId = routeTaskModel.TaskStatusId,
-                    LastModifiedDate = routeTaskModel.LastModifiedDate,
-                    LastModifyingUserId = routeTaskModel.LastModifyingUserId
+                    TaskStatusId = routeTaskModel.TaskStatusId
                 };
+
+            routeTask.SetLastModified(routeTaskModel.LastModifiedDate, routeTaskModel.LastModifyingUserId);
 
             return routeTask;
         }

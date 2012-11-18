@@ -203,8 +203,8 @@ namespace FoundOps.Api.Controllers.Rest
 
                 #endregion
 
-                service.LastModifiedDate = DateTime.UtcNow;
-                service.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().First().Id;
+                service.SetLastModified(DateTime.UtcNow, CoreEntitiesContainer.CurrentUserAccount().First().Id);
+
             }
             //the service was generated, insert a new Service and set the appropriate field values
             else

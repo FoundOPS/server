@@ -37,10 +37,10 @@ namespace FoundOps.Api.Models
                 DecimalPlaces = fieldModel.DecimalPlaces,
                 Minimum = fieldModel.Minimum,
                 Maximum = fieldModel.Maximum,
-                Value = fieldModel.Value,
-                LastModifiedDate = fieldModel.LastModifiedDate,
-                LastModifyingUserId = fieldModel.LastModifyingUserId
+                Value = fieldModel.Value
             };
+
+            field.SetLastModified(fieldModel.LastModifiedDate, fieldModel.LastModifyingUserId);
 
             return field;
         }

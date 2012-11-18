@@ -26,18 +26,24 @@ namespace FoundOps.Api.Models
         }
 
         public DateTime CreatedDate { get; private set; }
-        public DateTime? LastModifiedDate { get; set; }
-        public Guid? LastModifyingUserId { get; set; }
+        public DateTime? LastModifiedDate { get; private set; }
+        public Guid? LastModifyingUserId { get; private set; }
+        
+        public void SetLastModified(DateTime? lastModified, Guid? userId)
+        {
+            LastModifiedDate = lastModified;
+            LastModifyingUserId = userId;
+        }
 
         public static RouteDestination ConvertModel(FoundOps.Core.Models.CoreEntities.RouteDestination routeDestinationModel)
         {
             var routeDestination = new RouteDestination(routeDestinationModel.CreatedDate)
                 {
                     Id = routeDestinationModel.Id, 
-                    OrderInRoute = routeDestinationModel.OrderInRoute,
-                    LastModifiedDate = routeDestinationModel.LastModifiedDate,
-                    LastModifyingUserId = routeDestinationModel.LastModifyingUserId
+                    OrderInRoute = routeDestinationModel.OrderInRoute
                 };
+
+            routeDestination.SetLastModified(routeDestinationModel.LastModifiedDate, routeDestinationModel.LastModifyingUserId);
 
             foreach (var routeTaskModel in routeDestinationModel.RouteTasks.OrderBy(rt => rt.Name))
                 routeDestination.RouteTasks.Add(RouteTask.ConvertModel(routeTaskModel));

@@ -27,10 +27,10 @@ namespace FoundOps.Api.Models
                 ParentFieldId = fieldModel.ParentFieldId,
                 ServiceTemplateId = fieldModel.ServiceTemplateId,
                 Signed = fieldModel.Signed,
-                Value = fieldModel.Value,
-                LastModifiedDate = fieldModel.LastModifiedDate,
-                LastModifyingUserId = fieldModel.LastModifyingUserId
+                Value = fieldModel.Value
             };
+
+            field.SetLastModified(fieldModel.LastModifiedDate, fieldModel.LastModifyingUserId);
 
             return field;
         }
