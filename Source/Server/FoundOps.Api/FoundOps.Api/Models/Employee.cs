@@ -14,20 +14,24 @@ namespace FoundOps.Api.Models
 
         public string DisplayName { get { return FirstName + " " + LastName; }}
 
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreatedDate { get; private set; }
         public DateTime? LastModifiedDate { get; set; }
         public Guid? LastModifyingUserId { get; set; }
 
+        public Employee(DateTime currentDate)
+        {
+            CreatedDate = currentDate;
+        }
+
         public static Employee ConvertModel(Core.Models.CoreEntities.Employee model)
         {
-            var employee = new Employee
+            var employee = new Employee(model.CreatedDate)
             {
                 Id = model.Id,
                 LinkedUserAccountId = model.LinkedUserAccountId,
                 FirstName = model.FirstName,
                 MiddleInitial = model.MiddleInitial,
                 LastName = model.LastName,
-                CreatedDate = model.CreatedDate,
                 LastModifiedDate = model.LastModifiedDate,
                 LastModifyingUserId = model.LastModifyingUserId
             };

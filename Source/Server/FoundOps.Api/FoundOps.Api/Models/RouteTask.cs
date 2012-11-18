@@ -2,7 +2,7 @@
 
 namespace FoundOps.Api.Models
 {
-    public class RouteTask
+    public class RouteTask : ITrackable
     {
         public Guid Id { get; set; }
 
@@ -14,13 +14,18 @@ namespace FoundOps.Api.Models
 
         public Guid? TaskStatusId { get; set; }
 
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreatedDate { get; private set; }
         public DateTime? LastModifiedDate { get; set; }
         public Guid? LastModifyingUserId { get; set; }
 
+        public RouteTask(DateTime createdDate)
+        {
+            CreatedDate = createdDate;
+        }
+
         public static RouteTask ConvertModel(FoundOps.Core.Models.CoreEntities.RouteTask routeTaskModel)
         {
-            var routeTask = new RouteTask
+            var routeTask = new RouteTask(routeTaskModel.CreatedDate)
                 {
                     Id = routeTaskModel.Id, 
                     Name = routeTaskModel.Name, 
@@ -28,7 +33,6 @@ namespace FoundOps.Api.Models
                     RecurringServiceId = routeTaskModel.RecurringServiceId, 
                     ServiceId = routeTaskModel.ServiceId, 
                     TaskStatusId = routeTaskModel.TaskStatusId,
-                    CreatedDate = routeTaskModel.CreatedDate,
                     LastModifiedDate = routeTaskModel.LastModifiedDate,
                     LastModifyingUserId = routeTaskModel.LastModifyingUserId
                 };

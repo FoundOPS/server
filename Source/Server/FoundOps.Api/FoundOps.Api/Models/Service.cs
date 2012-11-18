@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace FoundOps.Api.Models
 {
-    public class Service
+    public class Service : ITrackable
     {
         public Guid Id { get; set; }
 
@@ -22,13 +22,14 @@ namespace FoundOps.Api.Models
         public Guid? RecurringServiceId { get; set; }
         public Guid ServiceProviderId { get; set; }
 
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreatedDate { get; private set; }
         public DateTime? LastModifiedDate { get; set; }
         public Guid? LastModifyingUserId { get; set; }
 
-        public Service()
+        public Service(DateTime createdDate)
         {
             Fields = new List<Field>();
+            CreatedDate = createdDate;
         }
 
         /// <summary>
@@ -39,7 +40,7 @@ namespace FoundOps.Api.Models
         public static Service ConvertModel(FoundOps.Core.Models.CoreEntities.Service serviceModel)
         {
             //Create the new service and set its properties
-            var service = new Service
+            var service = new Service(serviceModel.CreatedDate)
             {
                 Id = serviceModel.Id,
                 Name = serviceModel.ServiceTemplate.Name,
@@ -47,7 +48,6 @@ namespace FoundOps.Api.Models
                 ClientId = serviceModel.ClientId,
                 ServiceProviderId = serviceModel.ServiceProviderId,
                 RecurringServiceId = serviceModel.RecurringServiceId,
-                CreatedDate = serviceModel.CreatedDate,
                 LastModifiedDate = serviceModel.LastModifiedDate,
                 LastModifyingUserId = serviceModel.LastModifyingUserId
             };

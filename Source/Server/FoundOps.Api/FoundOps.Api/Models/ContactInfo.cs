@@ -2,7 +2,7 @@ using System;
 
 namespace FoundOps.Api.Models
 {
-    public class ContactInfo
+    public class ContactInfo : ITrackable
     {
         public Guid Id { get; set; }
         /// <summary>
@@ -23,13 +23,18 @@ namespace FoundOps.Api.Models
         public Guid? LocationId { get; set; }
         public Guid? ClientId { get; set; }
 
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreatedDate { get; private set; }
         public DateTime? LastModifiedDate { get; set; }
         public Guid? LastModifyingUserId { get; set; }
 
+        public ContactInfo(DateTime createdDate)
+        {
+            CreatedDate = createdDate;
+        }
+        
         public static ContactInfo Convert(FoundOps.Core.Models.CoreEntities.ContactInfo contactInfoModel)
         {
-            var contactInfo = new ContactInfo
+            var contactInfo = new ContactInfo(contactInfoModel.CreatedDate)
                 {
                     Id = contactInfoModel.Id, 
                     Type = contactInfoModel.Type, 
@@ -37,7 +42,6 @@ namespace FoundOps.Api.Models
                     Data = contactInfoModel.Data, 
                     ClientId = contactInfoModel.ClientId, 
                     LocationId = contactInfoModel.LocationId,
-                    CreatedDate = contactInfoModel.CreatedDate,
                     LastModifiedDate = contactInfoModel.LastModifiedDate,
                     LastModifyingUserId = contactInfoModel.LastModifyingUserId
                 };

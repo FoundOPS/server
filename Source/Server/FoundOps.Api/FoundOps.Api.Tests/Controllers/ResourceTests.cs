@@ -119,15 +119,14 @@ namespace FoundOps.Api.Tests.Controllers
         {
             var newId = Guid.NewGuid();
 
-            var newContactInfo = new Api.Models.ContactInfo
+            var newContactInfo = new Api.Models.ContactInfo (DateTime.UtcNow)
             {
                 Id = newId,
                 Data = "(123) 456-7890",
                 Type = "Phone",
                 Label = "FoundOPS HQ",
                 ClientId = CoreEntitiesContainer.Clients.First(c => !c.DateDeleted.HasValue).Id,
-                LocationId = null,
-                CreatedDate = DateTime.UtcNow
+                LocationId = null
             };
 
             var controller = CreateRequest<ContactInfoController>(HttpMethod.Put);
@@ -208,7 +207,7 @@ namespace FoundOps.Api.Tests.Controllers
 
             var newId = Guid.NewGuid();
 
-            var newLocation = new Models.Location
+            var newLocation = new Models.Location(DateTime.UtcNow)
             {
                 Id = newId,
                 Name = "New Location",
@@ -217,8 +216,7 @@ namespace FoundOps.Api.Tests.Controllers
                 AdminDistrictTwo = "Northbrook",
                 AdminDistrictOne = "Illinois",
                 ZipCode = "60062",
-                CountryCode = "US",
-                CreatedDate = DateTime.UtcNow
+                CountryCode = "US"
             };
 
             var controller = CreateRequest<LocationsController>(HttpMethod.Post);
@@ -271,7 +269,7 @@ namespace FoundOps.Api.Tests.Controllers
 
             Assert.IsTrue(roles.Any(r => r.Value<string>("name") == "GotGrease?" && r.Value<string>("type") == "Administrator"
                                          && r["sections"].Count() == 9));
-            Assert.IsTrue(roles.Count() == 5);
+            Assert.IsTrue(roles.Count() == 4);
 
             //check sections
             var sections = result.GetValue("sections").ToArray();
@@ -490,15 +488,14 @@ namespace FoundOps.Api.Tests.Controllers
 
             var newId = Guid.NewGuid();
 
-            var newTaskStatus = new Api.Models.TaskStatus
+            var newTaskStatus = new Api.Models.TaskStatus (DateTime.UtcNow)
             {
                 Id = newId,
                 BusinessAccountId = _gotGreaseId,
                 Color = "488FCD",
                 Name = "Test Status",
                 DefaultTypeInt = null,
-                RemoveFromRoute = false,
-                CreatedDate = DateTime.UtcNow
+                RemoveFromRoute = false
             };
 
             var controller = CreateRequest<TaskStatusesController>(HttpMethod.Put);

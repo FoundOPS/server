@@ -3,7 +3,7 @@ using System;
 
 namespace FoundOps.Api.Models
 {
-    public class UserAccount
+    public class UserAccount : ITrackable
     {
         public Guid Id { get; set; }
 
@@ -30,20 +30,24 @@ namespace FoundOps.Api.Models
         /// </summary>
         public string Role { get; set; }
 
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreatedDate { get; private set; }
         public DateTime? LastModifiedDate { get; set; }
         public Guid? LastModifyingUserId { get; set; }
 
+        public UserAccount(DateTime createdDate)
+        {
+            CreatedDate = createdDate;
+        }
+
         public static UserAccount Convert(Core.Models.CoreEntities.UserAccount model)
         {
-            var userAccount = new UserAccount
+            var userAccount = new UserAccount(model.CreatedDate)
             {
                 Id = model.Id,
                 EmailAddress = model.EmailAddress,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 TimeZone = TimeZone.ConvertModel(model.TimeZoneInfo),
-                CreatedDate = model.CreatedDate,
                 LastModifiedDate = model.LastModifiedDate,
                 LastModifyingUserId = model.LastModifyingUserId
             };

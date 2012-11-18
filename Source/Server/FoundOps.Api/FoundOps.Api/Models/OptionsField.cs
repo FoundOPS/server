@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,7 +12,7 @@ namespace FoundOps.Api.Models
 
         public List<Option> Options { get; set; }
 
-        public OptionsField()
+        public OptionsField(DateTime createdDate) : base(createdDate)
         {
             Options = new List<Option>();
         }
@@ -23,7 +24,7 @@ namespace FoundOps.Api.Models
         /// <returns>A OptionsField that has been converted to it's API model</returns>
         public static OptionsField ConvertModel(Core.Models.CoreEntities.OptionsField fieldModel)
         {
-            var field = new OptionsField
+            var field = new OptionsField(fieldModel.CreatedDate)
             {
                 Id = fieldModel.Id,
                 Name = fieldModel.Name,
@@ -33,7 +34,6 @@ namespace FoundOps.Api.Models
                 ServiceTemplateId = fieldModel.ServiceTemplateId,
                 AllowMultipleSelection = fieldModel.AllowMultipleSelection,
                 TypeInt = fieldModel.TypeInt,
-                CreatedDate = fieldModel.CreatedDate,
                 LastModifiedDate = fieldModel.LastModifiedDate,
                 LastModifyingUserId = fieldModel.LastModifyingUserId
             };

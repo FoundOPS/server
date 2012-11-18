@@ -1,4 +1,6 @@
-﻿namespace FoundOps.Api.Models
+﻿using System;
+
+namespace FoundOps.Api.Models
 {
     public class NumericField : Field
     {
@@ -12,6 +14,10 @@
 
         public decimal? Value { get; set; }
         
+        private NumericField(DateTime createdDate) : base(createdDate)
+        {
+        }
+
         /// <summary>
         /// Converts from the FoundOPS model to the API model
         /// </summary>
@@ -19,7 +25,7 @@
         /// <returns>A NumericField that has been converted to it's API model</returns>
         public static NumericField ConvertModel(Core.Models.CoreEntities.NumericField fieldModel)
         {
-            var field = new NumericField
+            var field = new NumericField(fieldModel.CreatedDate)
             {
                 Id = fieldModel.Id,
                 Name = fieldModel.Name,
@@ -32,7 +38,6 @@
                 Minimum = fieldModel.Minimum,
                 Maximum = fieldModel.Maximum,
                 Value = fieldModel.Value,
-                CreatedDate = fieldModel.CreatedDate,
                 LastModifiedDate = fieldModel.LastModifiedDate,
                 LastModifyingUserId = fieldModel.LastModifyingUserId
             };

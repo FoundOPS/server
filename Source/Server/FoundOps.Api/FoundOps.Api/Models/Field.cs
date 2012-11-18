@@ -2,7 +2,7 @@
 
 namespace FoundOps.Api.Models
 {
-    public abstract class Field
+    public abstract class Field : ITrackable
     {
         public Guid Id { get; set; }
 
@@ -18,10 +18,14 @@ namespace FoundOps.Api.Models
 
         public Guid? ServiceTemplateId { get; set; }
 
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreatedDate { get; private set; }
         public DateTime? LastModifiedDate { get; set; }
         public Guid? LastModifyingUserId { get; set; }
 
+        public Field(DateTime createdDate)
+        {
+            CreatedDate = createdDate;
+        }
 
         /// <summary>
         /// Converts from the FoundOPS model to the API model

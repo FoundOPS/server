@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace FoundOps.Api.Models
 {
-    public class Route
+    public class Route : ITrackable
     {
         public Guid Id { get; set; }
 
@@ -14,13 +14,14 @@ namespace FoundOps.Api.Models
 
         public List<RouteDestination> RouteDestinations { get; set; }
 
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreatedDate { get; private set; }
         public DateTime? LastModifiedDate { get; set; }
         public Guid? LastModifyingUserId { get; set; }
 
-        public Route()
+        public Route(DateTime createdDate)
         {
             RouteDestinations = new List<RouteDestination>();
+            CreatedDate = createdDate;
         }
 
         /// <summary>
@@ -30,12 +31,11 @@ namespace FoundOps.Api.Models
         /// <returns>The corresponding API model for Route.</returns>
         public static Route ConvertModel(FoundOps.Core.Models.CoreEntities.Route routeModel)
         {
-            var route = new Route
+            var route = new Route(routeModel.CreatedDate)
                 {
                     Id = routeModel.Id, 
                     Name = routeModel.Name, 
                     BusinessAccountId = routeModel.OwnerBusinessAccountId,
-                    CreatedDate = routeModel.CreatedDate,
                     LastModifiedDate = routeModel.LastModifiedDate,
                     LastModifyingUserId = routeModel.LastModifyingUserId
                 };

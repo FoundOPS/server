@@ -7,6 +7,10 @@ namespace FoundOps.Api.Models
         public DateTime? Signed { get; set; }
         public string Value { get; set; }
 
+        private SignatureField(DateTime createdDate) : base(createdDate)
+        {
+        }
+
         /// <summary>
         /// Converts from the FoundOPS model to the API model
         /// </summary>
@@ -14,7 +18,7 @@ namespace FoundOps.Api.Models
         /// <returns>A SignatureField that has been converted to it's API model</returns>
         public static SignatureField ConvertModel(Core.Models.CoreEntities.SignatureField fieldModel)
         {
-            var field = new SignatureField
+            var field = new SignatureField(fieldModel.CreatedDate)
             {
                 Id = fieldModel.Id,
                 Name = fieldModel.Name,
@@ -24,7 +28,6 @@ namespace FoundOps.Api.Models
                 ServiceTemplateId = fieldModel.ServiceTemplateId,
                 Signed = fieldModel.Signed,
                 Value = fieldModel.Value,
-                CreatedDate = fieldModel.CreatedDate,
                 LastModifiedDate = fieldModel.LastModifiedDate,
                 LastModifyingUserId = fieldModel.LastModifyingUserId
             };

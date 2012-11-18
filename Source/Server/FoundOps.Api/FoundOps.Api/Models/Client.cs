@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using FoundOps.Api.Models;
 
-namespace FoundOps.Api.Models
+namespace FoundOps.Api.Models 
 {
-    public class Client
+    public class Client : ITrackable
     {
         /// <summary>
         /// The Id
@@ -20,18 +21,19 @@ namespace FoundOps.Api.Models
         /// </summary>
         public List<ContactInfo> ContactInfoSet { get; set; }
 
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreatedDate { get; private set; }
         public DateTime? LastModifiedDate { get; set; }
         public Guid? LastModifyingUserId { get; set; }
 
-        public Client()
+        public Client(DateTime createdDate)
         {
             ContactInfoSet = new List<ContactInfo>();
+            CreatedDate = createdDate;
         }
 
         public static Client ConvertModel(FoundOps.Core.Models.CoreEntities.Client clientModel)
         {
-            var client = new Client { Id = clientModel.Id, Name = clientModel.Name, CreatedDate = clientModel.CreatedDate, LastModifiedDate = clientModel.LastModifiedDate, LastModifyingUserId = clientModel.LastModifyingUserId};
+            var client = new Client(clientModel.CreatedDate) { Id = clientModel.Id, Name = clientModel.Name, LastModifiedDate = clientModel.LastModifiedDate, LastModifyingUserId = clientModel.LastModifyingUserId };
 
             foreach (var contactInfo in clientModel.ContactInfoSet)
                 client.ContactInfoSet.Add(ContactInfo.Convert(contactInfo));

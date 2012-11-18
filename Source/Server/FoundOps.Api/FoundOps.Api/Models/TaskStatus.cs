@@ -2,7 +2,7 @@ using System;
 
 namespace FoundOps.Api.Models
 {
-    public class TaskStatus
+    public class TaskStatus : ITrackable
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
@@ -10,13 +10,19 @@ namespace FoundOps.Api.Models
         public Guid? BusinessAccountId { get; set; }
         public int? DefaultTypeInt { get; set; }
         public bool RemoveFromRoute { get; set; }
-        public DateTime CreatedDate { get; set; }
+
+        public DateTime CreatedDate { get; private set; }
         public DateTime? LastModifiedDate { get; set; }
         public Guid? LastModifyingUserId { get; set; }
 
+        public TaskStatus(DateTime createdDate)
+        {
+            CreatedDate = createdDate;
+        }
+
         public static TaskStatus ConvertModel(FoundOps.Core.Models.CoreEntities.TaskStatus model)
         {
-            var status = new TaskStatus
+            var status = new TaskStatus(model.CreatedDate)
             {
                 Id = model.Id,
                 Name = model.Name,
@@ -24,7 +30,6 @@ namespace FoundOps.Api.Models
                 DefaultTypeInt = model.DefaultTypeInt,
                 RemoveFromRoute = model.RemoveFromRoute,
                 BusinessAccountId = model.BusinessAccountId,
-                CreatedDate = model.CreatedDate,
                 LastModifiedDate = model.LastModifiedDate,
                 LastModifyingUserId = model.LastModifyingUserId
             };

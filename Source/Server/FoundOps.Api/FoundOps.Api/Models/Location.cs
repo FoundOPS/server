@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace FoundOps.Api.Models
 {
-    public class Location
+    public class Location : ITrackable
     {
         /// <summary>
         /// The Id
@@ -60,18 +60,19 @@ namespace FoundOps.Api.Models
         /// </summary>
         public List<ContactInfo> ContactInfoSet { get; set; }
 
-        public DateTime CreatedDate { get; set; }
+        public DateTime CreatedDate { get; private set; }
         public DateTime? LastModifiedDate { get; set; }
         public Guid? LastModifyingUserId { get; set; }
 
-        public Location()
+        public Location(DateTime createdDate)
         {
             ContactInfoSet = new List<ContactInfo>();
+            CreatedDate = createdDate;
         }
 
         public static Location ConvertModel(Core.Models.CoreEntities.Location locationModel)
         {
-            var location = new Location
+            var location = new Location(locationModel.CreatedDate)
             {
                 Id = locationModel.Id,
                 Name = locationModel.Name,
@@ -83,7 +84,6 @@ namespace FoundOps.Api.Models
                 AdminDistrictOne = locationModel.AdminDistrictOne,
                 CountryCode = locationModel.CountryCode,
                 ZipCode = locationModel.PostalCode,
-                CreatedDate = locationModel.CreatedDate,
                 LastModifiedDate = locationModel.LastModifiedDate,
                 LastModifyingUserId = locationModel.LastModifyingUserId
             };
@@ -96,7 +96,7 @@ namespace FoundOps.Api.Models
 
         public static Location ConvertGeocode(FoundOps.Common.NET.GeocoderResult geocoderResult)
         {
-            var location = new Location
+            var location = new Location (DateTime.UtcNow)
             {
                 AddressLineOne = geocoderResult.AddressLineOne,
                 AddressLineTwo = geocoderResult.AddressLineTwo,

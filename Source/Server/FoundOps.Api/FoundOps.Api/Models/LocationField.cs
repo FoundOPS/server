@@ -8,6 +8,10 @@ namespace FoundOps.Api.Models
 
         public short LocationFieldTypeInt { get; set; }
 
+        public LocationField(DateTime createdDate) : base(createdDate)
+        {
+        }
+
         /// <summary>
         /// Converts from the FoundOPS model to the API model
         /// </summary>
@@ -15,7 +19,7 @@ namespace FoundOps.Api.Models
         /// <returns>A LocationField that has been converted to it's API model</returns>
         public static LocationField ConvertModel(Core.Models.CoreEntities.LocationField fieldModel)
         {
-            var field = new LocationField
+            var field = new LocationField (fieldModel.CreatedDate)
             {
                 Id = fieldModel.Id,
                 Name = fieldModel.Name,
@@ -25,7 +29,6 @@ namespace FoundOps.Api.Models
                 ServiceTemplateId = fieldModel.ServiceTemplateId,
                 LocationId = fieldModel.LocationId,
                 LocationFieldTypeInt = fieldModel.LocationFieldTypeInt,
-                CreatedDate = fieldModel.CreatedDate,
                 LastModifiedDate = fieldModel.LastModifiedDate,
                 LastModifyingUserId = fieldModel.LastModifyingUserId
             };
