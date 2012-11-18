@@ -22,7 +22,11 @@ namespace FoundOps.Api.Controllers.Rest
 
             currentBusinessAccount.PartyImageReference.Load();
 
-            var businessAccount = new BusinessAccount(DateTime.UtcNow) { Id = currentBusinessAccount.Id, Name = currentBusinessAccount.Name };
+            var date = DateTime.UtcNow;
+
+            var businessAccount = new BusinessAccount(date) { Id = currentBusinessAccount.Id, Name = currentBusinessAccount.Name };
+
+            businessAccount.SetLastModified(date, CoreEntitiesContainer.CurrentUserAccount().First().Id);
 
             //Load image url
             if (currentBusinessAccount.PartyImage != null)

@@ -122,6 +122,7 @@ namespace FoundOps.Api.Controllers.Rest
                     LastName = userAccount.LastName,
                     TimeZone = "Eastern Standard Time",
                     CreatedDate = DateTime.UtcNow,
+                    LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().First().Id,
                     //PasswordHash and PasswordSalt are not nullable 
                     //set temporary values (even though they will not be used)
                     PasswordHash = EmailPasswordTools.GeneratePassword(),

@@ -16,7 +16,9 @@ namespace FoundOps.Api.Controllers.Rest
                 throw Request.NotAuthorized();
 
             var foundOpsContactInfo = ContactInfo.ConvertBack(contactInfo);
+
             foundOpsContactInfo.CreatedDate = DateTime.UtcNow;
+            foundOpsContactInfo.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().First().Id;
 
             if (contactInfo.LocationId.HasValue)
             {

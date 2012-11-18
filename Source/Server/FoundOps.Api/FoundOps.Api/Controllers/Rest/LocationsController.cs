@@ -92,7 +92,10 @@ namespace FoundOps.Api.Controllers.Rest
 
             //Convert the API model back to the FoundOPS model of Locations
             var newLocation = Location.ConvertBack(location);
-            newLocation.CreatedDate = DateTime.UtcNow;
+
+            var date = DateTime.UtcNow;
+            newLocation.CreatedDate = date;
+            newLocation.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().First().Id;
 
             //Update the locations business account
             newLocation.BusinessAccountId = currentBusinessAccount.Id;
