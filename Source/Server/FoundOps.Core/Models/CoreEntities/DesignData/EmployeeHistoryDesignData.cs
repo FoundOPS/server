@@ -36,7 +36,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Summary = "Applied for secretary position",
                 Notes = "Meets requirements",
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             DesignEmployeeHistoryTwo = new EmployeeHistoryEntry
@@ -46,7 +46,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Summary = "Moved away",
                 Notes = "Received severence pay",
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
                 
             };
 
@@ -57,7 +57,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Summary = "Passed",
                 Notes = "No noteworthy complaints",
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             DesignEmployeeHistoryEnties = new List<EmployeeHistoryEntry> { DesignEmployeeHistory, DesignEmployeeHistoryTwo, DesignEmployeeHistoryThree };

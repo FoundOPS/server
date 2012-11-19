@@ -24,12 +24,12 @@ namespace FoundOps.Api.Models
         public Guid? ClientId { get; set; }
 
         public DateTime CreatedDate { get; private set; }
-        public DateTime? LastModifiedDate { get; private set; }
+        public DateTime? LastModified { get; private set; }
         public Guid? LastModifyingUserId { get; private set; }
         
         public void SetLastModified(DateTime? lastModified, Guid? userId)
         {
-            LastModifiedDate = lastModified;
+            LastModified = lastModified;
             LastModifyingUserId = LastModifyingUserId;
         }
 
@@ -50,7 +50,7 @@ namespace FoundOps.Api.Models
                     LocationId = contactInfoModel.LocationId
                 };
 
-            contactInfo.SetLastModified(contactInfoModel.LastModifiedDate, contactInfoModel.LastModifyingUserId);
+            contactInfo.SetLastModified(contactInfoModel.LastModified, contactInfoModel.LastModifyingUserId);
 
             //TODO Generalize this everywhere
             if (string.IsNullOrEmpty(contactInfo.Type))
@@ -74,7 +74,7 @@ namespace FoundOps.Api.Models
                     ClientId = contactInfoModel.ClientId,
                     LocationId = contactInfoModel.LocationId,
                     CreatedDate = contactInfoModel.CreatedDate,
-                    LastModifiedDate = contactInfoModel.LastModifiedDate,
+                    LastModified = contactInfoModel.LastModified,
                     LastModifyingUserId = contactInfoModel.LastModifyingUserId
                 };
 

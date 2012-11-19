@@ -134,7 +134,7 @@ namespace FoundOps.Api.Controllers.Rest
 
             var routeId = trackPoints.First().RouteId.Value;
 
-            var currentUserAccount = CoreEntitiesContainer.CurrentUserAccount().First();
+            var currentUserAccount = CoreEntitiesContainer.CurrentUserAccount();
             var currentBusinessAccount = CoreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator, RoleType.Regular, RoleType.Mobile }).FirstOrDefault();
 
             //Return an Unauthorized Status Code if

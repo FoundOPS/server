@@ -30,7 +30,7 @@ namespace FoundOps.Api.Controllers.Rest
             UserAccount userAccount = null;
             if (!serviceDateUtc.HasValue || (assigned.HasValue && assigned.Value))
             {
-                userAccount = CoreEntitiesContainer.CurrentUserAccount().First();
+                userAccount = CoreEntitiesContainer.CurrentUserAccount();
             }
 
             //Find routes for the passed service date

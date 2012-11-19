@@ -31,7 +31,7 @@ namespace FoundOps.Api.Models
                 Value = fieldModel.Value
             };
 
-            field.SetLastModified(fieldModel.LastModifiedDate, fieldModel.LastModifyingUserId);
+            field.SetLastModified(fieldModel.LastModified, fieldModel.LastModifyingUserId);
 
             return field;
         }
@@ -54,7 +54,7 @@ namespace FoundOps.Api.Models
                 IsMultiline = textBoxField.IsMultiLine,
                 Value = textBoxField.Value,
                 CreatedDate = textBoxField.CreatedDate,
-                LastModifiedDate = textBoxField.LastModifiedDate,
+                LastModified = textBoxField.LastModified,
                 LastModifyingUserId = textBoxField.LastModifyingUserId
             };
 

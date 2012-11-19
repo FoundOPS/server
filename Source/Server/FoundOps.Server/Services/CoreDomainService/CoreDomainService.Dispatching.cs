@@ -136,7 +136,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void UpdateRoute(Route route)
         {
-            route.LastModifiedDate = DateTime.UtcNow;
+            route.LastModified = DateTime.UtcNow;
             route.LastModifyingUserId = CurrentUserAccount().Id;
 
             this.ObjectContext.Routes.AttachAsModified(route);
@@ -199,7 +199,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void UpdateRouteDestination(RouteDestination currentRouteDestination)
         {
-            currentRouteDestination.LastModifiedDate = DateTime.UtcNow;
+            currentRouteDestination.LastModified = DateTime.UtcNow;
             currentRouteDestination.LastModifyingUserId = CurrentUserAccount().Id;
 
             this.ObjectContext.RouteDestinations.AttachAsModified(currentRouteDestination);
@@ -332,7 +332,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                     var excludedDates = recurringService.ExcludedDates.ToList();
                     excludedDates.Add(original.Date);
                     recurringService.ExcludedDates = excludedDates;
-                    recurringService.LastModifiedDate = DateTime.UtcNow;
+                    recurringService.LastModified = DateTime.UtcNow;
                     recurringService.LastModifyingUserId = CurrentUserAccount().Id;
                 }
 
@@ -341,7 +341,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                 currentRouteTask.OriginalDate = original.Date;
             }
 
-            currentRouteTask.LastModifiedDate = DateTime.UtcNow;
+            currentRouteTask.LastModified = DateTime.UtcNow;
             currentRouteTask.LastModifyingUserId = CurrentUserAccount().Id;
 
             this.ObjectContext.RouteTasks.AttachAsModified(currentRouteTask);
@@ -372,7 +372,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void UpdateTaskStatus(TaskStatus taskStatus)
         {
-            taskStatus.LastModifiedDate = DateTime.UtcNow;
+            taskStatus.LastModified = DateTime.UtcNow;
             taskStatus.LastModifyingUserId = CurrentUserAccount().Id;
 
             this.ObjectContext.TaskStatuses.AttachAsModified(taskStatus);

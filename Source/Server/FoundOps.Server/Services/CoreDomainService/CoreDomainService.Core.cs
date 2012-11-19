@@ -195,7 +195,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void UpdateContactInfo(ContactInfo contactInfo)
         {
-            contactInfo.LastModifiedDate = DateTime.UtcNow;
+            contactInfo.LastModified = DateTime.UtcNow;
             contactInfo.LastModifyingUserId = CurrentUserAccount().Id;
 
             this.ObjectContext.ContactInfoSet.AttachAsModified(contactInfo);
@@ -237,7 +237,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void UpdateFile(File file)
         {
-            file.LastModifiedDate = DateTime.UtcNow;
+            file.LastModified = DateTime.UtcNow;
             file.LastModifyingUserId = CurrentUserAccount().Id;
             this.ObjectContext.Files.AttachAsModified(file);
         }
@@ -290,7 +290,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void UpdateParty(Party account)
         {
-            account.LastModifiedDate = DateTime.UtcNow;
+            account.LastModified = DateTime.UtcNow;
             account.LastModifyingUserId = CurrentUserAccount().Id;
 
             if (!(account is BusinessAccount))
@@ -357,7 +357,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             if (currentRepeat.EndDate != null)
                 currentRepeat.EndDate = currentRepeat.EndDate.Value.Date; //Remove time
 
-            currentRepeat.LastModifiedDate = DateTime.UtcNow;
+            currentRepeat.LastModified = DateTime.UtcNow;
             currentRepeat.LastModifyingUserId = CurrentUserAccount().Id;
 
             this.ObjectContext.Repeats.AttachAsModified(currentRepeat);
@@ -403,7 +403,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         /// </summary>
         public UserAccount CurrentUserAccount()
         {
-            return ObjectContext.CurrentUserAccount().First();
+            return ObjectContext.CurrentUserAccount();
         }
 
         /// <summary>
@@ -505,7 +505,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             //Trim unwanted spaces from the email address
             currentUserAccount.EmailAddress = currentUserAccount.EmailAddress.Trim();
 
-            currentUserAccount.LastModifiedDate = DateTime.UtcNow;
+            currentUserAccount.LastModified = DateTime.UtcNow;
             currentUserAccount.LastModifyingUserId = CurrentUserAccount().Id;
 
             this.ObjectContext.Parties.AttachAsModified(currentUserAccount);

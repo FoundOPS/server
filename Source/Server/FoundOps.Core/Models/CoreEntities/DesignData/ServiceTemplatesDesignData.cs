@@ -52,7 +52,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 OwnerServiceProvider = BusinessAccountsDesignData.FoundOps,
                 Invoice = new InvoicesDesignData().DesignInvoice,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
             OilServiceTemplate.Invoice.Id = OilServiceTemplate.Id;
 
@@ -70,7 +70,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 OwnerServiceProvider = BusinessAccountsDesignData.FoundOps,
                 Invoice = new InvoicesDesignData().DesignInvoiceTwo,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
             SmallGreaseTrapServiceTemplate.Invoice.Id = SmallGreaseTrapServiceTemplate.Id;
 
@@ -87,7 +87,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 OwnerServiceProvider = BusinessAccountsDesignData.FoundOps,
                 Invoice = new InvoicesDesignData().DesignInvoiceThree,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
             InterceptorServiceTemplate.Invoice.Id = InterceptorServiceTemplate.Id;
 
@@ -104,7 +104,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 OwnerServiceProvider = BusinessAccountsDesignData.FoundOps,
                 Invoice = new InvoicesDesignData().DesignInvoice,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
             HydrojettingServiceTemplate.Invoice.Id = HydrojettingServiceTemplate.Id;
 
@@ -121,7 +121,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 OwnerServiceProvider = BusinessAccountsDesignData.FoundOps,
                 Invoice = new InvoicesDesignData().DesignInvoiceTwo,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
             ContainerReplacementServiceTemplate.Invoice.Id = ContainerReplacementServiceTemplate.Id;
 
@@ -140,7 +140,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 OwnerServiceProvider = BusinessAccountsDesignData.FoundOps,
                 Invoice = new InvoicesDesignData().DesignInvoiceTwo,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
             EnvironmentalBiotechServiceTemplate.Invoice.Id = EnvironmentalBiotechServiceTemplate.Id;
 
@@ -171,7 +171,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 OwnerServiceProvider = BusinessAccountsDesignData.FoundOps,
                 Invoice = new InvoicesDesignData().DesignInvoiceThree,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
             DirectServiceTemplate.Invoice.Id = DirectServiceTemplate.Id;
 
@@ -187,7 +187,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 OwnerServiceProvider = BusinessAccountsDesignData.FoundOps,
                 Invoice = new InvoicesDesignData().DesignInvoice,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
             RushServiceTemplate.Invoice.Id = RushServiceTemplate.Id;
 
@@ -203,7 +203,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 OwnerServiceProvider = BusinessAccountsDesignData.FoundOps,
                 Invoice = new InvoicesDesignData().DesignInvoiceTwo,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
             RegularServiceTemplate.Invoice.Id = RegularServiceTemplate.Id;
 
@@ -219,7 +219,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 OwnerServiceProvider = BusinessAccountsDesignData.FoundOps,
                 Invoice = new InvoicesDesignData().DesignInvoiceThree,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
             EconomyServiceTemplate.Invoice.Id = EconomyServiceTemplate.Id;
 

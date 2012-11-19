@@ -39,7 +39,7 @@ namespace FoundOps.Api.Controllers.Rest
             var status = TaskStatus.CreateFromModel(taskStatus);
 
             status.CreatedDate = DateTime.UtcNow;
-            status.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().First().Id;
+            status.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().Id;
 
             businessAccount.TaskStatuses.Add(status);
             SaveWithRetry();
@@ -66,8 +66,8 @@ namespace FoundOps.Api.Controllers.Rest
             original.DefaultTypeInt = taskStatus.DefaultTypeInt;
             original.Name = taskStatus.Name;
             original.RemoveFromRoute = taskStatus.RemoveFromRoute;
-            original.LastModifiedDate = DateTime.UtcNow;
-            original.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().First().Id;
+            original.LastModified = DateTime.UtcNow;
+            original.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().Id;
 
             SaveWithRetry();
         }

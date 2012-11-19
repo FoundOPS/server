@@ -24,7 +24,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             Id = BusinessAccountsConstants.FoundOpsId,
             Name = "FoundOPS",
             CreatedDate = DateTime.UtcNow,
-            LastModifiedDate = DateTime.UtcNow
+            LastModified = DateTime.UtcNow
         };
 
         public BusinessAccount GotGrease { get; private set; }
@@ -51,7 +51,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 QuickBooksEnabled = true,
                 MaxRoutes = 10,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             ABCouriers = new BusinessAccount
@@ -61,7 +61,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 QuickBooksEnabled = true,
                 MaxRoutes = 10,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             GenericOilCollector = new BusinessAccount
@@ -71,7 +71,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 QuickBooksEnabled = true,
                 MaxRoutes = 10,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             GenericBiodiesel = new BusinessAccount
@@ -81,7 +81,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 QuickBooksEnabled = true,
                 MaxRoutes = 10,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             DesignServiceProviders = new List<BusinessAccount> { GotGrease, ABCouriers, GenericOilCollector, GenericBiodiesel };
@@ -108,7 +108,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                     Latitude = (decimal?)40.460335,
                     Longitude = (decimal?)(-86.929840),
                     CreatedDate = DateTime.UtcNow,
-                    LastModifiedDate = DateTime.UtcNow
+                    LastModified = DateTime.UtcNow
                 });
 
                 //Choose the right set of ServiceTemplates

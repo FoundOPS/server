@@ -22,12 +22,12 @@ namespace FoundOps.Api.Models
         public List<ContactInfo> ContactInfoSet { get; set; }
 
         public DateTime CreatedDate { get; private set; }
-        public DateTime? LastModifiedDate { get; private set; }
+        public DateTime? LastModified { get; private set; }
         public Guid? LastModifyingUserId { get; private set; }
 
         public void SetLastModified(DateTime? lastModified, Guid? userId)
         {
-            LastModifiedDate = lastModified;
+            LastModified = lastModified;
             LastModifyingUserId = userId;
         }
 
@@ -45,7 +45,7 @@ namespace FoundOps.Api.Models
                     Name = clientModel.Name
                 };
 
-            client.SetLastModified(clientModel.LastModifiedDate, clientModel.LastModifyingUserId);
+            client.SetLastModified(clientModel.LastModified, clientModel.LastModifyingUserId);
 
             foreach (var contactInfo in clientModel.ContactInfoSet)
                 client.ContactInfoSet.Add(ContactInfo.Convert(contactInfo));

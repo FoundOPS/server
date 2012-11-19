@@ -48,7 +48,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Required = false,
                 Tooltip = "Where to go",
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
         }
 
@@ -70,7 +70,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                             Minimum = 0,
                             Value = (decimal?)2.54,
                             CreatedDate = DateTime.UtcNow,
-                            LastModifiedDate = DateTime.UtcNow
+                            LastModified = DateTime.UtcNow
                         };
                     break;
                 case NumericFieldType.Numeric:
@@ -85,7 +85,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                             Tooltip = "in gallons",
                             Value = 125,
                             CreatedDate = DateTime.UtcNow,
-                            LastModifiedDate = DateTime.UtcNow
+                            LastModified = DateTime.UtcNow
                         };
                     break;
                 default:
@@ -100,7 +100,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                             Mask = "p",
                             Value = (decimal?)0.25,
                             CreatedDate = DateTime.UtcNow,
-                            LastModifiedDate = DateTime.UtcNow
+                            LastModified = DateTime.UtcNow
                         };
                     break;
             }
@@ -127,7 +127,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                             OptionsType = OptionsType.Combobox,
                             Value = "1,2",
                             CreatedDate = DateTime.UtcNow,
-                            LastModifiedDate = DateTime.UtcNow
+                            LastModified = DateTime.UtcNow
                         };
                     optionsField.Options.Add(new Option { Name = "Small", IsChecked = false });
                     optionsField.Options.Add(new Option { Name = "Medium", IsChecked = false });
@@ -143,7 +143,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                             OptionsType = OptionsType.Checklist,
                             Value = "0,2",
                             CreatedDate = DateTime.UtcNow,
-                            LastModifiedDate = DateTime.UtcNow
+                            LastModified = DateTime.UtcNow
                         };
                     optionsField.Options.Add(new Option { Name = "Empty Barrels", IsChecked = true });
                     optionsField.Options.Add(new Option { Name = "Assess Oil Quantity", IsChecked = true });
@@ -158,7 +158,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                             AllowMultipleSelection = false,
                             OptionsType = OptionsType.Checkbox,
                             CreatedDate = DateTime.UtcNow,
-                            LastModifiedDate = DateTime.UtcNow
+                            LastModified = DateTime.UtcNow
                         };
                     optionsField.Options.Add(new Option { Name = "Collected paperwork", IsChecked = true });
                     break;
@@ -180,7 +180,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Signed = DateTime.UtcNow,
                 Value = "7UZ32232263353223222333242_3w546647c9b96646475765444_6uZ69647544533210Y33544a67585ba897757988676545444_4G10Z22433223545633322411111000Y11211100000Z121223_8G56676646432Z166878886543300Y136574a487464_6GZ11122223344510000Y224333466642223222120Z2_dyZ75546542Y3656536444Z1435465443_5v0112223431121344337442222223_gHZ3424245334653141200Y142345566645_2D5546489657db46b95976443321Z12322_ey76686686676_4y00000000000",
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
         }
 
@@ -198,7 +198,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                         IsMultiline = false,
                         Value = "124-1515-15155",
                         CreatedDate = DateTime.UtcNow,
-                        LastModifiedDate = DateTime.UtcNow
+                        LastModified = DateTime.UtcNow
                     };
             }
             else
@@ -211,7 +211,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                     IsMultiline = true,
                     Value = "Be careful, there is a large scary dog",
                     CreatedDate = DateTime.UtcNow,
-                    LastModifiedDate = DateTime.UtcNow
+                    LastModified = DateTime.UtcNow
                 };
             }
 

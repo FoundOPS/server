@@ -61,12 +61,12 @@ namespace FoundOps.Api.Models
         public List<ContactInfo> ContactInfoSet { get; set; }
 
         public DateTime CreatedDate { get; private set; }
-        public DateTime? LastModifiedDate { get; private set; }
+        public DateTime? LastModified { get; private set; }
         public Guid? LastModifyingUserId { get; private set; }
         
         public void SetLastModified(DateTime? lastModified, Guid? userId)
         {
-            LastModifiedDate = lastModified;
+            LastModified = lastModified;
             LastModifyingUserId = userId;
         }
 
@@ -91,7 +91,7 @@ namespace FoundOps.Api.Models
                 Latitude = Convert.ToDecimal(location.Latitude),
                 Longitude = Convert.ToDecimal(location.Longitude),
                 CreatedDate = location.CreatedDate,
-                LastModifiedDate = location.LastModifiedDate,
+                LastModified = location.LastModified,
                 LastModifyingUserId = location.LastModifyingUserId
             };
 
@@ -114,7 +114,7 @@ namespace FoundOps.Api.Models
                 ZipCode = locationModel.PostalCode
             };
 
-            location.SetLastModified(locationModel.LastModifiedDate, locationModel.LastModifyingUserId);
+            location.SetLastModified(locationModel.LastModified, locationModel.LastModifyingUserId);
 
             foreach (var contactInfo in locationModel.ContactInfoSet)
                 location.ContactInfoSet.Add(ContactInfo.Convert(contactInfo));

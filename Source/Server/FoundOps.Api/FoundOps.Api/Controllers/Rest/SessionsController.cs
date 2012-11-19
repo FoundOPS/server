@@ -40,7 +40,7 @@ namespace FoundOps.Api.Controllers.Rest
             
             Request.CheckAuthentication();
 
-            var user = CoreEntitiesContainer.CurrentUserAccount().Include(ua => ua.RoleMembership)
+            var user = CoreEntitiesContainer.CurrentUserAccountQueryable().Include(ua => ua.RoleMembership)
                 .Include("RoleMembership.Blocks").Include("RoleMembership.OwnerBusinessAccount").First();
 
             //apply timezone

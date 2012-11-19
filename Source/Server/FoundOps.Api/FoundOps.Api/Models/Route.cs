@@ -15,12 +15,12 @@ namespace FoundOps.Api.Models
         public List<RouteDestination> RouteDestinations { get; set; }
 
         public DateTime CreatedDate { get; private set; }
-        public DateTime? LastModifiedDate { get; private set; }
+        public DateTime? LastModified { get; private set; }
         public Guid? LastModifyingUserId { get; private set; }
         
         public void SetLastModified(DateTime? lastModified, Guid? userId)
         {
-            LastModifiedDate = lastModified;
+            LastModified = lastModified;
             LastModifyingUserId = userId;
         }
 
@@ -44,7 +44,7 @@ namespace FoundOps.Api.Models
                     BusinessAccountId = routeModel.OwnerBusinessAccountId
                 };
 
-            route.SetLastModified(routeModel.LastModifiedDate, routeModel.LastModifyingUserId);
+            route.SetLastModified(routeModel.LastModified, routeModel.LastModifyingUserId);
 
             foreach (var routeDestinationModel in routeModel.RouteDestinations.OrderBy(rd => rd.OrderInRoute))
                 route.RouteDestinations.Add(RouteDestination.ConvertModel(routeDestinationModel));

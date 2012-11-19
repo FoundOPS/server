@@ -18,7 +18,7 @@ namespace FoundOps.Api.Controllers.Rest
             var foundOpsContactInfo = ContactInfo.ConvertBack(contactInfo);
 
             foundOpsContactInfo.CreatedDate = DateTime.UtcNow;
-            foundOpsContactInfo.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().First().Id;
+            foundOpsContactInfo.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().Id;
 
             if (contactInfo.LocationId.HasValue)
             {
@@ -55,8 +55,8 @@ namespace FoundOps.Api.Controllers.Rest
             original.Data = contactInfo.Data;
             original.LocationId = contactInfo.LocationId;
             original.ClientId = contactInfo.ClientId;
-            original.LastModifiedDate = DateTime.UtcNow;
-            original.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().First().Id;
+            original.LastModified = DateTime.UtcNow;
+            original.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().Id;
 
             SaveWithRetry();
         }

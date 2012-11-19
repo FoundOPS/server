@@ -23,12 +23,12 @@ namespace FoundOps.Api.Models
         public Guid ServiceProviderId { get; set; }
 
         public DateTime CreatedDate { get; private set; }
-        public DateTime? LastModifiedDate { get; private set; }
+        public DateTime? LastModified { get; private set; }
         public Guid? LastModifyingUserId { get; private set; }
         
         public void SetLastModified(DateTime? lastModified, Guid? userId)
         {
-            LastModifiedDate = lastModified;
+            LastModified = lastModified;
             LastModifyingUserId = userId;
         }
 
@@ -56,7 +56,7 @@ namespace FoundOps.Api.Models
                 RecurringServiceId = serviceModel.RecurringServiceId
             };
 
-            service.SetLastModified(serviceModel.LastModifiedDate, serviceModel.LastModifyingUserId);
+            service.SetLastModified(serviceModel.LastModified, serviceModel.LastModifyingUserId);
 
             if(serviceModel.Client!=null)
             {

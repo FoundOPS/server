@@ -40,7 +40,7 @@ namespace FoundOps.Api.Models
                 Value = fieldModel.Value
             };
 
-            field.SetLastModified(fieldModel.LastModifiedDate, fieldModel.LastModifyingUserId);
+            field.SetLastModified(fieldModel.LastModified, fieldModel.LastModifyingUserId);
 
             return field;
         }
@@ -66,7 +66,7 @@ namespace FoundOps.Api.Models
                 Maximum = numericField.Maximum,
                 Value = numericField.Value,
                 CreatedDate = numericField.CreatedDate,
-                LastModifiedDate = numericField.LastModifiedDate,
+                LastModified = numericField.LastModified,
                 LastModifyingUserId = numericField.LastModifyingUserId
             };
 

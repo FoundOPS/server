@@ -17,7 +17,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 DefaultTypeInt = ((int)StatusDetail.CreatedDefault),
                 RemoveFromRoute = true,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             taskStatuses.Add(taskStatus);
@@ -30,7 +30,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 DefaultTypeInt = ((int)StatusDetail.RoutedDefault),
                 RemoveFromRoute = false,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             taskStatuses.Add(taskStatus);
@@ -42,7 +42,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 Color = "#FFCC44",
                 RemoveFromRoute = false,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             taskStatuses.Add(taskStatus);
@@ -55,7 +55,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 DefaultTypeInt = ((int)StatusDetail.CompletedDefault),
                 RemoveFromRoute = false,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             taskStatuses.Add(taskStatus);

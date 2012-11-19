@@ -23,8 +23,7 @@ namespace FoundOps.Api.Controllers.Rest
             currentBusinessAccount.PartyImageReference.Load();
 
             var businessAccount = new BusinessAccount(currentBusinessAccount.CreatedDate) { Id = currentBusinessAccount.Id, Name = currentBusinessAccount.Name };
-
-            businessAccount.SetLastModified(currentBusinessAccount.LastModifiedDate, currentBusinessAccount.LastModifyingUserId);
+            businessAccount.SetLastModified(currentBusinessAccount.LastModified, currentBusinessAccount.LastModifyingUserId);
 
             //Load image url
             if (currentBusinessAccount.PartyImage != null)
@@ -47,8 +46,8 @@ namespace FoundOps.Api.Controllers.Rest
                 throw Request.NotAuthorized();
 
             modelBusinessAccount.Name = businessAccount.Name;
-            modelBusinessAccount.LastModifiedDate = DateTime.UtcNow;
-            modelBusinessAccount.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().First().Id;
+            modelBusinessAccount.LastModified = DateTime.UtcNow;
+            modelBusinessAccount.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().Id;
 
             SaveWithRetry();
         }

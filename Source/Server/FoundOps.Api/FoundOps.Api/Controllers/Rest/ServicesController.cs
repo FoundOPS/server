@@ -86,7 +86,7 @@ namespace FoundOps.Api.Controllers.Rest
             {
                 //if serviceDate is null: use the current user's date
                 if (!serviceDate.HasValue)
-                    serviceDate = CoreEntitiesContainer.CurrentUserAccount().First().Now().Date;
+                    serviceDate = CoreEntitiesContainer.CurrentUserAccount().Now().Date;
 
                 service = new Core.Models.CoreEntities.Service
                 {
@@ -203,8 +203,8 @@ namespace FoundOps.Api.Controllers.Rest
 
                 #endregion
 
-                existingService.LastModifiedDate = DateTime.UtcNow;
-                existingService.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().First().Id;
+                existingService.LastModified = DateTime.UtcNow;
+                existingService.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().Id;
 
             }
             //the service was generated, insert a new Service and set the appropriate field values

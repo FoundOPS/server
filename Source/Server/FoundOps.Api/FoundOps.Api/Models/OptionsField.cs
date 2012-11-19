@@ -36,7 +36,7 @@ namespace FoundOps.Api.Models
                 TypeInt = fieldModel.TypeInt
             };
 
-            field.SetLastModified(fieldModel.LastModifiedDate, fieldModel.LastModifyingUserId);
+            field.SetLastModified(fieldModel.LastModified, fieldModel.LastModifyingUserId);
 
             foreach (var option in fieldModel.Options.OrderBy(o => o.Name))
                 field.Options.Add(Option.ConvertModel(option));
@@ -62,7 +62,7 @@ namespace FoundOps.Api.Models
                 AllowMultipleSelection = optionsField.AllowMultipleSelection,
                 TypeInt = optionsField.TypeInt,
                 CreatedDate = optionsField.CreatedDate,
-                LastModifiedDate = optionsField.LastModifiedDate,
+                LastModified = optionsField.LastModified,
                 LastModifyingUserId = optionsField.LastModifyingUserId
             };
 

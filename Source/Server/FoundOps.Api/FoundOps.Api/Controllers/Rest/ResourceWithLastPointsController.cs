@@ -26,7 +26,7 @@ namespace FoundOps.Api.Controllers.Rest
             SetupDesignDataForGetResourcesWithLatestPoints(currentBusinessAccount.Id);
 #endif
 
-            var currentUserAccount = CoreEntitiesContainer.CurrentUserAccount().First();
+            var currentUserAccount = CoreEntitiesContainer.CurrentUserAccount();
             var userToday = currentUserAccount.Now().Date;
 
             var resourcesWithTrackPoints = CoreEntitiesContainer.GetResourcesWithLatestPoint(currentBusinessAccount.Id, userToday);
@@ -47,7 +47,7 @@ namespace FoundOps.Api.Controllers.Rest
         /// <param name="currentBusinessAccountId">The business account to update the design data on.</param>
         private void SetupDesignDataForGetResourcesWithLatestPoints(Guid currentBusinessAccountId)
         {
-            var user = CoreEntitiesContainer.CurrentUserAccount().First();
+            var user = CoreEntitiesContainer.CurrentUserAccount();
 
             var serviceDate = user.Now().Date;
 

@@ -902,7 +902,7 @@ namespace FoundOps.Api.Tests.Controllers
 
             //Save and propagate the name change
             CoreEntitiesContainer.SaveChanges();
-            CoreEntitiesContainer.PropagateNameChange(serviceTemplate.Id, CoreEntitiesContainer.CurrentUserAccount().First().Id);
+            CoreEntitiesContainer.PropagateNameChange(serviceTemplate.Id, CoreEntitiesContainer.CurrentUserAccount().Id);
 
             //Use the function TestServiceTemplateNamePropagationSuccess to check that all Service Templates and Routes had their names changed
             using (var conn = new SqlConnection(ServerConstants.SqlConnectionString))
@@ -974,7 +974,7 @@ namespace FoundOps.Api.Tests.Controllers
                 compare.ElementsToIgnore.Add("ParentFieldId");
                 compare.ElementsToIgnore.Add("Signed");
                 compare.ElementsToIgnore.Add("CreatedDate");
-                compare.ElementsToIgnore.Add("LastModifiedDate");
+                compare.ElementsToIgnore.Add("LastModified");
 
                 compare.Compare(field, childField);
 

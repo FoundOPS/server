@@ -38,7 +38,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Mileage = 128675,
                 ServicedBy = "Linda Splenda",
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
             AddLineItems(DesignVehicleMaintenance);
 
@@ -49,7 +49,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Mileage = 67075,
                 ServicedBy = "Jim Smith",
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
             AddLineItems(DesignVehicleMaintenanceTwo);
 
@@ -60,7 +60,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Mileage = 18615,
                 ServicedBy = "Tim",
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
             AddLineItems(DesignVehicleMaintenanceThree);
 
@@ -76,7 +76,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Details = "All 4",
                 VehicleMaintenanceLogEntry = vehicleMaintenanceLogEntry,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
             VehicleMaintenanceLineItemTwo = new VehicleMaintenanceLineItem
             {
@@ -85,7 +85,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Details = "Fixed Rust Spot",
                 VehicleMaintenanceLogEntry = vehicleMaintenanceLogEntry,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             VehicleMaintenanceLineItemThree = new VehicleMaintenanceLineItem
@@ -95,7 +95,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Details = "Right Rear",
                 VehicleMaintenanceLogEntry = vehicleMaintenanceLogEntry,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
             DesignLineItems = new List<VehicleMaintenanceLineItem> { DesignVehicleMaintenanceLineItem, VehicleMaintenanceLineItemTwo, VehicleMaintenanceLineItemThree };
         }

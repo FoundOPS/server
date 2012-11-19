@@ -57,7 +57,7 @@ namespace FoundOps.Api.Controllers.Rest
             }
             else
             {
-                userAccounts = CoreEntitiesContainer.CurrentUserAccount();
+                userAccounts = CoreEntitiesContainer.CurrentUserAccountQueryable();
             }
 
             var enumerated = userAccounts.OrderBy(ua => ua.LastName + " " + ua.FirstName).ToList();
@@ -97,6 +97,8 @@ namespace FoundOps.Api.Controllers.Rest
         /// <param name="roleId">The role</param>
         public void Post(Guid roleId, UserAccount userAccount)
         {
+            var currentUserAccount = CoreEntitiesContainer.CurrentUserAccount();
+
             //check for admin abilities
             var businessAccount = CoreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator }).Include(ba => ba.OwnedRoles).FirstOrDefault();
             if (businessAccount == null)
@@ -122,7 +124,7 @@ namespace FoundOps.Api.Controllers.Rest
                     LastName = userAccount.LastName,
                     TimeZone = "Eastern Standard Time",
                     CreatedDate = DateTime.UtcNow,
-                    LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().First().Id,
+                    LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().Id,
                     //PasswordHash and PasswordSalt are not nullable 
                     //set temporary values (even though they will not be used)
                     PasswordHash = EmailPasswordTools.GeneratePassword(),
@@ -132,22 +134,22 @@ namespace FoundOps.Api.Controllers.Rest
             //If the user does exist, track the changes
             else
             {
-                user.LastModifiedDate = DateTime.UtcNow;
-                user.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().First().Id;
+                user.LastModified = DateTime.UtcNow;
+                user.LastModifyingUserId = currentUserAccount.Id;
             }
 
             //add the user to the role
             user.RoleMembership.Add(role);
 
             //setup the employee link
-            SetupEmployee(userAccount.EmployeeId, user, businessAccount);
+            SetupEmployee(userAccount.EmployeeId, user, businessAccount, currentUserAccount.Id);
 
             SaveWithRetry();
 
             if (newUser)
             {
                 //Send new user email
-                var sender = CoreEntitiesContainer.CurrentUserAccount().First().DisplayName;
+                var sender = CoreEntitiesContainer.CurrentUserAccount().DisplayName;
                 var recipient = user.FirstName;
                 var subject = "Your FoundOPS invite from " + sender;
                 var body = "Hi " + recipient + ", \r\n\r\n" +
@@ -173,6 +175,10 @@ namespace FoundOps.Api.Controllers.Rest
         /// <param name="oldPass">(Optional) For resetting the password: the users old password</param>
         public void Put(UserAccount userAccount, Guid? roleId = null, string newPass = null, string oldPass = null)
         {
+            var currentUserAccount = CoreEntitiesContainer.CurrentUserAccount();
+            if (currentUserAccount == null)
+                throw Request.NotAuthorized();
+
             //changing properties on behalf of a business account
             if (roleId.HasValue)
             {
@@ -201,20 +207,20 @@ namespace FoundOps.Api.Controllers.Rest
                         user.RoleMembership.Add(newRole);
                 }
 
-                SetupEmployee(userAccount.EmployeeId, user, businessAccount);
+                SetupEmployee(userAccount.EmployeeId, user, businessAccount, currentUserAccount.Id);
+
+                user.LastModified = DateTime.UtcNow;
+                user.LastModifyingUserId = currentUserAccount.Id;
 
                 SaveWithRetry();
             }
             //changing properties on behalf of the current user
             else
             {
-                var currentUserAccount = CoreEntitiesContainer.CurrentUserAccount().FirstOrDefault();
-
                 //if the user is not editing itself, and if it does not have admin access to the business account
                 //throw not authorized
-                if (currentUserAccount == null || (userAccount != null && currentUserAccount.Id != userAccount.Id))
+                if (userAccount != null && currentUserAccount.Id != userAccount.Id)
                     throw Request.NotAuthorized();
-
 
                 if (userAccount != null) //can be null if just changing the password
                 {
@@ -247,6 +253,8 @@ namespace FoundOps.Api.Controllers.Rest
                         throw Request.BadRequest("The password was incorrect, or the new password is not acceptable");
                 }
 
+                currentUserAccount.LastModified = DateTime.UtcNow;
+                currentUserAccount.LastModifyingUserId = currentUserAccount.Id;
 
                 SaveWithRetry();
             }
@@ -289,7 +297,8 @@ namespace FoundOps.Api.Controllers.Rest
         /// <param name="employeeId">The employee Id to link</param>
         /// <param name="userAccount">The user account</param>
         /// <param name="businessAccount">The business account</param>
-        private void SetupEmployee(Guid? employeeId, Core.Models.CoreEntities.UserAccount userAccount, BusinessAccount businessAccount)
+        /// <param name="currentUserAccountId">For tracking</param>
+        private void SetupEmployee(Guid? employeeId, Core.Models.CoreEntities.UserAccount userAccount, BusinessAccount businessAccount, Guid currentUserAccountId)
         {
             //clear any linked employees for this business account
             foreach (var oldEmployee in userAccount.LinkedEmployees.Where(e => e.EmployerId == businessAccount.Id).ToArray())
@@ -319,6 +328,9 @@ namespace FoundOps.Api.Controllers.Rest
             {
                 employee = CoreEntitiesContainer.Employees.First(e => e.Id == employeeId.Value);
             }
+
+            employee.LastModified = DateTime.UtcNow;
+            employee.LinkedUserAccountId = currentUserAccountId;
 
             employee.LinkedUserAccount = userAccount;
         }

@@ -58,7 +58,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 LastTimeStamp = dateTime,
                 LinkedUserAccountId = _userAccountDesignData.Jon.Id,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             DesignEmployeeTwo = new Employee
@@ -84,7 +84,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 LastTimeStamp = dateTime,
                 LinkedUserAccountId = _userAccountDesignData.Zach.Id,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             DesignEmployeeThree = new Employee
@@ -110,7 +110,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 LastTimeStamp = dateTime,
                 LinkedUserAccountId = _userAccountDesignData.Oren.Id,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             DesignEmployees = new List<Employee> { DesignEmployee, DesignEmployeeTwo, DesignEmployeeThree };

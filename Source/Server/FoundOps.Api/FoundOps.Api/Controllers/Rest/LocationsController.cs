@@ -95,7 +95,7 @@ namespace FoundOps.Api.Controllers.Rest
 
             var date = DateTime.UtcNow;
             newLocation.CreatedDate = date;
-            newLocation.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().First().Id;
+            newLocation.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().Id;
 
             //Update the locations business account
             newLocation.BusinessAccountId = currentBusinessAccount.Id;
@@ -133,8 +133,8 @@ namespace FoundOps.Api.Controllers.Rest
             original.AdminDistrictTwo = location.AdminDistrictTwo;
             original.PostalCode = location.ZipCode;
             original.CountryCode = location.CountryCode;
-            original.LastModifiedDate = DateTime.UtcNow;
-            original.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().First().Id;
+            original.LastModified = DateTime.UtcNow;
+            original.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().Id;
 
             SaveWithRetry();
         }

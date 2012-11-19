@@ -94,7 +94,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             var originalService = ChangeSet.GetOriginal(currentService);
 
-            var user = ObjectContext.CurrentUserAccount().First();
+            var user = ObjectContext.CurrentUserAccount();
 
             //If the original date was prior to today, throw an exception
             if (originalService.ServiceDate < user.Now().Date)
@@ -116,12 +116,12 @@ namespace FoundOps.Server.Services.CoreDomainService
 
                     routeTask.TaskStatus = this.ObjectContext.TaskStatuses.FirstOrDefault(ts => ts.BusinessAccountId == routeTask.BusinessAccountId && ts.DefaultTypeInt == ((int)StatusDetail.CreatedDefault));
 
-                    routeTask.LastModifiedDate = DateTime.UtcNow;
+                    routeTask.LastModified = DateTime.UtcNow;
                     routeTask.LastModifyingUserId = CurrentUserAccount().Id;
                 }
             }
 
-            currentService.LastModifiedDate = DateTime.UtcNow;
+            currentService.LastModified = DateTime.UtcNow;
             currentService.LastModifyingUserId = CurrentUserAccount().Id;
 
             this.ObjectContext.Services.AttachAsModified(currentService);
@@ -243,7 +243,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                 serviceProviderContextId = businessAccount.Id;
             }
 
-            var user = ObjectContext.CurrentUserAccount().FirstOrDefault();
+            var user = ObjectContext.CurrentUserAccount();
 
             if (user == null)
                 throw new Exception("No User logged in");
@@ -493,7 +493,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             //If there is a newly added excluded date today or in the future. Remove any associated route tasks for that date
             var originalRecurringService = ChangeSet.GetOriginal(currentRecurringService);
 
-            var user = ObjectContext.CurrentUserAccount().First();
+            var user = ObjectContext.CurrentUserAccount();
 
             var date = user.Now().Date;
 
@@ -510,7 +510,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                 DeleteServices(servicesToDelete);
             }
 
-            currentRecurringService.LastModifiedDate = DateTime.UtcNow;
+            currentRecurringService.LastModified = DateTime.UtcNow;
             currentRecurringService.LastModifyingUserId = CurrentUserAccount().Id;
 
             this.ObjectContext.RecurringServices.AttachAsModified(currentRecurringService);

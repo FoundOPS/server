@@ -20,7 +20,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 StartDate = date,
                 Frequency = Frequency.Once,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             DesignDailyRepeat = new Repeat
@@ -30,7 +30,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 EndDate = date.Add(new TimeSpan(10, 0, 0, 0)),
                 RepeatEveryTimes = 2,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             DesignWeeklyRepeat = new Repeat
@@ -40,7 +40,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 FrequencyDetailAsWeeklyFrequencyDetail = new[] { date.DayOfWeek },
                 RepeatEveryTimes = 2,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             DesignNeverEndingWeeklyRepeat = new Repeat
@@ -50,7 +50,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 FrequencyDetailAsWeeklyFrequencyDetail = new[] { date.DayOfWeek },
                 RepeatEveryTimes = 2,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             DesignMonthlyRepeat = new Repeat
@@ -60,7 +60,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 EndDate = date.AddMonths(6),
                 RepeatEveryTimes = 1,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             DesignYearlyRepeat = new Repeat
@@ -70,7 +70,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 EndAfterTimes = 10,
                 RepeatEveryTimes = 2,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
         }
     }

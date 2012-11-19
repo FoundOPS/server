@@ -49,7 +49,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 LastSpeed = 25.65,
                 LastTimeStamp = date,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             DesignVehicleTwo = new Vehicle
@@ -70,7 +70,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 LastSpeed = 48.82,
                 LastTimeStamp = date,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             DesignVehicleThree = new Vehicle
@@ -91,7 +91,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 LastSpeed = 15.2,
                 LastTimeStamp = date,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             DesignVehicles = new List<Vehicle> { DesignVehicle, DesignVehicleTwo, DesignVehicleThree };

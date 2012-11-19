@@ -53,8 +53,8 @@ namespace FoundOps.Api.Controllers.Rest
                 }
             }
 
-            routeTaskModel.LastModifiedDate = DateTime.UtcNow;
-            routeTaskModel.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().First().Id;
+            routeTaskModel.LastModified = DateTime.UtcNow;
+            routeTaskModel.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().Id;
 
             SaveWithRetry();
         }

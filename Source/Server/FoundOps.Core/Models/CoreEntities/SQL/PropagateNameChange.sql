@@ -54,7 +54,7 @@ BEGIN
 
 	UPDATE dbo.ServiceTemplates
 	SET Name = @newName,
-		LastModifiedDate = GETUTCDATE(),
+		LastModified = GETUTCDATE(),
 		LastModifyingUserId = @userId
 	WHERE Id IN
 	(
@@ -64,7 +64,7 @@ BEGIN
 
 	UPDATE dbo.[Routes] 
 	SET RouteType = @newName,
-		LastModifiedDate = GETUTCDATE(),
+		LastModified = GETUTCDATE(),
 		LastModifyingUserId = @userId
 	WHERE RouteType = @oldName   
 

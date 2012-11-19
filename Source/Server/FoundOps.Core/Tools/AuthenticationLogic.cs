@@ -84,7 +84,7 @@ namespace FoundOps.Core.Tools
         {
             var allowedRoleTypeInts = allowedRoleTypes.Select(t => (int)t);
 
-            var roles = (from user in CurrentUserAccount(coreEntitiesContainer) //there will only be one
+            var roles = (from user in CurrentUserAccountQueryable(coreEntitiesContainer) //there will only be one
                          from role in coreEntitiesContainer.Roles.Where(r => allowedRoleTypeInts.Contains(r.RoleTypeInt))
 #if !DEBUG //Skip security in debug mode
                          where role.OwnerBusinessAccountId == user.Id || role.MemberParties.Any(a => a.Id == user.Id)
@@ -139,11 +139,20 @@ namespace FoundOps.Core.Tools
         }
 
         /// <summary>
+        /// Gets the current user account
+        /// </summary>
+        /// <param name="coreEntitiesContainer">The core entities container.</param>
+        public static UserAccount CurrentUserAccount(this CoreEntitiesContainer coreEntitiesContainer)
+        {
+            return coreEntitiesContainer.CurrentUserAccountQueryable().FirstOrDefault();
+        }
+
+        /// <summary>
         /// Gets the current user account in a queryable format.
         /// </summary>
         /// <param name="coreEntitiesContainer">The core entities container.</param>
         /// <returns></returns>
-        public static IQueryable<UserAccount> CurrentUserAccount(this CoreEntitiesContainer coreEntitiesContainer)
+        public static IQueryable<UserAccount> CurrentUserAccountQueryable(this CoreEntitiesContainer coreEntitiesContainer)
         {
             var currentUsersEmail = CurrentUsersEmail();
             return coreEntitiesContainer.Parties.OfType<UserAccount>().Where(userAccount => userAccount.EmailAddress == currentUsersEmail);

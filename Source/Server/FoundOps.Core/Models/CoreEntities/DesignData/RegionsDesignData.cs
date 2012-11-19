@@ -31,7 +31,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Color = DesignRegionColors[0],
                 Notes = "Notes for this region",
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             DesignRegionTwo = new Region
@@ -40,7 +40,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Color = DesignRegionColors[1],
                 Notes = "Notes for this region",
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             DesignRegionThree = new Region
@@ -49,7 +49,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Color = DesignRegionColors[2],
                 Notes = "Notes for this region",
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
             DesignRegionFour = new Region
             {
@@ -57,7 +57,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Color = DesignRegionColors[3],
                 Notes = "Notes for this region",
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
             DesignRegionFive = new Region
             {
@@ -65,7 +65,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Color = DesignRegionColors[4],
                 Notes = "Notes for this region",
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
             DesignRegionSix = new Region
             {
@@ -73,7 +73,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Color = DesignRegionColors[5],
                 Notes = "Notes for this region",
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
             DesignRegionSeven = new Region
             {
@@ -81,7 +81,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Color = DesignRegionColors[6],
                 Notes = "Notes for this region",
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
             DesignRegionEight = new Region
             {
@@ -89,7 +89,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Color = DesignRegionColors[7],
                 Notes = "Notes for this region",
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             DesignRegions = new List<Region> { DesignRegion, DesignRegionTwo, DesignRegionThree, DesignRegionFour, DesignRegionFive, DesignRegionSix, DesignRegionSeven, DesignRegionEight};

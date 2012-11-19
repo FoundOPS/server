@@ -77,7 +77,7 @@ namespace FoundOps.Server.Services.CoreDomainService
             var locationField = currentField as LocationField;
             if (locationField != null)
             {
-                var date = ObjectContext.CurrentUserAccount().First().Now().Date;
+                var date = ObjectContext.CurrentUserAccount().Now().Date;
                 var recurringService = ObjectContext.RecurringServices.First(rs => rs.Id == locationField.ServiceTemplateId);
                 if (recurringService != null)
                 {
@@ -303,7 +303,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             this.ObjectContext.ServiceTemplates.AttachAsModified(currentServiceTemplate);
 
-            currentServiceTemplate.LastModifiedDate = DateTime.UtcNow;
+            currentServiceTemplate.LastModified = DateTime.UtcNow;
             currentServiceTemplate.LastModifyingUserId = CurrentUserAccount().Id;
 
             ObjectContext.SaveChanges();

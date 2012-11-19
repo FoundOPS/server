@@ -356,7 +356,7 @@
           <Property Name="Name" Type="nvarchar(max)" />
           <Property Name="DateDeleted" Type="datetime" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-          <Property Name="LastModifiedDate" Type="datetime" />
+          <Property Name="LastModified" Type="datetime" />
           <Property Name="LastModifyingUserId" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="ContactInfoSet">
@@ -371,7 +371,7 @@
           <Property Name="LocationId" Type="uniqueidentifier" />
           <Property Name="ClientId" Type="uniqueidentifier" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-          <Property Name="LastModifiedDate" Type="datetime" />
+          <Property Name="LastModified" Type="datetime" />
           <Property Name="LastModifyingUserId" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="EmployeeHistoryEntries">
@@ -385,7 +385,7 @@
           <Property Name="Notes" Type="nvarchar(max)" />
           <Property Name="EmployeeId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-          <Property Name="LastModifiedDate" Type="datetime" />
+          <Property Name="LastModified" Type="datetime" />
           <Property Name="LastModifyingUserId" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="Employees">
@@ -419,7 +419,7 @@
           <Property Name="LastAccuracy" Type="int" />
           <Property Name="CountryCode" Type="nvarchar(max)" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-          <Property Name="LastModifiedDate" Type="datetime" />
+          <Property Name="LastModified" Type="datetime" />
           <Property Name="LastModifyingUserId" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="Errors">
@@ -444,7 +444,7 @@
           <Property Name="ParentFieldId" Type="uniqueidentifier" />
           <Property Name="ServiceTemplateId" Type="uniqueidentifier" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-          <Property Name="LastModifiedDate" Type="datetime" />
+          <Property Name="LastModified" Type="datetime" />
           <Property Name="LastModifyingUserId" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="Fields_LocationField">
@@ -502,7 +502,7 @@
           <Property Name="LocationId" Type="uniqueidentifier" />
           <Property Name="PartyId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-          <Property Name="LastModifiedDate" Type="datetime" />
+          <Property Name="LastModified" Type="datetime" />
           <Property Name="LastModifyingUserId" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="Files_PartyImage">
@@ -560,7 +560,7 @@
           <Property Name="CountryCode" Type="nvarchar(max)" />
           <Property Name="DateDeleted" Type="datetime" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-          <Property Name="LastModifiedDate" Type="datetime" />
+          <Property Name="LastModified" Type="datetime" />
           <Property Name="LastModifyingUserId" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="Parties">
@@ -569,7 +569,7 @@
           </Key>
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-          <Property Name="LastModifiedDate" Type="datetime" />
+          <Property Name="LastModified" Type="datetime" />
           <Property Name="LastModifyingUserId" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="Parties_BusinessAccount">
@@ -621,7 +621,7 @@
           <Property Name="ExcludedDatesString" Type="nvarchar(max)" />
           <Property Name="DateDeleted" Type="datetime" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-          <Property Name="LastModifiedDate" Type="datetime" />
+          <Property Name="LastModified" Type="datetime" />
           <Property Name="LastModifyingUserId" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="Regions">
@@ -634,7 +634,7 @@
           <Property Name="Color" Type="nvarchar(max)" />
           <Property Name="Notes" Type="nvarchar(max)" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-          <Property Name="LastModifiedDate" Type="datetime" />
+          <Property Name="LastModified" Type="datetime" />
           <Property Name="LastModifyingUserId" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="Repeats">
@@ -649,7 +649,7 @@
           <Property Name="FrequencyDetailInt" Type="int" />
           <Property Name="StartDate" Type="datetime" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-          <Property Name="LastModifiedDate" Type="datetime" />
+          <Property Name="LastModified" Type="datetime" />
           <Property Name="LastModifyingUserId" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="RoleBlock">
@@ -680,7 +680,7 @@
           <Property Name="RouteId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="ClientId" Type="uniqueidentifier" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-          <Property Name="LastModifiedDate" Type="datetime" />
+          <Property Name="LastModified" Type="datetime" />
           <Property Name="LastModifyingUserId" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="RouteEmployee">
@@ -703,7 +703,7 @@
           <Property Name="OwnerBusinessAccountId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="RouteType" Type="nvarchar(max)" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-          <Property Name="LastModifiedDate" Type="datetime" />
+          <Property Name="LastModified" Type="datetime" />
           <Property Name="LastModifyingUserId" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="RouteTasks">
@@ -726,7 +726,7 @@
           <Property Name="DelayedChildId" Type="uniqueidentifier" />
           <Property Name="TaskStatusId" Type="uniqueidentifier" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-          <Property Name="LastModifiedDate" Type="datetime" />
+          <Property Name="LastModified" Type="datetime" />
           <Property Name="LastModifyingUserId" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="RouteVehicle">
@@ -755,7 +755,7 @@
           <Property Name="RecurringServiceId" Type="uniqueidentifier" />
           <Property Name="ServiceDate" Type="datetime" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-          <Property Name="LastModifiedDate" Type="datetime" />
+          <Property Name="LastModified" Type="datetime" />
           <Property Name="LastModifyingUserId" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="ServiceTemplates">
@@ -769,7 +769,7 @@
           <Property Name="LevelInt" Type="smallint" Nullable="false" />
           <Property Name="Name" Type="nvarchar(max)" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-          <Property Name="LastModifiedDate" Type="datetime" />
+          <Property Name="LastModified" Type="datetime" />
           <Property Name="LastModifyingUserId" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="SubLocations">
@@ -784,7 +784,7 @@
           <Property Name="LocationId" Type="uniqueidentifier" />
           <Property Name="Number" Type="int" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-          <Property Name="LastModifiedDate" Type="datetime" />
+          <Property Name="LastModified" Type="datetime" />
           <Property Name="LastModifyingUserId" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="TaskStatuses">
@@ -798,7 +798,7 @@
           <Property Name="RemoveFromRoute" Type="bit" Nullable="false" />
           <Property Name="BusinessAccountId" Type="uniqueidentifier" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-          <Property Name="LastModifiedDate" Type="datetime" />
+          <Property Name="LastModified" Type="datetime" />
           <Property Name="LastModifyingUserId" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="UserAccountLog">
@@ -820,7 +820,7 @@
           <Property Name="Details" Type="nvarchar(max)" />
           <Property Name="VehicleMaintenanceLogEntryId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-          <Property Name="LastModifiedDate" Type="datetime" />
+          <Property Name="LastModified" Type="datetime" />
           <Property Name="LastModifyingUserId" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="VehicleMaintenanceLog">
@@ -834,7 +834,7 @@
           <Property Name="Comments" Type="nvarchar(max)" />
           <Property Name="VehicleId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-          <Property Name="LastModifiedDate" Type="datetime" />
+          <Property Name="LastModified" Type="datetime" />
           <Property Name="LastModifyingUserId" Type="uniqueidentifier" />
         </EntityType>
         <EntityType Name="Vehicles">
@@ -860,7 +860,7 @@
           <Property Name="LastAccuracy" Type="int" />
           <Property Name="BusinessAccountId" Type="uniqueidentifier" Nullable="false" />
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
-          <Property Name="LastModifiedDate" Type="datetime" />
+          <Property Name="LastModified" Type="datetime" />
           <Property Name="LastModifyingUserId" Type="uniqueidentifier" />
         </EntityType>
         <!--Errors Found During Generation:
@@ -2219,7 +2219,7 @@
           </Key>
           <Property Type="Guid" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="None" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
           <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
-          <Property Type="DateTime" Name="LastModifiedDate" Nullable="true" Precision="3" />
+          <Property Type="DateTime" Name="LastModified" Nullable="true" Precision="3" />
           <Property Type="Guid" Name="LastModifyingUserId" Nullable="true" />
           <NavigationProperty Name="RoleMembership" Relationship="CoreEntities.PartyRole" FromRole="Party" ToRole="Role" />
           <NavigationProperty Name="OwnedFiles" Relationship="CoreEntities.FileParty" FromRole="Party" ToRole="File" />
@@ -2239,7 +2239,7 @@
           <NavigationProperty Name="Client" Relationship="CoreEntities.ClientContactInfo" FromRole="ContactInfo" ToRole="Client" />
           <Property Type="Guid" Name="ClientId" Nullable="true" />
           <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
-          <Property Type="DateTime" Name="LastModifiedDate" Nullable="true" Precision="3" />
+          <Property Type="DateTime" Name="LastModified" Nullable="true" Precision="3" />
           <Property Type="Guid" Name="LastModifyingUserId" Nullable="true" />
         </EntityType>
         <Association Name="RoleBlock">
@@ -2259,7 +2259,7 @@
           <Property Type="DateTime" Name="StartDate" Nullable="false" Precision="3" />
           <NavigationProperty Name="RecurringService" Relationship="CoreEntities.RecurringServiceRepeat" FromRole="Repeat" ToRole="RecurringService" />
           <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
-          <Property Type="DateTime" Name="LastModifiedDate" Nullable="true" Precision="3" />
+          <Property Type="DateTime" Name="LastModified" Nullable="true" Precision="3" />
           <Property Type="Guid" Name="LastModifyingUserId" Nullable="true" />
         </EntityType>
         <EntityType Name="Location">
@@ -2294,7 +2294,7 @@
           <Property Type="String" Name="CountryCode" Nullable="true" FixedLength="false" MaxLength="Max" Unicode="true" />
           <Property Type="DateTime" Name="DateDeleted" Nullable="true" Precision="3" />
           <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
-          <Property Type="DateTime" Name="LastModifiedDate" Nullable="true" Precision="3" />
+          <Property Type="DateTime" Name="LastModified" Nullable="true" Precision="3" />
           <Property Type="Guid" Name="LastModifyingUserId" Nullable="true" />
         </EntityType>
         <EntityType Name="Service">
@@ -2312,7 +2312,7 @@
           <Property Type="DateTime" Name="ServiceDate" Nullable="false" Precision="3" />
           <NavigationProperty Name="ServiceTemplate" Relationship="CoreEntities.ServiceServiceTemplate" FromRole="Service" ToRole="ServiceTemplate" />
           <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
-          <Property Type="DateTime" Name="LastModifiedDate" Nullable="true" Precision="3" />
+          <Property Type="DateTime" Name="LastModified" Nullable="true" Precision="3" />
           <Property Type="Guid" Name="LastModifyingUserId" Nullable="true" />
         </EntityType>
         <EntityType Name="Field">
@@ -2329,7 +2329,7 @@
           <NavigationProperty Name="OwnerServiceTemplate" Relationship="CoreEntities.ServiceTemplateField" FromRole="Field" ToRole="ServiceTemplate" />
           <Property Type="Guid" Name="ServiceTemplateId" Nullable="true" />
           <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
-          <Property Type="DateTime" Name="LastModifiedDate" Nullable="true" Precision="3" />
+          <Property Type="DateTime" Name="LastModified" Nullable="true" Precision="3" />
           <Property Type="Guid" Name="LastModifyingUserId" Nullable="true" />
         </EntityType>
         <EntityType Name="TextBoxField" BaseType="CoreEntities.Field">
@@ -2366,7 +2366,7 @@
           <NavigationProperty Name="Client" Relationship="CoreEntities.RouteDestinationClient" FromRole="RouteDestination" ToRole="Client" />
           <Property Type="Guid" Name="ClientId" Nullable="true" />
           <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
-          <Property Type="DateTime" Name="LastModifiedDate" Nullable="true" Precision="3" />
+          <Property Type="DateTime" Name="LastModified" Nullable="true" Precision="3" />
           <Property Type="Guid" Name="LastModifyingUserId" Nullable="true" />
         </EntityType>
         <EntityType Name="Route">
@@ -2385,7 +2385,7 @@
           <Property Type="String" Name="RouteType" Nullable="false" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Employees" Relationship="CoreEntities.RouteEmployee" FromRole="Route" ToRole="Employee" />
           <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
-          <Property Type="DateTime" Name="LastModifiedDate" Nullable="true" Precision="3" />
+          <Property Type="DateTime" Name="LastModified" Nullable="true" Precision="3" />
           <Property Type="Guid" Name="LastModifyingUserId" Nullable="true" />
         </EntityType>
         <EntityType Name="UserAccountLogEntry">
@@ -2424,7 +2424,7 @@
           <NavigationProperty Name="BusinessAccount" Relationship="CoreEntities.BusinessAccountVehicle" FromRole="Vehicle" ToRole="BusinessAccount" />
           <Property Type="Guid" Name="BusinessAccountId" Nullable="false" />
           <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
-          <Property Type="DateTime" Name="LastModifiedDate" Nullable="true" Precision="3" />
+          <Property Type="DateTime" Name="LastModified" Nullable="true" Precision="3" />
           <Property Type="Guid" Name="LastModifyingUserId" Nullable="true" />
         </EntityType>
         <EntityType Name="VehicleMaintenanceLogEntry">
@@ -2440,7 +2440,7 @@
           <Property Type="Guid" Name="VehicleId" Nullable="false" />
           <NavigationProperty Name="LineItems" Relationship="CoreEntities.VehicleMaintenanceLogEntryLineItem" FromRole="VehicleMaintenanceLogEntry" ToRole="LineItem" />
           <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
-          <Property Type="DateTime" Name="LastModifiedDate" Nullable="true" Precision="3" />
+          <Property Type="DateTime" Name="LastModified" Nullable="true" Precision="3" />
           <Property Type="Guid" Name="LastModifyingUserId" Nullable="true" />
         </EntityType>
         <Association Name="VehicleMaintenanceLogEntryVehicle">
@@ -2486,7 +2486,7 @@
           <NavigationProperty Name="TaskStatus" Relationship="CoreEntities.TaskStatusRouteTask" FromRole="RouteTask" ToRole="TaskStatus" />
           <Property Type="Guid" Name="TaskStatusId" Nullable="true" />
           <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
-          <Property Type="DateTime" Name="LastModifiedDate" Nullable="true" Precision="3" />
+          <Property Type="DateTime" Name="LastModified" Nullable="true" Precision="3" />
           <Property Type="Guid" Name="LastModifyingUserId" Nullable="true" />
         </EntityType>
         <Association Name="RouteTaskLocation">
@@ -2548,7 +2548,7 @@
           <NavigationProperty Name="VehicleMaintenanceLogEntry" Relationship="CoreEntities.VehicleMaintenanceLogEntryLineItem" FromRole="LineItem" ToRole="VehicleMaintenanceLogEntry" />
           <Property Type="Guid" Name="VehicleMaintenanceLogEntryId" Nullable="false" />
           <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
-          <Property Type="DateTime" Name="LastModifiedDate" Nullable="true" Precision="3" />
+          <Property Type="DateTime" Name="LastModified" Nullable="true" Precision="3" />
           <Property Type="Guid" Name="LastModifyingUserId" Nullable="true" />
         </EntityType>
         <Association Name="VehicleMaintenanceLogEntryLineItem">
@@ -2582,7 +2582,7 @@
           <NavigationProperty Name="ContactInfoSet" Relationship="CoreEntities.ClientContactInfo" FromRole="Client" ToRole="ContactInfo" />
           <Property Type="DateTime" Name="DateDeleted" Nullable="true" Precision="3" />
           <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
-          <Property Type="DateTime" Name="LastModifiedDate" Nullable="true" Precision="3" />
+          <Property Type="DateTime" Name="LastModified" Nullable="true" Precision="3" />
           <Property Type="Guid" Name="LastModifyingUserId" Nullable="true" />
         </EntityType>
         <Association Name="RouteTaskClient">
@@ -2739,7 +2739,7 @@
           <Property Type="String" Name="Name" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <NavigationProperty Name="Invoice" Relationship="CoreEntities.InvoiceServiceTemplate" FromRole="ServiceTemplate" ToRole="Invoice" />
           <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
-          <Property Type="DateTime" Name="LastModifiedDate" Nullable="true" Precision="3" />
+          <Property Type="DateTime" Name="LastModified" Nullable="true" Precision="3" />
           <Property Type="Guid" Name="LastModifyingUserId" Nullable="true" />
         </EntityType>
         <Association Name="ServiceTemplateBusinessAccount">
@@ -2778,7 +2778,7 @@
           <NavigationProperty Name="RouteTaskChildren" Relationship="CoreEntities.RouteTaskRecurringService" FromRole="RecurringService" ToRole="RouteTask" />
           <Property Type="DateTime" Name="DateDeleted" Nullable="true" Precision="3" />
           <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
-          <Property Type="DateTime" Name="LastModifiedDate" Nullable="true" Precision="3" />
+          <Property Type="DateTime" Name="LastModified" Nullable="true" Precision="3" />
           <Property Type="Guid" Name="LastModifyingUserId" Nullable="true" />
         </EntityType>
         <Association Name="RecurringServiceServiceTemplate">
@@ -2857,7 +2857,7 @@
           <Property Type="String" Name="Color" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="String" Name="Notes" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
           <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
-          <Property Type="DateTime" Name="LastModifiedDate" Nullable="true" Precision="3" />
+          <Property Type="DateTime" Name="LastModified" Nullable="true" Precision="3" />
           <Property Type="Guid" Name="LastModifyingUserId" Nullable="true" />
         </EntityType>
         <Association Name="RegionLocation">
@@ -2896,7 +2896,7 @@
           <NavigationProperty Name="OwnerParty" Relationship="CoreEntities.FileParty" FromRole="File" ToRole="Party" />
           <Property Type="Guid" Name="PartyId" Nullable="false" />
           <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
-          <Property Type="DateTime" Name="LastModifiedDate" Nullable="true" Precision="3" />
+          <Property Type="DateTime" Name="LastModified" Nullable="true" Precision="3" />
           <Property Type="Guid" Name="LastModifyingUserId" Nullable="true" />
         </EntityType>
         <Association Name="LocationFile">
@@ -2924,7 +2924,7 @@
           <Property Type="Guid" Name="LocationId" Nullable="true" />
           <Property Type="Int32" Name="Number" Nullable="false" />
           <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
-          <Property Type="DateTime" Name="LastModifiedDate" Nullable="true" Precision="3" />
+          <Property Type="DateTime" Name="LastModified" Nullable="true" Precision="3" />
           <Property Type="Guid" Name="LastModifyingUserId" Nullable="true" />
         </EntityType>
         <Association Name="LocationSubLocation">
@@ -2974,7 +2974,7 @@
           <NavigationProperty Name="Routes" Relationship="CoreEntities.RouteEmployee" FromRole="Employee" ToRole="Route" />
           <Property Type="String" Name="CountryCode" Nullable="true" FixedLength="false" MaxLength="Max" Unicode="true" />
           <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
-          <Property Type="DateTime" Name="LastModifiedDate" Nullable="true" Precision="3" />
+          <Property Type="DateTime" Name="LastModified" Nullable="true" Precision="3" />
           <Property Type="Guid" Name="LastModifyingUserId" Nullable="true" />
         </EntityType>
         <Association Name="EmployeeUserAccount">
@@ -3032,7 +3032,7 @@
           <NavigationProperty Name="Employee" Relationship="CoreEntities.EmployeeHistoryEntryEmployee" FromRole="EmployeeHistoryEntry" ToRole="Employee" />
           <Property Type="Guid" Name="EmployeeId" Nullable="false" />
           <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
-          <Property Type="DateTime" Name="LastModifiedDate" Nullable="true" Precision="3" />
+          <Property Type="DateTime" Name="LastModified" Nullable="true" Precision="3" />
           <Property Type="Guid" Name="LastModifyingUserId" Nullable="true" />
         </EntityType>
         <Association Name="EmployeeHistoryEntryEmployee">
@@ -3385,7 +3385,7 @@
           <Property Type="Guid" Name="BusinessAccountId" Nullable="true" />
           <NavigationProperty Name="RouteTasks" Relationship="CoreEntities.TaskStatusRouteTask" FromRole="TaskStatus" ToRole="RouteTask" />
           <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
-          <Property Type="DateTime" Name="LastModifiedDate" Nullable="true" Precision="3" />
+          <Property Type="DateTime" Name="LastModified" Nullable="true" Precision="3" />
           <Property Type="Guid" Name="LastModifyingUserId" Nullable="true" />
         </EntityType>
         <Association Name="TaskStatusBusinessAccount">
@@ -3464,7 +3464,7 @@
         <MappingFragment StoreEntitySet="Parties">
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="LastModifiedDate" ColumnName="LastModifiedDate" />
+          <ScalarProperty Name="LastModified" ColumnName="LastModified" />
           <ScalarProperty Name="LastModifyingUserId" ColumnName="LastModifyingUserId" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -3510,7 +3510,7 @@
           <ScalarProperty Name="LocationId" ColumnName="LocationId" />
           <ScalarProperty Name="ClientId" ColumnName="ClientId" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="LastModifiedDate" ColumnName="LastModifiedDate" />
+          <ScalarProperty Name="LastModified" ColumnName="LastModified" />
           <ScalarProperty Name="LastModifyingUserId" ColumnName="LastModifyingUserId" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -3524,7 +3524,7 @@
           <ScalarProperty Name="RecurringServiceId" ColumnName="RecurringServiceId" />
           <ScalarProperty Name="ServiceDate" ColumnName="ServiceDate" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="LastModifiedDate" ColumnName="LastModifiedDate" />
+          <ScalarProperty Name="LastModified" ColumnName="LastModified" />
           <ScalarProperty Name="LastModifyingUserId" ColumnName="LastModifyingUserId" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -3539,7 +3539,7 @@
           <ScalarProperty Name="ParentFieldId" ColumnName="ParentFieldId" />
           <ScalarProperty Name="ServiceTemplateId" ColumnName="ServiceTemplateId" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="LastModifiedDate" ColumnName="LastModifiedDate" />
+          <ScalarProperty Name="LastModified" ColumnName="LastModified" />
           <ScalarProperty Name="LastModifyingUserId" ColumnName="LastModifyingUserId" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -3604,7 +3604,7 @@
           <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
           <ScalarProperty Name="DateDeleted" ColumnName="DateDeleted" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="LastModifiedDate" ColumnName="LastModifiedDate" />
+          <ScalarProperty Name="LastModified" ColumnName="LastModified" />
           <ScalarProperty Name="LastModifyingUserId" ColumnName="LastModifyingUserId" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -3618,7 +3618,7 @@
           <ScalarProperty Name="RouteId" ColumnName="RouteId" />
           <ScalarProperty Name="ClientId" ColumnName="ClientId" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="LastModifiedDate" ColumnName="LastModifiedDate" />
+          <ScalarProperty Name="LastModified" ColumnName="LastModified" />
           <ScalarProperty Name="LastModifyingUserId" ColumnName="LastModifyingUserId" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -3634,7 +3634,7 @@
           <ScalarProperty Name="OwnerBusinessAccountId" ColumnName="OwnerBusinessAccountId" />
           <ScalarProperty Name="RouteType" ColumnName="RouteType" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="LastModifiedDate" ColumnName="LastModifiedDate" />
+          <ScalarProperty Name="LastModified" ColumnName="LastModified" />
           <ScalarProperty Name="LastModifyingUserId" ColumnName="LastModifyingUserId" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -3671,7 +3671,7 @@
           <ScalarProperty Name="LastAccuracy" ColumnName="LastAccuracy" />
           <ScalarProperty Name="BusinessAccountId" ColumnName="BusinessAccountId" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="LastModifiedDate" ColumnName="LastModifiedDate" />
+          <ScalarProperty Name="LastModified" ColumnName="LastModified" />
           <ScalarProperty Name="LastModifyingUserId" ColumnName="LastModifyingUserId" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -3686,7 +3686,7 @@
           <ScalarProperty Name="Comments" ColumnName="Comments" />
           <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="LastModifiedDate" ColumnName="LastModifiedDate" />
+          <ScalarProperty Name="LastModified" ColumnName="LastModified" />
           <ScalarProperty Name="LastModifyingUserId" ColumnName="LastModifyingUserId" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -3700,7 +3700,7 @@
           <ScalarProperty Name="Details" ColumnName="Details" />
           <ScalarProperty Name="VehicleMaintenanceLogEntryId" ColumnName="VehicleMaintenanceLogEntryId" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="LastModifiedDate" ColumnName="LastModifiedDate" />
+          <ScalarProperty Name="LastModified" ColumnName="LastModified" />
           <ScalarProperty Name="LastModifyingUserId" ColumnName="LastModifyingUserId" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -3714,7 +3714,7 @@
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="DateDeleted" ColumnName="DateDeleted" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="LastModifiedDate" ColumnName="LastModifiedDate" />
+          <ScalarProperty Name="LastModified" ColumnName="LastModified" />
           <ScalarProperty Name="LastModifyingUserId" ColumnName="LastModifyingUserId" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -3729,7 +3729,7 @@
           <ScalarProperty Name="LevelInt" ColumnName="LevelInt" />
           <ScalarProperty Name="Name" ColumnName="Name" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="LastModifiedDate" ColumnName="LastModifiedDate" />
+          <ScalarProperty Name="LastModified" ColumnName="LastModified" />
           <ScalarProperty Name="LastModifyingUserId" ColumnName="LastModifyingUserId" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -3745,7 +3745,7 @@
           <ScalarProperty Name="FrequencyDetailInt" ColumnName="FrequencyDetailInt" />
           <ScalarProperty Name="StartDate" ColumnName="StartDate" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="LastModifiedDate" ColumnName="LastModifiedDate" />
+          <ScalarProperty Name="LastModified" ColumnName="LastModified" />
           <ScalarProperty Name="LastModifyingUserId" ColumnName="LastModifyingUserId" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -3758,7 +3758,7 @@
           <ScalarProperty Name="ExcludedDatesString" ColumnName="ExcludedDatesString" />
           <ScalarProperty Name="DateDeleted" ColumnName="DateDeleted" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="LastModifiedDate" ColumnName="LastModifiedDate" />
+          <ScalarProperty Name="LastModified" ColumnName="LastModified" />
           <ScalarProperty Name="LastModifyingUserId" ColumnName="LastModifyingUserId" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -3772,7 +3772,7 @@
           <ScalarProperty Name="Color" ColumnName="Color" />
           <ScalarProperty Name="Notes" ColumnName="Notes" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="LastModifiedDate" ColumnName="LastModifiedDate" />
+          <ScalarProperty Name="LastModified" ColumnName="LastModified" />
           <ScalarProperty Name="LastModifyingUserId" ColumnName="LastModifyingUserId" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -3786,7 +3786,7 @@
           <ScalarProperty Name="LocationId" ColumnName="LocationId" />
           <ScalarProperty Name="PartyId" ColumnName="PartyId" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="LastModifiedDate" ColumnName="LastModifiedDate" />
+          <ScalarProperty Name="LastModified" ColumnName="LastModified" />
           <ScalarProperty Name="LastModifyingUserId" ColumnName="LastModifyingUserId" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -3807,7 +3807,7 @@
           <ScalarProperty Name="LocationId" ColumnName="LocationId" />
           <ScalarProperty Name="Number" ColumnName="Number" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="LastModifiedDate" ColumnName="LastModifiedDate" />
+          <ScalarProperty Name="LastModified" ColumnName="LastModified" />
           <ScalarProperty Name="LastModifyingUserId" ColumnName="LastModifyingUserId" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -3842,7 +3842,7 @@
           <ScalarProperty Name="LastAccuracy" ColumnName="LastAccuracy" />
           <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="LastModifiedDate" ColumnName="LastModifiedDate" />
+          <ScalarProperty Name="LastModified" ColumnName="LastModified" />
           <ScalarProperty Name="LastModifyingUserId" ColumnName="LastModifyingUserId" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -3857,7 +3857,7 @@
           <ScalarProperty Name="Notes" ColumnName="Notes" />
           <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="LastModifiedDate" ColumnName="LastModifiedDate" />
+          <ScalarProperty Name="LastModified" ColumnName="LastModified" />
           <ScalarProperty Name="LastModifyingUserId" ColumnName="LastModifyingUserId" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -3920,7 +3920,7 @@
           <ScalarProperty Name="DelayedChildId" ColumnName="DelayedChildId" />
           <ScalarProperty Name="TaskStatusId" ColumnName="TaskStatusId" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="LastModifiedDate" ColumnName="LastModifiedDate" />
+          <ScalarProperty Name="LastModified" ColumnName="LastModified" />
           <ScalarProperty Name="LastModifyingUserId" ColumnName="LastModifyingUserId" />
         </MappingFragment>
       </EntityTypeMapping>
@@ -3955,7 +3955,7 @@
           <ScalarProperty Name="RemoveFromRoute" ColumnName="RemoveFromRoute" />
           <ScalarProperty Name="BusinessAccountId" ColumnName="BusinessAccountId" />
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
-          <ScalarProperty Name="LastModifiedDate" ColumnName="LastModifiedDate" />
+          <ScalarProperty Name="LastModified" ColumnName="LastModified" />
           <ScalarProperty Name="LastModifyingUserId" ColumnName="LastModifyingUserId" />
         </MappingFragment>
       </EntityTypeMapping>

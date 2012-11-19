@@ -24,7 +24,7 @@ CREATE PROCEDURE dbo.ArchiveClientBasedOnId
 	
 	UPDATE dbo.Clients
 	SET DateDeleted = @date,
-		LastModifiedDate = @date
+		LastModified = @date
 	WHERE Id = @clientId
 	  
 -------------------------------------------------------------------------------------------------------------------------

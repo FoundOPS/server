@@ -16,7 +16,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Data = "703-582-1810",
                 Type = "Phone",
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             },
             new ContactInfo
             {
@@ -24,7 +24,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Data = "jrice@purdue.edu",
                 Type = "Email",
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             },
             new ContactInfo
             {
@@ -32,7 +32,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Data = "2020vision.com",
                 Type = "Website",
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             }
         };
 
@@ -44,7 +44,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Data = "703-582-1810",
                 Type = "Phone",
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             },
             new ContactInfo
             {
@@ -52,7 +52,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Data = "jrice@purdue.edu",
                 Type = "Email",
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             },
             new ContactInfo
             {
@@ -60,7 +60,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Data = "2020vision.com",
                 Type = "Website",
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             }
 };
     }

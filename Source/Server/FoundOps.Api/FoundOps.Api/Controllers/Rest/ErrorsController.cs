@@ -14,7 +14,7 @@ namespace FoundOps.Api.Controllers.Rest
     {
         public void Put(ErrorEntry errorEntry)
         {
-            var currentUser = CoreEntitiesContainer.CurrentUserAccount().First();
+            var currentUser = CoreEntitiesContainer.CurrentUserAccount();
 
             CoreEntitiesContainer.Errors.AddObject(new Error
             {

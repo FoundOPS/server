@@ -25,7 +25,7 @@ namespace FoundOps.Core.Models.CoreEntities
             RootDirectory + @"\FoundOps.Core\Models\CoreEntities\ClearCoreEntities.edmx.sql";
 
         private static readonly string CreateCoreEntitiesDatabaseScriptLocation =
-            RootDirectory + @"\FoundOps.Core\Models\CoreEntities\CoreEntitiesCorrected2.edmx.sql";
+            RootDirectory + @"\FoundOps.Core\Models\CoreEntities\CoreEntitiesCorrected.edmx.sql";
 
         #endregion
 
@@ -83,7 +83,7 @@ namespace FoundOps.Core.Models.CoreEntities
             //Setup roles
             new RolesDesignData(businessAccountsDesignData, userAccountsDesignData);
 
-            //var changes = container.ObjectStateManager.GetObjectStateEntries(EntityState.Added).Select(o => o.Entity).OfType<ServiceTemplate>().Where(st => st.CreatedDate < DateTime.UtcNow.AddDays(-1) || st.LastModifiedDate < DateTime.UtcNow.AddDays(-1));
+            //var changes = container.ObjectStateManager.GetObjectStateEntries(EntityState.Added).Select(o => o.Entity).OfType<ServiceTemplate>().Where(st => st.CreatedDate < DateTime.UtcNow.AddDays(-1) || st.LastModified < DateTime.UtcNow.AddDays(-1));
 
             //container.SaveChanges();
 

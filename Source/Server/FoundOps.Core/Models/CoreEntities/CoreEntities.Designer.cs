@@ -2536,24 +2536,24 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> LastModifiedDate
+        public Nullable<global::System.DateTime> LastModified
         {
             get
             {
-                return _LastModifiedDate;
+                return _LastModified;
             }
             set
             {
-                OnLastModifiedDateChanging(value);
-                ReportPropertyChanging("LastModifiedDate");
-                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
-                ReportPropertyChanged("LastModifiedDate");
-                OnLastModifiedDateChanged();
+                OnLastModifiedChanging(value);
+                ReportPropertyChanging("LastModified");
+                _LastModified = StructuralObject.SetValidValue(value, "LastModified");
+                ReportPropertyChanged("LastModified");
+                OnLastModifiedChanged();
             }
         }
-        private Nullable<global::System.DateTime> _LastModifiedDate;
-        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
-        partial void OnLastModifiedDateChanged();
+        private Nullable<global::System.DateTime> _LastModified;
+        partial void OnLastModifiedChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -3030,24 +3030,24 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> LastModifiedDate
+        public Nullable<global::System.DateTime> LastModified
         {
             get
             {
-                return _LastModifiedDate;
+                return _LastModified;
             }
             set
             {
-                OnLastModifiedDateChanging(value);
-                ReportPropertyChanging("LastModifiedDate");
-                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
-                ReportPropertyChanged("LastModifiedDate");
-                OnLastModifiedDateChanged();
+                OnLastModifiedChanging(value);
+                ReportPropertyChanging("LastModified");
+                _LastModified = StructuralObject.SetValidValue(value, "LastModified");
+                ReportPropertyChanged("LastModified");
+                OnLastModifiedChanged();
             }
         }
-        private Nullable<global::System.DateTime> _LastModifiedDate;
-        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
-        partial void OnLastModifiedDateChanged();
+        private Nullable<global::System.DateTime> _LastModified;
+        partial void OnLastModifiedChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -3842,24 +3842,24 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> LastModifiedDate
+        public Nullable<global::System.DateTime> LastModified
         {
             get
             {
-                return _LastModifiedDate;
+                return _LastModified;
             }
             set
             {
-                OnLastModifiedDateChanging(value);
-                ReportPropertyChanging("LastModifiedDate");
-                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
-                ReportPropertyChanged("LastModifiedDate");
-                OnLastModifiedDateChanged();
+                OnLastModifiedChanging(value);
+                ReportPropertyChanging("LastModified");
+                _LastModified = StructuralObject.SetValidValue(value, "LastModified");
+                ReportPropertyChanged("LastModified");
+                OnLastModifiedChanged();
             }
         }
-        private Nullable<global::System.DateTime> _LastModifiedDate;
-        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
-        partial void OnLastModifiedDateChanged();
+        private Nullable<global::System.DateTime> _LastModified;
+        partial void OnLastModifiedChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -4218,24 +4218,24 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> LastModifiedDate
+        public Nullable<global::System.DateTime> LastModified
         {
             get
             {
-                return _LastModifiedDate;
+                return _LastModified;
             }
             set
             {
-                OnLastModifiedDateChanging(value);
-                ReportPropertyChanging("LastModifiedDate");
-                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
-                ReportPropertyChanged("LastModifiedDate");
-                OnLastModifiedDateChanged();
+                OnLastModifiedChanging(value);
+                ReportPropertyChanging("LastModified");
+                _LastModified = StructuralObject.SetValidValue(value, "LastModified");
+                ReportPropertyChanged("LastModified");
+                OnLastModifiedChanged();
             }
         }
-        private Nullable<global::System.DateTime> _LastModifiedDate;
-        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
-        partial void OnLastModifiedDateChanged();
+        private Nullable<global::System.DateTime> _LastModified;
+        partial void OnLastModifiedChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -4695,24 +4695,24 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> LastModifiedDate
+        public Nullable<global::System.DateTime> LastModified
         {
             get
             {
-                return _LastModifiedDate;
+                return _LastModified;
             }
             set
             {
-                OnLastModifiedDateChanging(value);
-                ReportPropertyChanging("LastModifiedDate");
-                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
-                ReportPropertyChanged("LastModifiedDate");
-                OnLastModifiedDateChanged();
+                OnLastModifiedChanging(value);
+                ReportPropertyChanging("LastModified");
+                _LastModified = StructuralObject.SetValidValue(value, "LastModified");
+                ReportPropertyChanged("LastModified");
+                OnLastModifiedChanged();
             }
         }
-        private Nullable<global::System.DateTime> _LastModifiedDate;
-        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
-        partial void OnLastModifiedDateChanged();
+        private Nullable<global::System.DateTime> _LastModified;
+        partial void OnLastModifiedChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -5028,24 +5028,24 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> LastModifiedDate
+        public Nullable<global::System.DateTime> LastModified
         {
             get
             {
-                return _LastModifiedDate;
+                return _LastModified;
             }
             set
             {
-                OnLastModifiedDateChanging(value);
-                ReportPropertyChanging("LastModifiedDate");
-                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
-                ReportPropertyChanged("LastModifiedDate");
-                OnLastModifiedDateChanged();
+                OnLastModifiedChanging(value);
+                ReportPropertyChanging("LastModified");
+                _LastModified = StructuralObject.SetValidValue(value, "LastModified");
+                ReportPropertyChanged("LastModified");
+                OnLastModifiedChanged();
             }
         }
-        private Nullable<global::System.DateTime> _LastModifiedDate;
-        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
-        partial void OnLastModifiedDateChanged();
+        private Nullable<global::System.DateTime> _LastModified;
+        partial void OnLastModifiedChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -6356,24 +6356,24 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> LastModifiedDate
+        public Nullable<global::System.DateTime> LastModified
         {
             get
             {
-                return _LastModifiedDate;
+                return _LastModified;
             }
             set
             {
-                OnLastModifiedDateChanging(value);
-                ReportPropertyChanging("LastModifiedDate");
-                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
-                ReportPropertyChanged("LastModifiedDate");
-                OnLastModifiedDateChanged();
+                OnLastModifiedChanging(value);
+                ReportPropertyChanging("LastModified");
+                _LastModified = StructuralObject.SetValidValue(value, "LastModified");
+                ReportPropertyChanged("LastModified");
+                OnLastModifiedChanged();
             }
         }
-        private Nullable<global::System.DateTime> _LastModifiedDate;
-        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
-        partial void OnLastModifiedDateChanged();
+        private Nullable<global::System.DateTime> _LastModified;
+        partial void OnLastModifiedChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -7223,24 +7223,24 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> LastModifiedDate
+        public Nullable<global::System.DateTime> LastModified
         {
             get
             {
-                return _LastModifiedDate;
+                return _LastModified;
             }
             set
             {
-                OnLastModifiedDateChanging(value);
-                ReportPropertyChanging("LastModifiedDate");
-                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
-                ReportPropertyChanged("LastModifiedDate");
-                OnLastModifiedDateChanged();
+                OnLastModifiedChanging(value);
+                ReportPropertyChanging("LastModified");
+                _LastModified = StructuralObject.SetValidValue(value, "LastModified");
+                ReportPropertyChanged("LastModified");
+                OnLastModifiedChanged();
             }
         }
-        private Nullable<global::System.DateTime> _LastModifiedDate;
-        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
-        partial void OnLastModifiedDateChanged();
+        private Nullable<global::System.DateTime> _LastModified;
+        partial void OnLastModifiedChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -7589,24 +7589,24 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> LastModifiedDate
+        public Nullable<global::System.DateTime> LastModified
         {
             get
             {
-                return _LastModifiedDate;
+                return _LastModified;
             }
             set
             {
-                OnLastModifiedDateChanging(value);
-                ReportPropertyChanging("LastModifiedDate");
-                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
-                ReportPropertyChanged("LastModifiedDate");
-                OnLastModifiedDateChanged();
+                OnLastModifiedChanging(value);
+                ReportPropertyChanging("LastModified");
+                _LastModified = StructuralObject.SetValidValue(value, "LastModified");
+                ReportPropertyChanged("LastModified");
+                OnLastModifiedChanged();
             }
         }
-        private Nullable<global::System.DateTime> _LastModifiedDate;
-        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
-        partial void OnLastModifiedDateChanged();
+        private Nullable<global::System.DateTime> _LastModified;
+        partial void OnLastModifiedChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -7979,24 +7979,24 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> LastModifiedDate
+        public Nullable<global::System.DateTime> LastModified
         {
             get
             {
-                return _LastModifiedDate;
+                return _LastModified;
             }
             set
             {
-                OnLastModifiedDateChanging(value);
-                ReportPropertyChanging("LastModifiedDate");
-                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
-                ReportPropertyChanged("LastModifiedDate");
-                OnLastModifiedDateChanged();
+                OnLastModifiedChanging(value);
+                ReportPropertyChanging("LastModified");
+                _LastModified = StructuralObject.SetValidValue(value, "LastModified");
+                ReportPropertyChanged("LastModified");
+                OnLastModifiedChanged();
             }
         }
-        private Nullable<global::System.DateTime> _LastModifiedDate;
-        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
-        partial void OnLastModifiedDateChanged();
+        private Nullable<global::System.DateTime> _LastModified;
+        partial void OnLastModifiedChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -8323,24 +8323,24 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> LastModifiedDate
+        public Nullable<global::System.DateTime> LastModified
         {
             get
             {
-                return _LastModifiedDate;
+                return _LastModified;
             }
             set
             {
-                OnLastModifiedDateChanging(value);
-                ReportPropertyChanging("LastModifiedDate");
-                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
-                ReportPropertyChanged("LastModifiedDate");
-                OnLastModifiedDateChanged();
+                OnLastModifiedChanging(value);
+                ReportPropertyChanging("LastModified");
+                _LastModified = StructuralObject.SetValidValue(value, "LastModified");
+                ReportPropertyChanged("LastModified");
+                OnLastModifiedChanged();
             }
         }
-        private Nullable<global::System.DateTime> _LastModifiedDate;
-        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
-        partial void OnLastModifiedDateChanged();
+        private Nullable<global::System.DateTime> _LastModified;
+        partial void OnLastModifiedChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -8887,24 +8887,24 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> LastModifiedDate
+        public Nullable<global::System.DateTime> LastModified
         {
             get
             {
-                return _LastModifiedDate;
+                return _LastModified;
             }
             set
             {
-                OnLastModifiedDateChanging(value);
-                ReportPropertyChanging("LastModifiedDate");
-                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
-                ReportPropertyChanged("LastModifiedDate");
-                OnLastModifiedDateChanged();
+                OnLastModifiedChanging(value);
+                ReportPropertyChanging("LastModified");
+                _LastModified = StructuralObject.SetValidValue(value, "LastModified");
+                ReportPropertyChanged("LastModified");
+                OnLastModifiedChanged();
             }
         }
-        private Nullable<global::System.DateTime> _LastModifiedDate;
-        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
-        partial void OnLastModifiedDateChanged();
+        private Nullable<global::System.DateTime> _LastModified;
+        partial void OnLastModifiedChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -9225,24 +9225,24 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> LastModifiedDate
+        public Nullable<global::System.DateTime> LastModified
         {
             get
             {
-                return _LastModifiedDate;
+                return _LastModified;
             }
             set
             {
-                OnLastModifiedDateChanging(value);
-                ReportPropertyChanging("LastModifiedDate");
-                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
-                ReportPropertyChanged("LastModifiedDate");
-                OnLastModifiedDateChanged();
+                OnLastModifiedChanging(value);
+                ReportPropertyChanging("LastModified");
+                _LastModified = StructuralObject.SetValidValue(value, "LastModified");
+                ReportPropertyChanged("LastModified");
+                OnLastModifiedChanged();
             }
         }
-        private Nullable<global::System.DateTime> _LastModifiedDate;
-        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
-        partial void OnLastModifiedDateChanged();
+        private Nullable<global::System.DateTime> _LastModified;
+        partial void OnLastModifiedChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -9843,24 +9843,24 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> LastModifiedDate
+        public Nullable<global::System.DateTime> LastModified
         {
             get
             {
-                return _LastModifiedDate;
+                return _LastModified;
             }
             set
             {
-                OnLastModifiedDateChanging(value);
-                ReportPropertyChanging("LastModifiedDate");
-                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
-                ReportPropertyChanged("LastModifiedDate");
-                OnLastModifiedDateChanged();
+                OnLastModifiedChanging(value);
+                ReportPropertyChanging("LastModified");
+                _LastModified = StructuralObject.SetValidValue(value, "LastModified");
+                ReportPropertyChanged("LastModified");
+                OnLastModifiedChanged();
             }
         }
-        private Nullable<global::System.DateTime> _LastModifiedDate;
-        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
-        partial void OnLastModifiedDateChanged();
+        private Nullable<global::System.DateTime> _LastModified;
+        partial void OnLastModifiedChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -10477,24 +10477,24 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> LastModifiedDate
+        public Nullable<global::System.DateTime> LastModified
         {
             get
             {
-                return _LastModifiedDate;
+                return _LastModified;
             }
             set
             {
-                OnLastModifiedDateChanging(value);
-                ReportPropertyChanging("LastModifiedDate");
-                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
-                ReportPropertyChanged("LastModifiedDate");
-                OnLastModifiedDateChanged();
+                OnLastModifiedChanging(value);
+                ReportPropertyChanging("LastModified");
+                _LastModified = StructuralObject.SetValidValue(value, "LastModified");
+                ReportPropertyChanged("LastModified");
+                OnLastModifiedChanged();
             }
         }
-        private Nullable<global::System.DateTime> _LastModifiedDate;
-        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
-        partial void OnLastModifiedDateChanged();
+        private Nullable<global::System.DateTime> _LastModified;
+        partial void OnLastModifiedChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -10907,24 +10907,24 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> LastModifiedDate
+        public Nullable<global::System.DateTime> LastModified
         {
             get
             {
-                return _LastModifiedDate;
+                return _LastModified;
             }
             set
             {
-                OnLastModifiedDateChanging(value);
-                ReportPropertyChanging("LastModifiedDate");
-                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
-                ReportPropertyChanged("LastModifiedDate");
-                OnLastModifiedDateChanged();
+                OnLastModifiedChanging(value);
+                ReportPropertyChanging("LastModified");
+                _LastModified = StructuralObject.SetValidValue(value, "LastModified");
+                ReportPropertyChanged("LastModified");
+                OnLastModifiedChanged();
             }
         }
-        private Nullable<global::System.DateTime> _LastModifiedDate;
-        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
-        partial void OnLastModifiedDateChanged();
+        private Nullable<global::System.DateTime> _LastModified;
+        partial void OnLastModifiedChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -11629,24 +11629,24 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> LastModifiedDate
+        public Nullable<global::System.DateTime> LastModified
         {
             get
             {
-                return _LastModifiedDate;
+                return _LastModified;
             }
             set
             {
-                OnLastModifiedDateChanging(value);
-                ReportPropertyChanging("LastModifiedDate");
-                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
-                ReportPropertyChanged("LastModifiedDate");
-                OnLastModifiedDateChanged();
+                OnLastModifiedChanging(value);
+                ReportPropertyChanging("LastModified");
+                _LastModified = StructuralObject.SetValidValue(value, "LastModified");
+                ReportPropertyChanged("LastModified");
+                OnLastModifiedChanged();
             }
         }
-        private Nullable<global::System.DateTime> _LastModifiedDate;
-        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
-        partial void OnLastModifiedDateChanged();
+        private Nullable<global::System.DateTime> _LastModified;
+        partial void OnLastModifiedChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -11923,24 +11923,24 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> LastModifiedDate
+        public Nullable<global::System.DateTime> LastModified
         {
             get
             {
-                return _LastModifiedDate;
+                return _LastModified;
             }
             set
             {
-                OnLastModifiedDateChanging(value);
-                ReportPropertyChanging("LastModifiedDate");
-                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
-                ReportPropertyChanged("LastModifiedDate");
-                OnLastModifiedDateChanged();
+                OnLastModifiedChanging(value);
+                ReportPropertyChanging("LastModified");
+                _LastModified = StructuralObject.SetValidValue(value, "LastModified");
+                ReportPropertyChanged("LastModified");
+                OnLastModifiedChanged();
             }
         }
-        private Nullable<global::System.DateTime> _LastModifiedDate;
-        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
-        partial void OnLastModifiedDateChanged();
+        private Nullable<global::System.DateTime> _LastModified;
+        partial void OnLastModifiedChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -13181,24 +13181,24 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> LastModifiedDate
+        public Nullable<global::System.DateTime> LastModified
         {
             get
             {
-                return _LastModifiedDate;
+                return _LastModified;
             }
             set
             {
-                OnLastModifiedDateChanging(value);
-                ReportPropertyChanging("LastModifiedDate");
-                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
-                ReportPropertyChanged("LastModifiedDate");
-                OnLastModifiedDateChanged();
+                OnLastModifiedChanging(value);
+                ReportPropertyChanging("LastModified");
+                _LastModified = StructuralObject.SetValidValue(value, "LastModified");
+                ReportPropertyChanged("LastModified");
+                OnLastModifiedChanged();
             }
         }
-        private Nullable<global::System.DateTime> _LastModifiedDate;
-        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
-        partial void OnLastModifiedDateChanged();
+        private Nullable<global::System.DateTime> _LastModified;
+        partial void OnLastModifiedChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -13495,24 +13495,24 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> LastModifiedDate
+        public Nullable<global::System.DateTime> LastModified
         {
             get
             {
-                return _LastModifiedDate;
+                return _LastModified;
             }
             set
             {
-                OnLastModifiedDateChanging(value);
-                ReportPropertyChanging("LastModifiedDate");
-                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
-                ReportPropertyChanged("LastModifiedDate");
-                OnLastModifiedDateChanged();
+                OnLastModifiedChanging(value);
+                ReportPropertyChanging("LastModified");
+                _LastModified = StructuralObject.SetValidValue(value, "LastModified");
+                ReportPropertyChanged("LastModified");
+                OnLastModifiedChanged();
             }
         }
-        private Nullable<global::System.DateTime> _LastModifiedDate;
-        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
-        partial void OnLastModifiedDateChanged();
+        private Nullable<global::System.DateTime> _LastModified;
+        partial void OnLastModifiedChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedChanged();
     
         /// <summary>
         /// No Metadata Documentation available.
@@ -13789,24 +13789,24 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
         [DataMemberAttribute()]
-        public Nullable<global::System.DateTime> LastModifiedDate
+        public Nullable<global::System.DateTime> LastModified
         {
             get
             {
-                return _LastModifiedDate;
+                return _LastModified;
             }
             set
             {
-                OnLastModifiedDateChanging(value);
-                ReportPropertyChanging("LastModifiedDate");
-                _LastModifiedDate = StructuralObject.SetValidValue(value, "LastModifiedDate");
-                ReportPropertyChanged("LastModifiedDate");
-                OnLastModifiedDateChanged();
+                OnLastModifiedChanging(value);
+                ReportPropertyChanging("LastModified");
+                _LastModified = StructuralObject.SetValidValue(value, "LastModified");
+                ReportPropertyChanged("LastModified");
+                OnLastModifiedChanged();
             }
         }
-        private Nullable<global::System.DateTime> _LastModifiedDate;
-        partial void OnLastModifiedDateChanging(Nullable<global::System.DateTime> value);
-        partial void OnLastModifiedDateChanged();
+        private Nullable<global::System.DateTime> _LastModified;
+        partial void OnLastModifiedChanging(Nullable<global::System.DateTime> value);
+        partial void OnLastModifiedChanged();
     
         /// <summary>
         /// No Metadata Documentation available.

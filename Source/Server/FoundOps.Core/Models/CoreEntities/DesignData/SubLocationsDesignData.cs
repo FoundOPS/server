@@ -33,7 +33,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Longitude = (decimal?) -86.935696,
                 Number = 1,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             DesignSubLocationTwo = new SubLocation
@@ -44,7 +44,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Longitude = (decimal?)-77.386901,
                 Number = 2,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             DesignSubLocationThree = new SubLocation
@@ -55,7 +55,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Longitude = (decimal?)-77.326368,
                 Number = 3,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
             DesignSubLocationFour = new SubLocation
             {
@@ -65,7 +65,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Longitude = (decimal?)-75.326368,
                 Number = 4,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
             DesignSubLocationFive = new SubLocation
             {
@@ -75,7 +75,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Longitude = (decimal?)-77.226368,
                 Number = 5,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
             DesignSubLocationSix = new SubLocation
             {
@@ -85,7 +85,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Longitude = (decimal?)-78.326368,
                 Number = 6,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
             DesignSubLocationSeven = new SubLocation
             {
@@ -95,7 +95,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Longitude = (decimal?)-77.626368,
                 Number = 7,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
             DesignSubLocationEight = new SubLocation
             {
@@ -105,7 +105,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Longitude = (decimal?)-77.526368,
                 Number = 8,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
             DesignSubLocationNine = new SubLocation
             {
@@ -115,7 +115,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Longitude = (decimal?)-78.126368,
                 Number = 9,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             DesignSubLocations = new List<SubLocation> { DesignSubLocation, DesignSubLocationTwo, DesignSubLocationThree, DesignSubLocationFour, DesignSubLocationFive, 

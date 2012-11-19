@@ -30,7 +30,7 @@ namespace FoundOps.Api.Models
                 Value = fieldModel.Value
             };
 
-            field.SetLastModified(fieldModel.LastModifiedDate, fieldModel.LastModifyingUserId);
+            field.SetLastModified(fieldModel.LastModified, fieldModel.LastModifyingUserId);
 
             return field;
         }
@@ -53,7 +53,7 @@ namespace FoundOps.Api.Models
                 Signed = signatureField.Signed,
                 Value = signatureField.Value,
                 CreatedDate = signatureField.CreatedDate,
-                LastModifiedDate = signatureField.LastModifiedDate,
+                LastModified = signatureField.LastModified,
                 LastModifyingUserId = signatureField.LastModifyingUserId
             };
 

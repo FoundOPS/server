@@ -74,7 +74,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 RouteType = serviceTemplate.Name,
                 OwnerBusinessAccount = ownerBusinessAccount,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             //Add employees to the Route
@@ -106,7 +106,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                     Client = currentClient,
                     ServiceProvider = ownerBusinessAccount,
                     CreatedDate = DateTime.UtcNow,
-                    LastModifiedDate = DateTime.UtcNow
+                    LastModified = DateTime.UtcNow
                 };
 
                 newService.ServiceTemplate.SetDestination(currentLocation);
@@ -123,14 +123,14 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                     Service = newService,
                     TaskStatus = ownerBusinessAccount.TaskStatuses.FirstOrDefault(ts => ts.DefaultTypeInt != null && ts.DefaultTypeInt == ((int)StatusDetail.RoutedDefault)),
                     CreatedDate = DateTime.UtcNow,
-                    LastModifiedDate = DateTime.UtcNow
+                    LastModified = DateTime.UtcNow
                 };
 
                 var routeDestination = new RouteDestination
                 {
                     OrderInRoute = orderInRoute,
                     CreatedDate = DateTime.UtcNow,
-                    LastModifiedDate = DateTime.UtcNow
+                    LastModified = DateTime.UtcNow
                 };
                 routeDestination.RouteTasks.Add(routeTask);
                 newRoute.RouteDestinations.Add(routeDestination);

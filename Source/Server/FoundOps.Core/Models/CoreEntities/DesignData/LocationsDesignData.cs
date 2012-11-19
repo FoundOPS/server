@@ -64,7 +64,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Longitude = (decimal?)-86.894219,
                 BusinessAccountId = businessAccountId,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -79,7 +79,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Longitude = (decimal?)-86.145577,
                 BusinessAccountId = businessAccountId,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
 
             });
 
@@ -95,7 +95,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Longitude = (decimal?)-86.119251,
                 BusinessAccountId = businessAccountId,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -110,7 +110,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Longitude = (decimal?)-86.859526,
                 BusinessAccountId = businessAccountId,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -125,7 +125,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Longitude = (decimal?)-86.855914,
                 BusinessAccountId = businessAccountId,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -140,7 +140,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Longitude = (decimal?)-86.479537,
                 BusinessAccountId = businessAccountId,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -155,7 +155,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Longitude = (decimal?)-86.894604,
                 BusinessAccountId = businessAccountId,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -170,7 +170,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Longitude = (decimal?)-86.131005,
                 BusinessAccountId = businessAccountId,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -185,7 +185,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Longitude = (decimal?)-86.891727,
                 BusinessAccountId = businessAccountId,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -200,7 +200,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Longitude = (decimal?)-86.893046,
                 BusinessAccountId = businessAccountId,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -216,7 +216,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Longitude = (decimal?)-86.901095,
                 BusinessAccountId = businessAccountId,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -231,7 +231,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Longitude = (decimal?)-86.154359,
                 BusinessAccountId = businessAccountId,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -246,7 +246,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Longitude = (decimal?)-86.903569,
                 BusinessAccountId = businessAccountId,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -261,7 +261,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Longitude = (decimal?)-86.824187,
                 BusinessAccountId = businessAccountId,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -276,7 +276,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Longitude = (decimal?)-86.868527,
                 BusinessAccountId = businessAccountId,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -291,7 +291,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Longitude = (decimal?)-86.838981,
                 BusinessAccountId = businessAccountId,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -306,7 +306,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Longitude = (decimal?)-86.901216,
                 BusinessAccountId = businessAccountId,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -321,7 +321,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Longitude = (decimal?)-86.159864,
                 BusinessAccountId = businessAccountId,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -336,7 +336,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Longitude = (decimal?)-87.472417,
                 BusinessAccountId = businessAccountId,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -351,7 +351,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Longitude = (decimal?)-86.902758,
                 BusinessAccountId = businessAccountId,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -366,7 +366,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Longitude = (decimal?)-86.837137,
                 BusinessAccountId = businessAccountId,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -381,7 +381,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Longitude = (decimal?)-86.8621826171875,
                 BusinessAccountId = businessAccountId,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -396,7 +396,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Longitude = (decimal?)-86.879933,
                 BusinessAccountId = businessAccountId,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             });
 
             _designLocations.Add(new Location
@@ -411,7 +411,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Longitude = (decimal?)-86.903825,
                 BusinessAccountId = businessAccountId,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             });
 
             foreach (var location in DesignLocations)

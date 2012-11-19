@@ -341,7 +341,7 @@ namespace FoundOps.Core.Models.Import
 
             var coreEntitiesContainer = new CoreEntitiesContainer();
 
-            var user = coreEntitiesContainer.CurrentUserAccount().First();
+            var user = coreEntitiesContainer.CurrentUserAccount();
 
             recurringService.Repeat.StartDate = user.Now();
 

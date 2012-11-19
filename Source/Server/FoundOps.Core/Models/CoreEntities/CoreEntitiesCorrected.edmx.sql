@@ -379,7 +379,7 @@ GO
 CREATE TABLE [dbo].[Parties] (
     [Id] uniqueidentifier  NOT NULL,
     [CreatedDate] datetime  NOT NULL,
-    [LastModifiedDate] datetime  NULL,
+    [LastModified] datetime  NULL,
     [LastModifyingUserId] uniqueidentifier  NULL
 );
 GO
@@ -394,7 +394,7 @@ CREATE TABLE [dbo].[ContactInfoSet] (
     [LocationId] uniqueidentifier  NULL,
     [ClientId] uniqueidentifier  NULL,
     [CreatedDate] datetime  NOT NULL,
-    [LastModifiedDate] datetime  NULL,
+    [LastModified] datetime  NULL,
     [LastModifyingUserId] uniqueidentifier  NULL
 );
 GO
@@ -407,7 +407,7 @@ CREATE TABLE [dbo].[Services] (
     [RecurringServiceId] uniqueidentifier  NULL,
     [ServiceDate] datetime  NOT NULL,
     [CreatedDate] datetime  NOT NULL,
-    [LastModifiedDate] datetime  NULL,
+    [LastModified] datetime  NULL,
     [LastModifyingUserId] uniqueidentifier  NULL
 );
 GO
@@ -421,7 +421,7 @@ CREATE TABLE [dbo].[Fields] (
     [ParentFieldId] uniqueidentifier  NULL,
     [ServiceTemplateId] uniqueidentifier  NULL,
     [CreatedDate] datetime  NOT NULL,
-    [LastModifiedDate] datetime  NULL,
+    [LastModified] datetime  NULL,
     [LastModifyingUserId] uniqueidentifier  NULL
 );
 GO
@@ -445,7 +445,7 @@ CREATE TABLE [dbo].[Locations] (
     [CountryCode] nvarchar(max)  NULL,
     [DateDeleted] datetime  NULL,
     [CreatedDate] datetime  NOT NULL,
-    [LastModifiedDate] datetime  NULL,
+    [LastModified] datetime  NULL,
     [LastModifyingUserId] uniqueidentifier  NULL
 );
 GO
@@ -458,7 +458,7 @@ CREATE TABLE [dbo].[RouteDestinations] (
     [RouteId] uniqueidentifier  NOT NULL,
     [ClientId] uniqueidentifier  NULL,
     [CreatedDate] datetime  NOT NULL,
-    [LastModifiedDate] datetime  NULL,
+    [LastModified] datetime  NULL,
     [LastModifyingUserId] uniqueidentifier  NULL
 );
 GO
@@ -473,7 +473,7 @@ CREATE TABLE [dbo].[Routes] (
     [OwnerBusinessAccountId] uniqueidentifier  NOT NULL,
     [RouteType] nvarchar(max)  NOT NULL,
     [CreatedDate] datetime  NOT NULL,
-    [LastModifiedDate] datetime  NULL,
+    [LastModified] datetime  NULL,
     [LastModifyingUserId] uniqueidentifier  NULL
 );
 GO
@@ -508,7 +508,7 @@ CREATE TABLE [dbo].[Vehicles] (
     [LastAccuracy] int  NULL,
     [BusinessAccountId] uniqueidentifier  NOT NULL,
     [CreatedDate] datetime  NOT NULL,
-    [LastModifiedDate] datetime  NULL,
+    [LastModified] datetime  NULL,
     [LastModifyingUserId] uniqueidentifier  NULL
 );
 GO
@@ -522,7 +522,7 @@ CREATE TABLE [dbo].[VehicleMaintenanceLog] (
     [Comments] nvarchar(max)  NULL,
     [VehicleId] uniqueidentifier  NOT NULL,
     [CreatedDate] datetime  NOT NULL,
-    [LastModifiedDate] datetime  NULL,
+    [LastModified] datetime  NULL,
     [LastModifyingUserId] uniqueidentifier  NULL
 );
 GO
@@ -535,7 +535,7 @@ CREATE TABLE [dbo].[VehicleMaintenanceLineItems] (
     [Details] nvarchar(max)  NULL,
     [VehicleMaintenanceLogEntryId] uniqueidentifier  NOT NULL,
     [CreatedDate] datetime  NOT NULL,
-    [LastModifiedDate] datetime  NULL,
+    [LastModified] datetime  NULL,
     [LastModifyingUserId] uniqueidentifier  NULL
 );
 GO
@@ -548,7 +548,7 @@ CREATE TABLE [dbo].[Clients] (
     [Name] nvarchar(max)  NULL,
     [DateDeleted] datetime  NULL,
     [CreatedDate] datetime  NOT NULL,
-    [LastModifiedDate] datetime  NULL,
+    [LastModified] datetime  NULL,
     [LastModifyingUserId] uniqueidentifier  NULL
 );
 GO
@@ -562,7 +562,7 @@ CREATE TABLE [dbo].[ServiceTemplates] (
     [LevelInt] smallint  NOT NULL,
     [Name] nvarchar(max)  NULL,
     [CreatedDate] datetime  NOT NULL,
-    [LastModifiedDate] datetime  NULL,
+    [LastModified] datetime  NULL,
     [LastModifyingUserId] uniqueidentifier  NULL
 );
 GO
@@ -577,7 +577,7 @@ CREATE TABLE [dbo].[Repeats] (
     [FrequencyDetailInt] int  NULL,
     [StartDate] datetime  NOT NULL,
     [CreatedDate] datetime  NOT NULL,
-    [LastModifiedDate] datetime  NULL,
+    [LastModified] datetime  NULL,
     [LastModifyingUserId] uniqueidentifier  NULL
 );
 GO
@@ -589,7 +589,7 @@ CREATE TABLE [dbo].[RecurringServices] (
     [ExcludedDatesString] nvarchar(max)  NULL,
     [DateDeleted] datetime  NULL,
     [CreatedDate] datetime  NOT NULL,
-    [LastModifiedDate] datetime  NULL,
+    [LastModified] datetime  NULL,
     [LastModifyingUserId] uniqueidentifier  NULL
 );
 GO
@@ -602,7 +602,7 @@ CREATE TABLE [dbo].[Regions] (
     [Color] nvarchar(max)  NULL,
     [Notes] nvarchar(max)  NULL,
     [CreatedDate] datetime  NOT NULL,
-    [LastModifiedDate] datetime  NULL,
+    [LastModified] datetime  NULL,
     [LastModifyingUserId] uniqueidentifier  NULL
 );
 GO
@@ -615,7 +615,7 @@ CREATE TABLE [dbo].[Files] (
     [LocationId] uniqueidentifier  NULL,
     [PartyId] uniqueidentifier  NOT NULL,
     [CreatedDate] datetime  NOT NULL,
-    [LastModifiedDate] datetime  NULL,
+    [LastModified] datetime  NULL,
     [LastModifyingUserId] uniqueidentifier  NULL
 );
 GO
@@ -630,7 +630,7 @@ CREATE TABLE [dbo].[SubLocations] (
     [LocationId] uniqueidentifier  NULL,
     [Number] int  NOT NULL,
     [CreatedDate] datetime  NOT NULL,
-    [LastModifiedDate] datetime  NULL,
+    [LastModified] datetime  NULL,
     [LastModifyingUserId] uniqueidentifier  NULL
 );
 GO
@@ -664,7 +664,7 @@ CREATE TABLE [dbo].[Employees] (
     [LastAccuracy] int  NULL,
     [CountryCode] nvarchar(max)  NULL,
     [CreatedDate] datetime  NOT NULL,
-    [LastModifiedDate] datetime  NULL,
+    [LastModified] datetime  NULL,
     [LastModifyingUserId] uniqueidentifier  NULL
 );
 GO
@@ -678,7 +678,7 @@ CREATE TABLE [dbo].[EmployeeHistoryEntries] (
     [Notes] nvarchar(max)  NULL,
     [EmployeeId] uniqueidentifier  NOT NULL,
     [CreatedDate] datetime  NOT NULL,
-    [LastModifiedDate] datetime  NULL,
+    [LastModified] datetime  NULL,
     [LastModifyingUserId] uniqueidentifier  NULL
 );
 GO
@@ -737,7 +737,7 @@ CREATE TABLE [dbo].[RouteTasks] (
     [DelayedChildId] uniqueidentifier  NULL,
     [TaskStatusId] uniqueidentifier  NULL,
     [CreatedDate] datetime  NOT NULL,
-    [LastModifiedDate] datetime  NULL,
+    [LastModified] datetime  NULL,
     [LastModifyingUserId] uniqueidentifier  NULL
 );
 GO
@@ -769,7 +769,7 @@ CREATE TABLE [dbo].[TaskStatuses] (
     [RemoveFromRoute] bit  NOT NULL,
     [BusinessAccountId] uniqueidentifier  NULL,
     [CreatedDate] datetime  NOT NULL,
-    [LastModifiedDate] datetime  NULL,
+    [LastModified] datetime  NULL,
     [LastModifyingUserId] uniqueidentifier  NULL
 );
 GO
@@ -2038,7 +2038,7 @@ CREATE PROCEDURE dbo.ArchiveClientBasedOnId
 	
 	UPDATE dbo.Clients
 	SET DateDeleted = @date,
-		LastModifiedDate = @date
+		LastModified = @date
 	WHERE Id = @clientId
 	  
 -------------------------------------------------------------------------------------------------------------------------
@@ -2101,7 +2101,7 @@ CREATE PROCEDURE dbo.ArchiveLocationBasedOnId
   
 	UPDATE	dbo.Locations
 	SET		DateDeleted = @date,
-			LastModifiedDate = GETUTCDATE()
+			LastModified = GETUTCDATE()
 	WHERE	Id = @locationId   
 
 	CREATE TABLE #RecurringService (Id UNIQUEIDENTIFIER)
@@ -5813,7 +5813,7 @@ BEGIN
 
 	UPDATE dbo.ServiceTemplates
 	SET Name = @newName,
-		LastModifiedDate = GETUTCDATE(),
+		LastModified = GETUTCDATE(),
 		LastModifyingUserId = @userId
 	WHERE Id IN
 	(
@@ -5823,7 +5823,7 @@ BEGIN
 
 	UPDATE dbo.[Routes] 
 	SET RouteType = @newName,
-		LastModifiedDate = GETUTCDATE(),
+		LastModified = GETUTCDATE(),
 		LastModifyingUserId = @userId
 	WHERE RouteType = @oldName   
 

@@ -32,7 +32,7 @@ namespace FoundOps.Api.Controllers.Rest
             //b) if the party is a business account, make sure the current user has admin or regular privelages for that business
             if (party as UserAccount != null)
             {
-                if (party.Id != CoreEntitiesContainer.CurrentUserAccount().First().Id)
+                if (party.Id != CoreEntitiesContainer.CurrentUserAccount().Id)
                     throw Request.NotAuthorized();
             }
             else if (party as BusinessAccount != null)

@@ -34,7 +34,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Client = _client,
                 ServiceProvider = _serviceProvider,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             SmallGreaseTrapService = new Service
@@ -44,7 +44,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 Client = _client,
                 ServiceProvider = _serviceProvider,
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             DesignServices = new List<Service> { OilService, SmallGreaseTrapService };

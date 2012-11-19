@@ -47,7 +47,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 LastName = "Pohl",
                 PasswordSalt = new byte[]{65, 0, 65},
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             Jon = new UserAccount
@@ -58,7 +58,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 LastName = "Perl",
                 PasswordSalt = new byte[] { 65, 0, 65 },
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             Oren = new UserAccount
@@ -69,7 +69,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 LastName = "Shatken",
                 PasswordSalt = new byte[] { 65, 0, 65 },
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             Zach = new UserAccount
@@ -80,7 +80,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 LastName = "Bright",
                 PasswordSalt = new byte[] { 65, 0, 65 },
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             #endregion
@@ -95,7 +95,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                  LastName = "Levenson",
                  PasswordSalt = new byte[] { 65, 0, 65 },
                  CreatedDate = DateTime.UtcNow,
-                 LastModifiedDate = DateTime.UtcNow
+                 LastModified = DateTime.UtcNow
              };
 
             Linda = new UserAccount
@@ -106,7 +106,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 LastName = "Levenson",
                 PasswordSalt = new byte[] { 65, 0, 65 },
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             Terri = new UserAccount
@@ -117,7 +117,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 LastName = "Last",
                 PasswordSalt = new byte[] { 65, 0, 65 },
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             #endregion
@@ -132,7 +132,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 LastName = "McClure",
                 PasswordSalt = new byte[] { 65, 0, 65 },
                 CreatedDate = DateTime.UtcNow,
-                LastModifiedDate = DateTime.UtcNow
+                LastModified = DateTime.UtcNow
             };
 
             #endregion

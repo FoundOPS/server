@@ -31,7 +31,7 @@ namespace FoundOps.Api.Models
                 LocationFieldTypeInt = fieldModel.LocationFieldTypeInt
             };
 
-            field.SetLastModified(fieldModel.LastModifiedDate, fieldModel.LastModifyingUserId);
+            field.SetLastModified(fieldModel.LastModified, fieldModel.LastModifyingUserId);
 
             return field;
         }
@@ -54,7 +54,7 @@ namespace FoundOps.Api.Models
                 LocationId = locationField.LocationId,
                 LocationFieldTypeInt = locationField.LocationFieldTypeInt,
                 CreatedDate = locationField.CreatedDate,
-                LastModifiedDate = locationField.LastModifiedDate,
+                LastModified = locationField.LastModified,
                 LastModifyingUserId = locationField.LastModifyingUserId
             };
 

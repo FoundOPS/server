@@ -15,7 +15,7 @@ namespace FoundOps.Api.Controllers.Rest
         /// <param name="roleId">The role</param>
         public IEnumerable<ColumnConfiguration> Get(Guid roleId)
         {
-            var userAccount = CoreEntitiesContainer.CurrentUserAccount().First();
+            var userAccount = CoreEntitiesContainer.CurrentUserAccount();
 
             var columnConfigurations = new List<ColumnConfiguration>();
 
@@ -44,7 +44,7 @@ namespace FoundOps.Api.Controllers.Rest
         /// <param name="columnConfigurations">The new column configurations</param>
         public void Put(Guid roleId, List<ColumnConfiguration> columnConfigurations)
         {
-            var userAccount = CoreEntitiesContainer.CurrentUserAccount().First();
+            var userAccount = CoreEntitiesContainer.CurrentUserAccount();
 
             var configurations = new List<ColumnConfiguration>();
             if (userAccount.ColumnConfigurations != null)

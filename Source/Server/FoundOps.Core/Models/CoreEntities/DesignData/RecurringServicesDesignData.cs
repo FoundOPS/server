@@ -52,7 +52,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             repeat.Id = DesignRecurringService.Id; //Fix Referential Contraint
             DesignRecurringService.Repeat = repeat;
             DesignRecurringService.CreatedDate = DateTime.UtcNow;
-            DesignRecurringService.LastModifiedDate = DateTime.UtcNow;
+            DesignRecurringService.LastModified = DateTime.UtcNow;
 
             DesignRecurringServiceTwo = new RecurringService { ServiceTemplate = secondServiceTemplate.MakeChild(ServiceTemplateLevel.RecurringServiceDefined) };
 
@@ -60,7 +60,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             repeat.Id = DesignRecurringServiceTwo.Id; //Fix Referential Contraint
             DesignRecurringServiceTwo.Repeat = repeat;
             DesignRecurringServiceTwo.CreatedDate = DateTime.UtcNow;
-            DesignRecurringServiceTwo.LastModifiedDate = DateTime.UtcNow;
+            DesignRecurringServiceTwo.LastModified = DateTime.UtcNow;
 
             DesignRecurringServiceThree = new RecurringService { ServiceTemplate = thirdServiceTemplate.MakeChild(ServiceTemplateLevel.RecurringServiceDefined) };
 
@@ -68,7 +68,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
             repeat.Id = DesignRecurringServiceThree.Id; //Fix Referential Contraint
             DesignRecurringServiceThree.Repeat = repeat;
             DesignRecurringServiceThree.CreatedDate = DateTime.UtcNow;
-            DesignRecurringServiceThree.LastModifiedDate = DateTime.UtcNow;
+            DesignRecurringServiceThree.LastModified = DateTime.UtcNow;
 
             DesignRecurringServices = new ObservableCollection<RecurringService>
             {

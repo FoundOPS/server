@@ -15,12 +15,12 @@ namespace FoundOps.Api.Models
         public string DisplayName { get { return FirstName + " " + LastName; }}
 
         public DateTime CreatedDate { get; private set; }
-        public DateTime? LastModifiedDate { get; private set; }
+        public DateTime? LastModified { get; private set; }
         public Guid? LastModifyingUserId { get; private set; }
         
         public void SetLastModified(DateTime? lastModified, Guid? userId)
         {
-            LastModifiedDate = lastModified;
+            LastModified = lastModified;
             LastModifyingUserId = userId;
         }
 
@@ -40,7 +40,7 @@ namespace FoundOps.Api.Models
                 LastName = model.LastName
             };
 
-            employee.SetLastModified(model.LastModifiedDate, model.LastModifyingUserId);
+            employee.SetLastModified(model.LastModified, model.LastModifyingUserId);
 
             return employee;
         }
