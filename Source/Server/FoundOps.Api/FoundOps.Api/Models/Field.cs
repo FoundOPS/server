@@ -28,7 +28,7 @@ namespace FoundOps.Api.Models
             LastModifyingUserId = userId;
         }
 
-        public Field(DateTime createdDate)
+        protected Field(DateTime createdDate)
         {
             CreatedDate = createdDate;
         }

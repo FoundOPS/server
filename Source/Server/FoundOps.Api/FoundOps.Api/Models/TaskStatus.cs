@@ -14,16 +14,16 @@ namespace FoundOps.Api.Models
         public DateTime CreatedDate { get; private set; }
         public DateTime? LastModified { get; private set; }
         public Guid? LastModifyingUserId { get; private set; }
-        
-        public void SetLastModified(DateTime? lastModified, Guid? userId)
-        {
-            LastModified = lastModified;
-            LastModifyingUserId = userId;
-        }
 
         public TaskStatus(DateTime createdDate)
         {
             CreatedDate = createdDate;
+        }
+
+        public void SetLastModified(DateTime? lastModified, Guid? userId)
+        {
+            LastModified = lastModified;
+            LastModifyingUserId = userId;
         }
 
         public static TaskStatus ConvertModel(FoundOps.Core.Models.CoreEntities.TaskStatus model)

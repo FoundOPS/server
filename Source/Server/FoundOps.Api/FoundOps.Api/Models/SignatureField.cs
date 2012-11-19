@@ -7,7 +7,7 @@ namespace FoundOps.Api.Models
         public DateTime? Signed { get; set; }
         public string Value { get; set; }
 
-        private SignatureField(DateTime createdDate) : base(createdDate)
+        public SignatureField(DateTime createdDate) : base(createdDate)
         {
         }
 

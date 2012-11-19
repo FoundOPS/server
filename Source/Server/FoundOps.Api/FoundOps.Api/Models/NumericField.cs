@@ -14,7 +14,7 @@ namespace FoundOps.Api.Models
 
         public decimal? Value { get; set; }
         
-        private NumericField(DateTime createdDate) : base(createdDate)
+        public NumericField(DateTime createdDate) : base(createdDate)
         {
         }
 

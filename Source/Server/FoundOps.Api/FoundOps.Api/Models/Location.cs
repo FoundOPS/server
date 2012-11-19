@@ -63,17 +63,17 @@ namespace FoundOps.Api.Models
         public DateTime CreatedDate { get; private set; }
         public DateTime? LastModified { get; private set; }
         public Guid? LastModifyingUserId { get; private set; }
-        
-        public void SetLastModified(DateTime? lastModified, Guid? userId)
-        {
-            LastModified = lastModified;
-            LastModifyingUserId = userId;
-        }
 
         public Location(DateTime createdDate)
         {
             ContactInfoSet = new List<ContactInfo>();
             CreatedDate = createdDate;
+        }
+
+        public void SetLastModified(DateTime? lastModified, Guid? userId)
+        {
+            LastModified = lastModified;
+            LastModifyingUserId = userId;
         }
 
         public static Core.Models.CoreEntities.Location ConvertBack(Location location)

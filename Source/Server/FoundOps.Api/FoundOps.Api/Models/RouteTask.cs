@@ -18,15 +18,15 @@ namespace FoundOps.Api.Models
         public DateTime? LastModified { get; private set; }
         public Guid? LastModifyingUserId { get; private set; }
         
+        public RouteTask(DateTime createdDate)
+        {
+            CreatedDate = createdDate;
+        }
+
         public void SetLastModified(DateTime? lastModified, Guid? userId)
         {
             LastModified = lastModified;
             LastModifyingUserId = userId;
-        }
-
-        public RouteTask(DateTime createdDate)
-        {
-            CreatedDate = createdDate;
         }
 
         public static RouteTask ConvertModel(FoundOps.Core.Models.CoreEntities.RouteTask routeTaskModel)
