@@ -123,7 +123,7 @@ namespace FoundOps.Api.Controllers.Rest
         /// </summary>
         /// <param name="service">The API model of a Service</param>
         /// <param name="routeTaskId">Optional. If set update this route task to use this service. Only for generated services</param>
-        public void Put(Service service, Guid? routeTaskId)
+        public void Put(Service service, Guid? routeTaskId = null)
         {
             var businessAccount = CoreEntitiesContainer.BusinessAccount(service.ServiceProviderId, new[] { RoleType.Regular, RoleType.Administrator, RoleType.Mobile }).FirstOrDefault();
             if (businessAccount == null)
