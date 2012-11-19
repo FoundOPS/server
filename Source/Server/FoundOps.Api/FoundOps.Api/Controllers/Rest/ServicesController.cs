@@ -122,7 +122,8 @@ namespace FoundOps.Api.Controllers.Rest
         /// Pushes changes made to a Service from the API model to the FoundOPS model
         /// </summary>
         /// <param name="service">The API model of a Service</param>
-        public void Put(Service service)
+        /// <param name="routeTaskId">Optional. If set update this route task to use this service. Only for generated services</param>
+        public void Put(Service service, Guid? routeTaskId)
         {
             var businessAccount = CoreEntitiesContainer.BusinessAccount(service.ServiceProviderId, new[] { RoleType.Regular, RoleType.Administrator, RoleType.Mobile }).FirstOrDefault();
             if (businessAccount == null)
@@ -133,7 +134,7 @@ namespace FoundOps.Api.Controllers.Rest
 
             var existingService = CoreEntitiesContainer.Services.FirstOrDefault(s => s.Id == service.Id);
 
-            //the service exists. load all field information  and update field values
+            //the service exists. load all field information and update field values
             if (existingService != null)
             {
                 //update the client id
@@ -231,6 +232,16 @@ namespace FoundOps.Api.Controllers.Rest
                     generatedService.ServiceTemplate.Fields.Add(Models.Field.ConvertBack(field));
 
                 CoreEntitiesContainer.Services.AddObject(generatedService);
+
+                if (routeTaskId.HasValue)
+                {
+                    var routeTask = CoreEntitiesContainer.RouteTasks.FirstOrDefault(rt => rt.Id == routeTaskId.Value);
+                    if (routeTask != null)
+                    {
+                        routeTask.RecurringServiceId = null;
+                        routeTask.ServiceId = generatedService.Id;
+                    }
+                }
             }
 
             //Save any changes that were made
