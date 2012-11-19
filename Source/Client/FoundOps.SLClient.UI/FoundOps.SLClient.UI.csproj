@@ -228,6 +228,9 @@
     <Compile Include="Controls\Clients\ClientLinkSmall.xaml.cs">
       <DependentUpon>ClientLinkSmall.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\CustomFields\Define\SignatureDefine.xaml.cs">
+      <DependentUpon>SignatureDefine.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\CustomFields\Define\TextLargeDefine.xaml.cs">
       <DependentUpon>TextLargeDefine.xaml</DependentUpon>
     </Compile>
@@ -485,6 +488,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\Clients\ClientLinkSmall.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\CustomFields\Define\SignatureDefine.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

@@ -12,10 +12,10 @@
         <Converters1:FoundOPSBoolConverter x:Key="FoundOPSBoolConverter" />
         <!--Only enable the detail templates if the current business account context is FoundOPS-->
         <DataTemplate x:Key="CheckBoxTemplate">
-            <CustomFields:CheckBoxDefine OptionsField="{Binding}" IsEnabled="{Tools1:GetContextObservableValue Converter={StaticResource FoundOPSBoolConverter}, ContextType=CoreEntities1:BusinessAccount}" />
+            <Define:CheckBoxDefine OptionsField="{Binding}" IsEnabled="{Tools1:GetContextObservableValue Converter={StaticResource FoundOPSBoolConverter}, ContextType=CoreEntities1:BusinessAccount}" />
         </DataTemplate>
         <DataTemplate x:Key="CurrencyTemplate">
-            <CustomFields:CurrencyDefine NumericField="{Binding}" IsEnabled="{Tools1:GetContextObservableValue Converter={StaticResource FoundOPSBoolConverter}, ContextType=CoreEntities1:BusinessAccount}" />
+            <Define:CurrencyDefine NumericField="{Binding}" IsEnabled="{Tools1:GetContextObservableValue Converter={StaticResource FoundOPSBoolConverter}, ContextType=CoreEntities1:BusinessAccount}" />
         </DataTemplate>
         <DataTemplate x:Key="NumberTemplate">
             <CustomFields:NumberDefine NumericField="{Binding}" IsEnabled="{Tools1:GetContextObservableValue Converter={StaticResource FoundOPSBoolConverter}, ContextType=CoreEntities1:BusinessAccount}" />
@@ -24,16 +24,16 @@
             <Define:OptionsFieldDefine OptionsField="{Binding}" IsEnabled="{Tools1:GetContextObservableValue Converter={StaticResource FoundOPSBoolConverter}, ContextType=CoreEntities1:BusinessAccount}" />
         </DataTemplate>
         <DataTemplate x:Key="PercentageTemplate">
-            <CustomFields:PercentageDefine NumericField="{Binding}" IsEnabled="{Tools1:GetContextObservableValue Converter={StaticResource FoundOPSBoolConverter}, ContextType=CoreEntities1:BusinessAccount}" />
+            <Define:PercentageDefine NumericField="{Binding}" IsEnabled="{Tools1:GetContextObservableValue Converter={StaticResource FoundOPSBoolConverter}, ContextType=CoreEntities1:BusinessAccount}" />
         </DataTemplate>
         <DataTemplate x:Key="TextLgTemplate">
             <Define:TextLargeDefine TextBoxField="{Binding}" IsEnabled="{Tools1:GetContextObservableValue Converter={StaticResource FoundOPSBoolConverter}, ContextType=CoreEntities1:BusinessAccount}" />
         </DataTemplate>
         <DataTemplate x:Key="TextSmTemplate">
-            <CustomFields:TextSmallDefine TextBoxField="{Binding}" IsEnabled="{Tools1:GetContextObservableValue Converter={StaticResource FoundOPSBoolConverter}, ContextType=CoreEntities1:BusinessAccount}" />
+            <Define:TextSmallDefine TextBoxField="{Binding}" IsEnabled="{Tools1:GetContextObservableValue Converter={StaticResource FoundOPSBoolConverter}, ContextType=CoreEntities1:BusinessAccount}" />
         </DataTemplate>
         <DataTemplate x:Key="SignatureTemplate">
-            <TextBlock Text="Signature field is only visible in html5 sections" />
+            <Define:SignatureDefine SignatureField="{Binding}" IsEnabled="{Tools1:GetContextObservableValue Converter={StaticResource FoundOPSBoolConverter}, ContextType=CoreEntities1:BusinessAccount}" />
         </DataTemplate>
         <Selectors:FieldDataTemplateSelector x:Key="FieldDataTemplateSelector" CheckBoxTemplate="{StaticResource CheckBoxTemplate}" 
                                              CheckListTemplate="{StaticResource OptionsFieldTemplate}" ComboBoxTemplate="{StaticResource OptionsFieldTemplate}" 

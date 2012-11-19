@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using FoundOps.Core.Models.CoreEntities;
 
-namespace FoundOps.Framework.Views.Controls.CustomFields
+namespace FoundOps.SLClient.UI.Controls.CustomFields.Define
 {
     public partial class PercentageDefine
     {

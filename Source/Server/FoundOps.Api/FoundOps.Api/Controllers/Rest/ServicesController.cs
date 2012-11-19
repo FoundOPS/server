@@ -26,52 +26,57 @@ namespace FoundOps.Api.Controllers.Rest
         /// </summary>
         public IQueryable<Service> Get(Guid? serviceId, DateTime? serviceDate, Guid? recurringServiceId, Guid? serviceTemplateId)
         {
-            Guid serviceTemplateIdToLoad;
             Core.Models.CoreEntities.Service service = null;
-            Guid businessAccountId;
+
+            Guid serviceTemplateIdToLoad; //for loading the service template
+            Guid businessAccountId; //for loading the service template
 
             //for generating a service
             RecurringService recurringService = null;
 
-            //existing service
+            //try to find the existing service
             if (serviceId.HasValue)
+                service = CoreEntitiesContainer.Services.Include(s => s.Client).FirstOrDefault(s => s.Id == serviceId.Value);
+
+            if (service != null)
             {
                 serviceTemplateIdToLoad = serviceId.Value;
-                service = CoreEntitiesContainer.Services.Include(s => s.Client).FirstOrDefault(s => s.Id == serviceId.Value);
-                if (service == null)
-                    throw Request.BadRequest();
-
                 businessAccountId = service.ServiceProviderId;
             }
-            //generate it from the recurring service
-            else if (recurringServiceId.HasValue)
-            {
-                serviceTemplateIdToLoad = recurringServiceId.Value;
-                recurringService = CoreEntitiesContainer.RecurringServices.Include(rs => rs.Client).Include(rs => rs.ServiceTemplate)
-                    .FirstOrDefault(rs => rs.Id == recurringServiceId.Value);
-
-                if (recurringService == null)
-                    throw Request.BadRequest("The recurring service was not found");
-
-                if (recurringService.Client == null || !recurringService.Client.BusinessAccountId.HasValue)
-                    throw Request.BadRequest("The recurring service does not have a Client with a BusinessAccount associated");
-
-                businessAccountId = recurringService.Client.BusinessAccountId.Value;
-            }
-            //generate it from the service provider service template
-            else if (serviceTemplateId.HasValue)
-            {
-                serviceTemplateIdToLoad = serviceTemplateId.Value;
-                var template = CoreEntitiesContainer.ServiceTemplates.First(s => s.Id == serviceTemplateId.Value);
-
-                if (!template.OwnerServiceProviderId.HasValue)
-                    throw Request.BadRequest("The template does not have a service provider");
-
-                businessAccountId = template.OwnerServiceProviderId.Value;
-            }
+            //otherwise generate it 
             else
             {
-                throw Request.BadRequest("Not enough parameters were set");
+                //from the recurring service
+                if (recurringServiceId.HasValue)
+                {
+                    serviceTemplateIdToLoad = recurringServiceId.Value;
+                    recurringService = CoreEntitiesContainer.RecurringServices.Include(rs => rs.Client)
+                                                            .Include(rs => rs.ServiceTemplate)
+                                                            .FirstOrDefault(rs => rs.Id == recurringServiceId.Value);
+
+                    if (recurringService == null)
+                        throw Request.BadRequest("The recurring service was not found");
+
+                    if (recurringService.Client == null || !recurringService.Client.BusinessAccountId.HasValue)
+                        throw Request.BadRequest("The recurring service does not have a Client with a BusinessAccount associated");
+
+                    businessAccountId = recurringService.Client.BusinessAccountId.Value;
+                }
+                //or from the service provider service template
+                else if (serviceTemplateId.HasValue)
+                {
+                    serviceTemplateIdToLoad = serviceTemplateId.Value;
+                    var template = CoreEntitiesContainer.ServiceTemplates.First(s => s.Id == serviceTemplateId.Value);
+
+                    if (!template.OwnerServiceProviderId.HasValue)
+                        throw Request.BadRequest("The template does not have a service provider");
+
+                    businessAccountId = template.OwnerServiceProviderId.Value;
+                }
+                else
+                {
+                    throw Request.BadRequest("Not enough parameters were set");
+                }
             }
 
             //check the current user has access to the business account
@@ -82,7 +87,7 @@ namespace FoundOps.Api.Controllers.Rest
             var serviceTemplate = HardCodedLoaders.LoadServiceTemplateWithDetails(CoreEntitiesContainer, serviceTemplateIdToLoad, null, null, null).First();
 
             //generate the service
-            if (!serviceId.HasValue)
+            if (service == null)
             {
                 //if serviceDate is null: use the current user's date
                 if (!serviceDate.HasValue)
@@ -153,17 +158,17 @@ namespace FoundOps.Api.Controllers.Rest
                     var optionsField = existingField as OptionsField;
 
                     if (numericField != null)
-                        numericField.Value = ((Models.NumericField) field).Value;
+                        numericField.Value = ((Models.NumericField)field).Value;
 
                     if (textBoxField != null)
-                        textBoxField.Value = ((Models.TextBoxField) field).Value;
+                        textBoxField.Value = ((Models.TextBoxField)field).Value;
 
                     if (signatureField != null)
-                        signatureField.Value = ((Models.SignatureField) field).Value;
+                        signatureField.Value = ((Models.SignatureField)field).Value;
 
                     if (locationField != null)
                     {
-                        var apiLocationField = (Models.LocationField) field;
+                        var apiLocationField = (Models.LocationField)field;
                         var oldId = locationField.Id;
                         var newId = apiLocationField.LocationId;
                         //update the location field, any route tasks, and destinations to the new location

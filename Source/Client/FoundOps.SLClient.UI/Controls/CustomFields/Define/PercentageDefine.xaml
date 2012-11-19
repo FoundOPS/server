@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="FoundOps.Framework.Views.Controls.CustomFields.PercentageDefine" x:Name="myPercentageDetail"
+﻿<UserControl x:Class="FoundOps.SLClient.UI.Controls.CustomFields.Define.PercentageDefine" x:Name="myPercentageDetail"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:telerik="clr-namespace:Telerik.Windows.Controls;assembly=Telerik.Windows.Controls.Input" 
      xmlns:Converters="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI" xmlns:Converters1="clr-namespace:FoundOps.Common.Silverlight.Converters;assembly=FoundOps.Common.Silverlight.UI" mc:Ignorable="d">
