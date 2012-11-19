@@ -1,14 +1,19 @@
 ﻿CREATE TABLE [dbo].[RouteDestinations] (
-    [Id]           UNIQUEIDENTIFIER NOT NULL,
-    [OrderInRoute] INT              NOT NULL,
-    [LocationId]   UNIQUEIDENTIFIER NULL,
-    [RouteId]      UNIQUEIDENTIFIER NOT NULL,
-    [ClientId]     UNIQUEIDENTIFIER NULL,
+    [Id]                  UNIQUEIDENTIFIER NOT NULL,
+    [OrderInRoute]        INT              NOT NULL,
+    [LocationId]          UNIQUEIDENTIFIER NULL,
+    [RouteId]             UNIQUEIDENTIFIER NOT NULL,
+    [ClientId]            UNIQUEIDENTIFIER NULL,
+    [CreatedDate]         DATETIME         NOT NULL,
+    [LastModified]        DATETIME         NULL,
+    [LastModifyingUserId] UNIQUEIDENTIFIER NULL,
     CONSTRAINT [PK_RouteDestinations] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_RouteDestinationClient] FOREIGN KEY ([ClientId]) REFERENCES [dbo].[Clients] ([Id]),
     CONSTRAINT [FK_RouteDestinationLocation] FOREIGN KEY ([LocationId]) REFERENCES [dbo].[Locations] ([Id]),
     CONSTRAINT [FK_RouteDestinationRoute] FOREIGN KEY ([RouteId]) REFERENCES [dbo].[Routes] ([Id]) ON DELETE CASCADE
 );
+
+
 
 
 

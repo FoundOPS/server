@@ -23,7 +23,8 @@ BEGIN
 			OwnerClientId UNIQUEIDENTIFIER,
 			OwnerServiceTemplateId UNIQUEIDENTIFIER,
 			LevelInt INT,
-			Name NVARCHAR(max)
+			Name NVARCHAR(max),
+			CreatedDate DATETIME
 		)
 
 		--Find all clients for the Service Provider
@@ -56,14 +57,16 @@ BEGIN
 					  OwnerClientId ,
 					  OwnerServiceTemplateId ,
 					  LevelInt ,
-					  Name
+					  Name ,
+					  CreatedDate
 					)
 			VALUES  ( NEWID() , -- Id - uniqueidentifier
 					  @serviceProviderId , -- OwnerServiceProviderId - uniqueidentifier
 					  @currentId , -- OwnerClientId - uniqueidentifier
 					  @ownerServiceTemplateId , -- OwnerServiceTemplateId - uniqueidentifier
 					  3 , -- LevelInt - int
-					  @serviceTemplateName  -- Name - nvarchar(max)
+					  @serviceTemplateName , -- Name - nvarchar(max)
+					  GETUTCDATE()
 					)
 
 					--Once the client has been used, remove it from the list
@@ -73,8 +76,8 @@ BEGIN
 					SET @ClientRowCount = @ClientRowCount - 1
 		END
 
-		--Add all the newly created Service Tempalte to the database
-		INSERT INTO dbo.ServiceTemplates
+		--Add all the newly created Service Template to the database
+		INSERT INTO dbo.ServiceTemplates ( Id , OwnerServiceProviderId , OwnerClientId , OwnerServiceTemplateId , LevelInt , Name , CreatedDate)
 		SELECT * FROM @newServiceTemplateTable
 	END 
 
@@ -91,11 +94,12 @@ BEGIN
 			[Required] BIT,
 			ToolTip NVARCHAR(MAX),
 			ParentFieldId UNIQUEIDENTIFIER,
-			ServiceTemplateId UNIQUEIDENTIFIER
+			ServiceTemplateId UNIQUEIDENTIFIER,
+			CreatedDate DATETIME
 		) 
 
-		INSERT INTO @FieldsTable
-		SELECT * FROM dbo.Fields t1
+		INSERT INTO @FieldsTable (Id, Name, [Required], ToolTip, ParentFieldId, ServiceTemplateId, CreatedDate)
+		SELECT Id, Name, [Required], ToolTip, ParentFieldId, ServiceTemplateId, CreatedDate FROM dbo.Fields t1
 		WHERE t1.ServiceTemplateId = @ownerServiceTemplateId 
 
 		BEGIN -- declaring variables to be used to copy fields
@@ -110,26 +114,18 @@ BEGIN
 			DECLARE @optionsFieldId UNIQUEIDENTIFIER --Will only be used for copying OptionsFields and for copying the Options
 		END
 
-		BEGIN --Declaring tables to use for copying fields 
-			DECLARE @CopyOfNewServiceTemplates TABLE
-			(
-				Id UNIQUEIDENTIFIER,
-				OwnerServiceProviderId UNIQUEIDENTIFIER,
-				OwnerClientId UNIQUEIDENTIFIER,
-				OwnerServiceTemplateId UNIQUEIDENTIFIER,
-				LevelInt INT,
-				Name NVARCHAR(max)
-			)
-			DECLARE @OptionsCopies TABLE
-			(
-				Id UNIQUEIDENTIFIER,
-				NAME NVARCHAR(MAX),
-				IsChecked BIT,
-				OptionsFieldId UNIQUEIDENTIFIER,
-				[Index] INT,
-				ToolTip NVARCHAR(MAX)
-			)      
-		END
+		--Declaring tables to use for copying fields 
+		DECLARE @CopyOfNewServiceTemplates TABLE
+		(
+			Id UNIQUEIDENTIFIER,
+			OwnerServiceProviderId UNIQUEIDENTIFIER,
+			OwnerClientId UNIQUEIDENTIFIER,
+			OwnerServiceTemplateId UNIQUEIDENTIFIER,
+			LevelInt INT,
+			Name NVARCHAR(max),
+			CreatedDate DATETIME
+		)    
+		
 
 		SET @FieldRowCount = (SELECT COUNT(*) FROM @FieldsTable)
 
@@ -141,8 +137,8 @@ BEGIN
 			DELETE FROM @CopyOfNewServiceTemplates
 
 			--Re-populate
-			INSERT INTO @CopyOfNewServiceTemplates
-			SELECT * FROM @newServiceTemplateTable
+			INSERT INTO @CopyOfNewServiceTemplates (Id, OwnerServiceProviderId, OwnerClientId, OwnerServiceTemplateId, LevelInt, Name, CreatedDate)
+			SELECT Id, OwnerServiceProviderId, OwnerClientId, OwnerServiceTemplateId, LevelInt, Name, CreatedDate FROM @newServiceTemplateTable
 
 			BEGIN --Sets all variables to copy basic field data
 				SET @fieldName = (SELECT Name FROM @FieldsTable WHERE Id = @currentId)
@@ -165,34 +161,19 @@ BEGIN
 				          [Required] ,
 				          ToolTip ,
 				          ParentFieldId ,
-				          ServiceTemplateId
+				          ServiceTemplateId,
+						  CreatedDate
 				        )
 				VALUES  ( @newFieldId , -- Id - uniqueidentifier
 				          @fieldName , -- Name - nvarchar(max)
 				          @fieldRequired , -- Required - bit
 				          @fieldToolTip , -- ToolTip - nvarchar(max)
 				          @currentId , -- ParentFieldId - uniqueidentifier
-				          @currentServiceTemplateId  -- ServiceTemplateId - uniqueidentifier
+				          @currentServiceTemplateId , -- ServiceTemplateId - uniqueidentifier
+						  GETUTCDATE()
 				        ) 
 				
 				BEGIN --Copy field to its appropriate inherited table			
-					IF @currentId IN (SELECT Id FROM dbo.Fields_DateTimeField) --Copy the DateTime field, set new Id's
-					BEGIN 
-						INSERT INTO Fields_DateTimeField
-								( Earliest ,
-								  Latest ,
-								  TypeInt ,
-								  VALUE ,
-								  Id
-								)
-						VALUES  ( (SELECT Earliest FROM Fields_DateTimeField WHERE Id = @currentId) , -- Earliest - datetime
-								  (SELECT Latest FROM Fields_DateTimeField WHERE Id = @currentId) , -- Latest - datetime
-								  (SELECT TypeInt FROM Fields_DateTimeField WHERE Id = @currentId) , -- TypeInt - smallint
-								  (SELECT Value FROM Fields_DateTimeField WHERE Id = @currentId) , -- Value - datetime
-								 @newFieldId  -- Id - uniqueidentifier
-								)
-					END
-    
 					IF @currentId IN (SELECT Id FROM dbo.Fields_LocationField) --Copy Location field, set new Id's
 					BEGIN   
 			 
@@ -242,9 +223,11 @@ BEGIN
 					IF @currentId IN (SELECT Id FROM dbo.Fields_SignatureField) --Copy Signature field, set new Id's
 					BEGIN
 						INSERT INTO Fields_SignatureField
-								( Value, 
+								( Value,
+								  Signed,
 								  Id )
-						VALUES  ( (SELECT Value FROM dbo.Fields_TextBoxField WHERE Id = @currentId), -- Value - nvarchar(max)
+						VALUES  ( (SELECT Value FROM dbo.Fields_SignatureField WHERE Id = @currentId), -- Value - nvarchar(max)
+								  (SELECT Signed FROM dbo.Fields_SignatureField WHERE Id = @currentId), -- Value - datetime
 								  @newFieldId  -- Id - uniqueidentifier
 								  )	    
 					END

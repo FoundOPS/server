@@ -6,9 +6,14 @@
     [EndTime]                DATETIME         NOT NULL,
     [OwnerBusinessAccountId] UNIQUEIDENTIFIER NOT NULL,
     [RouteType]              NVARCHAR (MAX)   NOT NULL,
+    [CreatedDate]            DATETIME         NOT NULL,
+    [LastModified]           DATETIME         NULL,
+    [LastModifyingUserId]    UNIQUEIDENTIFIER NULL,
     CONSTRAINT [PK_Routes] PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_BusinessAccountRoute] FOREIGN KEY ([OwnerBusinessAccountId]) REFERENCES [dbo].[Parties_BusinessAccount] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION
+    CONSTRAINT [FK_BusinessAccountRoute] FOREIGN KEY ([OwnerBusinessAccountId]) REFERENCES [dbo].[Parties_BusinessAccount] ([Id])
 );
+
+
 
 
 GO

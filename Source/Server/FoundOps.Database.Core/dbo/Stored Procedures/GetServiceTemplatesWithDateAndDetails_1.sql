@@ -42,6 +42,8 @@ AS
 			Id UNIQUEIDENTIFIER
 		)
 
+		DECLARE @businessAccountId UNIQUEIDENTIFIER
+
 		IF @serviceTypeContext IS NOT NULL
 		BEGIN
 			INSERT INTO #ServiceTemplateIds
@@ -49,30 +51,70 @@ AS
   
 			INSERT INTO #ServiceTemplateIds
 			SELECT ServiceId FROM #ServiceHolders WHERE ServiceId IS NOT NULL AND ServiceName = @serviceTypeContext
+  
 		END  
 		ELSE
 		BEGIN
+			
 			INSERT INTO #ServiceTemplateIds
 			SELECT RecurringServiceId FROM #ServiceHolders WHERE ServiceId IS NULL
   
 			INSERT INTO #ServiceTemplateIds
 			SELECT ServiceId FROM #ServiceHolders WHERE ServiceId IS NOT NULL
-		END    
+		END
+        
+		--BusinessAccountId is serviceProviderIdContext
+		IF @serviceProviderIdContext IS NOT NULL
+		BEGIN
+				SET @businessAccountId = @serviceProviderIdContext          
+		END 
+			         
+		--Get the BusinessAccountId from the Client
+		IF @clientIdContext IS NOT NULL
+		BEGIN
+			SET @businessAccountId = (SELECT BusinessAccountId FROM dbo.Clients WHERE Id = @clientIdContext)
+		END   
 
+		--Get the BusinessAccountId from the Recurring Services' Client
+		IF @recurringServiceIdContext IS NOT NULL
+		BEGIN
+			SET @businessAccountId = (SELECT BusinessAccountId FROM dbo.Clients WHERE Id = (SELECT ClientId FROM dbo.RecurringServices WHERE Id = @recurringServiceIdContext))
+		END         
 		
+		CREATE TABLE #TaskStatusWithServiceTemplateId
+		(
+			Id UNIQUEIDENTIFIER NULL,
+			ServiceTemplateId UNIQUEIDENTIFIER NULL,
+			Name NVARCHAR(MAX) NULL,
+			Value NVARCHAR(MAX) NULL,
+			Color NVARCHAR(MAX) NULL
+		) 
+
+		INSERT INTO #TaskStatusWithServiceTemplateId (ServiceTemplateId)
+		SELECT * FROM #ServiceTemplateIds
+		
+		--This will change once we update the way Tasks and Services interact
+		UPDATE #TaskStatusWithServiceTemplateId
+		SET Id = (SELECT Id FROM dbo.TaskStatuses WHERE Id = (SELECT TaskStatusId FROM dbo.RouteTasks WHERE ServiceId = (SELECT Id FROM dbo.Services WHERE Id IN(SELECT Id FROM #ServiceTemplateIds WHERE Id = #TaskStatusWithServiceTemplateId.ServiceTemplateId))))
+
+		UPDATE #TaskStatusWithServiceTemplateId
+		SET Id = (SELECT Id FROM dbo.TaskStatuses WHERE BusinessAccountId = @businessAccountId AND DefaultTypeInt = 1)
+		WHERE Id IS NULL
+  
+		UPDATE #TaskStatusWithServiceTemplateId
+		SET Value = (SELECT Name FROM dbo.TaskStatuses WHERE Id = #TaskStatusWithServiceTemplateId.Id),
+			Color = (SELECT Color FROM dbo.TaskStatuses WHERE Id = #TaskStatusWithServiceTemplateId.Id),
+			Name = 'Service Status'   
+
 		INSERT INTO #FieldIds
 		SELECT Id FROM dbo.Fields 
 		WHERE ServiceTemplateId IN (SELECT Id FROM #ServiceTemplateIds)
 
 		SELECT * FROM #ServiceHolders 
 		ORDER BY OccurDate, ServiceId, RecurringServiceId
-		
-		SELECT t2.Id, t2.ServiceTemplateId, t2.Name, t1.Value 
-		FROM dbo.Fields_DateTimeField t1
-		JOIN dbo.Fields t2
-		ON t2.Id = t1.Id AND t2.Id IN (SELECT Id FROM #FieldIds)
-		ORDER BY t2.ServiceTemplateId
 
+		SELECT * FROM #TaskStatusWithServiceTemplateId
+		
 		SELECT t2.Id, t2.ServiceTemplateId, t2.Name, t1.Value 
 		FROM dbo.Fields_NumericField t1
 		JOIN dbo.Fields t2
@@ -105,6 +147,7 @@ AS
 		ON t1.LocationId = t3.Id AND t2.Id IN (SELECT Id FROM #FieldIds)
 		ORDER BY t2.ServiceTemplateId
 
+		DROP TABLE #TaskStatusWithServiceTemplateId
 		DROP TABLE #FieldIds
 		DROP TABLE #ServiceTemplateIds
 		DROP TABLE #ServiceHolders

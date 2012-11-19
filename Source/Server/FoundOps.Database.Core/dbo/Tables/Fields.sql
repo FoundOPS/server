@@ -1,14 +1,19 @@
 ﻿CREATE TABLE [dbo].[Fields] (
-    [Id]                UNIQUEIDENTIFIER NOT NULL,
-    [Name]              NVARCHAR (MAX)   NOT NULL,
-    [Required]          BIT              NOT NULL,
-    [Tooltip]           NVARCHAR (MAX)   NULL,
-    [ParentFieldId]     UNIQUEIDENTIFIER NULL,
-    [ServiceTemplateId] UNIQUEIDENTIFIER NULL,
+    [Id]                  UNIQUEIDENTIFIER NOT NULL,
+    [Name]                NVARCHAR (MAX)   NOT NULL,
+    [Required]            BIT              NOT NULL,
+    [Tooltip]             NVARCHAR (MAX)   NULL,
+    [ParentFieldId]       UNIQUEIDENTIFIER NULL,
+    [ServiceTemplateId]   UNIQUEIDENTIFIER NULL,
+    [CreatedDate]         DATETIME         NOT NULL,
+    [LastModified]        DATETIME         NULL,
+    [LastModifyingUserId] UNIQUEIDENTIFIER NULL,
     CONSTRAINT [PK_Fields] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_FieldField] FOREIGN KEY ([ParentFieldId]) REFERENCES [dbo].[Fields] ([Id]),
     CONSTRAINT [FK_ServiceTemplateField] FOREIGN KEY ([ServiceTemplateId]) REFERENCES [dbo].[ServiceTemplates] ([Id]) ON DELETE CASCADE
 );
+
+
 
 
 

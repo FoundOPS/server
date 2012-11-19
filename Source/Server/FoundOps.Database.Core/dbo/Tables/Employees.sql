@@ -25,10 +25,15 @@
     [LastPushToAzureTimeStamp] DATETIME         NULL,
     [LastAccuracy]             INT              NULL,
     [CountryCode]              NVARCHAR (MAX)   NULL,
+    [CreatedDate]              DATETIME         NOT NULL,
+    [LastModified]             DATETIME         NULL,
+    [LastModifyingUserId]      UNIQUEIDENTIFIER NULL,
     CONSTRAINT [PK_Employees] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_EmployeeBusinessAccount] FOREIGN KEY ([EmployerId]) REFERENCES [dbo].[Parties_BusinessAccount] ([Id]),
     CONSTRAINT [FK_EmployeeUserAccount] FOREIGN KEY ([LinkedUserAccountId]) REFERENCES [dbo].[Parties_UserAccount] ([Id]) ON DELETE SET NULL
 );
+
+
 
 
 

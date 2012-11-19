@@ -14,6 +14,9 @@
     [RecurringServiceId]      UNIQUEIDENTIFIER NULL,
     [DelayedChildId]          UNIQUEIDENTIFIER NULL,
     [TaskStatusId]            UNIQUEIDENTIFIER NULL,
+    [CreatedDate]             DATETIME         NOT NULL,
+    [LastModified]            DATETIME         NULL,
+    [LastModifyingUserId]     UNIQUEIDENTIFIER NULL,
     CONSTRAINT [PK_RouteTasks] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_BusinessAccountRouteTask] FOREIGN KEY ([BusinessAccountId]) REFERENCES [dbo].[Parties_BusinessAccount] ([Id]),
     CONSTRAINT [FK_RouteTaskClient] FOREIGN KEY ([ClientId]) REFERENCES [dbo].[Clients] ([Id]),
@@ -23,6 +26,8 @@
     CONSTRAINT [FK_RouteTaskService] FOREIGN KEY ([ServiceId]) REFERENCES [dbo].[Services] ([Id]) ON DELETE SET NULL,
     CONSTRAINT [FK_TaskStatusRouteTask] FOREIGN KEY ([TaskStatusId]) REFERENCES [dbo].[TaskStatuses] ([Id])
 );
+
+
 
 
 

@@ -1,15 +1,20 @@
 ﻿CREATE TABLE [dbo].[Services] (
-    [Id]                 UNIQUEIDENTIFIER NOT NULL,
-    [ClientId]           UNIQUEIDENTIFIER NOT NULL,
-    [ServiceProviderId]  UNIQUEIDENTIFIER NOT NULL,
-    [RecurringServiceId] UNIQUEIDENTIFIER NULL,
-    [ServiceDate]        DATETIME         NOT NULL,
+    [Id]                  UNIQUEIDENTIFIER NOT NULL,
+    [ClientId]            UNIQUEIDENTIFIER NOT NULL,
+    [ServiceProviderId]   UNIQUEIDENTIFIER NOT NULL,
+    [RecurringServiceId]  UNIQUEIDENTIFIER NULL,
+    [ServiceDate]         DATETIME         NOT NULL,
+    [CreatedDate]         DATETIME         NOT NULL,
+    [LastModified]        DATETIME         NULL,
+    [LastModifyingUserId] UNIQUEIDENTIFIER NULL,
     CONSTRAINT [PK_Services] PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_BusinessAccountService] FOREIGN KEY ([ServiceProviderId]) REFERENCES [dbo].[Parties_BusinessAccount] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    CONSTRAINT [FK_RecurringServiceService] FOREIGN KEY ([RecurringServiceId]) REFERENCES [dbo].[RecurringServices] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    CONSTRAINT [FK_ServiceClient] FOREIGN KEY ([ClientId]) REFERENCES [dbo].[Clients] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    CONSTRAINT [FK_ServiceServiceTemplate] FOREIGN KEY ([Id]) REFERENCES [dbo].[ServiceTemplates] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION
+    CONSTRAINT [FK_BusinessAccountService] FOREIGN KEY ([ServiceProviderId]) REFERENCES [dbo].[Parties_BusinessAccount] ([Id]),
+    CONSTRAINT [FK_RecurringServiceService] FOREIGN KEY ([RecurringServiceId]) REFERENCES [dbo].[RecurringServices] ([Id]),
+    CONSTRAINT [FK_ServiceClient] FOREIGN KEY ([ClientId]) REFERENCES [dbo].[Clients] ([Id]),
+    CONSTRAINT [FK_ServiceServiceTemplate] FOREIGN KEY ([Id]) REFERENCES [dbo].[ServiceTemplates] ([Id])
 );
+
+
 
 
 GO

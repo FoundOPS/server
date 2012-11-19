@@ -66,34 +66,19 @@
 				        [Required] ,
 				        ToolTip ,
 				        ParentFieldId ,
-				        ServiceTemplateId
+				        ServiceTemplateId,
+						CreatedDate
 				    )
 			VALUES  ( @newFieldId , -- Id - uniqueidentifier
 				        @fieldName , -- Name - nvarchar(max)
 				        @fieldRequired , -- Required - bit
 				        @fieldToolTip , -- ToolTip - nvarchar(max)
 				        @FieldId , -- ParentFieldId - uniqueidentifier
-				        @currentServiceTemplateId  -- ServiceTemplateId - uniqueidentifier
+				        @currentServiceTemplateId , -- ServiceTemplateId - uniqueidentifier
+						GETUTCDATE()
 				    ) 
 				
 			BEGIN --Copy field to its appropriate inherited table
-				IF @FieldId IN (SELECT Id FROM dbo.Fields_DateTimeField) --Copy the DateTime field, set new Id's
-				BEGIN 
-					INSERT INTO Fields_DateTimeField
-							( Earliest ,
-								Latest ,
-								TypeInt ,
-								VALUE ,
-								Id
-							)
-					VALUES  ( (SELECT Earliest FROM Fields_DateTimeField WHERE Id = @FieldId) , -- Earliest - datetime
-								(SELECT Latest FROM Fields_DateTimeField WHERE Id = @FieldId) , -- Latest - datetime
-								(SELECT TypeInt FROM Fields_DateTimeField WHERE Id = @FieldId) , -- TypeInt - smallint
-								(SELECT Value FROM Fields_DateTimeField WHERE Id = @FieldId) , -- Value - datetime
-								@newFieldId  -- Id - uniqueidentifier
-							)
-				END
-    
 				IF @FieldId IN (SELECT Id FROM dbo.Fields_LocationField) --Copy Location field, set new Id's
 				BEGIN   
 			 
@@ -143,9 +128,11 @@
 				IF @FieldId IN (SELECT Id FROM dbo.Fields_SignatureField) --Copy Signature field, set new Id's
 				BEGIN
 					INSERT INTO Fields_SignatureField
-							( Value, 
+							( Value,
+								Signed, 
 								Id )
 					VALUES  ((SELECT Value FROM dbo.Fields_SignatureField WHERE Id = @FieldId), -- Value - nvarchar(max)
+								(SELECT Signed FROM dbo.Fields_SignatureField WHERE Id = @FieldId), -- Signed - datetime
 								@newFieldId  -- Id - uniqueidentifier
 								)	    
 				END

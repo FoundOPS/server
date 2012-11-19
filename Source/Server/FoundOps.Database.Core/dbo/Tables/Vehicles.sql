@@ -1,4 +1,4 @@
-CREATE TABLE [dbo].[Vehicles] (
+﻿CREATE TABLE [dbo].[Vehicles] (
     [Id]                       UNIQUEIDENTIFIER NOT NULL,
     [VehicleId]                NVARCHAR (MAX)   NULL,
     [Mileage]                  INT              NULL,
@@ -17,9 +17,14 @@ CREATE TABLE [dbo].[Vehicles] (
     [LastPushToAzureTimeStamp] DATETIME         NULL,
     [LastAccuracy]             INT              NULL,
     [BusinessAccountId]        UNIQUEIDENTIFIER NOT NULL,
+    [CreatedDate]              DATETIME         NOT NULL,
+    [LastModified]             DATETIME         NULL,
+    [LastModifyingUserId]      UNIQUEIDENTIFIER NULL,
     CONSTRAINT [PK_Vehicles] PRIMARY KEY CLUSTERED ([Id] ASC),
     CONSTRAINT [FK_BusinessAccountVehicle] FOREIGN KEY ([BusinessAccountId]) REFERENCES [dbo].[Parties_BusinessAccount] ([Id])
 );
+
+
 
 
 

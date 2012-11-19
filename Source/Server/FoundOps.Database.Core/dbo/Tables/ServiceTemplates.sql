@@ -5,11 +5,16 @@
     [OwnerServiceTemplateId] UNIQUEIDENTIFIER NULL,
     [LevelInt]               SMALLINT         NOT NULL,
     [Name]                   NVARCHAR (MAX)   NULL,
+    [CreatedDate]            DATETIME         NOT NULL,
+    [LastModified]           DATETIME         NULL,
+    [LastModifyingUserId]    UNIQUEIDENTIFIER NULL,
     CONSTRAINT [PK_ServiceTemplates] PRIMARY KEY CLUSTERED ([Id] ASC),
-    CONSTRAINT [FK_ClientServiceTemplate] FOREIGN KEY ([OwnerClientId]) REFERENCES [dbo].[Clients] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    CONSTRAINT [FK_ServiceTemplateBusinessAccount] FOREIGN KEY ([OwnerServiceProviderId]) REFERENCES [dbo].[Parties_BusinessAccount] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    CONSTRAINT [FK_ServiceTemplateServiceTemplate] FOREIGN KEY ([OwnerServiceTemplateId]) REFERENCES [dbo].[ServiceTemplates] ([Id]) ON DELETE NO ACTION ON UPDATE NO ACTION
+    CONSTRAINT [FK_ClientServiceTemplate] FOREIGN KEY ([OwnerClientId]) REFERENCES [dbo].[Clients] ([Id]),
+    CONSTRAINT [FK_ServiceTemplateBusinessAccount] FOREIGN KEY ([OwnerServiceProviderId]) REFERENCES [dbo].[Parties_BusinessAccount] ([Id]),
+    CONSTRAINT [FK_ServiceTemplateServiceTemplate] FOREIGN KEY ([OwnerServiceTemplateId]) REFERENCES [dbo].[ServiceTemplates] ([Id])
 );
+
+
 
 
 GO
