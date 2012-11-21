@@ -394,7 +394,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
             var csvWriter = new CsvWriter(memoryStream);
 
-            csvWriter.WriteHeaderRecord("Client", "Location", "Address 1", "Address 2", "City", "State", "Zip Code",
+            csvWriter.WriteHeaderRecord("Client", "Location", "Address 1", "Address 2", "City", "State", "Country Code", "Zip Code",
                                         "Region", "Latitude", "Longitude");
 
             var locations = ObjectContext.Locations.Where(loc => loc.BusinessAccountId == businessAccount.Id && !loc.BusinessAccountIdIfDepot.HasValue);
