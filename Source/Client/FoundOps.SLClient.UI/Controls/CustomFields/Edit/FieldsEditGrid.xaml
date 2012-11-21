@@ -145,11 +145,25 @@
                 <TextBox Grid.Column="2" TextWrapping="NoWrap" Text="{Binding Value, Mode=TwoWay}" AcceptsReturn="{Binding IsMultiline}" MaxLength="30" />
             </Grid>
         </DataTemplate>
+        <DataTemplate x:Key="SignatureTemplate">
+            <Grid Margin="0,0,0,5" HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="{StaticResource ExtraLargeLabelColumn}"/>
+                    <ColumnDefinition Width="5" />
+                    <ColumnDefinition Width="{StaticResource SmallValueColumn}" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                    <TextBlock Text="{Binding Name}" ToolTipService.ToolTip="{Binding Tooltip}" TextWrapping="Wrap" MaxWidth="135"/>
+                    <TextBlock Text=": " />
+                </StackPanel>
+                <TextBlock Grid.Column="2" TextWrapping="NoWrap" Text="Cannot edit signature field in old sections. This section will be replaced soon." />
+            </Grid>
+        </DataTemplate>
         <Selectors:FieldDataTemplateSelector x:Key="FieldDataTemplateSelector" CheckBoxTemplate="{StaticResource CheckBoxTemplate}" 
                    CheckListTemplate="{StaticResource CheckListTemplate}" ComboBoxTemplate="{StaticResource ComboBoxTemplate}" 
                    CurrencyTemplate="{StaticResource CurrencyTemplate}" LocationTemplate="{StaticResource LocationTemplate}"  NumberTemplate="{StaticResource NumberTemplate}" 
                    PercentageTemplate="{StaticResource PercentageTemplate}" TextLgTemplate="{StaticResource TextLgTemplate}" 
-                   TextSmTemplate="{StaticResource TextSmTemplate}"/>
+                   TextSmTemplate="{StaticResource TextSmTemplate}" SignatureTemplate="{StaticResource SignatureTemplate}"/>
     </UserControl.Resources>
     <Grid>
         <Controls:ItemsControl ItemTemplateSelector="{StaticResource FieldDataTemplateSelector}" 
