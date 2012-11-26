@@ -2029,7 +2029,7 @@ GO
 * @clientId - The Client Id to be deleted
 ***************************************************************************************************************************************************/
 CREATE PROCEDURE dbo.ArchiveClientBasedOnId
-		(@clientId uniqueidentifier)
+		(@clientId uniqueidentifier, @userId UNIQUEIDENTIFIER)
 
 	AS
 	BEGIN
@@ -2038,7 +2038,8 @@ CREATE PROCEDURE dbo.ArchiveClientBasedOnId
 	
 	UPDATE dbo.Clients
 	SET DateDeleted = @date,
-		LastModified = @date
+		LastModified = @date,
+		LastModifyingUserId = @userId
 	WHERE Id = @clientId
 	  
 -------------------------------------------------------------------------------------------------------------------------
@@ -2064,7 +2065,7 @@ CREATE PROCEDURE dbo.ArchiveClientBasedOnId
 	BEGIN
 			SET @LocationId = (SELECT MIN(LocationId) FROM @LocationIdsForClient)
 
-			EXEC dbo.ArchiveLocationBasedOnId @locationId = @LocationId, @date = @date
+			EXEC dbo.ArchiveLocationBasedOnId @locationId = @LocationId, @date = @date, @userId = @userId
 
 			DELETE FROM @LocationIdsForClient
 			WHERE LocationId = @LocationId
@@ -2094,14 +2095,15 @@ GO
 * @locationId - The Location Id to be deleted
 ***************************************************************************************************************************************************/
 CREATE PROCEDURE dbo.ArchiveLocationBasedOnId
-		(@locationId UNIQUEIDENTIFIER, @date DATE)
+		(@locationId UNIQUEIDENTIFIER, @date DATE, @userId UNIQUEIDENTIFIER)
 
 	AS
 	BEGIN
   
 	UPDATE	dbo.Locations
 	SET		DateDeleted = @date,
-			LastModified = GETUTCDATE()
+			LastModified = GETUTCDATE(),
+			LastModifyingUserId = @userId
 	WHERE	Id = @locationId   
 
 	CREATE TABLE #RecurringService (Id UNIQUEIDENTIFIER)
@@ -5109,7 +5111,7 @@ GO
 ****************************************************************************************************************************************************************************************************************************/
 CREATE PROCEDURE [dbo].[sp_GetUnroutedServicesForDate]
 (@serviceProviderIdContext uniqueidentifier,
-@serviceDate date)
+@serviceDate date, @userId UNIQUEIDENTIFIER)
 AS
 BEGIN
 
@@ -5545,7 +5547,8 @@ BEGIN
 			  RecurringServiceId UNIQUEIDENTIFIER,
 			  DelayedChildId UNIQUEIDENTIFIER,
 			  TaskStatusId UNIQUEIDENTIFIER,
-			  CreatedDate DATETIME
+			  CreatedDate DATETIME,
+			  LastModifiedById UNIQUEIDENTIFIER
 			)
 
 	INSERT INTO #RouteTasks(Id, LocationId, ClientId, ServiceId, Name, [Date], RecurringServiceId)
@@ -5558,9 +5561,10 @@ BEGIN
 		OrderInRouteDestination = 0,
 		TaskStatusId = (SELECT TOP 1 Id FROM dbo.TaskStatuses WHERE BusinessAccountId = @serviceProviderIdContext AND DefaultTypeInt = 1),
 		StatusInt = 0,
-		CreatedDate = GETUTCDATE()
+		CreatedDate = GETUTCDATE(),
+		LastModifiedById = @userId
 
-	INSERT INTO dbo.RouteTasks (Id, LocationId, RouteDestinationId, ClientId, ServiceId, BusinessAccountId, EstimatedDuration, Name, StatusInt, [Date], OrderInRouteDestination, RecurringServiceId, DelayedChildId, TaskStatusId, CreatedDate)
+	INSERT INTO dbo.RouteTasks (Id, LocationId, RouteDestinationId, ClientId, ServiceId, BusinessAccountId, EstimatedDuration, Name, StatusInt, [Date], OrderInRouteDestination, RecurringServiceId, DelayedChildId, TaskStatusId, CreatedDate, LastModifyingUserId)
 	SELECT * FROM #RouteTasks
 
 	SELECT * FROM dbo.RouteTasks
@@ -5589,7 +5593,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE PROCEDURE [dbo].[PropagateNewFields]
-		(@FieldId uniqueidentifier)
+		(@FieldId uniqueidentifier, @userId UNIQUEIDENTIFIER)
 	AS
 	BEGIN
 		BEGIN -- declaring variables to be used to copy fields
@@ -5657,7 +5661,8 @@ CREATE PROCEDURE [dbo].[PropagateNewFields]
 				        ToolTip ,
 				        ParentFieldId ,
 				        ServiceTemplateId,
-						CreatedDate
+						CreatedDate,
+						LastModifyingUserId
 				    )
 			VALUES  ( @newFieldId , -- Id - uniqueidentifier
 				        @fieldName , -- Name - nvarchar(max)
@@ -5665,7 +5670,8 @@ CREATE PROCEDURE [dbo].[PropagateNewFields]
 				        @fieldToolTip , -- ToolTip - nvarchar(max)
 				        @FieldId , -- ParentFieldId - uniqueidentifier
 				        @currentServiceTemplateId , -- ServiceTemplateId - uniqueidentifier
-						GETUTCDATE()
+						GETUTCDATE(),
+						@userId
 				    ) 
 				
 			BEGIN --Copy field to its appropriate inherited table
@@ -5843,7 +5849,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE PROCEDURE [dbo].[PropagateNewServiceTemplateToClients]
-	(@serviceTemplateId uniqueidentifier)
+	(@serviceTemplateId UNIQUEIDENTIFIER, @userId UNIQUEIDENTIFIER)
 
 AS
 BEGIN
@@ -5867,7 +5873,8 @@ BEGIN
 			OwnerServiceTemplateId UNIQUEIDENTIFIER,
 			LevelInt INT,
 			Name NVARCHAR(max),
-			CreatedDate DATETIME
+			CreatedDate DATETIME,
+			LastUpdatedById UNIQUEIDENTIFIER
 		)
 
 		--Find all clients for the Service Provider
@@ -5901,7 +5908,8 @@ BEGIN
 					  OwnerServiceTemplateId ,
 					  LevelInt ,
 					  Name ,
-					  CreatedDate
+					  CreatedDate ,
+					  LastUpdatedById
 					)
 			VALUES  ( NEWID() , -- Id - uniqueidentifier
 					  @serviceProviderId , -- OwnerServiceProviderId - uniqueidentifier
@@ -5909,7 +5917,8 @@ BEGIN
 					  @ownerServiceTemplateId , -- OwnerServiceTemplateId - uniqueidentifier
 					  3 , -- LevelInt - int
 					  @serviceTemplateName , -- Name - nvarchar(max)
-					  GETUTCDATE()
+					  GETUTCDATE(),
+					  @userId
 					)
 
 					--Once the client has been used, remove it from the list
@@ -5920,7 +5929,7 @@ BEGIN
 		END
 
 		--Add all the newly created Service Template to the database
-		INSERT INTO dbo.ServiceTemplates ( Id , OwnerServiceProviderId , OwnerClientId , OwnerServiceTemplateId , LevelInt , Name , CreatedDate)
+		INSERT INTO dbo.ServiceTemplates ( Id , OwnerServiceProviderId , OwnerClientId , OwnerServiceTemplateId , LevelInt , Name , CreatedDate, LastModifyingUserId)
 		SELECT * FROM @newServiceTemplateTable
 	END 
 
@@ -5938,11 +5947,12 @@ BEGIN
 			ToolTip NVARCHAR(MAX),
 			ParentFieldId UNIQUEIDENTIFIER,
 			ServiceTemplateId UNIQUEIDENTIFIER,
-			CreatedDate DATETIME
+			CreatedDate DATETIME,
+			LastUpdatedById UNIQUEIDENTIFIER
 		) 
 
-		INSERT INTO @FieldsTable (Id, Name, [Required], ToolTip, ParentFieldId, ServiceTemplateId, CreatedDate)
-		SELECT Id, Name, [Required], ToolTip, ParentFieldId, ServiceTemplateId, CreatedDate FROM dbo.Fields t1
+		INSERT INTO @FieldsTable (Id, Name, [Required], ToolTip, ParentFieldId, ServiceTemplateId, CreatedDate, LastUpdatedById)
+		SELECT Id, Name, [Required], ToolTip, ParentFieldId, ServiceTemplateId, CreatedDate, LastModifyingUserId FROM dbo.Fields t1
 		WHERE t1.ServiceTemplateId = @ownerServiceTemplateId 
 
 		BEGIN -- declaring variables to be used to copy fields
@@ -5966,7 +5976,8 @@ BEGIN
 			OwnerServiceTemplateId UNIQUEIDENTIFIER,
 			LevelInt INT,
 			Name NVARCHAR(max),
-			CreatedDate DATETIME
+			CreatedDate DATETIME,
+			LastUpdatedById UNIQUEIDENTIFIER
 		)    
 		
 
@@ -5980,8 +5991,8 @@ BEGIN
 			DELETE FROM @CopyOfNewServiceTemplates
 
 			--Re-populate
-			INSERT INTO @CopyOfNewServiceTemplates (Id, OwnerServiceProviderId, OwnerClientId, OwnerServiceTemplateId, LevelInt, Name, CreatedDate)
-			SELECT Id, OwnerServiceProviderId, OwnerClientId, OwnerServiceTemplateId, LevelInt, Name, CreatedDate FROM @newServiceTemplateTable
+			INSERT INTO @CopyOfNewServiceTemplates (Id, OwnerServiceProviderId, OwnerClientId, OwnerServiceTemplateId, LevelInt, Name, CreatedDate, LastUpdatedById)
+			SELECT Id, OwnerServiceProviderId, OwnerClientId, OwnerServiceTemplateId, LevelInt, Name, CreatedDate, LastUpdatedById FROM @newServiceTemplateTable
 
 			BEGIN --Sets all variables to copy basic field data
 				SET @fieldName = (SELECT Name FROM @FieldsTable WHERE Id = @currentId)
@@ -6005,7 +6016,8 @@ BEGIN
 				          ToolTip ,
 				          ParentFieldId ,
 				          ServiceTemplateId,
-						  CreatedDate
+						  CreatedDate,
+						  LastModifyingUserId
 				        )
 				VALUES  ( @newFieldId , -- Id - uniqueidentifier
 				          @fieldName , -- Name - nvarchar(max)
@@ -6013,7 +6025,8 @@ BEGIN
 				          @fieldToolTip , -- ToolTip - nvarchar(max)
 				          @currentId , -- ParentFieldId - uniqueidentifier
 				          @currentServiceTemplateId , -- ServiceTemplateId - uniqueidentifier
-						  GETUTCDATE()
+						  GETUTCDATE(),
+						  @userId
 				        ) 
 				
 				BEGIN --Copy field to its appropriate inherited table			

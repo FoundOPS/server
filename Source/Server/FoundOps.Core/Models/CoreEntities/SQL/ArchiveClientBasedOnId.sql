@@ -15,7 +15,7 @@ GO
 * @clientId - The Client Id to be deleted
 ***************************************************************************************************************************************************/
 CREATE PROCEDURE dbo.ArchiveClientBasedOnId
-		(@clientId uniqueidentifier)
+		(@clientId uniqueidentifier, @userId UNIQUEIDENTIFIER)
 
 	AS
 	BEGIN
@@ -24,7 +24,8 @@ CREATE PROCEDURE dbo.ArchiveClientBasedOnId
 	
 	UPDATE dbo.Clients
 	SET DateDeleted = @date,
-		LastModified = @date
+		LastModified = @date,
+		LastModifyingUserId = @userId
 	WHERE Id = @clientId
 	  
 -------------------------------------------------------------------------------------------------------------------------
@@ -50,7 +51,7 @@ CREATE PROCEDURE dbo.ArchiveClientBasedOnId
 	BEGIN
 			SET @LocationId = (SELECT MIN(LocationId) FROM @LocationIdsForClient)
 
-			EXEC dbo.ArchiveLocationBasedOnId @locationId = @LocationId, @date = @date
+			EXEC dbo.ArchiveLocationBasedOnId @locationId = @LocationId, @date = @date, @userId = @userId
 
 			DELETE FROM @LocationIdsForClient
 			WHERE LocationId = @LocationId

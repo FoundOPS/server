@@ -68,7 +68,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                 ObjectContext.SaveChanges();
                 ObjectContext.CommandTimeout = 600;
 
-                ObjectContext.PropagateNewFields(field.Id);
+                ObjectContext.PropagateNewFields(field.Id, CurrentUserAccount().Id);
             }
         }
 
@@ -287,7 +287,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                 //In order to propagate the original Template added must already be saved
                 ObjectContext.SaveChanges();
 
-                ObjectContext.PropagateNewServiceTemplateToClients(serviceTemplate.Id);
+                ObjectContext.PropagateNewServiceTemplateToClients(serviceTemplate.Id, CurrentUserAccount().Id);
             }
         }
 

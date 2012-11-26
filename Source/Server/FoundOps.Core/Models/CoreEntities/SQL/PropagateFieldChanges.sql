@@ -6,7 +6,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 CREATE PROCEDURE [dbo].[PropagateNewFields]
-		(@FieldId uniqueidentifier)
+		(@FieldId uniqueidentifier, @userId UNIQUEIDENTIFIER)
 	AS
 	BEGIN
 		BEGIN -- declaring variables to be used to copy fields
@@ -74,7 +74,8 @@ CREATE PROCEDURE [dbo].[PropagateNewFields]
 				        ToolTip ,
 				        ParentFieldId ,
 				        ServiceTemplateId,
-						CreatedDate
+						CreatedDate,
+						LastModifyingUserId
 				    )
 			VALUES  ( @newFieldId , -- Id - uniqueidentifier
 				        @fieldName , -- Name - nvarchar(max)
@@ -82,7 +83,8 @@ CREATE PROCEDURE [dbo].[PropagateNewFields]
 				        @fieldToolTip , -- ToolTip - nvarchar(max)
 				        @FieldId , -- ParentFieldId - uniqueidentifier
 				        @currentServiceTemplateId , -- ServiceTemplateId - uniqueidentifier
-						GETUTCDATE()
+						GETUTCDATE(),
+						@userId
 				    ) 
 				
 			BEGIN --Copy field to its appropriate inherited table

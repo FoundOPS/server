@@ -153,7 +153,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
         public void DeleteClient(Client client)
         {
-            ObjectContext.ArchiveClientBasedOnId(client.Id);
+            ObjectContext.ArchiveClientBasedOnId(client.Id, CurrentUserAccount().Id);
         }
 
         #endregion
@@ -506,7 +506,7 @@ namespace FoundOps.Server.Services.CoreDomainService
         {
             var date = this.ObjectContext.CurrentUserAccount().Now();
 
-            ObjectContext.ArchiveLocationBasedOnId(location.Id, date.Date);
+            ObjectContext.ArchiveLocationBasedOnId(location.Id, date.Date, CurrentUserAccount().Id);
         }
 
         #endregion

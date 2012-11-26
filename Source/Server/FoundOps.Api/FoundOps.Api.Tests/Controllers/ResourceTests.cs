@@ -548,7 +548,9 @@ namespace FoundOps.Api.Tests.Controllers
         {
             var client = CoreEntitiesContainer.Clients.First();
 
-            CoreEntitiesContainer.ArchiveClientBasedOnId(client.Id);
+            var user = CoreEntitiesContainer.CurrentUserAccount();
+
+            CoreEntitiesContainer.ArchiveClientBasedOnId(client.Id, user.Id);
         }
 
         [TestMethod]
@@ -564,7 +566,7 @@ namespace FoundOps.Api.Tests.Controllers
         {
             var location = CoreEntitiesContainer.Locations.First();
 
-            CoreEntitiesContainer.ArchiveLocationBasedOnId(location.Id, DateTime.UtcNow.Date);
+            CoreEntitiesContainer.ArchiveLocationBasedOnId(location.Id, DateTime.UtcNow.Date, CoreEntitiesContainer.CurrentUserAccount().Id);
         }
 
         [TestMethod]
@@ -783,6 +785,7 @@ namespace FoundOps.Api.Tests.Controllers
                 var parameters = new DynamicParameters();
                 parameters.Add("@serviceProviderIdContext", _genericOilId);
                 parameters.Add("@serviceDate", DateTime.UtcNow.Date);
+                parameters.Add("@userId", CoreEntitiesContainer.CurrentUserAccount().Id);
 
                 //Calls a stored procedure that will find any Services scheduled for today and create a routetask for them if one doesnt exist
                 //Then it will return all RouteTasks that are not in a route joined with their Locations, Location.Regions and Clients
@@ -872,7 +875,7 @@ namespace FoundOps.Api.Tests.Controllers
 
             CoreEntitiesContainer.SaveChanges();
 
-            CoreEntitiesContainer.PropagateNewFields(field.Id);
+            CoreEntitiesContainer.PropagateNewFields(field.Id, CoreEntitiesContainer.CurrentUserAccount().Id);
 
             using (var conn = new SqlConnection(ServerConstants.SqlConnectionString))
             {
@@ -927,7 +930,7 @@ namespace FoundOps.Api.Tests.Controllers
             var foundOpsServiceTemplate = new ServiceTemplate
             {
                 Id = Guid.NewGuid(),
-                Name = "This is New!!",
+                Name = "This is News!!",
                 ServiceTemplateLevel = ServiceTemplateLevel.FoundOpsDefined,
                 OwnerServiceProviderId = _foundOpsId,
                 CreatedDate = DateTime.UtcNow
@@ -944,7 +947,7 @@ namespace FoundOps.Api.Tests.Controllers
             //Save and propagate the new template
             CoreEntitiesContainer.ServiceTemplates.AddObject(serviceTemplate);
             CoreEntitiesContainer.SaveChanges();
-            CoreEntitiesContainer.PropagateNewServiceTemplateToClients(serviceTemplate.Id);
+            CoreEntitiesContainer.PropagateNewServiceTemplateToClients(serviceTemplate.Id, CoreEntitiesContainer.CurrentUserAccount().Id);
 
             //Use the function TestServiceTemplateNamePropagationSuccess to check that all Service Templates and Routes had their names changed
             using (var conn = new SqlConnection(ServerConstants.SqlConnectionString))
@@ -975,6 +978,7 @@ namespace FoundOps.Api.Tests.Controllers
                 compare.ElementsToIgnore.Add("Signed");
                 compare.ElementsToIgnore.Add("CreatedDate");
                 compare.ElementsToIgnore.Add("LastModified");
+                compare.ElementsToIgnore.Add("LastModifyingUserId");
 
                 compare.Compare(field, childField);
 
