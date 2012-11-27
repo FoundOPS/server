@@ -129,16 +129,16 @@ namespace FoundOps.Api.Controllers.Rest
             var frequencyDetailCol = Array.IndexOf(headers, "Frequency Detail");
 
             //Contact Info
-            var phoneNumberValueCols = headers.Where(h => h.Contains("Phone Number")).ToArray();
+            var phoneNumberValueCols = headers.Where(h => h.Contains("Phone Value")).ToArray();
             var phoneNumberLabelCols = headers.Where(h => h.Contains("Phone Label")).ToArray();
 
-            var emailValueCols = headers.Where(h => h.Contains("Email Address")).ToArray();
+            var emailValueCols = headers.Where(h => h.Contains("Email Value")).ToArray();
             var emailLabelCols = headers.Where(h => h.Contains("Email Label")).ToArray();
 
-            var websiteValueCols = headers.Where(h => h.Contains("Website Url")).ToArray();
+            var websiteValueCols = headers.Where(h => h.Contains("Website Value")).ToArray();
             var websiteLabelCols = headers.Where(h => h.Contains("Website Label")).ToArray();
 
-            var otherValueCols = headers.Where(h => h.Contains("Other Data")).ToArray();
+            var otherValueCols = headers.Where(h => h.Contains("Other Value")).ToArray();
             var otherLabelCols = headers.Where(h => h.Contains("Other Label")).ToArray();
 
             #endregion
@@ -498,7 +498,7 @@ namespace FoundOps.Api.Controllers.Rest
                         ? _locations.Where(l => l.Value.ClientId == row.Client.Id || l.Key == row.Location.Id).ToArray()
                         : _locations.Where(l => l.Key == row.Location.Id).ToArray();
 
-                    rowSuggestions.LocationSuggestions.AddRange(locationSuggestions.Select(l => l.Key));
+                    rowSuggestions.LocationSuggestions.AddRange(locationSuggestions.Select(l => l.Key).Where(k => k != row.Location.Id));
 
                     //Add all suggested Locations to the list of Locations to be returned
                     locations.AddRange(locationSuggestions.Select(l => l.Value).Select(FoundOps.Api.Models.Location.ConvertModel));
@@ -522,7 +522,7 @@ namespace FoundOps.Api.Controllers.Rest
                         ? _clients.Where(c => c.Key == row.Location.ClientId || c.Key == row.Client.Id).ToArray()
                         : _clients.Where(c => c.Key == row.Client.Id).ToArray();
 
-                    rowSuggestions.ClientSuggestions.AddRange(clientSuggestions.Select(c => c.Key));
+                    rowSuggestions.ClientSuggestions.AddRange(clientSuggestions.Select(c => c.Key).Where(k => k != row.Client.Id));
 
                     //Add all suggested Clients to the list of Clients to be returned
                     clients.AddRange(clientSuggestions.Select(c => c.Value).Select(FoundOps.Api.Models.Client.ConvertModel));
