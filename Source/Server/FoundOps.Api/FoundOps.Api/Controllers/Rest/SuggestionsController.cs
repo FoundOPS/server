@@ -414,17 +414,17 @@ namespace FoundOps.Api.Controllers.Rest
 
                 #region Contact Info
 
-                var phoneValueDictionary = phoneNumberValueCols.ToDictionary(p => Convert.ToInt32(p.Split('#').ElementAt(1)), p => row[Array.IndexOf(headers, p)]);
-                var phoneLabelDictionary = phoneNumberLabelCols.ToDictionary(p => Convert.ToInt32(p.Split('#').ElementAt(1)), p => row[Array.IndexOf(headers, p)]);
+                var phoneValueDictionary = phoneNumberValueCols.ToDictionary(p => Convert.ToInt32(p.Split(' ').ElementAt(2)), p => row[Array.IndexOf(headers, p)]);
+                var phoneLabelDictionary = phoneNumberLabelCols.ToDictionary(p => Convert.ToInt32(p.Split(' ').ElementAt(2)), p => row[Array.IndexOf(headers, p)]);
 
-                var emailValueDictionary = emailValueCols.ToDictionary(e => Convert.ToInt32(e.Split('#').ElementAt(1)), e => row[Array.IndexOf(headers, e)]);
-                var emailLabelDictionary = emailLabelCols.ToDictionary(e => Convert.ToInt32(e.Split('#').ElementAt(1)), e => row[Array.IndexOf(headers, e)]);
+                var emailValueDictionary = emailValueCols.ToDictionary(e => Convert.ToInt32(e.Split(' ').ElementAt(2)), e => row[Array.IndexOf(headers, e)]);
+                var emailLabelDictionary = emailLabelCols.ToDictionary(e => Convert.ToInt32(e.Split(' ').ElementAt(2)), e => row[Array.IndexOf(headers, e)]);
 
-                var websiteValueDictionary = websiteValueCols.ToDictionary(w => Convert.ToInt32(w.Split('#').ElementAt(1)), w => row[Array.IndexOf(headers, w)]);
-                var websiteLabelDictionary = websiteLabelCols.ToDictionary(w => Convert.ToInt32(w.Split('#').ElementAt(1)), w => row[Array.IndexOf(headers, w)]);
+                var websiteValueDictionary = websiteValueCols.ToDictionary(w => Convert.ToInt32(w.Split(' ').ElementAt(2)), w => row[Array.IndexOf(headers, w)]);
+                var websiteLabelDictionary = websiteLabelCols.ToDictionary(w => Convert.ToInt32(w.Split(' ').ElementAt(2)), w => row[Array.IndexOf(headers, w)]);
 
-                var otherValueDictionary = otherValueCols.ToDictionary(o => Convert.ToInt32(o.Split('#').ElementAt(1)), o => row[Array.IndexOf(headers, o)]);
-                var otherLabelDictionary = otherLabelCols.ToDictionary(o => Convert.ToInt32(o.Split('#').ElementAt(1)), o => row[Array.IndexOf(headers, o)]);
+                var otherValueDictionary = otherValueCols.ToDictionary(o => Convert.ToInt32(o.Split(' ').ElementAt(2)), o => row[Array.IndexOf(headers, o)]);
+                var otherLabelDictionary = otherLabelCols.ToDictionary(o => Convert.ToInt32(o.Split(' ').ElementAt(2)), o => row[Array.IndexOf(headers, o)]);
 
                 //Find which type of contact info is being imported the most
                 //This way we only have one loop
