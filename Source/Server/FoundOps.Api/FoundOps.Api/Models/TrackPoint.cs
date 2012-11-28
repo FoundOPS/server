@@ -47,7 +47,7 @@ namespace FoundOps.Api.Models
         /// <summary>
         /// The source of this TrackPoint (iPhone, Android, WindowsPhone, etc.)
         /// </summary>
-        public String Source { get; set; }
+        public string Source { get; set; }
 
         /// <summary>
         /// The Id of the Route that this TrackPoint belongs to

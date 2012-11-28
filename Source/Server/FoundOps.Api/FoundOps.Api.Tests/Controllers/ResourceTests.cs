@@ -96,7 +96,7 @@ namespace FoundOps.Api.Tests.Controllers
             CoreEntitiesContainer.ContextOptions.LazyLoadingEnabled = false;
             //Admin role on GotGrease?
             _adminGotGreaseRoleId = CoreEntitiesContainer.Roles.First(r => r.OwnerBusinessAccountId == _gotGreaseId && r.RoleTypeInt == (int)RoleType.Administrator).Id;
-            _adminGenericBiodieselRoleId = CoreEntitiesContainer.Roles.First(r => r.OwnerBusinessAccountId == _genericBiodiesel && r.RoleTypeInt == (int)RoleType.Administrator).Id;
+            //_adminGenericBiodieselRoleId = CoreEntitiesContainer.Roles.First(r => r.OwnerBusinessAccountId == _genericBiodiesel && r.RoleTypeInt == (int)RoleType.Administrator).Id;
         }
 
         private void DetachAllEntities()
@@ -523,6 +523,13 @@ namespace FoundOps.Api.Tests.Controllers
             var deletedTaskStatus = CoreEntitiesContainer.TaskStatuses.FirstOrDefault(ts => ts.Id == newId);
 
             Assert.IsNull(deletedTaskStatus);
+        }
+
+        [TestMethod]
+        public void TimeZoneTests()
+        {
+            var controller = CreateRequest<TimeZonesController>(HttpMethod.Get);
+            controller.Get();
         }
 
         #region SQL Tests
