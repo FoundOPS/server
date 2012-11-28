@@ -428,26 +428,29 @@ namespace FoundOps.Api.Controllers.Rest
 
                 //Find which type of contact info is being imported the most
                 //This way we only have one loop
-                var max = Math.Max(Math.Max(phoneLabelDictionary.Count, emailLabelDictionary.Count), Math.Max(websiteLabelDictionary.Count, otherLabelDictionary.Count));
+                var maxLabel = Math.Max(Math.Max(phoneLabelDictionary.Count, emailLabelDictionary.Count), Math.Max(websiteLabelDictionary.Count, otherLabelDictionary.Count));
+                var maxValue = Math.Max(Math.Max(phoneValueDictionary.Count, emailValueDictionary.Count), Math.Max(websiteValueDictionary.Count, otherValueDictionary.Count));
+
+                var max = Math.Max(maxLabel, maxValue);
 
                 var concurrentContactInfoDictionary = new ConcurrentDictionary<Guid, ContactInfo>();
 
                 Parallel.For((long)1, max + 1, contactIndex =>
                 {
                     //Phone
-                    if (phoneLabelDictionary.Count >= contactIndex)
+                    if (phoneLabelDictionary.Count >= contactIndex || phoneValueDictionary.Count >= contactIndex)
                         MatchContactInfo(phoneLabelDictionary, phoneValueDictionary, contactIndex, concurrentContactInfoDictionary, "Phone Number");
 
                     //Email
-                    if (emailLabelDictionary.Count >= contactIndex)
+                    if (emailLabelDictionary.Count >= contactIndex || emailValueDictionary.Count >= contactIndex)
                         MatchContactInfo(emailLabelDictionary, emailValueDictionary, contactIndex, concurrentContactInfoDictionary, "Email Address");
 
                     //Website
-                    if (websiteLabelDictionary.Count >= contactIndex)
+                    if (websiteLabelDictionary.Count >= contactIndex || websiteValueDictionary.Count >= contactIndex)
                         MatchContactInfo(websiteLabelDictionary, websiteValueDictionary, contactIndex, concurrentContactInfoDictionary, "Website");
 
                     //Other
-                    if (otherLabelDictionary.Count >= contactIndex)
+                    if (otherLabelDictionary.Count >= contactIndex || otherValueDictionary.Count >= contactIndex)
                         MatchContactInfo(otherLabelDictionary, otherValueDictionary, contactIndex, concurrentContactInfoDictionary, "Other");
                 });
 
@@ -594,8 +597,8 @@ namespace FoundOps.Api.Controllers.Rest
 
         private void MatchContactInfo(Dictionary<int, string> labelDictionary, Dictionary<int, string> valueDictionary, long index, ConcurrentDictionary<Guid, ContactInfo> contactInfoDictionary, string type)
         {
-            var label = labelDictionary.First(p => p.Key == index).Value.Trim();
-            var data = valueDictionary.First(p => p.Key == index).Value.Trim();
+            var label = labelDictionary.Count() > 0 ? labelDictionary.First(p => p.Key == index).Value.Trim() : null;
+            var data = valueDictionary.Count() > 0 ? valueDictionary.First(p => p.Key == index).Value.Trim() : null;
 
             var existingContact = _contactInfoSet.FirstOrDefault(ci => ci.Value.Label == label && ci.Value.Data == data);
 
