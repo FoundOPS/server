@@ -107,6 +107,12 @@ namespace FoundOps.Api.Controllers.Rest
             if (role == null)
                 throw new HttpResponseException(Request.CreateResponse(HttpStatusCode.BadRequest, "This role does not exist on the business account. Please contact customer support"));
 
+            //Check to be sure that the time zone passed is valid
+            var engine = EntityRules.SetupTimeZoneRules();
+            var errors = EntityRules.ValidateAndReturnErrors(engine, userAccount.TimeZone);
+            if (errors != null)
+                Request.BadRequest(errors);
+
             var user = GetUser(userAccount.EmailAddress);
 
             var newUser = user == null;
@@ -180,6 +186,12 @@ namespace FoundOps.Api.Controllers.Rest
                 var businessAccount = CoreEntitiesContainer.Owner(roleId.Value, new[] { RoleType.Administrator }).FirstOrDefault();
                 if (businessAccount == null)
                     throw Request.NotAuthorized();
+
+                //Check to be sure that the time zone passed is valid
+                var engine = EntityRules.SetupTimeZoneRules();
+                var errors = EntityRules.ValidateAndReturnErrors(engine, userAccount.TimeZone);
+                if (errors != null)
+                    Request.BadRequest(errors);
 
                 var user = CoreEntitiesContainer.Parties.OfType<Core.Models.CoreEntities.UserAccount>()
                     .Include(u => u.RoleMembership).Include(u => u.LinkedEmployees).First(ua => ua.Id == userAccount.Id);

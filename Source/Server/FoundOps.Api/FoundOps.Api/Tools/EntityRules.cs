@@ -11,37 +11,37 @@ namespace FoundOps.Api.Tools
         {
             var engine = new Engine();
             engine.For<BusinessAccount>()
-                .Setup(ba => ba.Id).MustBeOfType(typeof(Guid))
-                .Setup(ba => ba.CreatedDate).MustBeOfType(typeof(DateTime))
-                .Setup(ba => ba.LastModifiedDate).MustBeOfType(typeof(DateTime?))
-                .Setup(ba => ba.LastModifyingUserId).MustBeOfType(typeof(Guid?));
+                .Setup(ba => ba.Id).MustBeOfType(typeof(Guid)).WithMessage("Invalid Id")
+                .Setup(ba => ba.CreatedDate).MustBeOfType(typeof(DateTime)).WithMessage("Invalid CreatedDate")
+                .Setup(ba => ba.LastModifiedDate).MustBeOfType(typeof(DateTime?)).WithMessage("Invalid LastModifiedDate")
+                .Setup(ba => ba.LastModifyingUserId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid LastModifyingUserId");
 
             return engine;
         }
 
         public static Engine SetupClientRules(Engine engine = null)
         {
-            if(engine == null)
+            if (engine == null)
                 engine = new Engine();
 
             engine.For<Client>()
-                .Setup(c => c.Id).MustBeOfType(typeof(Guid))
+                .Setup(c => c.Id).MustBeOfType(typeof(Guid)).WithMessage("Invalid Id")
                 .Setup(c => c.ContactInfoSet).CallValidateForEachElement()
-                .Setup(c => c.CreatedDate).MustBeOfType(typeof(DateTime))
-                .Setup(c => c.LastModifiedDate).MustBeOfType(typeof(DateTime?))
-                .Setup(c => c.LastModifyingUserId).MustBeOfType(typeof(Guid?));
+                .Setup(c => c.CreatedDate).MustBeOfType(typeof(DateTime)).WithMessage("Invalid CreatedDate")
+                .Setup(c => c.LastModifiedDate).MustBeOfType(typeof(DateTime?)).WithMessage("Invalid LastModifiedDate")
+                .Setup(c => c.LastModifyingUserId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid LastModifyingUserId");
 
             return engine;
         }
 
         public static Engine SetupColumnRules(Engine engine = null)
         {
-            if(engine == null)
+            if (engine == null)
                 engine = new Engine();
 
             engine.For<Column>()
-                  .Setup(c => c.Hidden).MustBeOfType(typeof (bool))
-                  .Setup(c => c.Order).MustBeOfType(typeof (int));
+                  .Setup(c => c.Hidden).MustBeOfType(typeof(bool)).WithMessage("Hidden Invalid")
+                  .Setup(c => c.Order).MustBeOfType(typeof(int)).WithMessage("Invalid Order");
 
             return engine;
         }
@@ -53,7 +53,7 @@ namespace FoundOps.Api.Tools
             SetupColumnRules(engine);
 
             engine.For<ColumnConfiguration>()
-                  .Setup(cc => cc.RoleId).MustBeOfType(typeof (Guid))
+                  .Setup(cc => cc.RoleId).MustBeOfType(typeof(Guid)).WithMessage("Invalid RoleId")
                   .Setup(cc => cc.Columns).CallValidateForEachElement();
 
             return engine;
@@ -61,16 +61,16 @@ namespace FoundOps.Api.Tools
 
         public static Engine SetupContactInfoRules(Engine engine = null)
         {
-            if(engine == null)
+            if (engine == null)
                 engine = new Engine();
 
             engine.For<ContactInfo>()
-                .Setup(ci => ci.Id).MustBeOfType(typeof(Guid))
-                .Setup(ci => ci.LocationId).MustBeOfType(typeof(Guid?))
-                .Setup(ci => ci.ClientId).MustBeOfType(typeof(Guid?))
-                .Setup(ci => ci.CreatedDate).MustBeOfType(typeof(DateTime))
-                .Setup(ci => ci.LastModifiedDate).MustBeOfType(typeof(DateTime?))
-                .Setup(ci => ci.LastModifyingUserId).MustBeOfType(typeof(Guid?));
+                .Setup(ci => ci.Id).MustBeOfType(typeof(Guid)).WithMessage("Invalid Id")
+                .Setup(ci => ci.LocationId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid LocationId")
+                .Setup(ci => ci.ClientId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid ClientId")
+                .Setup(ci => ci.CreatedDate).MustBeOfType(typeof(DateTime)).WithMessage("Invalid CreatedDate")
+                .Setup(ci => ci.LastModifiedDate).MustBeOfType(typeof(DateTime?)).WithMessage("Invalid LastModifiedDate")
+                .Setup(ci => ci.LastModifyingUserId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid LastModifyingUserId");
 
             return engine;
         }
@@ -79,11 +79,11 @@ namespace FoundOps.Api.Tools
         {
             var engine = new Engine();
             engine.For<Employee>()
-                .Setup(e => e.Id).MustBeOfType(typeof(Guid))
-                .Setup(e => e.LinkedUserAccountId).MustBeOfType(typeof(Guid?))
-                .Setup(e => e.CreatedDate).MustBeOfType(typeof(DateTime))
-                .Setup(e => e.LastModifiedDate).MustBeOfType(typeof(DateTime?))
-                .Setup(e => e.LastModifyingUserId).MustBeOfType(typeof(Guid?));
+                .Setup(e => e.Id).MustBeOfType(typeof(Guid)).WithMessage("Invalid Id")
+                .Setup(e => e.LinkedUserAccountId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid LinkedUserAccountId")
+                .Setup(e => e.CreatedDate).MustBeOfType(typeof(DateTime)).WithMessage("Invalid CreatedDate")
+                .Setup(e => e.LastModifiedDate).MustBeOfType(typeof(DateTime?)).WithMessage("Invalid LastModifiedDate")
+                .Setup(e => e.LastModifyingUserId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid LastModifyingUserId");
 
             return engine;
         }
@@ -94,13 +94,13 @@ namespace FoundOps.Api.Tools
         {
             var engine = new Engine();
             engine.For<Field>()
-                  .Setup(f => f.Id).MustBeOfType(typeof(Guid))
-                  .Setup(f => f.Required).MustBeOfType(typeof(bool))
-                  .Setup(f => f.ParentFieldId).MustBeOfType(typeof(Guid?))
-                  .Setup(f => f.ServiceTemplateId).MustBeOfType(typeof(Guid?))
-                  .Setup(f => f.CreatedDate).MustBeOfType(typeof(DateTime))
-                  .Setup(f => f.LastModifiedDate).MustBeOfType(typeof(DateTime?))
-                  .Setup(f => f.LastModifyingUserId).MustBeOfType(typeof(Guid?));
+                  .Setup(f => f.Id).MustBeOfType(typeof(Guid)).WithMessage("Invalid Id")
+                  .Setup(f => f.Required).MustBeOfType(typeof(bool)).WithMessage("Required Invalid")
+                  .Setup(f => f.ParentFieldId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid ParentFieldId")
+                  .Setup(f => f.ServiceTemplateId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid ServiceTemplateId")
+                  .Setup(f => f.CreatedDate).MustBeOfType(typeof(DateTime)).WithMessage("Invalid CreatedDate")
+                  .Setup(f => f.LastModifiedDate).MustBeOfType(typeof(DateTime?)).WithMessage("Invalid LastModifiedDate")
+                  .Setup(f => f.LastModifyingUserId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid LastModifyingUserId");
 
             if (setupAllFieldTypes)
             {
@@ -120,8 +120,8 @@ namespace FoundOps.Api.Tools
                 engine = SetupFieldRules();
 
             engine.For<LocationField>()
-                  .Setup(lf => lf.LocationId).MustBeOfType(typeof(Guid?))
-                  .Setup(lf => lf.LocationFieldTypeInt).MustBeOfType(typeof(short));
+                  .Setup(lf => lf.LocationId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid Locationid")
+                  .Setup(lf => lf.LocationFieldTypeInt).MustBeOfType(typeof(short)).WithMessage("Invalid LocationFieldTypeInt");
 
             return engine;
         }
@@ -132,10 +132,10 @@ namespace FoundOps.Api.Tools
                 engine = SetupFieldRules();
 
             engine.For<NumericField>()
-                  .Setup(nf => nf.DecimalPlaces).MustBeOfType(typeof(int))
-                  .Setup(nf => nf.Minimum).MustBeOfType(typeof(decimal))
-                  .Setup(nf => nf.Maximum).MustBeOfType(typeof(decimal))
-                  .Setup(nf => nf.Value).MustBeOfType(typeof(decimal?));
+                  .Setup(nf => nf.DecimalPlaces).MustBeOfType(typeof(int)).WithMessage("DecimalPlaces Invalid")
+                  .Setup(nf => nf.Minimum).MustBeOfType(typeof(decimal)).WithMessage("Invalid Minimum")
+                  .Setup(nf => nf.Maximum).MustBeOfType(typeof(decimal)).WithMessage("Invalid Maximum")
+                  .Setup(nf => nf.Value).MustBeOfType(typeof(decimal?)).WithMessage("Invalid Valiue");
 
             return engine;
         }
@@ -147,8 +147,8 @@ namespace FoundOps.Api.Tools
 
             engine = SetupOptionRules(engine);
             engine.For<OptionsField>()
-                  .Setup(of => of.AllowMultipleSelection).MustBeOfType(typeof(bool))
-                  .Setup(of => of.TypeInt).MustBeOfType(typeof(short))
+                  .Setup(of => of.AllowMultipleSelection).MustBeOfType(typeof(bool)).WithMessage("AllowMultipleSelection Invalid")
+                  .Setup(of => of.TypeInt).MustBeOfType(typeof(short)).WithMessage("Invalid TypeInt")
                   .Setup(of => of.Options).MustNotBeNull().CallValidateForEachElement();
 
             return engine;
@@ -160,7 +160,7 @@ namespace FoundOps.Api.Tools
                 engine = new Engine();
 
             engine.For<Option>()
-                  .Setup(o => o.IsChecked).MustBeOfType(typeof(bool));
+                  .Setup(o => o.IsChecked).MustBeOfType(typeof(bool)).WithMessage("IsChecked Invalid");
 
             return engine;
         }
@@ -171,7 +171,7 @@ namespace FoundOps.Api.Tools
                 engine = SetupFieldRules();
 
             engine.For<SignatureField>()
-                  .Setup(sf => sf.Signed).MustBeOfType(typeof(DateTime?));
+                  .Setup(sf => sf.Signed).MustBeOfType(typeof(DateTime?)).WithMessage("Signed Invalid");
 
             return engine;
         }
@@ -182,7 +182,7 @@ namespace FoundOps.Api.Tools
                 engine = SetupFieldRules();
 
             engine.For<TextBoxField>()
-                  .Setup(tbf => tbf.IsMultiLine).MustBeOfType(typeof(bool));
+                  .Setup(tbf => tbf.IsMultiLine).MustBeOfType(typeof(bool)).WithMessage("IsMultiLine Invalid");
 
             return engine;
         }
@@ -191,17 +191,17 @@ namespace FoundOps.Api.Tools
 
         public static Engine SetupLocationRules(Engine engine = null)
         {
-            if(engine == null)
+            if (engine == null)
                 engine = new Engine();
 
             SetupContactInfoRules(engine);
 
             engine.For<Location>()
-                  .Setup(l => l.Id).MustBeOfType(typeof (Guid))
+                  .Setup(l => l.Id).MustBeOfType(typeof(Guid)).WithMessage("Invalid Id")
                   .Setup(l => l.ContactInfoSet).CallValidateForEachElement()
-                  .Setup(l => l.CreatedDate).MustBeOfType(typeof(DateTime))
-                  .Setup(l => l.LastModifiedDate).MustBeOfType(typeof(DateTime?))
-                  .Setup(l => l.LastModifyingUserId).MustBeOfType(typeof(Guid?));
+                  .Setup(l => l.CreatedDate).MustBeOfType(typeof(DateTime)).WithMessage("Invalid CreatedDate")
+                  .Setup(l => l.LastModifiedDate).MustBeOfType(typeof(DateTime?)).WithMessage("Invalid LastModifiedDate")
+                  .Setup(l => l.LastModifyingUserId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid LastModifyingUserId");
 
 
             return engine;
@@ -212,8 +212,8 @@ namespace FoundOps.Api.Tools
             var engine = new Engine();
             SetupTrackPointRules(engine);
             engine.For<ResourceWithLastPoint>()
-                  .Setup(resource => resource.EmployeeId).MustBeOfType(typeof (Guid?))
-                  .Setup(resource => resource.VehicleId).MustBeOfType(typeof (Guid?));
+                  .Setup(resource => resource.EmployeeId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid EmployeeId")
+                  .Setup(resource => resource.VehicleId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid VehicleId");
 
             return engine;
         }
@@ -223,52 +223,52 @@ namespace FoundOps.Api.Tools
             var engine = new Engine();
             SetupRouteDestinationRules(engine);
             engine.For<Route>()
-                  .Setup(r => r.Id).MustBeOfType(typeof (Guid))
-                  .Setup(r => r.BusinessAccountId).MustBeOfType(typeof (Guid))
+                  .Setup(r => r.Id).MustBeOfType(typeof(Guid)).WithMessage("Invalid Id")
+                  .Setup(r => r.BusinessAccountId).MustBeOfType(typeof(Guid)).WithMessage("Invalid BusinessAccountId")
                   .Setup(r => r.RouteDestinations).CallValidateForEachElement()
-                  .Setup(r => r.CreatedDate).MustBeOfType(typeof(DateTime))
-                  .Setup(r => r.LastModifiedDate).MustBeOfType(typeof(DateTime?))
-                  .Setup(r => r.LastModifyingUserId).MustBeOfType(typeof(Guid?));
+                  .Setup(r => r.CreatedDate).MustBeOfType(typeof(DateTime)).WithMessage("Invalid CreatedDate")
+                  .Setup(r => r.LastModifiedDate).MustBeOfType(typeof(DateTime?)).WithMessage("Invalid LastModifiedDate")
+                  .Setup(r => r.LastModifyingUserId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid LastModifyingUserId");
 
             return engine;
         }
 
         public static Engine SetupRouteDestinationRules(Engine engine = null)
         {
-            if(engine == null)
+            if (engine == null)
                 engine = new Engine();
-            
+
             SetupClientRules(engine);
             SetupLocationRules(engine);
             SetupRouteTaskRules(engine);
 
             engine.For<RouteDestination>()
-                  .Setup(rd => rd.Id).MustBeOfType(typeof (Guid))
-                  .Setup(rd => rd.OrderInRoute).MustBeOfType(typeof (int))
+                  .Setup(rd => rd.Id).MustBeOfType(typeof(Guid)).WithMessage("Invalid Id")
+                  .Setup(rd => rd.OrderInRoute).MustBeOfType(typeof(int)).WithMessage("Invalid OrderInRoute")
                   .Setup(rd => rd.Client).CallValidate()
                   .Setup(rd => rd.Location).CallValidate()
                   .Setup(rd => rd.RouteTasks).CallValidateForEachElement()
-                  .Setup(rd => rd.CreatedDate).MustBeOfType(typeof(DateTime))
-                  .Setup(rd => rd.LastModifiedDate).MustBeOfType(typeof(DateTime?))
-                  .Setup(rd => rd.LastModifyingUserId).MustBeOfType(typeof(Guid?));
+                  .Setup(rd => rd.CreatedDate).MustBeOfType(typeof(DateTime)).WithMessage("Invalid CreatedDate")
+                  .Setup(rd => rd.LastModifiedDate).MustBeOfType(typeof(DateTime?)).WithMessage("Invalid LastModifiedDate")
+                  .Setup(rd => rd.LastModifyingUserId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid LastModifyingUserId");
 
             return engine;
         }
 
         public static Engine SetupRouteTaskRules(Engine engine = null)
         {
-            if(engine == null)
+            if (engine == null)
                 engine = new Engine();
-            
+
             engine.For<RouteTask>()
-                .Setup(rt => rt.Id).MustBeOfType(typeof(Guid))
-                .Setup(rt => rt.Date).MustBeOfType(typeof(DateTime))
-                .Setup(rt => rt.RecurringServiceId).MustBeOfType(typeof(Guid?))
-                .Setup(rt => rt.ServiceId).MustBeOfType(typeof(Guid?))
-                .Setup(rt => rt.TaskStatusId).MustBeOfType(typeof(Guid?))
-                .Setup(rt => rt.CreatedDate).MustBeOfType(typeof(DateTime))
-                .Setup(rt => rt.LastModifiedDate).MustBeOfType(typeof(DateTime?))
-                .Setup(rt => rt.LastModifyingUserId).MustBeOfType(typeof(Guid?));
+                .Setup(rt => rt.Id).MustBeOfType(typeof(Guid)).WithMessage("Invalid Id")
+                .Setup(rt => rt.Date).MustBeOfType(typeof(DateTime)).WithMessage("Invalid Date")
+                .Setup(rt => rt.RecurringServiceId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid RecurringServiceId")
+                .Setup(rt => rt.ServiceId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid ServiceId")
+                .Setup(rt => rt.TaskStatusId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid TaskStatusId")
+                .Setup(rt => rt.CreatedDate).MustBeOfType(typeof(DateTime)).WithMessage("Invalid CreatedDate")
+                .Setup(rt => rt.LastModifiedDate).MustBeOfType(typeof(DateTime?)).WithMessage("Invalid LastModifiedDate")
+                .Setup(rt => rt.LastModifyingUserId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid LastModifyingUserId");
 
             return engine;
         }
@@ -278,16 +278,16 @@ namespace FoundOps.Api.Tools
             var engine = SetupFieldRules(true);
             engine = SetupClientRules(engine);
             engine.For<Service>()
-                .Setup(s => s.Id).MustBeOfType(typeof(Guid))
-                .Setup(s => s.ServiceDate).MustBeOfType(typeof(DateTime))
-                .Setup(s => s.ClientId).MustBeOfType(typeof(Guid))
+                .Setup(s => s.Id).MustBeOfType(typeof(Guid)).WithMessage("Invalid Id")
+                .Setup(s => s.ServiceDate).MustBeOfType(typeof(DateTime)).WithMessage("Invalid ServiceDate")
+                .Setup(s => s.ClientId).MustBeOfType(typeof(Guid)).WithMessage("Invalid ClientId")
                 .Setup(s => s.Client).CallValidate()
                 .Setup(s => s.Fields).CallValidateForEachElement()
-                .Setup(s => s.RecurringServiceId).MustBeOfType(typeof(Guid?))
-                .Setup(s => s.ServiceProviderId).MustBeOfType(typeof(Guid))
-                .Setup(s => s.CreatedDate).MustBeOfType(typeof(DateTime))
-                .Setup(s => s.LastModifiedDate).MustBeOfType(typeof(DateTime?))
-                .Setup(s => s.LastModifyingUserId).MustBeOfType(typeof(Guid?));
+                .Setup(s => s.RecurringServiceId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid RecurringServiceId")
+                .Setup(s => s.ServiceProviderId).MustBeOfType(typeof(Guid)).WithMessage("Invalid ServiceProviderId")
+                .Setup(s => s.CreatedDate).MustBeOfType(typeof(DateTime)).WithMessage("Invalid CreatedDate")
+                .Setup(s => s.LastModifiedDate).MustBeOfType(typeof(DateTime?)).WithMessage("Invalid LastModifiedDate")
+                .Setup(s => s.LastModifyingUserId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid LastModifyingUserId");
 
             return engine;
         }
@@ -296,7 +296,7 @@ namespace FoundOps.Api.Tools
         {
             var engine = new Engine();
             engine.For<ServiceTemplate>()
-                  .Setup(st => st.Id).MustBeOfType(typeof(Guid));
+                  .Setup(st => st.Id).MustBeOfType(typeof(Guid)).WithMessage("Invalid Id");
 
             return engine;
         }
@@ -305,44 +305,50 @@ namespace FoundOps.Api.Tools
         {
             var engine = new Engine();
             engine.For<TaskStatus>()
-                  .Setup(ts => ts.Id).MustBeOfType(typeof(Guid))
-                  .Setup(ts => ts.BusinessAccountId).MustBeOfType(typeof(Guid?))
-                  .Setup(ts => ts.DefaultTypeInt).MustBeOfType(typeof(int?))
-                  .Setup(ts => ts.RemoveFromRoute).MustBeOfType(typeof(bool))
-                  .Setup(ts => ts.CreatedDate).MustBeOfType(typeof(DateTime))
-                  .Setup(ts => ts.LastModifiedDate).MustBeOfType(typeof(DateTime?))
-                  .Setup(ts => ts.LastModifyingUserId).MustBeOfType(typeof(Guid?));
+                  .Setup(ts => ts.Id).MustBeOfType(typeof(Guid)).WithMessage("Invalid Id")
+                  .Setup(ts => ts.BusinessAccountId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid BusinessAccountId")
+                  .Setup(ts => ts.DefaultTypeInt).MustBeOfType(typeof(int?)).WithMessage("DefaultTypeInt Invalid")
+                  .Setup(ts => ts.RemoveFromRoute).MustBeOfType(typeof(bool)).WithMessage("RemoveFromRoute Invalid")
+                  .Setup(ts => ts.CreatedDate).MustBeOfType(typeof(DateTime)).WithMessage("Invalid CreatedDate")
+                  .Setup(ts => ts.LastModifiedDate).MustBeOfType(typeof(DateTime?)).WithMessage("Invalid LastModifiedDate")
+                  .Setup(ts => ts.LastModifyingUserId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid LastModifyingUserId");
 
             return engine;
         }
 
         public static Engine SetupTimeZoneRules(Engine engine = null)
         {
-            if(engine == null)
+            if (engine == null)
                 engine = new Engine();
 
             engine.For<TimeZone>()
-                .Setup(tz => tz.DisplayName).MustNotBeNull()
-                            .MustBeOneOf("(UTC-10:00) Hawaii", "(UTC-09:00) Alaska", "(UTC-08:00) Pacific Time (US & Canada)", "(UTC-07:00) Mountain Time (US & Canada)", "(UTC-06:00) Central Time (US & Canada)", "(UTC-05:00) Eastern Time (US & Canada)")
-                .Setup(tz => tz.Id).MustNotBeNull()
-                            .MustBeOneOf("Hawaiian Standard Time", "Alaskan Standard Time", "Pacific Standard Time", "Mountain Standard Time", "Central Standard Time", "Eastern Standard Time");
+                  .Setup(tz => tz.DisplayName).MustNotBeNull()
+                  .MustBeOneOf("(UTC-10:00) Hawaii", "(UTC-09:00) Alaska", "(UTC-08:00) Pacific Time (US & Canada)",
+                               "(UTC-07:00) Mountain Time (US & Canada)", "(UTC-06:00) Central Time (US & Canada)",
+                               "(UTC-05:00) Eastern Time (US & Canada)")
+                  .WithMessage("Invalid DisplayName")
+                  .Setup(tz => tz.Id).MustNotBeNull()
+                  .MustBeOneOf("Hawaiian Standard Time", "Alaskan Standard Time", "Pacific Standard Time",
+                               "Mountain Standard Time", "Central Standard Time", "Eastern Standard Time")
+                  .WithMessage("Invalid Id");
+
 
             return engine;
         }
 
         public static Engine SetupTrackPointRules(Engine engine = null)
         {
-            if(engine == null)
+            if (engine == null)
                 engine = new Engine();
-            
+
             engine.For<TrackPoint>()
-                  .Setup(tp => tp.Accuracy).MustBeOfType(typeof(int))
-                  .Setup(tp => tp.CollectedTimeStamp).MustBeOfType(typeof(DateTime))
-                  .Setup(tp => tp.Heading).MustBeOfType(typeof(int?))
-                  .Setup(tp => tp.Latitude).MustBeOfType(typeof(decimal?))
-                  .Setup(tp => tp.Longitude).MustBeOfType(typeof(decimal?))
-                  .Setup(tp => tp.Speed).MustBeOfType(typeof(decimal?))
-                  .Setup(tp => tp.RouteId).MustBeOfType(typeof(Guid?));
+                  .Setup(tp => tp.Accuracy).MustBeOfType(typeof(int)).WithMessage("Invalid Accuracy")
+                  .Setup(tp => tp.CollectedTimeStamp).MustBeOfType(typeof(DateTime)).WithMessage("Invalid CollectedTimeStamp")
+                  .Setup(tp => tp.Heading).MustBeOfType(typeof(int?)).WithMessage("Invalid Heading")
+                  .Setup(tp => tp.Latitude).MustBeOfType(typeof(decimal?)).WithMessage("Invalid Latitude")
+                  .Setup(tp => tp.Longitude).MustBeOfType(typeof(decimal?)).WithMessage("Invalid Longitude")
+                  .Setup(tp => tp.Speed).MustBeOfType(typeof(decimal?)).WithMessage("Invalid Speed")
+                  .Setup(tp => tp.RouteId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid RouteId");
 
             return engine;
         }
@@ -352,14 +358,27 @@ namespace FoundOps.Api.Tools
             var engine = new Engine();
             SetupTimeZoneRules(engine);
             engine.For<UserAccount>()
-                  .Setup(user => user.Id).MustBeOfType(typeof(Guid))
-                  .Setup(user => user.EmployeeId).MustBeOfType(typeof(Guid))
+                  .Setup(user => user.Id).MustBeOfType(typeof(Guid)).WithMessage("Invalid Id")
+                  .Setup(user => user.EmployeeId).MustBeOfType(typeof(Guid)).WithMessage("Invalid EmployeeId")
                   .Setup(user => user.TimeZone).CallValidate()
-                  .Setup(user => user.CreatedDate).MustBeOfType(typeof(DateTime))
-                  .Setup(user => user.LastModifiedDate).MustBeOfType(typeof(DateTime?))
-                  .Setup(user => user.LastModifyingUserId).MustBeOfType(typeof(Guid));
+                  .Setup(user => user.CreatedDate).MustBeOfType(typeof(DateTime)).WithMessage("Invalid CreatedDate")
+                  .Setup(user => user.LastModifiedDate).MustBeOfType(typeof(DateTime?)).WithMessage("Invalid LastModifiedDate")
+                  .Setup(user => user.LastModifyingUserId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid LastModifyingUserId");
 
             return engine;
+        }
+
+        public static string ValidateAndReturnErrors(Engine engine, object entity)
+        {
+            var report = new ValidationReport(engine);
+            var result = report.Validate(entity);
+
+            if (result)
+                return null;
+
+            var errors = report.GetErrorMessages(entity);
+
+            return string.Join(". ", errors);
         }
     }
 }

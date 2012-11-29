@@ -2,6 +2,7 @@
 using FoundOps.Api.Controllers.Mvc;
 using FoundOps.Api.Controllers.Rest;
 using FoundOps.Api.Models;
+using FoundOps.Api.Tools;
 using FoundOps.Common.NET;
 using FoundOps.Common.Tools.ExtensionMethods;
 using FoundOps.Core.Models;
@@ -21,6 +22,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Hosting;
+using RulesEngine;
 using BusinessAccount = FoundOps.Core.Models.CoreEntities.BusinessAccount;
 using Client = FoundOps.Core.Models.CoreEntities.Client;
 using Field = FoundOps.Core.Models.CoreEntities.Field;
@@ -29,6 +31,7 @@ using RouteTask = FoundOps.Api.Models.RouteTask;
 using ServiceHoldersController = FoundOps.Api.Controllers.Rest.ServiceHoldersController;
 using ServiceTemplate = FoundOps.Core.Models.CoreEntities.ServiceTemplate;
 using TaskStatus = FoundOps.Core.Models.CoreEntities.TaskStatus;
+using TimeZone = FoundOps.Api.Models.TimeZone;
 using UserAccount = FoundOps.Core.Models.CoreEntities.UserAccount;
 
 namespace FoundOps.Api.Tests.Controllers
@@ -528,8 +531,11 @@ namespace FoundOps.Api.Tests.Controllers
         [TestMethod]
         public void TimeZoneTests()
         {
-            var controller = CreateRequest<TimeZonesController>(HttpMethod.Get);
-            controller.Get();
+            var t = new TimeZone("Hawaiian Standard Time", "(UTC-10:00) Hawaii");
+
+            var e = EntityRules.SetupTimeZoneRules();
+            var b = EntityRules.ValidateAndReturnErrors(e, t);
+           
         }
 
         #region SQL Tests

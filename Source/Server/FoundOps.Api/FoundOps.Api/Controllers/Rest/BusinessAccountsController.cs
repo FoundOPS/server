@@ -42,6 +42,11 @@ namespace FoundOps.Api.Controllers.Rest
         /// <param name="businessAccount">The business account</param>
         public void Put(BusinessAccount businessAccount)
         {
+            var engine = EntityRules.SetupBusinessAccountRules();
+            var errors = EntityRules.ValidateAndReturnErrors(engine, businessAccount);
+            if (errors != null)
+                Request.BadRequest(errors);
+
             var modelBusinessAccount = CoreEntitiesContainer.BusinessAccount(businessAccount.Id, new[] { RoleType.Administrator }).FirstOrDefault();
             if (modelBusinessAccount == null)
                 throw Request.NotAuthorized();
