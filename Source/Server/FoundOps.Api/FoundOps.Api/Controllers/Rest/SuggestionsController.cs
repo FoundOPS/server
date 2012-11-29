@@ -402,7 +402,7 @@ namespace FoundOps.Api.Controllers.Rest
 
                     #endregion
 
-                    repeat.StatusInt = repeat.EndDate == null || repeat.EndAfterTimes == null ||
+                    repeat.StatusInt = !(repeat.EndDate == null || repeat.EndAfterTimes == null) ||
                                        repeat.RepeatEveryTimes == null || repeat.FrequencyInt == null
                                            ? (int)ImportStatus.Error
                                            : (int)ImportStatus.New;
