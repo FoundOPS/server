@@ -302,7 +302,7 @@ namespace FoundOps.Api.Controllers.Rest
                     var repeat = new Repeat
                     {
                         Id = Guid.NewGuid(),
-                        StartDate = startDateCol == -1 || row[startDateCol] == "" ? Convert.ToDateTime(row[startDateCol]) : DateTime.UtcNow.Date,
+                        StartDate = startDateCol != -1 || row[startDateCol] != "" ? Convert.ToDateTime(row[startDateCol]) : DateTime.UtcNow.Date,
                         EndDate = endDateCol != -1 && row[endDateCol] != "" ? Convert.ToDateTime(row[endDateCol]) : (DateTime?)null,
                         EndAfterTimes = endAfterCol != -1 && row[endAfterCol] != "" ? Convert.ToInt32(row[endAfterCol]) : (int?)null,
                         RepeatEveryTimes = repeatEveryCol != -1 && row[repeatEveryCol] != "" ? Convert.ToInt32(row[repeatEveryCol]) : (int?)null
