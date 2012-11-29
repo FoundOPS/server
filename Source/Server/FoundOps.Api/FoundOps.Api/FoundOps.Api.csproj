@@ -99,6 +99,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\Newtonsoft.Json.4.5.10\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="RulesEngine">
+      <HintPath>..\..\..\Common\FoundOps.Common.NET\Lib\RulesEngine.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Private>True</Private>
     </Reference>
@@ -276,6 +279,7 @@
     <Compile Include="Models\TrackPoint.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\ApiExceptions.cs" />
+    <Compile Include="Tools\EntityRules.cs" />
     <Compile Include="Tools\FormTools.cs" />
     <Compile Include="Tools\JsonpMediaTypeFormatter.cs" />
     <Compile Include="Tools\PartyTools.cs" />

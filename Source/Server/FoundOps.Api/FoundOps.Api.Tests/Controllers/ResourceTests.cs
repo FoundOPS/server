@@ -2,6 +2,7 @@
 using FoundOps.Api.Controllers.Mvc;
 using FoundOps.Api.Controllers.Rest;
 using FoundOps.Api.Models;
+using FoundOps.Api.Tools;
 using FoundOps.Common.NET;
 using FoundOps.Common.Tools.ExtensionMethods;
 using FoundOps.Core.Models;
@@ -21,6 +22,7 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Hosting;
+using RulesEngine;
 using BusinessAccount = FoundOps.Core.Models.CoreEntities.BusinessAccount;
 using Client = FoundOps.Core.Models.CoreEntities.Client;
 using Field = FoundOps.Core.Models.CoreEntities.Field;
@@ -29,6 +31,7 @@ using RouteTask = FoundOps.Api.Models.RouteTask;
 using ServiceHoldersController = FoundOps.Api.Controllers.Rest.ServiceHoldersController;
 using ServiceTemplate = FoundOps.Core.Models.CoreEntities.ServiceTemplate;
 using TaskStatus = FoundOps.Core.Models.CoreEntities.TaskStatus;
+using TimeZone = FoundOps.Api.Models.TimeZone;
 using UserAccount = FoundOps.Core.Models.CoreEntities.UserAccount;
 
 namespace FoundOps.Api.Tests.Controllers
@@ -96,7 +99,7 @@ namespace FoundOps.Api.Tests.Controllers
             CoreEntitiesContainer.ContextOptions.LazyLoadingEnabled = false;
             //Admin role on GotGrease?
             _adminGotGreaseRoleId = CoreEntitiesContainer.Roles.First(r => r.OwnerBusinessAccountId == _gotGreaseId && r.RoleTypeInt == (int)RoleType.Administrator).Id;
-            _adminGenericBiodieselRoleId = CoreEntitiesContainer.Roles.First(r => r.OwnerBusinessAccountId == _genericBiodiesel && r.RoleTypeInt == (int)RoleType.Administrator).Id;
+            //_adminGenericBiodieselRoleId = CoreEntitiesContainer.Roles.First(r => r.OwnerBusinessAccountId == _genericBiodiesel && r.RoleTypeInt == (int)RoleType.Administrator).Id;
         }
 
         private void DetachAllEntities()
@@ -523,6 +526,16 @@ namespace FoundOps.Api.Tests.Controllers
             var deletedTaskStatus = CoreEntitiesContainer.TaskStatuses.FirstOrDefault(ts => ts.Id == newId);
 
             Assert.IsNull(deletedTaskStatus);
+        }
+
+        [TestMethod]
+        public void TimeZoneTests()
+        {
+            var t = new TimeZone("Hawaiian Standard Time", "(UTC-10:00) Hawaii");
+
+            var e = EntityRules.SetupTimeZoneRules();
+            var b = EntityRules.ValidateAndReturnErrors(e, t);
+           
         }
 
         #region SQL Tests
