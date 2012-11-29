@@ -13,7 +13,7 @@ namespace FoundOps.Api.Tools
             engine.For<BusinessAccount>()
                 .Setup(ba => ba.Id).MustBeOfType(typeof(Guid)).WithMessage("Invalid Id")
                 .Setup(ba => ba.CreatedDate).MustBeOfType(typeof(DateTime)).WithMessage("Invalid CreatedDate")
-                .Setup(ba => ba.LastModifiedDate).MustBeOfType(typeof(DateTime?)).WithMessage("Invalid LastModifiedDate")
+                .Setup(ba => ba.LastModified).MustBeOfType(typeof(DateTime?)).WithMessage("Invalid LastModified")
                 .Setup(ba => ba.LastModifyingUserId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid LastModifyingUserId");
 
             return engine;
@@ -28,7 +28,7 @@ namespace FoundOps.Api.Tools
                 .Setup(c => c.Id).MustBeOfType(typeof(Guid)).WithMessage("Invalid Id")
                 .Setup(c => c.ContactInfoSet).CallValidateForEachElement()
                 .Setup(c => c.CreatedDate).MustBeOfType(typeof(DateTime)).WithMessage("Invalid CreatedDate")
-                .Setup(c => c.LastModifiedDate).MustBeOfType(typeof(DateTime?)).WithMessage("Invalid LastModifiedDate")
+                .Setup(c => c.LastModified).MustBeOfType(typeof(DateTime?)).WithMessage("Invalid LastModified")
                 .Setup(c => c.LastModifyingUserId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid LastModifyingUserId");
 
             return engine;
@@ -69,7 +69,7 @@ namespace FoundOps.Api.Tools
                 .Setup(ci => ci.LocationId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid LocationId")
                 .Setup(ci => ci.ClientId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid ClientId")
                 .Setup(ci => ci.CreatedDate).MustBeOfType(typeof(DateTime)).WithMessage("Invalid CreatedDate")
-                .Setup(ci => ci.LastModifiedDate).MustBeOfType(typeof(DateTime?)).WithMessage("Invalid LastModifiedDate")
+                .Setup(ci => ci.LastModified).MustBeOfType(typeof(DateTime?)).WithMessage("Invalid LastModified")
                 .Setup(ci => ci.LastModifyingUserId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid LastModifyingUserId");
 
             return engine;
@@ -82,7 +82,7 @@ namespace FoundOps.Api.Tools
                 .Setup(e => e.Id).MustBeOfType(typeof(Guid)).WithMessage("Invalid Id")
                 .Setup(e => e.LinkedUserAccountId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid LinkedUserAccountId")
                 .Setup(e => e.CreatedDate).MustBeOfType(typeof(DateTime)).WithMessage("Invalid CreatedDate")
-                .Setup(e => e.LastModifiedDate).MustBeOfType(typeof(DateTime?)).WithMessage("Invalid LastModifiedDate")
+                .Setup(e => e.LastModified).MustBeOfType(typeof(DateTime?)).WithMessage("Invalid LastModified")
                 .Setup(e => e.LastModifyingUserId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid LastModifyingUserId");
 
             return engine;
@@ -99,7 +99,7 @@ namespace FoundOps.Api.Tools
                   .Setup(f => f.ParentFieldId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid ParentFieldId")
                   .Setup(f => f.ServiceTemplateId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid ServiceTemplateId")
                   .Setup(f => f.CreatedDate).MustBeOfType(typeof(DateTime)).WithMessage("Invalid CreatedDate")
-                  .Setup(f => f.LastModifiedDate).MustBeOfType(typeof(DateTime?)).WithMessage("Invalid LastModifiedDate")
+                  .Setup(f => f.LastModified).MustBeOfType(typeof(DateTime?)).WithMessage("Invalid LastModified")
                   .Setup(f => f.LastModifyingUserId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid LastModifyingUserId");
 
             if (setupAllFieldTypes)
@@ -200,7 +200,7 @@ namespace FoundOps.Api.Tools
                   .Setup(l => l.Id).MustBeOfType(typeof(Guid)).WithMessage("Invalid Id")
                   .Setup(l => l.ContactInfoSet).CallValidateForEachElement()
                   .Setup(l => l.CreatedDate).MustBeOfType(typeof(DateTime)).WithMessage("Invalid CreatedDate")
-                  .Setup(l => l.LastModifiedDate).MustBeOfType(typeof(DateTime?)).WithMessage("Invalid LastModifiedDate")
+                  .Setup(l => l.LastModified).MustBeOfType(typeof(DateTime?)).WithMessage("Invalid LastModified")
                   .Setup(l => l.LastModifyingUserId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid LastModifyingUserId");
 
 
@@ -227,7 +227,7 @@ namespace FoundOps.Api.Tools
                   .Setup(r => r.BusinessAccountId).MustBeOfType(typeof(Guid)).WithMessage("Invalid BusinessAccountId")
                   .Setup(r => r.RouteDestinations).CallValidateForEachElement()
                   .Setup(r => r.CreatedDate).MustBeOfType(typeof(DateTime)).WithMessage("Invalid CreatedDate")
-                  .Setup(r => r.LastModifiedDate).MustBeOfType(typeof(DateTime?)).WithMessage("Invalid LastModifiedDate")
+                  .Setup(r => r.LastModified).MustBeOfType(typeof(DateTime?)).WithMessage("Invalid LastModified")
                   .Setup(r => r.LastModifyingUserId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid LastModifyingUserId");
 
             return engine;
@@ -249,7 +249,7 @@ namespace FoundOps.Api.Tools
                   .Setup(rd => rd.Location).CallValidate()
                   .Setup(rd => rd.RouteTasks).CallValidateForEachElement()
                   .Setup(rd => rd.CreatedDate).MustBeOfType(typeof(DateTime)).WithMessage("Invalid CreatedDate")
-                  .Setup(rd => rd.LastModifiedDate).MustBeOfType(typeof(DateTime?)).WithMessage("Invalid LastModifiedDate")
+                  .Setup(rd => rd.LastModified).MustBeOfType(typeof(DateTime?)).WithMessage("Invalid LastModified")
                   .Setup(rd => rd.LastModifyingUserId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid LastModifyingUserId");
 
             return engine;
@@ -267,7 +267,7 @@ namespace FoundOps.Api.Tools
                 .Setup(rt => rt.ServiceId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid ServiceId")
                 .Setup(rt => rt.TaskStatusId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid TaskStatusId")
                 .Setup(rt => rt.CreatedDate).MustBeOfType(typeof(DateTime)).WithMessage("Invalid CreatedDate")
-                .Setup(rt => rt.LastModifiedDate).MustBeOfType(typeof(DateTime?)).WithMessage("Invalid LastModifiedDate")
+                .Setup(rt => rt.LastModified).MustBeOfType(typeof(DateTime?)).WithMessage("Invalid LastModified")
                 .Setup(rt => rt.LastModifyingUserId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid LastModifyingUserId");
 
             return engine;
@@ -286,7 +286,7 @@ namespace FoundOps.Api.Tools
                 .Setup(s => s.RecurringServiceId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid RecurringServiceId")
                 .Setup(s => s.ServiceProviderId).MustBeOfType(typeof(Guid)).WithMessage("Invalid ServiceProviderId")
                 .Setup(s => s.CreatedDate).MustBeOfType(typeof(DateTime)).WithMessage("Invalid CreatedDate")
-                .Setup(s => s.LastModifiedDate).MustBeOfType(typeof(DateTime?)).WithMessage("Invalid LastModifiedDate")
+                .Setup(s => s.LastModified).MustBeOfType(typeof(DateTime?)).WithMessage("Invalid LastModified")
                 .Setup(s => s.LastModifyingUserId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid LastModifyingUserId");
 
             return engine;
@@ -310,7 +310,7 @@ namespace FoundOps.Api.Tools
                   .Setup(ts => ts.DefaultTypeInt).MustBeOfType(typeof(int?)).WithMessage("DefaultTypeInt Invalid")
                   .Setup(ts => ts.RemoveFromRoute).MustBeOfType(typeof(bool)).WithMessage("RemoveFromRoute Invalid")
                   .Setup(ts => ts.CreatedDate).MustBeOfType(typeof(DateTime)).WithMessage("Invalid CreatedDate")
-                  .Setup(ts => ts.LastModifiedDate).MustBeOfType(typeof(DateTime?)).WithMessage("Invalid LastModifiedDate")
+                  .Setup(ts => ts.LastModified).MustBeOfType(typeof(DateTime?)).WithMessage("Invalid LastModified")
                   .Setup(ts => ts.LastModifyingUserId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid LastModifyingUserId");
 
             return engine;
@@ -362,7 +362,7 @@ namespace FoundOps.Api.Tools
                   .Setup(user => user.EmployeeId).MustBeOfType(typeof(Guid)).WithMessage("Invalid EmployeeId")
                   .Setup(user => user.TimeZone).CallValidate()
                   .Setup(user => user.CreatedDate).MustBeOfType(typeof(DateTime)).WithMessage("Invalid CreatedDate")
-                  .Setup(user => user.LastModifiedDate).MustBeOfType(typeof(DateTime?)).WithMessage("Invalid LastModifiedDate")
+                  .Setup(user => user.LastModified).MustBeOfType(typeof(DateTime?)).WithMessage("Invalid LastModified")
                   .Setup(user => user.LastModifyingUserId).MustBeOfType(typeof(Guid?)).WithMessage("Invalid LastModifyingUserId");
 
             return engine;
