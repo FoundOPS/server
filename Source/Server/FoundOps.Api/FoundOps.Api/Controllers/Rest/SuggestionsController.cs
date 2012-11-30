@@ -488,8 +488,8 @@ namespace FoundOps.Api.Controllers.Rest
             var rowSuggestionsConcurrentDictionary = new ConcurrentDictionary<int, RowSuggestions>();
 
             var suggestionsToReturn = new Suggestions();
-            var clients = new List<FoundOps.Api.Models.Client>();
-            var locations = new List<FoundOps.Api.Models.Location>();
+            var clients = new ConcurrentDictionary<Guid, FoundOps.Api.Models.Client>();
+            var locations = new ConcurrentDictionary<Guid, FoundOps.Api.Models.Location>();
             var contactInfoSets = new ConcurrentDictionary<Guid, FoundOps.Api.Models.ContactInfo>();
 
             Parallel.For((long)0, rows.Count(), rowIndex =>
@@ -514,13 +514,15 @@ namespace FoundOps.Api.Controllers.Rest
                     {
                         //Add any of the suggestions to the rows suggestions
                         rowSuggestions.LocationSuggestions.AddRange(locationSuggestions.Select(l => l.Key));
+                        var convertedLocationSuggestions = locationSuggestions.Select(l => l.Value).Select(FoundOps.Api.Models.Location.ConvertModel);
 
                         //Add all suggested Locations to the list of Locations to be returned
-                        locations.AddRange(locationSuggestions.Select(l => l.Value).Select(FoundOps.Api.Models.Location.ConvertModel));
+                        foreach (var location in convertedLocationSuggestions)
+                            locations.GetOrAdd(location.Id, location);
                     }
 
                     //Add the location passed to the list of location entites
-                    locations.Add(row.Location);
+                    locations.GetOrAdd(row.Location.Id, row.Location);
                 }
 
                 #endregion
@@ -541,13 +543,15 @@ namespace FoundOps.Api.Controllers.Rest
                     {
                         //Add any of the suggestions to the rows suggestions
                         rowSuggestions.ClientSuggestions.AddRange(clientSuggestions.Select(c => c.Key));
+                        var convertedClientSuggestions = clientSuggestions.Select(c => c.Value).Select(FoundOps.Api.Models.Client.ConvertModel);
 
                         //Add all suggested Clients to the list of Clients to be returned
-                        clients.AddRange(clientSuggestions.Select(c => c.Value).Select(FoundOps.Api.Models.Client.ConvertModel));
+                        foreach (var client in convertedClientSuggestions)
+                            clients.GetOrAdd(client.Id, client);
                     }
                     
                     //Add the Client passed to the list of client entites
-                    clients.Add(row.Client);
+                    clients.GetOrAdd(row.Client.Id, row.Client);
                 }
 
                 #endregion
@@ -574,11 +578,11 @@ namespace FoundOps.Api.Controllers.Rest
 
             //Only add distinct Clients
             var distinctClients = clients.Distinct();
-            suggestionsToReturn.Clients.AddRange(distinctClients);
+            suggestionsToReturn.Clients.AddRange(distinctClients.Select(dc => dc.Value));
 
             //Only add distinct Locations
             var distinctLocations = locations.Distinct();
-            suggestionsToReturn.Locations.AddRange(distinctLocations);
+            suggestionsToReturn.Locations.AddRange(distinctLocations.Select(dl => dl.Value));
 
             //Only add distinct ContactInfo
             var distinctContactInfo = contactInfoSets.Select(ci => ci.Value).Distinct();
