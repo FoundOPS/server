@@ -498,17 +498,20 @@ namespace FoundOps.Api.Controllers.Rest
 
                     //Find all the Locations to be suggested by finding all Locations for the Client of the row
                     var locationSuggestions = row.Client != null
-                        ? _locations.Where(l => l.Value.ClientId == row.Client.Id || l.Key == row.Location.Id).ToArray()
-                        : _locations.Where(l => l.Key == row.Location.Id).ToArray();
+                        ? _locations.Where(l => l.Value.ClientId == row.Client.Id).ToArray()
+                        : null;
 
-                    rowSuggestions.LocationSuggestions.AddRange(locationSuggestions.Select(l => l.Key).Where(k => k != row.Location.Id));
+                    if (locationSuggestions != null)
+                    {
+                        //Add any of the suggestions to the rows suggestions
+                        rowSuggestions.LocationSuggestions.AddRange(locationSuggestions.Select(l => l.Key));
 
-                    //Add all suggested Locations to the list of Locations to be returned
-                    locations.AddRange(locationSuggestions.Select(l => l.Value).Select(FoundOps.Api.Models.Location.ConvertModel));
+                        //Add all suggested Locations to the list of Locations to be returned
+                        locations.AddRange(locationSuggestions.Select(l => l.Value).Select(FoundOps.Api.Models.Location.ConvertModel));
+                    }
 
-                    //If a new Location was created, add it to the list of location entites
-                    if (!_locations.Select(l => l.Key).Contains(row.Location.Id))
-                        locations.Add(row.Location);
+                    //Add the location passed to the list of location entites
+                    locations.Add(row.Location);
                 }
 
                 #endregion
@@ -522,17 +525,20 @@ namespace FoundOps.Api.Controllers.Rest
 
                     //Find all the Clients to be suggested by finding all Clients for the Location of the row
                     var clientSuggestions = row.Location != null
-                        ? _clients.Where(c => c.Key == row.Location.ClientId || c.Key == row.Client.Id).ToArray()
-                        : _clients.Where(c => c.Key == row.Client.Id).ToArray();
+                        ? _clients.Where(c => c.Key == row.Location.ClientId).ToArray()
+                        : null;
 
-                    rowSuggestions.ClientSuggestions.AddRange(clientSuggestions.Select(c => c.Key).Where(k => k != row.Client.Id));
+                    if (clientSuggestions != null)
+                    {
+                        //Add any of the suggestions to the rows suggestions
+                        rowSuggestions.ClientSuggestions.AddRange(clientSuggestions.Select(c => c.Key));
 
-                    //Add all suggested Clients to the list of Clients to be returned
-                    clients.AddRange(clientSuggestions.Select(c => c.Value).Select(FoundOps.Api.Models.Client.ConvertModel));
-
-                    //If a new Client was created, add it to the list of client entites
-                    if (!_clients.Select(c => c.Key).Contains(row.Client.Id))
-                        clients.Add(row.Client);
+                        //Add all suggested Clients to the list of Clients to be returned
+                        clients.AddRange(clientSuggestions.Select(c => c.Value).Select(FoundOps.Api.Models.Client.ConvertModel));
+                    }
+                    
+                    //Add the Client passed to the list of client entites
+                    clients.Add(row.Client);
                 }
 
                 #endregion
@@ -549,7 +555,6 @@ namespace FoundOps.Api.Controllers.Rest
                     foreach (var contactInfoSet in row.ContactInfoSet)
                         contactInfoSets.GetOrAdd(contactInfoSet.Id, contactInfoSet);
                 }
-                    //rowSuggestions.ContactInfoSuggestions.AddRange(row.ContactInfoSet);
 
                 //Add this row's suggestions to the list to be returned
                 concurrentDictionary.GetOrAdd((int)rowIndex, rowSuggestions);
