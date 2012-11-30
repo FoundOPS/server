@@ -242,6 +242,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                 var parameters = new DynamicParameters();
                 parameters.Add("@serviceProviderIdContext", businessForRole.Id);
                 parameters.Add("@serviceDate", serviceDate);
+                parameters.Add("@userId", this.ObjectContext.CurrentUserAccount().Id);
 
                 //Calls a stored procedure that will find any Services scheduled for today and create a routetask for them if one doesnt exist
                 //Then it will return all RouteTasks that are not in a route joined with their Locations, Location.Regions and Clients
