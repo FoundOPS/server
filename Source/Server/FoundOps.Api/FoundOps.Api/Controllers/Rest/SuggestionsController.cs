@@ -27,7 +27,7 @@ namespace FoundOps.Api.Controllers.Rest
         private ConcurrentDictionary<Guid, Client> _clients;
         private ConcurrentDictionary<Guid, Location> _locations;
         private ConcurrentDictionary<Guid, FoundOps.Core.Models.CoreEntities.Region> _regions;
-        private ConcurrentDictionary<Guid, Core.Models.CoreEntities.ContactInfo> _contactInfoSet;
+        private ConcurrentDictionary<Guid, Core.Models.CoreEntities.ContactInfo> _contactInfoSets;
         private const string Sql = @"SELECT * FROM dbo.Locations WHERE BusinessAccountId = @id
                                      SELECT * FROM dbo.Clients WHERE BusinessAccountId = @id
                                      SELECT * FROM dbo.Regions WHERE BusinessAccountId = @id
@@ -55,7 +55,7 @@ namespace FoundOps.Api.Controllers.Rest
             if (businessAccount == null)
                 throw Request.BadRequest();
 
-            //load all of the business account's clients, locations, and regions
+            //load all of the BusinessAccount's Clients, Locations, Regions and ContactInfoSets
             using (var conn = new SqlConnection(ServerConstants.SqlConnectionString))
             {
                 conn.Open();
@@ -68,22 +68,22 @@ namespace FoundOps.Api.Controllers.Rest
 
                     _regions = new ConcurrentDictionary<Guid, Core.Models.CoreEntities.Region>(data.Read<Core.Models.CoreEntities.Region>().ToDictionary(l => l.Id, l => l));
 
-                    _contactInfoSet = new ConcurrentDictionary<Guid, Core.Models.CoreEntities.ContactInfo>(data.Read<Core.Models.CoreEntities.ContactInfo>().ToDictionary(l => l.Id, l => l));
+                    _contactInfoSets = new ConcurrentDictionary<Guid, Core.Models.CoreEntities.ContactInfo>(data.Read<Core.Models.CoreEntities.ContactInfo>().ToDictionary(l => l.Id, l => l));
                 }
 
                 conn.Close();
             }
 
-            var itemsProcessed = 0;
-            var updater = new Subject<Unit>();
-            updater.Subscribe(u =>
-                {
-                    itemsProcessed += 1;
-                    //Update the progress bars value here
-                    //Call OnNext at the end of each loop
-                    //Set Max on the progress bar to the number of rows if SuggestEntities is called
-                    //Set Max on the progress bar to TWICE the number of rows if ValidateThenSuggestEntities is called (goes through both methods)
-                });
+            //var itemsProcessed = 0;
+            //var updater = new Subject<Unit>();
+            //updater.Subscribe(u =>
+            //    {
+            //        itemsProcessed += 1;
+            //        //Update the progress bars value here
+            //        //Call OnNext at the end of each loop
+            //        //Set Max on the progress bar to the number of rows if SuggestEntities is called
+            //        //Set Max on the progress bar to TWICE the number of rows if ValidateThenSuggestEntities is called (goes through both methods)
+            //    });
 
             //Call the appropriate function and return the Suggestions
             return request.RowsWithHeaders != null ?
@@ -143,7 +143,7 @@ namespace FoundOps.Api.Controllers.Rest
 
             #endregion
 
-            var concurrentDictionary = new ConcurrentDictionary<int, ImportRow>();
+            var importRowsConcurrentDictionary = new ConcurrentDictionary<int, ImportRow>();
 
             var rowCount = rows.Count();
             Parallel.For((long)0, rowCount, rowIndex =>
@@ -264,17 +264,21 @@ namespace FoundOps.Api.Controllers.Rest
 
                 clientName = clientNameCol != -1 ? row[clientNameCol] : null;
 
+                //Make sure a Client is being Imported
                 if (clientName != null)
                 {
+                    //Find an existing Client based on the Name
                     var existingClient = _clients.FirstOrDefault(c => c.Value.Name == clientName);
 
                     Models.Client importedClient;
 
+                    //If a Client was found, set it to be imported with a Linked Status
                     if (existingClient.Key != Guid.Empty)
                     {
                         importedClient = FoundOps.Api.Models.Client.ConvertModel(existingClient.Value);
                         importedClient.StatusInt = (int)ImportStatus.Linked;
                     }
+                    //If not, create a new Client and add it to _clients for matching later 
                     else
                     {
                         importedClient = new FoundOps.Api.Models.Client
@@ -402,8 +406,7 @@ namespace FoundOps.Api.Controllers.Rest
 
                     #endregion
 
-                    repeat.StatusInt = !(repeat.EndDate == null || repeat.EndAfterTimes == null) ||
-                                       repeat.RepeatEveryTimes == null || repeat.FrequencyInt == null
+                    repeat.StatusInt = repeat.RepeatEveryTimes == null || repeat.FrequencyInt == null
                                            ? (int)ImportStatus.Error
                                            : (int)ImportStatus.New;
 
@@ -414,15 +417,19 @@ namespace FoundOps.Api.Controllers.Rest
 
                 #region Contact Info
 
+                //Create label and value dictionaries for Phone Number contact information
                 var phoneValueDictionary = phoneNumberValueCols.ToDictionary(p => Convert.ToInt32(p.Split(' ').ElementAt(2)), p => row[Array.IndexOf(headers, p)]);
                 var phoneLabelDictionary = phoneNumberLabelCols.ToDictionary(p => Convert.ToInt32(p.Split(' ').ElementAt(2)), p => row[Array.IndexOf(headers, p)]);
 
+                //Create label and value dictionaries for Email Address contact information
                 var emailValueDictionary = emailValueCols.ToDictionary(e => Convert.ToInt32(e.Split(' ').ElementAt(2)), e => row[Array.IndexOf(headers, e)]);
                 var emailLabelDictionary = emailLabelCols.ToDictionary(e => Convert.ToInt32(e.Split(' ').ElementAt(2)), e => row[Array.IndexOf(headers, e)]);
 
+                //Create label and value dictionaries for Website contact information
                 var websiteValueDictionary = websiteValueCols.ToDictionary(w => Convert.ToInt32(w.Split(' ').ElementAt(2)), w => row[Array.IndexOf(headers, w)]);
                 var websiteLabelDictionary = websiteLabelCols.ToDictionary(w => Convert.ToInt32(w.Split(' ').ElementAt(2)), w => row[Array.IndexOf(headers, w)]);
 
+                //Create label and value dictionaries for any other types of contact information
                 var otherValueDictionary = otherValueCols.ToDictionary(o => Convert.ToInt32(o.Split(' ').ElementAt(2)), o => row[Array.IndexOf(headers, o)]);
                 var otherLabelDictionary = otherLabelCols.ToDictionary(o => Convert.ToInt32(o.Split(' ').ElementAt(2)), o => row[Array.IndexOf(headers, o)]);
 
@@ -433,6 +440,7 @@ namespace FoundOps.Api.Controllers.Rest
 
                 var max = Math.Max(maxLabel, maxValue);
 
+                //Dictionary of Cantact Information to be imported for the row
                 var concurrentContactInfoDictionary = new ConcurrentDictionary<Guid, ContactInfo>();
 
                 Parallel.For((long)1, max + 1, contactIndex =>
@@ -459,14 +467,15 @@ namespace FoundOps.Api.Controllers.Rest
 
                 #endregion
 
-                concurrentDictionary.GetOrAdd((int)rowIndex, importRow);
+                //Add the ImportRow to the concurrent dictionary of ImportRows
+                importRowsConcurrentDictionary.GetOrAdd((int)rowIndex, importRow);
             });
 
-            var importRows = concurrentDictionary.OrderBy(kvp => kvp.Key).Select(kvp => kvp.Value).ToArray();
+            //Order the ImportRows by rowIndex
+            var importRows = importRowsConcurrentDictionary.OrderBy(kvp => kvp.Key).Select(kvp => kvp.Value).ToArray();
 
-            var suggestion = SuggestEntites(importRows);
-
-            return suggestion;
+            //Send the validated ImportRows to get suggestions and return
+            return SuggestEntites(importRows);
         }
 
         /// <summary>
@@ -476,12 +485,12 @@ namespace FoundOps.Api.Controllers.Rest
         /// <returns>Entites with suggestions</returns>
         public Suggestions SuggestEntites(ImportRow[] rows)
         {
-            var concurrentDictionary = new ConcurrentDictionary<int, RowSuggestions>();
+            var rowSuggestionsConcurrentDictionary = new ConcurrentDictionary<int, RowSuggestions>();
 
-            var suggestionToReturn = new Suggestions();
+            var suggestionsToReturn = new Suggestions();
             var clients = new List<FoundOps.Api.Models.Client>();
             var locations = new List<FoundOps.Api.Models.Location>();
-            var contactInfoSets = new ConcurrentDictionary<Guid, ContactInfo>();
+            var contactInfoSets = new ConcurrentDictionary<Guid, FoundOps.Api.Models.ContactInfo>();
 
             Parallel.For((long)0, rows.Count(), rowIndex =>
             {
@@ -557,24 +566,25 @@ namespace FoundOps.Api.Controllers.Rest
                 }
 
                 //Add this row's suggestions to the list to be returned
-                concurrentDictionary.GetOrAdd((int)rowIndex, rowSuggestions);
+                rowSuggestionsConcurrentDictionary.GetOrAdd((int)rowIndex, rowSuggestions);
             });
 
-            suggestionToReturn.RowSuggestions.AddRange(concurrentDictionary.OrderBy(kvp => kvp.Key).Select(kvp => kvp.Value));
+            //Order the row suggestions by rowIndex
+            suggestionsToReturn.RowSuggestions.AddRange(rowSuggestionsConcurrentDictionary.OrderBy(kvp => kvp.Key).Select(kvp => kvp.Value));
 
             //Only add distinct Clients
             var distinctClients = clients.Distinct();
-            suggestionToReturn.Clients.AddRange(distinctClients);
+            suggestionsToReturn.Clients.AddRange(distinctClients);
 
             //Only add distinct Locations
             var distinctLocations = locations.Distinct();
-            suggestionToReturn.Locations.AddRange(distinctLocations);
+            suggestionsToReturn.Locations.AddRange(distinctLocations);
 
             //Only add distinct ContactInfo
             var distinctContactInfo = contactInfoSets.Select(ci => ci.Value).Distinct();
-            suggestionToReturn.ContactInfoSet.AddRange(distinctContactInfo);
+            suggestionsToReturn.ContactInfoSet.AddRange(distinctContactInfo);
 
-            return suggestionToReturn;
+            return suggestionsToReturn;
         }
 
         #region Helpers
@@ -600,29 +610,49 @@ namespace FoundOps.Api.Controllers.Rest
             return location;
         }
 
+        /// <summary>
+        /// Try to match the imported ContactInfo to one previously saved
+        /// If found, add the it to the ContactInfo dictionary to be imported
+        /// Else, create a new ContactInfo and add it to both the ContactInfo dictionary to be imported and the list of ContactInfo to be searched on the next attempt to match
+        /// </summary>
+        /// <param name="labelDictionary">Dictionary of the ContactInfo labels</param>
+        /// <param name="valueDictionary">Dictionary of the ContactInfo values</param>
+        /// <param name="index">The index at which to look in the label/value dictionaries</param>
+        /// <param name="contactInfoDictionary">Contact information to be imported</param>
+        /// <param name="type">The type of ContactInfo the is being imported</param>
         private void MatchContactInfo(Dictionary<int, string> labelDictionary, Dictionary<int, string> valueDictionary, long index, ConcurrentDictionary<Guid, ContactInfo> contactInfoDictionary, string type)
         {
-            var label = labelDictionary.Count() > 0 ? labelDictionary.First(p => p.Key == index).Value.Trim() : null;
-            var data = valueDictionary.Count() > 0 ? valueDictionary.First(p => p.Key == index).Value.Trim() : null;
+            //Find the label and data for the ContactInfo being imported
+            var label = labelDictionary.Any() ? labelDictionary.First(p => p.Key == index).Value.Trim() : null;
+            var data = valueDictionary.Any() ? valueDictionary.First(p => p.Key == index).Value.Trim() : null;
 
-            var existingContact = _contactInfoSet.FirstOrDefault(ci => ci.Value.Label == label && ci.Value.Data == data);
+            //Try to find existing ContactInfo
+            var existingContact = _contactInfoSets.FirstOrDefault(ci => ci.Value.Label == label && ci.Value.Data == data);
 
             if (existingContact.Key != Guid.Empty)
-                contactInfoDictionary.GetOrAdd(existingContact.Value.Id, ContactInfo.Convert(existingContact.Value));
+            {
+                //Convert the ContactInfo and add a linked status to it
+                var existingContactInfo = ContactInfo.Convert(existingContact.Value);
+                existingContactInfo.StatusInt = (int) ImportStatus.Linked;
+
+                contactInfoDictionary.GetOrAdd(existingContact.Value.Id, existingContactInfo);
+            }
             else
             {
                 var newContactInfo = new ContactInfo
-                {
-                    Id = Guid.NewGuid(),
-                    Data = data,
-                    Label = label,
-                    Type = type
-                };
+                    {
+                        Id = Guid.NewGuid(),
+                        Data = data,
+                        Label = label,
+                        Type = type,
+                        StatusInt = (int)ImportStatus.New
+                    };
+
                 //Add the new contact info to the list being imported
                 contactInfoDictionary.GetOrAdd(newContactInfo.Id, newContactInfo);
 
                 //Since the contact info is new, we add it to the contact info set to be searched next time we try and match
-                _contactInfoSet.GetOrAdd(newContactInfo.Id, ContactInfo.ConvertBack(newContactInfo));
+                _contactInfoSets.GetOrAdd(newContactInfo.Id, ContactInfo.ConvertBack(newContactInfo));
             }
         }
 

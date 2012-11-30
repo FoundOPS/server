@@ -2,7 +2,7 @@ using System;
 
 namespace FoundOps.Api.Models
 {
-    public class ContactInfo
+    public class ContactInfo : IImportable
     {
         public Guid Id { get; set; }
         /// <summary>
@@ -22,6 +22,8 @@ namespace FoundOps.Api.Models
 
         public Guid? LocationId { get; set; }
         public Guid? ClientId { get; set; }
+        
+        public int? StatusInt { get; set; }
 
         public static ContactInfo Convert(FoundOps.Core.Models.CoreEntities.ContactInfo contactInfoModel)
         {
