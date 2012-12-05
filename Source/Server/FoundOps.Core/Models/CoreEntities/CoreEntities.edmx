@@ -321,6 +321,18 @@
             <End Role="VehicleMaintenanceLog" EntitySet="VehicleMaintenanceLog" />
           </AssociationSet>
         </EntityContainer>
+      <Function Name="GetResourcesWithLatestPoint" IsComposable="false">
+        <CommandText>
+          SELECT EmployeeId, VehicleId, EntityName, Heading, Latitude, Longitude, CollectedTimeStamp, Speed, Source, RouteId, Accuracy
+          FROM dbo.GetResourcesWithLatestPoint (@serviceProviderId, @serviceDateUtc)
+        </CommandText>
+        <Parameter Name="serviceProviderId"
+               Mode="In"
+               Type="uniqueidentifier"/>
+        <Parameter Name="serviceDateUtc"
+                   Mode="In"
+                   Type="date"/>
+      </Function>
         <EntityType Name="Blocks">
           <Key>
             <PropertyRef Name="Id" />
@@ -571,6 +583,7 @@
           <Property Name="QuickBooksSessionXml" Type="nvarchar(max)" />
           <Property Name="MaxRoutes" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="IntId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
         </EntityType>
         <EntityType Name="Parties_UserAccount">
@@ -2073,33 +2086,42 @@
             <End Role="BusinessAccount" EntitySet="Parties" />
             <End Role="Vehicle" EntitySet="Vehicles" />
           </AssociationSet>
+          <FunctionImport Name="ArchiveClientBasedOnId">
+            <Parameter Name="clientId" Mode="In" Type="Guid" />
+            <Parameter Name="userId" Mode="In" Type="Guid" />
+          </FunctionImport>
+          <FunctionImport Name="ArchiveLocationBasedOnId">
+            <Parameter Name="locationId" Mode="In" Type="Guid" />
+            <Parameter Name="date" Mode="In" Type="DateTime" />
+            <Parameter Name="userId" Mode="In" Type="Guid" />
+          </FunctionImport>
           <FunctionImport Name="DeleteBasicPartyBasedOnId">
-          <Parameter Name="providerId" Mode="In" Type="Guid" />
+            <Parameter Name="providerId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteBusinessAccountBasedOnId">
-          <Parameter Name="providerId" Mode="In" Type="Guid" />
+            <Parameter Name="providerId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteClientBasedOnId">
-          <Parameter Name="clientId" Mode="In" Type="Guid" />
+            <Parameter Name="clientId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteFieldAndChildrenBasedOnFieldId">
-          <Parameter Name="parentFieldId" Mode="In" Type="Guid" />
+            <Parameter Name="parentFieldId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteLocationBasedOnId">
-          <Parameter Name="locationId" Mode="In" Type="Guid" />
+            <Parameter Name="locationId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteRecurringService">
-          <Parameter Name="recurringServiceId" Mode="In" Type="Guid" />
+            <Parameter Name="recurringServiceId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteServiceTemplateAndChildrenBasedOnServiceTemplateId">
-          <Parameter Name="parentTemplateId" Mode="In" Type="Guid" />
+            <Parameter Name="parentTemplateId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteServiceTemplatesAndChildrenBasedOnContextId">
             <Parameter Name="serviceProviderId" Mode="In" Type="Guid" />
             <Parameter Name="ownerClientId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="DeleteUserAccountBasedOnId">
-          <Parameter Name="providerId" Mode="In" Type="Guid" />
+            <Parameter Name="providerId" Mode="In" Type="Guid" />
           </FunctionImport>
           <FunctionImport Name="GetDateRangeForServices" ReturnType="Collection(DateTime)">
             <Parameter Name="serviceProviderIdContext" Mode="In" Type="Guid" />
@@ -2142,26 +2164,6 @@
             <Parameter Name="serviceTemplateId" Mode="In" Type="Guid" />
             <Parameter Name="userId" Mode="In" Type="Guid" />
           </FunctionImport>
-          <FunctionImport Name="TestFieldPropagationSuccess">
-            <Parameter Name="serviceTemplateId" Mode="In" Type="Guid" />
-            <Parameter Name="fieldName" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="TestNewServiceTemplatePropagationSuccess">
-          <Parameter Name="serviceTemplateId" Mode="In" Type="Guid" />
-          </FunctionImport>
-          <FunctionImport Name="TestServiceTemplateNamePropagationSuccess">
-            <Parameter Name="serviceTemplateId" Mode="In" Type="Guid" />
-            <Parameter Name="oldName" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="GetResourcesWithLatestPoint" ReturnType="Collection(CoreEntities.ResourceWithLastPoint)">
-            <Parameter Name="serviceProviderId" Mode="In" Type="Guid" />
-            <Parameter Name="serviceDateUtc" Mode="In" Type="DateTime" />
-          </FunctionImport>
-          <FunctionImport Name="ArchiveLocationBasedOnId">
-            <Parameter Name="locationId" Mode="In" Type="Guid" />
-            <Parameter Name="date" Mode="In" Type="DateTime" />
-            <Parameter Name="userId" Mode="In" Type="Guid" />
-          </FunctionImport>
           <FunctionImport Name="PropagateNewFields">
             <Parameter Name="FieldId" Mode="In" Type="Guid" />
             <Parameter Name="userId" Mode="In" Type="Guid" />
@@ -2175,9 +2177,20 @@
             <Parameter Name="serviceDate" Mode="In" Type="DateTime" />
             <Parameter Name="userId" Mode="In" Type="Guid" />
           </FunctionImport>
-          <FunctionImport Name="ArchiveClientBasedOnId">
-            <Parameter Name="clientId" Mode="In" Type="Guid" />
-            <Parameter Name="userId" Mode="In" Type="Guid" />
+          <FunctionImport Name="TestFieldPropagationSuccess">
+            <Parameter Name="serviceTemplateId" Mode="In" Type="Guid" />
+            <Parameter Name="fieldName" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="TestNewServiceTemplatePropagationSuccess">
+            <Parameter Name="serviceTemplateId" Mode="In" Type="Guid" />
+          </FunctionImport>
+          <FunctionImport Name="TestServiceTemplateNamePropagationSuccess">
+            <Parameter Name="serviceTemplateId" Mode="In" Type="Guid" />
+            <Parameter Name="oldName" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="GetResourcesWithLatestPoint" ReturnType="Collection(CoreEntities.ResourceWithLastPoint)">
+            <Parameter Name="serviceProviderId" Mode="In" Type="Guid" />
+            <Parameter Name="serviceDateUtc" Mode="In" Type="DateTime" />
           </FunctionImport>
           </EntityContainer>
         <EntityType Name="Block">
@@ -2652,6 +2665,7 @@
           <NavigationProperty Name="OwnedRoles" Relationship="CoreEntities.RoleBusinessAccount" FromRole="BusinessAccount" ToRole="Role" />
           <NavigationProperty Name="TaskStatuses" Relationship="CoreEntities.TaskStatusBusinessAccount" FromRole="BusinessAccount" ToRole="TaskStatus" />
           <NavigationProperty Name="Vehicles" Relationship="CoreEntities.BusinessAccountVehicle" FromRole="BusinessAccount" ToRole="Vehicle" />
+          <Property Type="Int32" Name="IntId" Nullable="false" a:StoreGeneratedPattern="Identity" xmlns:a="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
         </EntityType>
         <Association Name="BusinessAccountService">
           <End Type="CoreEntities.BusinessAccount" Role="BusinessAccount" Multiplicity="1" />
@@ -3476,6 +3490,7 @@
           <ScalarProperty Name="QuickBooksSessionXml" ColumnName="QuickBooksSessionXml" />
           <ScalarProperty Name="MaxRoutes" ColumnName="MaxRoutes" />
           <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="IntId" ColumnName="IntId" />
         </MappingFragment>
       </EntityTypeMapping>
       <EntityTypeMapping TypeName="IsTypeOf(CoreEntities.UserAccount)">
@@ -3990,6 +4005,8 @@
         <ScalarProperty Name="Id" ColumnName="Employees_Id" />
       </EndProperty>
     </AssociationSetMapping>
+          <FunctionImportMapping FunctionImportName="ArchiveClientBasedOnId" FunctionName="CoreEntities.Store.ArchiveClientBasedOnId" />
+          <FunctionImportMapping FunctionImportName="ArchiveLocationBasedOnId" FunctionName="CoreEntities.Store.ArchiveLocationBasedOnId" />
           <FunctionImportMapping FunctionImportName="DeleteBasicPartyBasedOnId" FunctionName="CoreEntities.Store.DeleteBasicPartyBasedOnId" />
           <FunctionImportMapping FunctionImportName="DeleteBusinessAccountBasedOnId" FunctionName="CoreEntities.Store.DeleteBusinessAccountBasedOnId" />
           <FunctionImportMapping FunctionImportName="DeleteClientBasedOnId" FunctionName="CoreEntities.Store.DeleteClientBasedOnId" />
@@ -4022,14 +4039,29 @@
           </FunctionImportMapping>
           <FunctionImportMapping FunctionImportName="GetServiceTemplatesWithDateAndDetails" FunctionName="CoreEntities.Store.GetServiceTemplatesWithDateAndDetails" />
           <FunctionImportMapping FunctionImportName="PropagateNameChange" FunctionName="CoreEntities.Store.PropagateNameChange" />
-          <FunctionImportMapping FunctionImportName="TestFieldPropagationSuccess" FunctionName="CoreEntities.Store.TestFieldPropagationSuccess" />
-          <FunctionImportMapping FunctionImportName="TestNewServiceTemplatePropagationSuccess" FunctionName="CoreEntities.Store.TestNewServiceTemplatePropagationSuccess" />
-          <FunctionImportMapping FunctionImportName="TestServiceTemplateNamePropagationSuccess" FunctionName="CoreEntities.Store.TestServiceTemplateNamePropagationSuccess" />
-          <FunctionImportMapping FunctionImportName="ArchiveLocationBasedOnId" FunctionName="CoreEntities.Store.ArchiveLocationBasedOnId" />
           <FunctionImportMapping FunctionImportName="PropagateNewFields" FunctionName="CoreEntities.Store.PropagateNewFields" />
           <FunctionImportMapping FunctionImportName="PropagateNewServiceTemplateToClients" FunctionName="CoreEntities.Store.PropagateNewServiceTemplateToClients" />
           <FunctionImportMapping FunctionImportName="sp_GetUnroutedServicesForDate" FunctionName="CoreEntities.Store.sp_GetUnroutedServicesForDate" />
-          <FunctionImportMapping FunctionImportName="ArchiveClientBasedOnId" FunctionName="CoreEntities.Store.ArchiveClientBasedOnId" />
+          <FunctionImportMapping FunctionImportName="TestFieldPropagationSuccess" FunctionName="CoreEntities.Store.TestFieldPropagationSuccess" />
+          <FunctionImportMapping FunctionImportName="TestNewServiceTemplatePropagationSuccess" FunctionName="CoreEntities.Store.TestNewServiceTemplatePropagationSuccess" />
+          <FunctionImportMapping FunctionImportName="TestServiceTemplateNamePropagationSuccess" FunctionName="CoreEntities.Store.TestServiceTemplateNamePropagationSuccess" />
+          <FunctionImportMapping FunctionImportName="GetResourcesWithLatestPoint" FunctionName="CoreEntities.Store.GetResourcesWithLatestPoint">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CoreEntities.ResourceWithLastPoint">
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="VehicleId" ColumnName="VehicleId" />
+                <ScalarProperty Name="EntityName" ColumnName="EntityName" />
+                <ScalarProperty Name="Heading" ColumnName="Heading" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="CollectedTimeStamp" ColumnName="CollectedTimeStamp" />
+                <ScalarProperty Name="Speed" ColumnName="Speed" />
+                <ScalarProperty Name="Source" ColumnName="Source" />
+                <ScalarProperty Name="RouteId" ColumnName="RouteId" />
+                <ScalarProperty Name="Accuracy" ColumnName="Accuracy" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>

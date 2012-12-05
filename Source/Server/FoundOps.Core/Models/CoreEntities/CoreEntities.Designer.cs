@@ -832,6 +832,77 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        /// <param name="clientId">No Metadata Documentation available.</param>
+        /// <param name="userId">No Metadata Documentation available.</param>
+        public int ArchiveClientBasedOnId(Nullable<global::System.Guid> clientId, Nullable<global::System.Guid> userId)
+        {
+            ObjectParameter clientIdParameter;
+            if (clientId.HasValue)
+            {
+                clientIdParameter = new ObjectParameter("clientId", clientId);
+            }
+            else
+            {
+                clientIdParameter = new ObjectParameter("clientId", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter userIdParameter;
+            if (userId.HasValue)
+            {
+                userIdParameter = new ObjectParameter("userId", userId);
+            }
+            else
+            {
+                userIdParameter = new ObjectParameter("userId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("ArchiveClientBasedOnId", clientIdParameter, userIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="locationId">No Metadata Documentation available.</param>
+        /// <param name="date">No Metadata Documentation available.</param>
+        /// <param name="userId">No Metadata Documentation available.</param>
+        public int ArchiveLocationBasedOnId(Nullable<global::System.Guid> locationId, Nullable<global::System.DateTime> date, Nullable<global::System.Guid> userId)
+        {
+            ObjectParameter locationIdParameter;
+            if (locationId.HasValue)
+            {
+                locationIdParameter = new ObjectParameter("locationId", locationId);
+            }
+            else
+            {
+                locationIdParameter = new ObjectParameter("locationId", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter dateParameter;
+            if (date.HasValue)
+            {
+                dateParameter = new ObjectParameter("date", date);
+            }
+            else
+            {
+                dateParameter = new ObjectParameter("date", typeof(global::System.DateTime));
+            }
+    
+            ObjectParameter userIdParameter;
+            if (userId.HasValue)
+            {
+                userIdParameter = new ObjectParameter("userId", userId);
+            }
+            else
+            {
+                userIdParameter = new ObjectParameter("userId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("ArchiveLocationBasedOnId", locationIdParameter, dateParameter, userIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         /// <param name="providerId">No Metadata Documentation available.</param>
         public int DeleteBasicPartyBasedOnId(Nullable<global::System.Guid> providerId)
         {
@@ -1381,6 +1452,107 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
+        /// <param name="fieldId">No Metadata Documentation available.</param>
+        /// <param name="userId">No Metadata Documentation available.</param>
+        public int PropagateNewFields(Nullable<global::System.Guid> fieldId, Nullable<global::System.Guid> userId)
+        {
+            ObjectParameter fieldIdParameter;
+            if (fieldId.HasValue)
+            {
+                fieldIdParameter = new ObjectParameter("FieldId", fieldId);
+            }
+            else
+            {
+                fieldIdParameter = new ObjectParameter("FieldId", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter userIdParameter;
+            if (userId.HasValue)
+            {
+                userIdParameter = new ObjectParameter("userId", userId);
+            }
+            else
+            {
+                userIdParameter = new ObjectParameter("userId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("PropagateNewFields", fieldIdParameter, userIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="serviceTemplateId">No Metadata Documentation available.</param>
+        /// <param name="userId">No Metadata Documentation available.</param>
+        public int PropagateNewServiceTemplateToClients(Nullable<global::System.Guid> serviceTemplateId, Nullable<global::System.Guid> userId)
+        {
+            ObjectParameter serviceTemplateIdParameter;
+            if (serviceTemplateId.HasValue)
+            {
+                serviceTemplateIdParameter = new ObjectParameter("serviceTemplateId", serviceTemplateId);
+            }
+            else
+            {
+                serviceTemplateIdParameter = new ObjectParameter("serviceTemplateId", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter userIdParameter;
+            if (userId.HasValue)
+            {
+                userIdParameter = new ObjectParameter("userId", userId);
+            }
+            else
+            {
+                userIdParameter = new ObjectParameter("userId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("PropagateNewServiceTemplateToClients", serviceTemplateIdParameter, userIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        /// <param name="serviceProviderIdContext">No Metadata Documentation available.</param>
+        /// <param name="serviceDate">No Metadata Documentation available.</param>
+        /// <param name="userId">No Metadata Documentation available.</param>
+        public int sp_GetUnroutedServicesForDate(Nullable<global::System.Guid> serviceProviderIdContext, Nullable<global::System.DateTime> serviceDate, Nullable<global::System.Guid> userId)
+        {
+            ObjectParameter serviceProviderIdContextParameter;
+            if (serviceProviderIdContext.HasValue)
+            {
+                serviceProviderIdContextParameter = new ObjectParameter("serviceProviderIdContext", serviceProviderIdContext);
+            }
+            else
+            {
+                serviceProviderIdContextParameter = new ObjectParameter("serviceProviderIdContext", typeof(global::System.Guid));
+            }
+    
+            ObjectParameter serviceDateParameter;
+            if (serviceDate.HasValue)
+            {
+                serviceDateParameter = new ObjectParameter("serviceDate", serviceDate);
+            }
+            else
+            {
+                serviceDateParameter = new ObjectParameter("serviceDate", typeof(global::System.DateTime));
+            }
+    
+            ObjectParameter userIdParameter;
+            if (userId.HasValue)
+            {
+                userIdParameter = new ObjectParameter("userId", userId);
+            }
+            else
+            {
+                userIdParameter = new ObjectParameter("userId", typeof(global::System.Guid));
+            }
+    
+            return base.ExecuteFunction("sp_GetUnroutedServicesForDate", serviceProviderIdContextParameter, serviceDateParameter, userIdParameter);
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
         /// <param name="serviceTemplateId">No Metadata Documentation available.</param>
         /// <param name="fieldName">No Metadata Documentation available.</param>
         public int TestFieldPropagationSuccess(Nullable<global::System.Guid> serviceTemplateId, global::System.String fieldName)
@@ -1485,178 +1657,6 @@ namespace FoundOps.Core.Models.CoreEntities
             }
     
             return base.ExecuteFunction<ResourceWithLastPoint>("GetResourcesWithLatestPoint", serviceProviderIdParameter, serviceDateUtcParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        /// <param name="locationId">No Metadata Documentation available.</param>
-        /// <param name="date">No Metadata Documentation available.</param>
-        /// <param name="userId">No Metadata Documentation available.</param>
-        public int ArchiveLocationBasedOnId(Nullable<global::System.Guid> locationId, Nullable<global::System.DateTime> date, Nullable<global::System.Guid> userId)
-        {
-            ObjectParameter locationIdParameter;
-            if (locationId.HasValue)
-            {
-                locationIdParameter = new ObjectParameter("locationId", locationId);
-            }
-            else
-            {
-                locationIdParameter = new ObjectParameter("locationId", typeof(global::System.Guid));
-            }
-    
-            ObjectParameter dateParameter;
-            if (date.HasValue)
-            {
-                dateParameter = new ObjectParameter("date", date);
-            }
-            else
-            {
-                dateParameter = new ObjectParameter("date", typeof(global::System.DateTime));
-            }
-    
-            ObjectParameter userIdParameter;
-            if (userId.HasValue)
-            {
-                userIdParameter = new ObjectParameter("userId", userId);
-            }
-            else
-            {
-                userIdParameter = new ObjectParameter("userId", typeof(global::System.Guid));
-            }
-    
-            return base.ExecuteFunction("ArchiveLocationBasedOnId", locationIdParameter, dateParameter, userIdParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        /// <param name="fieldId">No Metadata Documentation available.</param>
-        /// <param name="userId">No Metadata Documentation available.</param>
-        public int PropagateNewFields(Nullable<global::System.Guid> fieldId, Nullable<global::System.Guid> userId)
-        {
-            ObjectParameter fieldIdParameter;
-            if (fieldId.HasValue)
-            {
-                fieldIdParameter = new ObjectParameter("FieldId", fieldId);
-            }
-            else
-            {
-                fieldIdParameter = new ObjectParameter("FieldId", typeof(global::System.Guid));
-            }
-    
-            ObjectParameter userIdParameter;
-            if (userId.HasValue)
-            {
-                userIdParameter = new ObjectParameter("userId", userId);
-            }
-            else
-            {
-                userIdParameter = new ObjectParameter("userId", typeof(global::System.Guid));
-            }
-    
-            return base.ExecuteFunction("PropagateNewFields", fieldIdParameter, userIdParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        /// <param name="serviceTemplateId">No Metadata Documentation available.</param>
-        /// <param name="userId">No Metadata Documentation available.</param>
-        public int PropagateNewServiceTemplateToClients(Nullable<global::System.Guid> serviceTemplateId, Nullable<global::System.Guid> userId)
-        {
-            ObjectParameter serviceTemplateIdParameter;
-            if (serviceTemplateId.HasValue)
-            {
-                serviceTemplateIdParameter = new ObjectParameter("serviceTemplateId", serviceTemplateId);
-            }
-            else
-            {
-                serviceTemplateIdParameter = new ObjectParameter("serviceTemplateId", typeof(global::System.Guid));
-            }
-    
-            ObjectParameter userIdParameter;
-            if (userId.HasValue)
-            {
-                userIdParameter = new ObjectParameter("userId", userId);
-            }
-            else
-            {
-                userIdParameter = new ObjectParameter("userId", typeof(global::System.Guid));
-            }
-    
-            return base.ExecuteFunction("PropagateNewServiceTemplateToClients", serviceTemplateIdParameter, userIdParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        /// <param name="serviceProviderIdContext">No Metadata Documentation available.</param>
-        /// <param name="serviceDate">No Metadata Documentation available.</param>
-        /// <param name="userId">No Metadata Documentation available.</param>
-        public int sp_GetUnroutedServicesForDate(Nullable<global::System.Guid> serviceProviderIdContext, Nullable<global::System.DateTime> serviceDate, Nullable<global::System.Guid> userId)
-        {
-            ObjectParameter serviceProviderIdContextParameter;
-            if (serviceProviderIdContext.HasValue)
-            {
-                serviceProviderIdContextParameter = new ObjectParameter("serviceProviderIdContext", serviceProviderIdContext);
-            }
-            else
-            {
-                serviceProviderIdContextParameter = new ObjectParameter("serviceProviderIdContext", typeof(global::System.Guid));
-            }
-    
-            ObjectParameter serviceDateParameter;
-            if (serviceDate.HasValue)
-            {
-                serviceDateParameter = new ObjectParameter("serviceDate", serviceDate);
-            }
-            else
-            {
-                serviceDateParameter = new ObjectParameter("serviceDate", typeof(global::System.DateTime));
-            }
-    
-            ObjectParameter userIdParameter;
-            if (userId.HasValue)
-            {
-                userIdParameter = new ObjectParameter("userId", userId);
-            }
-            else
-            {
-                userIdParameter = new ObjectParameter("userId", typeof(global::System.Guid));
-            }
-    
-            return base.ExecuteFunction("sp_GetUnroutedServicesForDate", serviceProviderIdContextParameter, serviceDateParameter, userIdParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        /// <param name="clientId">No Metadata Documentation available.</param>
-        /// <param name="userId">No Metadata Documentation available.</param>
-        public int ArchiveClientBasedOnId(Nullable<global::System.Guid> clientId, Nullable<global::System.Guid> userId)
-        {
-            ObjectParameter clientIdParameter;
-            if (clientId.HasValue)
-            {
-                clientIdParameter = new ObjectParameter("clientId", clientId);
-            }
-            else
-            {
-                clientIdParameter = new ObjectParameter("clientId", typeof(global::System.Guid));
-            }
-    
-            ObjectParameter userIdParameter;
-            if (userId.HasValue)
-            {
-                userIdParameter = new ObjectParameter("userId", userId);
-            }
-            else
-            {
-                userIdParameter = new ObjectParameter("userId", typeof(global::System.Guid));
-            }
-    
-            return base.ExecuteFunction("ArchiveClientBasedOnId", clientIdParameter, userIdParameter);
         }
 
         #endregion
@@ -1938,11 +1938,13 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
         /// <param name="id">Initial value of the Id property.</param>
         /// <param name="createdDate">Initial value of the CreatedDate property.</param>
-        public static BusinessAccount CreateBusinessAccount(global::System.Guid id, global::System.DateTime createdDate)
+        /// <param name="intId">Initial value of the IntId property.</param>
+        public static BusinessAccount CreateBusinessAccount(global::System.Guid id, global::System.DateTime createdDate, global::System.Int32 intId)
         {
             BusinessAccount businessAccount = new BusinessAccount();
             businessAccount.Id = id;
             businessAccount.CreatedDate = createdDate;
+            businessAccount.IntId = intId;
             return businessAccount;
         }
 
@@ -2117,6 +2119,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private global::System.String _Name;
         partial void OnNameChanging(global::System.String value);
         partial void OnNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int32 IntId
+        {
+            get
+            {
+                return _IntId;
+            }
+            set
+            {
+                OnIntIdChanging(value);
+                ReportPropertyChanging("IntId");
+                _IntId = StructuralObject.SetValidValue(value, "IntId");
+                ReportPropertyChanged("IntId");
+                OnIntIdChanged();
+            }
+        }
+        private global::System.Int32 _IntId;
+        partial void OnIntIdChanging(global::System.Int32 value);
+        partial void OnIntIdChanged();
 
         #endregion
 
