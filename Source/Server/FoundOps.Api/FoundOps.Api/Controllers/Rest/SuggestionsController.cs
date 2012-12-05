@@ -298,16 +298,22 @@ namespace FoundOps.Api.Controllers.Rest
 
                 #endregion
 
+                //TODO replace all ... != "" with !String.IsNullOrEmpty(...)
+
                 #region Repeat
 
                 if (new[] { startDateCol, endDateCol, endAfterCol, repeatEveryCol, frequencyCol, frequencyDetailCol }.Any(col => col != -1))
                 {
+                    //TODO check for invalid DateTimes
+                    var startDate = startDateCol > -1 && !String.IsNullOrEmpty(row[startDateCol]) ? Convert.ToDateTime(row[startDateCol]) : DateTime.UtcNow.Date;
+                    var endDate = endDateCol > -1 && !String.IsNullOrEmpty(row[endDateCol]) ? Convert.ToDateTime(row[endDateCol]) : (DateTime?)null;
+
                     //Note: If no start date is passed, set it to today
                     var repeat = new Repeat
                     {
                         Id = Guid.NewGuid(),
-                        StartDate = startDateCol != -1 || row[startDateCol] != "" ? Convert.ToDateTime(row[startDateCol]) : DateTime.UtcNow.Date,
-                        EndDate = endDateCol != -1 && row[endDateCol] != "" ? Convert.ToDateTime(row[endDateCol]) : (DateTime?)null,
+                        StartDate = startDate,
+                        EndDate = endDate,
                         EndAfterTimes = endAfterCol != -1 && row[endAfterCol] != "" ? Convert.ToInt32(row[endAfterCol]) : (int?)null,
                         RepeatEveryTimes = repeatEveryCol != -1 && row[repeatEveryCol] != "" ? Convert.ToInt32(row[repeatEveryCol]) : (int?)null
                     };
@@ -549,7 +555,7 @@ namespace FoundOps.Api.Controllers.Rest
                         foreach (var client in convertedClientSuggestions)
                             clients.GetOrAdd(client.Id, client);
                     }
-                    
+
                     //Add the Client passed to the list of client entites
                     clients.GetOrAdd(row.Client.Id, row.Client);
                 }
@@ -637,7 +643,7 @@ namespace FoundOps.Api.Controllers.Rest
             {
                 //Convert the ContactInfo and add a linked status to it
                 var existingContactInfo = ContactInfo.Convert(existingContact.Value);
-                existingContactInfo.StatusInt = (int) ImportStatus.Linked;
+                existingContactInfo.StatusInt = (int)ImportStatus.Linked;
 
                 contactInfoDictionary.GetOrAdd(existingContact.Value.Id, existingContactInfo);
             }
