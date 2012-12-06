@@ -1,4 +1,5 @@
-﻿using System.Reactive;
+﻿using System.Dynamic;
+using System.Reactive;
 using System.Reactive.Concurrency;
 using System.Reactive.Subjects;
 using Dapper;
@@ -91,6 +92,11 @@ namespace FoundOps.Api.Controllers.Rest
                 this.SuggestEntites(request.Rows);
         }
 
+        private string GetString(IEnumerable<string> row, int index)
+        {
+            return index < 0 ? null : row.ElementAt(index);
+        }
+
         /// <summary>
         /// Manipulates the input strings to existing or new entities.
         /// Then it passes those entities to SuggestEntities to generate suggestions.
@@ -161,8 +167,8 @@ namespace FoundOps.Api.Controllers.Rest
                 //Checks if at least one location column is passed
                 if (new[] { addressLineOneCol, addressLineTwoCol, cityCol, stateCol, countryCodeCol, zipCodeCol, latitudeCol, longitudeCol }.Any(col => col != -1))
                 {
-                    var latitude = latitudeCol != -1 ? row[latitudeCol] : "";
-                    var longitude = longitudeCol != -1 ? row[longitudeCol] : "";
+                    var latitude = latitudeCol != -1 ? row[latitudeCol] : null;
+                    var longitude = longitudeCol != -1 ? row[longitudeCol] : null;
                     var addressLineOne = addressLineOneCol != -1 ? row[addressLineOneCol] : null;
                     var addressLineTwo = addressLineTwoCol != -1 ? row[addressLineTwoCol] : null;
                     var adminDistrictTwo = cityCol != -1 ? row[cityCol] : null;
@@ -170,15 +176,15 @@ namespace FoundOps.Api.Controllers.Rest
                     var postalCode = zipCodeCol != -1 ? row[zipCodeCol] : null;
                     var regionName = regionNameCol != -1 ? row[regionNameCol] : null;
 
-                    //If Lat/Lon dont have values, try to Geocode
-                    if (latitude == "" && longitude == "")
+                    //If lat/lon dont have values, try to Geocode
+                    if (latitude == null && longitude == null)
                     {
                         var address = new Address
                         {
-                            AddressLineOne = addressLineOne ?? "",
-                            City = adminDistrictTwo ?? "",
-                            State = adminDistrictOne ?? "",
-                            ZipCode = postalCode ?? ""
+                            AddressLineOne = addressLineOne,
+                            City = adminDistrictTwo,
+                            State = adminDistrictOne,
+                            ZipCode = postalCode
                         };
 
                         //Attempt to Geocode the address
@@ -211,31 +217,58 @@ namespace FoundOps.Api.Controllers.Rest
                         }
                     }
 
-                    //If lat/long exist, try and match based on that
-                    if (latitude != "" && longitude != "" && importedLocation.StatusInt != (int)ImportStatus.Error)
+                    //If lat/lon exist, try and match based on that
+                    if (latitude != null && longitude != null && importedLocation.StatusInt != (int)ImportStatus.Error)
                     {
-                        var roundedLatitude = Math.Round(Convert.ToDecimal(latitude), 6);
-                        var roundedLongitude = Math.Round(Convert.ToDecimal(longitude), 6);
+                        var setError = false;
 
-                        //Try and match a location to one in the FoundOPS system
-                        var matchedLocation = addressLineTwo != null
-                            //Use this statement if Address Line Two is not null
-                        ? _locations.FirstOrDefault(l => l.Value.AddressLineTwo == addressLineTwo && (l.Value.Latitude != null && l.Value.Longitude != null)
-                            && (decimal.Round(l.Value.Latitude.Value, 6) == roundedLatitude
-                            && decimal.Round(l.Value.Longitude.Value, 6) == roundedLongitude))
-                            //Use this statement if Address Line Two is null
-                        : _locations.FirstOrDefault(l => (l.Value.Latitude != null && l.Value.Longitude != null)
-                            && (decimal.Round(l.Value.Latitude.Value, 6) == roundedLatitude
-                            && decimal.Round(l.Value.Longitude.Value, 6) == roundedLongitude));
+                        //check for invalid deciamls
+                        Decimal convertedLatitude = 0;
+                        Decimal convertedLongitude = 0;
+                        Decimal tempdeciaml;
+                        
+                        if (Decimal.TryParse(latitude, out tempdeciaml))
+                            convertedLatitude = tempdeciaml;
+                        else
+                            setError = true;
 
-                        //If a match is found, assign Linked status to all cells
-                        if (matchedLocation.Key != Guid.Empty)
-                            importedLocation = ConvertLocationSetRegionAndStatus(matchedLocation.Value, regionName, ImportStatus.Linked);
+                        if (Decimal.TryParse(longitude, out tempdeciaml))
+                            convertedLongitude = tempdeciaml;
+                        else
+                            setError = true;
+
+                        if (!setError)
+                        {
+                            var roundedLatitude = Math.Round(convertedLatitude, 6);
+                            var roundedLongitude = Math.Round(convertedLongitude, 6);
+
+                            //Try and match a location to one in the FoundOPS system
+                            var matchedLocation = addressLineTwo != null
+                                //Use this statement if Address Line Two is not null
+                            ? _locations.FirstOrDefault(l => l.Value.AddressLineTwo == addressLineTwo && (l.Value.Latitude != null && l.Value.Longitude != null)
+                                && (decimal.Round(l.Value.Latitude.Value, 6) == roundedLatitude
+                                && decimal.Round(l.Value.Longitude.Value, 6) == roundedLongitude))
+                                //Use this statement if Address Line Two is null
+                            : _locations.FirstOrDefault(l => (l.Value.Latitude != null && l.Value.Longitude != null)
+                                && (decimal.Round(l.Value.Latitude.Value, 6) == roundedLatitude
+                                && decimal.Round(l.Value.Longitude.Value, 6) == roundedLongitude));
+
+                            //If a match is found, assign Linked status to all cells
+                            if (matchedLocation.Key != Guid.Empty)
+                                importedLocation = ConvertLocationSetRegionAndStatus(matchedLocation.Value, regionName, ImportStatus.Linked);
+                        }
+                        else
+                            importedLocation.StatusInt = (int) ImportStatus.Error;
                     }
 
                     //If no linked location is found, it means that the location is new
                     if (importedLocation.StatusInt != (int)ImportStatus.Linked)
                     {
+                        var status = (int) ImportStatus.New;
+
+                        if (importedLocation.StatusInt == (int) ImportStatus.Error)
+                            status = (int) ImportStatus.Error;
+                        
                         importedLocation = new Api.Models.Location
                         {
                             Id = Guid.NewGuid(),
@@ -248,7 +281,7 @@ namespace FoundOps.Api.Controllers.Rest
                             ContactInfoSet = new List<ContactInfo>(),
                             Latitude = latitude,
                             Longitude = longitude,
-                            StatusInt = (int)ImportStatus.New,
+                            StatusInt = status,
                             Region = SetRegion(regionName)
                         };
 
@@ -298,29 +331,78 @@ namespace FoundOps.Api.Controllers.Rest
 
                 #endregion
 
-                //TODO replace all ... != "" with !String.IsNullOrEmpty(...)
-
                 #region Repeat
 
                 if (new[] { startDateCol, endDateCol, endAfterCol, repeatEveryCol, frequencyCol, frequencyDetailCol }.Any(col => col != -1))
                 {
-                    //TODO check for invalid DateTimes
-                    var startDate = startDateCol > -1 && !String.IsNullOrEmpty(row[startDateCol]) ? Convert.ToDateTime(row[startDateCol]) : DateTime.UtcNow.Date;
-                    var endDate = endDateCol > -1 && !String.IsNullOrEmpty(row[endDateCol]) ? Convert.ToDateTime(row[endDateCol]) : (DateTime?)null;
+                    var setError = false;
 
-                    //Note: If no start date is passed, set it to today
+                    //check for invalid DateTime's
+                    DateTime startDate = DateTime.UtcNow.Date;
+                    DateTime? endDate = null;
+                    DateTime tempDate;
+
+                    if (startDateCol != -1 && !String.IsNullOrEmpty(row[startDateCol]))
+                    {
+                        if (DateTime.TryParse(row[startDateCol], out tempDate))
+                            startDate = tempDate;
+                        else
+                        {
+                            startDate = DateTime.UtcNow.Date;
+                            setError = true;
+                        }
+                    }
+
+                    if (endDateCol != -1 && !String.IsNullOrEmpty(row[endDateCol]))
+                    {
+                        if (DateTime.TryParse(row[endDateCol], out tempDate))
+                            endDate = tempDate;
+                        else
+                        {
+                            endDate = null;
+                            setError = true;
+                        }
+                    }
+
+                    //Check for invalid Int's
+                    int? endAfterTimes = null;
+                    int? repeatEveryTimes = null;
+                    int tempInt;
+
+                    if (endAfterCol != -1 && !String.IsNullOrEmpty(row[endAfterCol]))
+                    {
+                        if (Int32.TryParse(row[endAfterCol], out tempInt))
+                            endAfterTimes = tempInt;
+                        else
+                        {
+                            endAfterTimes = null;
+                            setError = true;
+                        }
+                    }
+                    if (repeatEveryCol != -1 && !String.IsNullOrEmpty(row[repeatEveryCol]))
+                    {
+                        if (Int32.TryParse(row[repeatEveryCol], out tempInt))
+                            endAfterTimes = tempInt;
+                        else
+                        {
+                            endAfterTimes = null;
+                            setError = true;
+                        }
+                    }
+
+                    //Create the Repeat object
                     var repeat = new Repeat
                     {
                         Id = Guid.NewGuid(),
                         StartDate = startDate,
                         EndDate = endDate,
-                        EndAfterTimes = endAfterCol != -1 && row[endAfterCol] != "" ? Convert.ToInt32(row[endAfterCol]) : (int?)null,
-                        RepeatEveryTimes = repeatEveryCol != -1 && row[repeatEveryCol] != "" ? Convert.ToInt32(row[repeatEveryCol]) : (int?)null
+                        EndAfterTimes = endAfterTimes,
+                        RepeatEveryTimes = repeatEveryTimes
                     };
 
                     #region Frequency
 
-                    var val = frequencyCol != -1 ? row[frequencyCol].ToLower() : "";
+                    var val = frequencyCol != -1 ? row[frequencyCol].ToLower() : String.Empty;
                     switch (val)
                     {
                         case "o":
@@ -352,7 +434,7 @@ namespace FoundOps.Api.Controllers.Rest
 
                     #region Frequency Detail
 
-                    val = frequencyDetailCol != -1 ? row[frequencyDetailCol].ToLower() : "";
+                    val = frequencyDetailCol != -1 ? row[frequencyDetailCol].ToLower() : String.Empty;
                     val = val.Replace(" ", "");
                     if (repeat.Frequency == Frequency.Weekly)
                     {
@@ -412,7 +494,7 @@ namespace FoundOps.Api.Controllers.Rest
 
                     #endregion
 
-                    repeat.StatusInt = repeat.RepeatEveryTimes == null || repeat.FrequencyInt == null
+                    repeat.StatusInt = repeat.RepeatEveryTimes == null || repeat.FrequencyInt == null || setError
                                            ? (int)ImportStatus.Error
                                            : (int)ImportStatus.New;
 
