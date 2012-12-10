@@ -133,6 +133,8 @@ namespace FoundOps.Api.Controllers.Rest
             original.AdminDistrictTwo = location.AdminDistrictTwo;
             original.PostalCode = location.ZipCode;
             original.CountryCode = location.CountryCode;
+
+            //TODO CR Make extension method on ITrackable to do this
             original.LastModified = DateTime.UtcNow;
             original.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().Id;
 

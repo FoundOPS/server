@@ -5,32 +5,23 @@ namespace FoundOps.Api.Models
     public class TaskStatus : ITrackable
     {
         public Guid Id { get; set; }
+
+        public DateTime CreatedDate { get; private set; }
+        public DateTime? LastModified { get; private set; }
+        public Guid? LastModifyingUserId { get; private set; }
+
         public string Name { get; set; }
         public string Color { get; set; }
         public Guid? BusinessAccountId { get; set; }
         public int? DefaultTypeInt { get; set; }
         public bool RemoveFromRoute { get; set; }
 
-        public DateTime CreatedDate { get; private set; }
-        public DateTime? LastModified { get; private set; }
-        public Guid? LastModifyingUserId { get; private set; }
-
-        public TaskStatus(DateTime createdDate)
-        {
-            CreatedDate = createdDate;
-        }
-
-        public void SetLastModified(DateTime? lastModified, Guid? userId)
-        {
-            LastModified = lastModified;
-            LastModifyingUserId = userId;
-        }
-
         public static TaskStatus ConvertModel(FoundOps.Core.Models.CoreEntities.TaskStatus model)
         {
-            var status = new TaskStatus(model.CreatedDate)
+            var status = new TaskStatus
             {
                 Id = model.Id,
+                CreatedDate = model.CreatedDate,
                 Name = model.Name,
                 Color = model.Color,
                 DefaultTypeInt = model.DefaultTypeInt,
@@ -59,6 +50,12 @@ namespace FoundOps.Api.Models
             };
 
             return status;
+        }
+
+        public void SetLastModified(DateTime? lastModified, Guid? userId)
+        {
+            LastModified = lastModified;
+            LastModifyingUserId = userId;
         }
     }
 }

@@ -5,6 +5,11 @@ namespace FoundOps.Api.Models
     public class ContactInfo : ITrackable
     {
         public Guid Id { get; set; }
+
+        public DateTime CreatedDate { get; private set; }
+        public DateTime? LastModified { get; private set; }
+        public Guid? LastModifyingUserId { get; private set; }
+
         /// <summary>
         /// The type of contact info (ex: Phone, email, fax)
         /// </summary>
@@ -23,30 +28,21 @@ namespace FoundOps.Api.Models
         public Guid? LocationId { get; set; }
         public Guid? ClientId { get; set; }
 
-        public DateTime CreatedDate { get; private set; }
-        public DateTime? LastModified { get; private set; }
-        public Guid? LastModifyingUserId { get; private set; }
-        
-        public void SetLastModified(DateTime? lastModified, Guid? userId)
+        public ContactInfo()
         {
-            LastModified = lastModified;
-            LastModifyingUserId = LastModifyingUserId;
+            CreatedDate = DateTime.UtcNow;
         }
 
-        public ContactInfo(DateTime createdDate)
-        {
-            CreatedDate = createdDate;
-        }
-        
         public static ContactInfo Convert(FoundOps.Core.Models.CoreEntities.ContactInfo contactInfoModel)
         {
-            var contactInfo = new ContactInfo(contactInfoModel.CreatedDate)
+            var contactInfo = new ContactInfo
                 {
-                    Id = contactInfoModel.Id, 
-                    Type = contactInfoModel.Type, 
-                    Label = contactInfoModel.Label, 
-                    Data = contactInfoModel.Data, 
-                    ClientId = contactInfoModel.ClientId, 
+                    Id = contactInfoModel.Id,
+                    CreatedDate = contactInfoModel.CreatedDate,
+                    Type = contactInfoModel.Type,
+                    Label = contactInfoModel.Label,
+                    Data = contactInfoModel.Data,
+                    ClientId = contactInfoModel.ClientId,
                     LocationId = contactInfoModel.LocationId
                 };
 
@@ -67,10 +63,10 @@ namespace FoundOps.Api.Models
         {
             var contactInfo = new FoundOps.Core.Models.CoreEntities.ContactInfo
                 {
-                    Id = contactInfoModel.Id, 
-                    Type = contactInfoModel.Type, 
-                    Label = contactInfoModel.Label, 
-                    Data = contactInfoModel.Data, 
+                    Id = contactInfoModel.Id,
+                    Type = contactInfoModel.Type,
+                    Label = contactInfoModel.Label,
+                    Data = contactInfoModel.Data,
                     ClientId = contactInfoModel.ClientId,
                     LocationId = contactInfoModel.LocationId,
                     CreatedDate = contactInfoModel.CreatedDate,
@@ -87,6 +83,12 @@ namespace FoundOps.Api.Models
                 contactInfo.Data = "";
 
             return contactInfo;
+        }
+
+        public void SetLastModified(DateTime? lastModified, Guid? userId)
+        {
+            LastModified = lastModified;
+            LastModifyingUserId = LastModifyingUserId;
         }
     }
 }

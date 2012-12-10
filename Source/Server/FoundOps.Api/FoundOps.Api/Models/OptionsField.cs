@@ -12,8 +12,9 @@ namespace FoundOps.Api.Models
 
         public List<Option> Options { get; set; }
 
-        public OptionsField(DateTime createdDate) : base(createdDate)
+        public OptionsField()
         {
+            CreatedDate = DateTime.UtcNow;
             Options = new List<Option>();
         }
 
@@ -24,9 +25,10 @@ namespace FoundOps.Api.Models
         /// <returns>A OptionsField that has been converted to it's API model</returns>
         public static OptionsField ConvertModel(Core.Models.CoreEntities.OptionsField fieldModel)
         {
-            var field = new OptionsField(fieldModel.CreatedDate)
+            var field = new OptionsField
             {
                 Id = fieldModel.Id,
+                CreatedDate = fieldModel.CreatedDate,
                 Name = fieldModel.Name,
                 Required = fieldModel.Required,
                 ToolTip = fieldModel.Tooltip,

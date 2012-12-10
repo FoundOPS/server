@@ -12,6 +12,12 @@ namespace FoundOps.Api.Models
         public Guid Id { get; set; }
 
         /// <summary>
+        /// The accuracy of the GPS coordinates from PhoneGap
+        /// In Meters
+        /// </summary>
+        public int Accuracy { get; set; }
+
+        /// <summary>
         /// The Date of the TrackPoint. On Get, it pulls LastTimeStamp.Date
         /// </summary>
         public DateTime CollectedDate
@@ -40,6 +46,11 @@ namespace FoundOps.Api.Models
         public decimal? Longitude { get; set; }
 
         /// <summary>
+        /// The Id of the Route that this TrackPoint belongs to
+        /// </summary>
+        public Guid? RouteId { get; set; }
+
+        /// <summary>
         /// The speed of this TrackPoint
         /// </summary>
         public decimal? Speed { get; set; }
@@ -48,17 +59,6 @@ namespace FoundOps.Api.Models
         /// The source of this TrackPoint (iPhone, Android, WindowsPhone, etc.)
         /// </summary>
         public string Source { get; set; }
-
-        /// <summary>
-        /// The Id of the Route that this TrackPoint belongs to
-        /// </summary>
-        public Guid? RouteId { get; set; }
-
-        /// <summary>
-        /// The accuracy of the GPS coordinates from PhoneGap
-        /// In Meters
-        /// </summary>
-        public int Accuracy { get; set; }
 
         #region Implementation of IGeoLocation
 

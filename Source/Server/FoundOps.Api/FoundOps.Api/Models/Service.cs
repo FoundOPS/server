@@ -9,6 +9,10 @@ namespace FoundOps.Api.Models
     {
         public Guid Id { get; set; }
 
+        public DateTime CreatedDate { get; private set; }
+        public DateTime? LastModified { get; private set; }
+        public Guid? LastModifyingUserId { get; private set; }
+
         public string Name { get; set; }
         public DateTime ServiceDate { get; set; }
 
@@ -22,20 +26,10 @@ namespace FoundOps.Api.Models
         public Guid? RecurringServiceId { get; set; }
         public Guid ServiceProviderId { get; set; }
 
-        public DateTime CreatedDate { get; private set; }
-        public DateTime? LastModified { get; private set; }
-        public Guid? LastModifyingUserId { get; private set; }
-        
-        public void SetLastModified(DateTime? lastModified, Guid? userId)
-        {
-            LastModified = lastModified;
-            LastModifyingUserId = userId;
-        }
-
-        public Service(DateTime createdDate)
+        public Service()
         {
             Fields = new List<Field>();
-            CreatedDate = createdDate;
+            CreatedDate = DateTime.UtcNow;
         }
 
         /// <summary>
@@ -46,9 +40,10 @@ namespace FoundOps.Api.Models
         public static Service ConvertModel(FoundOps.Core.Models.CoreEntities.Service serviceModel)
         {
             //Create the new service and set its properties
-            var service = new Service(serviceModel.CreatedDate)
+            var service = new Service
             {
                 Id = serviceModel.Id,
+                CreatedDate = serviceModel.CreatedDate,
                 Name = serviceModel.ServiceTemplate.Name,
                 ServiceDate = serviceModel.ServiceDate,
                 ClientId = serviceModel.ClientId,
@@ -69,6 +64,12 @@ namespace FoundOps.Api.Models
                 service.Fields.Add(Field.ConvertModel(field));
 
             return service;
+        }
+
+        public void SetLastModified(DateTime? lastModified, Guid? userId)
+        {
+            LastModified = lastModified;
+            LastModifyingUserId = userId;
         }
     }
 }

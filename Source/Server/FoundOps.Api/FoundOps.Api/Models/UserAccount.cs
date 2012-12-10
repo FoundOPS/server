@@ -7,49 +7,45 @@ namespace FoundOps.Api.Models
     {
         public Guid Id { get; set; }
 
+        public DateTime CreatedDate { get; private set; }
+        public DateTime? LastModified { get; private set; }
+        public Guid? LastModifyingUserId { get; private set; }
+
         public string EmailAddress { get; set; }
-
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-
-        //the url for the account's image
-        public string ImageUrl { get; set; }
 
         /// <summary>
         /// The linked employee for the current business account
         /// </summary>
         public Guid? EmployeeId { get; set; }
 
-        /// <summary>
-        /// The time zone information
-        /// </summary>
-        public TimeZone TimeZone { get; set; }
+        public string FirstName { get; set; }
+
+        //the url for the account's image
+        public string ImageUrl { get; set; }
+
+        public string LastName { get; set; }
 
         /// <summary>
         /// Administrator, Mobile, Regular
         /// </summary>
         public string Role { get; set; }
 
-        public DateTime CreatedDate { get; private set; }
-        public DateTime? LastModified { get; private set; }
-        public Guid? LastModifyingUserId { get; private set; }
+        /// <summary>
+        /// The time zone information
+        /// </summary>
+        public TimeZone TimeZone { get; set; }
 
-        public void SetLastModified(DateTime? lastModified, Guid? userId)
+        public UserAccount()
         {
-            LastModified = lastModified;
-            LastModifyingUserId = userId;
-        }
-
-        public UserAccount(DateTime createdDate)
-        {
-            CreatedDate = createdDate;
+            CreatedDate = DateTime.UtcNow;
         }
 
         public static UserAccount Convert(Core.Models.CoreEntities.UserAccount model)
         {
-            var userAccount = new UserAccount(model.CreatedDate)
+            var userAccount = new UserAccount
             {
                 Id = model.Id,
+                CreatedDate = model.CreatedDate,
                 EmailAddress = model.EmailAddress,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
@@ -65,6 +61,12 @@ namespace FoundOps.Api.Models
                 userAccount.ImageUrl = model.PartyImage.RawUrl + AzureServerHelpers.GetBlobUrlHelper(model.Id, model.PartyImage.Id);
 
             return userAccount;
+        }
+
+        public void SetLastModified(DateTime? lastModified, Guid? userId)
+        {
+            LastModified = lastModified;
+            LastModifyingUserId = userId;
         }
     }
 }

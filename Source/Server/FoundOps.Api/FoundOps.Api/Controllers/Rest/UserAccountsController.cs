@@ -221,6 +221,8 @@ namespace FoundOps.Api.Controllers.Rest
 
                 SetupEmployee(userAccount.EmployeeId, user, businessAccount, currentUserAccount.Id);
 
+                //TODO CR these lines are common w below. Merge
+                //TODO CR Make extension method on ITrackable to do this
                 user.LastModified = DateTime.UtcNow;
                 user.LastModifyingUserId = currentUserAccount.Id;
 
@@ -265,6 +267,7 @@ namespace FoundOps.Api.Controllers.Rest
                         throw Request.BadRequest("The password was incorrect, or the new password is not acceptable");
                 }
 
+                //TODO CR Make extension method on ITrackable to do this
                 currentUserAccount.LastModified = DateTime.UtcNow;
                 currentUserAccount.LastModifyingUserId = currentUserAccount.Id;
 
@@ -341,6 +344,7 @@ namespace FoundOps.Api.Controllers.Rest
                 employee = CoreEntitiesContainer.Employees.First(e => e.Id == employeeId.Value);
             }
 
+            //TODO CR Make extension method on ITrackable to do this
             employee.LastModified = DateTime.UtcNow;
             employee.LinkedUserAccountId = currentUserAccountId;
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using FoundOps.Api.Models;
 
 namespace FoundOps.Api.Models
 {
@@ -10,6 +9,10 @@ namespace FoundOps.Api.Models
         /// The Id
         /// </summary>
         public Guid Id { get; set; }
+
+        public DateTime CreatedDate { get; private set; }
+        public DateTime? LastModified { get; private set; }
+        public Guid? LastModifyingUserId { get; private set; }
 
         /// <summary>
         /// The name of the Client
@@ -21,29 +24,20 @@ namespace FoundOps.Api.Models
         /// </summary>
         public List<ContactInfo> ContactInfoSet { get; set; }
 
-        public DateTime CreatedDate { get; private set; }
-        public DateTime? LastModified { get; private set; }
-        public Guid? LastModifyingUserId { get; private set; }
-
-        public void SetLastModified(DateTime? lastModified, Guid? userId)
-        {
-            LastModified = lastModified;
-            LastModifyingUserId = userId;
-        }
-
-        public Client(DateTime createdDate)
+        public Client()
         {
             ContactInfoSet = new List<ContactInfo>();
-            CreatedDate = createdDate;
+            CreatedDate = DateTime.UtcNow;
         }
 
         public static Client ConvertModel(FoundOps.Core.Models.CoreEntities.Client clientModel)
         {
-            var client = new Client(clientModel.CreatedDate)
-                {
-                    Id = clientModel.Id, 
-                    Name = clientModel.Name
-                };
+            var client = new Client
+            {
+                Id = clientModel.Id,
+                CreatedDate = clientModel.CreatedDate,
+                Name = clientModel.Name
+            };
 
             client.SetLastModified(clientModel.LastModified, clientModel.LastModifyingUserId);
 
@@ -51,6 +45,12 @@ namespace FoundOps.Api.Models
                 client.ContactInfoSet.Add(ContactInfo.Convert(contactInfo));
 
             return client;
+        }
+
+        public void SetLastModified(DateTime? lastModified, Guid? userId)
+        {
+            LastModified = lastModified;
+            LastModifyingUserId = userId;
         }
     }
 }

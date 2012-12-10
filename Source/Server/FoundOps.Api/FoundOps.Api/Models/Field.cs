@@ -6,31 +6,21 @@ namespace FoundOps.Api.Models
     {
         public Guid Id { get; set; }
 
-        public string Type { get; set; }
-
-        public string Name { get; set; }
-
-        public bool Required { get; set; }
-
-        public string ToolTip { get; set; }
-
-        public Guid? ParentFieldId { get; set; }
-
-        public Guid? ServiceTemplateId { get; set; }
-
-        public DateTime CreatedDate { get; private set; }
+        public DateTime CreatedDate { get; protected set; }
         public DateTime? LastModified { get; private set; }
         public Guid? LastModifyingUserId { get; private set; }
-        
-        public void SetLastModified(DateTime? lastModified, Guid? userId)
-        {
-            LastModified = lastModified;
-            LastModifyingUserId = userId;
-        }
 
-        protected Field(DateTime createdDate)
+        public string Name { get; set; }
+        public bool Required { get; set; }
+        public string ToolTip { get; set; }
+        public string Type { get; set; }
+
+        public Guid? ParentFieldId { get; set; }
+        public Guid? ServiceTemplateId { get; set; }
+
+        protected Field()
         {
-            CreatedDate = createdDate;
+            CreatedDate = DateTime.UtcNow;
         }
 
         /// <summary>
@@ -101,6 +91,12 @@ namespace FoundOps.Api.Models
                 return OptionsField.ConvertBack(optionsField);
 
             throw new Exception("Field does not exist");
+        }
+
+        public void SetLastModified(DateTime? lastModified, Guid? userId)
+        {
+            LastModified = lastModified;
+            LastModifyingUserId = userId;
         }
     }
 }

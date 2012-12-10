@@ -66,6 +66,8 @@ namespace FoundOps.Api.Controllers.Rest
             original.DefaultTypeInt = taskStatus.DefaultTypeInt;
             original.Name = taskStatus.Name;
             original.RemoveFromRoute = taskStatus.RemoveFromRoute;
+
+            //TODO CR Make extension method on ITrackable to do this
             original.LastModified = DateTime.UtcNow;
             original.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().Id;
 

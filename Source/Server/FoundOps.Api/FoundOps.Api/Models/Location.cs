@@ -10,6 +10,10 @@ namespace FoundOps.Api.Models
         /// </summary>
         public Guid Id { get; set; }
 
+        public DateTime CreatedDate { get; private set; }
+        public DateTime? LastModified { get; private set; }
+        public Guid? LastModifyingUserId { get; private set; }
+
         /// <summary>
         /// The name given to this Location
         /// </summary>
@@ -60,20 +64,10 @@ namespace FoundOps.Api.Models
         /// </summary>
         public List<ContactInfo> ContactInfoSet { get; set; }
 
-        public DateTime CreatedDate { get; private set; }
-        public DateTime? LastModified { get; private set; }
-        public Guid? LastModifyingUserId { get; private set; }
-
-        public Location(DateTime createdDate)
+        public Location()
         {
             ContactInfoSet = new List<ContactInfo>();
-            CreatedDate = createdDate;
-        }
-
-        public void SetLastModified(DateTime? lastModified, Guid? userId)
-        {
-            LastModified = lastModified;
-            LastModifyingUserId = userId;
+            CreatedDate = DateTime.UtcNow;
         }
 
         public static Core.Models.CoreEntities.Location ConvertBack(Location location)
@@ -100,9 +94,10 @@ namespace FoundOps.Api.Models
 
         public static Location ConvertModel(Core.Models.CoreEntities.Location locationModel)
         {
-            var location = new Location(locationModel.CreatedDate)
+            var location = new Location
             {
                 Id = locationModel.Id,
+                CreatedDate = locationModel.CreatedDate,
                 Name = locationModel.Name,
                 AddressLineOne = locationModel.AddressLineOne,
                 AddressLineTwo = locationModel.AddressLineTwo,
@@ -124,7 +119,7 @@ namespace FoundOps.Api.Models
 
         public static Location ConvertGeocode(FoundOps.Common.NET.GeocoderResult geocoderResult)
         {
-            var location = new Location(DateTime.UtcNow)
+            var location = new Location
             {
                 AddressLineOne = geocoderResult.AddressLineOne,
                 AddressLineTwo = geocoderResult.AddressLineTwo,
@@ -140,6 +135,12 @@ namespace FoundOps.Api.Models
                 location.CountryCode = "US";
 
             return location;
+        }
+
+        public void SetLastModified(DateTime? lastModified, Guid? userId)
+        {
+            LastModified = lastModified;
+            LastModifyingUserId = userId;
         }
     }
 }

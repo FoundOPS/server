@@ -6,6 +6,10 @@ namespace FoundOps.Api.Models
     {
         public Guid Id { get; set; }
 
+        public DateTime CreatedDate { get; private set; }
+        public DateTime? LastModified { get; private set; }
+        public Guid? LastModifyingUserId { get; private set; }
+
         public Guid? LinkedUserAccountId { get; set; }
 
         public string FirstName { get; set; }
@@ -14,26 +18,17 @@ namespace FoundOps.Api.Models
 
         public string DisplayName { get { return FirstName + " " + LastName; }}
 
-        public DateTime CreatedDate { get; private set; }
-        public DateTime? LastModified { get; private set; }
-        public Guid? LastModifyingUserId { get; private set; }
-        
-        public void SetLastModified(DateTime? lastModified, Guid? userId)
+        public Employee()
         {
-            LastModified = lastModified;
-            LastModifyingUserId = userId;
-        }
-
-        public Employee(DateTime currentDate)
-        {
-            CreatedDate = currentDate;
+            CreatedDate = DateTime.UtcNow;
         }
 
         public static Employee ConvertModel(Core.Models.CoreEntities.Employee model)
         {
-            var employee = new Employee(model.CreatedDate)
+            var employee = new Employee
             {
                 Id = model.Id,
+                CreatedDate = model.CreatedDate,
                 LinkedUserAccountId = model.LinkedUserAccountId,
                 FirstName = model.FirstName,
                 MiddleInitial = model.MiddleInitial,
@@ -43,6 +38,12 @@ namespace FoundOps.Api.Models
             employee.SetLastModified(model.LastModified, model.LastModifyingUserId);
 
             return employee;
+        }
+
+        public void SetLastModified(DateTime? lastModified, Guid? userId)
+        {
+            LastModified = lastModified;
+            LastModifyingUserId = userId;
         }
     }
 }

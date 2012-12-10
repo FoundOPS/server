@@ -8,38 +8,32 @@ namespace FoundOps.Api.Models
     {
         public Guid Id { get; set; }
 
+        public DateTime CreatedDate { get; private set; }
+        public DateTime? LastModified { get; private set; }
+        public Guid? LastModifyingUserId { get; private set; }
+
+        public Client Client { get; set; }
+        public Location Location { get; set; }
+
         /// <summary>
         /// The place occupied by this Destination the Route
         /// </summary>
         public int OrderInRoute { get; set; }
 
-        public Client Client { get; set; }
-
-        public Location Location { get; set; }
-
         public List<RouteTask> RouteTasks { get; set; }
 
-        public RouteDestination(DateTime createdDate)
+        public RouteDestination()
         {
             RouteTasks = new List<RouteTask>();
-            CreatedDate = createdDate;
-        }
-
-        public DateTime CreatedDate { get; private set; }
-        public DateTime? LastModified { get; private set; }
-        public Guid? LastModifyingUserId { get; private set; }
-        
-        public void SetLastModified(DateTime? lastModified, Guid? userId)
-        {
-            LastModified = lastModified;
-            LastModifyingUserId = userId;
+            CreatedDate = DateTime.UtcNow;
         }
 
         public static RouteDestination ConvertModel(FoundOps.Core.Models.CoreEntities.RouteDestination routeDestinationModel)
         {
-            var routeDestination = new RouteDestination(routeDestinationModel.CreatedDate)
+            var routeDestination = new RouteDestination
                 {
                     Id = routeDestinationModel.Id, 
+                    CreatedDate = routeDestinationModel.CreatedDate,
                     OrderInRoute = routeDestinationModel.OrderInRoute
                 };
 
@@ -55,6 +49,12 @@ namespace FoundOps.Api.Models
                 routeDestination.Location = Location.ConvertModel(routeDestinationModel.Location);
 
             return routeDestination;
+        }
+
+        public void SetLastModified(DateTime? lastModified, Guid? userId)
+        {
+            LastModified = lastModified;
+            LastModifyingUserId = userId;
         }
     }
 }

@@ -262,7 +262,7 @@
     <Compile Include="Models\Option.cs" />
     <Compile Include="Models\TimeZone.cs" />
     <Compile Include="Models\UserAccount.cs" />
-    <Compile Include="Models\ServiceType.cs" />
+    <Compile Include="Models\ServiceTemplate.cs" />
     <Compile Include="Models\Employee.cs" />
     <Compile Include="Models\RouteTask.cs" />
     <Compile Include="Models\LocationField.cs" />

@@ -209,6 +209,7 @@ namespace FoundOps.Api.Controllers.Rest
 
                 #endregion
 
+                //TODO CR Make extension method on ITrackable to do this
                 existingService.LastModified = DateTime.UtcNow;
                 existingService.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().Id;
 
@@ -219,12 +220,12 @@ namespace FoundOps.Api.Controllers.Rest
                 var generatedService = new Core.Models.CoreEntities.Service
                 {
                     Id = service.Id,
+                    CreatedDate = DateTime.UtcNow,
                     ServiceDate = service.ServiceDate.Date,
                     ServiceProviderId = service.ServiceProviderId,
                     ClientId = service.ClientId,
                     RecurringServiceId = service.RecurringServiceId,
                     ServiceTemplate = new ServiceTemplate { Id = service.Id, Name = service.Name, ServiceTemplateLevel = ServiceTemplateLevel.ServiceDefined, OwnerServiceTemplateId = service.RecurringServiceId },
-                    CreatedDate = DateTime.UtcNow
                 };
 
                 //Add all fields from the generated Service to the Service Template

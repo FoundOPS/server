@@ -1,16 +1,10 @@
-﻿using System;
-
-namespace FoundOps.Api.Models
+﻿namespace FoundOps.Api.Models
 {
     public class TextBoxField : Field
     {
         public bool IsMultiLine { get; set; }
 
         public string Value { get; set; }
-
-        public TextBoxField(DateTime createdDate) : base(createdDate)
-        {
-        }
 
         /// <summary>
         /// Converts from the FoundOPS model to the API model
@@ -19,9 +13,10 @@ namespace FoundOps.Api.Models
         /// <returns>A TextBoxField that has been converted to it's API model</returns>
         public static TextBoxField ConvertModel(Core.Models.CoreEntities.TextBoxField fieldModel)
         {
-            var field = new TextBoxField (fieldModel.CreatedDate)
+            var field = new TextBoxField
             {
                 Id = fieldModel.Id,
+                CreatedDate = fieldModel.CreatedDate,
                 Name = fieldModel.Name,
                 Required = fieldModel.Required,
                 ToolTip = fieldModel.Tooltip,

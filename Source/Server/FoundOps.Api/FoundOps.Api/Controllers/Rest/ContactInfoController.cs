@@ -50,11 +50,14 @@ namespace FoundOps.Api.Controllers.Rest
             if (original == null)
                 throw Request.NotFound();
 
-            original.Type = contactInfo.Type;
-            original.Label = contactInfo.Label;
-            original.Data = contactInfo.Data;
-            original.LocationId = contactInfo.LocationId;
             original.ClientId = contactInfo.ClientId;
+            original.Data = contactInfo.Data;
+            original.Label = contactInfo.Label;
+            original.LocationId = contactInfo.LocationId;
+           
+            original.Type = contactInfo.Type;
+           
+            //TODO CR Make extension method on ITrackable to do this
             original.LastModified = DateTime.UtcNow;
             original.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().Id;
 

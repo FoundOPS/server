@@ -122,7 +122,7 @@ namespace FoundOps.Api.Tests.Controllers
         {
             var newId = Guid.NewGuid();
 
-            var newContactInfo = new Api.Models.ContactInfo (DateTime.UtcNow)
+            var newContactInfo = new Api.Models.ContactInfo
             {
                 Id = newId,
                 Data = "(123) 456-7890",
@@ -210,7 +210,7 @@ namespace FoundOps.Api.Tests.Controllers
 
             var newId = Guid.NewGuid();
 
-            var newLocation = new Models.Location(DateTime.UtcNow)
+            var newLocation = new Models.Location
             {
                 Id = newId,
                 Name = "New Location",
@@ -491,7 +491,7 @@ namespace FoundOps.Api.Tests.Controllers
 
             var newId = Guid.NewGuid();
 
-            var newTaskStatus = new Api.Models.TaskStatus (DateTime.UtcNow)
+            var newTaskStatus = new Api.Models.TaskStatus
             {
                 Id = newId,
                 BusinessAccountId = _gotGreaseId,
