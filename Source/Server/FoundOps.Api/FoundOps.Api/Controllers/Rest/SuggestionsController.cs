@@ -377,10 +377,10 @@ namespace FoundOps.Api.Controllers.Rest
                     if (repeatEveryCol != -1 && !String.IsNullOrEmpty(row[repeatEveryCol]))
                     {
                         if (Int32.TryParse(row[repeatEveryCol], out tempInt))
-                            endAfterTimes = tempInt;
+                            repeatEveryTimes = tempInt;
                         else
                         {
-                            endAfterTimes = null;
+                            repeatEveryTimes = null;
                             setError = true;
                         }
                     }
@@ -585,9 +585,6 @@ namespace FoundOps.Api.Controllers.Rest
 
                 if (row.Location != null)
                 {
-                    //Add the matched/new location as the first suggestion
-                    rowSuggestions.LocationSuggestions.Add(row.Location.Id);
-
                     //Find all the Locations to be suggested by finding all Locations for the Client of the row
                     var locationSuggestions = row.Client != null
                         ? _locations.Where(l => l.Value.ClientId == row.Client.Id).ToArray()
@@ -604,6 +601,9 @@ namespace FoundOps.Api.Controllers.Rest
                             locations.GetOrAdd(location.Id, location);
                     }
 
+                    //Add the matched/new location as the first suggestion
+                    rowSuggestions.LocationSuggestions.Add(row.Location.Id);
+
                     //Add the location passed to the list of location entites
                     locations.GetOrAdd(row.Location.Id, row.Location);
                 }
@@ -614,9 +614,6 @@ namespace FoundOps.Api.Controllers.Rest
 
                 if (row.Client != null)
                 {
-                    //Add the matched/new client as the first suggestion
-                    rowSuggestions.ClientSuggestions.Add(row.Client.Id);
-
                     //Find all the Clients to be suggested by finding all Clients for the Location of the row
                     var clientSuggestions = row.Location != null
                         ? _clients.Where(c => c.Key == row.Location.ClientId).ToArray()
@@ -632,6 +629,9 @@ namespace FoundOps.Api.Controllers.Rest
                         foreach (var client in convertedClientSuggestions)
                             clients.GetOrAdd(client.Id, client);
                     }
+
+                    //Add the matched/new client as the first suggestion
+                    rowSuggestions.ClientSuggestions.Add(row.Client.Id);
 
                     //Add the Client passed to the list of client entites
                     clients.GetOrAdd(row.Client.Id, row.Client);
