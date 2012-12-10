@@ -65,7 +65,7 @@
                         <TextBlock Text="Name:" VerticalAlignment="Top" HorizontalAlignment="Right"/>
                         <TextBox Text="{Binding SelectedEntity.Name, Mode=TwoWay}" Grid.Column="2" />
                         <TextBlock Text="Date Added:" VerticalAlignment="Top" HorizontalAlignment="Right" Grid.Row="3" />
-                        <telerik:RadDateTimePicker Grid.Column="2" Grid.Row="3" InputMode="DatePicker" SelectedValue="{Binding SelectedEntity.CreatedDate, Mode=TwoWay}"/>
+                        <TextBlock Grid.Column="2" Grid.Row="3" Text="{Binding SelectedEntity.CreatedDate, StringFormat=\{0:MM/dd/yyyy\}}"/>
                     </Grid>
                 </toolkit:Expander>
                 <ContactInfo:ContactInfoEdit ContactInfoVM="{Binding SelectedClientContactInfoVM}" IsEnabled="{Binding SelectedEntity.DetailsLoaded}"/>
