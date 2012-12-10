@@ -244,14 +244,13 @@ namespace FoundOps.Api.Tests.Controllers
                 headers.Add("Client Name");
             if (importLocations)
             {
-                headers.AddRange(new[] { "Address Line One", "Address Line Two", "AdminDistrictTwo", "AdminDistrictOne", "PostalCode", "Country Code" }); //, "Region Name", "Latitude", "Longitude"
+                headers.AddRange(new[] { "Address Line One", "Address Line Two", "AdminDistrictTwo", "AdminDistrictOne", "PostalCode", "Country Code" });
             }
             if (importContactInfo)
             {
                 headers.AddRange(new[] { "Phone Number 1", "Phone Label 1" });
                 headers.AddRange(new[] { "Email Address 1", "Email Label 1" });
                 headers.AddRange(new[] { "Website Url 1", "Website Label 1" });
-                //headers.AddRange(new[] { "Other Data #1", "Other Label #1", "Other Data #2", "Other Label #2" });
             }
             if (importRepeats)
             {
@@ -282,9 +281,6 @@ namespace FoundOps.Api.Tests.Controllers
 
                 if (location.Region != null)
                     newRow.Add(location.Region.Name);
-
-                //Add an empty Lat/Long
-                //newRow.AddRange(new[] { "", "" });
             }
             if (importContactInfo)
             {
