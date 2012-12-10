@@ -65,6 +65,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Controllers\ImporterTests.cs" />
     <Compile Include="Controllers\ResourceTests.cs" />
     <Compile Include="Controllers\TrackPointControllerTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

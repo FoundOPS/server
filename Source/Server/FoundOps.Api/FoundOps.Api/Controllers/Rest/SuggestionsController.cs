@@ -92,11 +92,6 @@ namespace FoundOps.Api.Controllers.Rest
                 this.SuggestEntites(request.Rows);
         }
 
-        private string GetString(IEnumerable<string> row, int index)
-        {
-            return index < 0 ? null : row.ElementAt(index);
-        }
-
         /// <summary>
         /// Manipulates the input strings to existing or new entities.
         /// Then it passes those entities to SuggestEntities to generate suggestions.
