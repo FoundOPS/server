@@ -1,5 +1,5 @@
 ﻿CREATE PROCEDURE [dbo].[PropagateNewFields]
-		(@FieldId uniqueidentifier)
+		(@FieldId uniqueidentifier, @userId UNIQUEIDENTIFIER)
 	AS
 	BEGIN
 		BEGIN -- declaring variables to be used to copy fields
@@ -67,7 +67,8 @@
 				        ToolTip ,
 				        ParentFieldId ,
 				        ServiceTemplateId,
-						CreatedDate
+						CreatedDate,
+						LastModifyingUserId
 				    )
 			VALUES  ( @newFieldId , -- Id - uniqueidentifier
 				        @fieldName , -- Name - nvarchar(max)
@@ -75,7 +76,8 @@
 				        @fieldToolTip , -- ToolTip - nvarchar(max)
 				        @FieldId , -- ParentFieldId - uniqueidentifier
 				        @currentServiceTemplateId , -- ServiceTemplateId - uniqueidentifier
-						GETUTCDATE()
+						GETUTCDATE(),
+						@userId
 				    ) 
 				
 			BEGIN --Copy field to its appropriate inherited table

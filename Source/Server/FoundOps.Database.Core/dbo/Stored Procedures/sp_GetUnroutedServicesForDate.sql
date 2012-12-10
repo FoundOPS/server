@@ -15,7 +15,7 @@
 ****************************************************************************************************************************************************************************************************************************/
 CREATE PROCEDURE [dbo].[sp_GetUnroutedServicesForDate]
 (@serviceProviderIdContext uniqueidentifier,
-@serviceDate date)
+@serviceDate date, @userId UNIQUEIDENTIFIER)
 AS
 BEGIN
 
@@ -451,7 +451,8 @@ BEGIN
 			  RecurringServiceId UNIQUEIDENTIFIER,
 			  DelayedChildId UNIQUEIDENTIFIER,
 			  TaskStatusId UNIQUEIDENTIFIER,
-			  CreatedDate DATETIME
+			  CreatedDate DATETIME,
+			  LastModifiedById UNIQUEIDENTIFIER
 			)
 
 	INSERT INTO #RouteTasks(Id, LocationId, ClientId, ServiceId, Name, [Date], RecurringServiceId)
@@ -464,9 +465,10 @@ BEGIN
 		OrderInRouteDestination = 0,
 		TaskStatusId = (SELECT TOP 1 Id FROM dbo.TaskStatuses WHERE BusinessAccountId = @serviceProviderIdContext AND DefaultTypeInt = 1),
 		StatusInt = 0,
-		CreatedDate = GETUTCDATE()
+		CreatedDate = GETUTCDATE(),
+		LastModifiedById = @userId
 
-	INSERT INTO dbo.RouteTasks (Id, LocationId, RouteDestinationId, ClientId, ServiceId, BusinessAccountId, EstimatedDuration, Name, StatusInt, [Date], OrderInRouteDestination, RecurringServiceId, DelayedChildId, TaskStatusId, CreatedDate)
+	INSERT INTO dbo.RouteTasks (Id, LocationId, RouteDestinationId, ClientId, ServiceId, BusinessAccountId, EstimatedDuration, Name, StatusInt, [Date], OrderInRouteDestination, RecurringServiceId, DelayedChildId, TaskStatusId, CreatedDate, LastModifyingUserId)
 	SELECT * FROM #RouteTasks
 
 	SELECT * FROM dbo.RouteTasks

@@ -265,7 +265,8 @@
     <Content Include="app\img\outerCircle.png" />
     <Content Include="app\img\pen.cur" />
     <Content Include="app\img\phone.png" />
-    <Content Include="app\img\popupArrow.png" />
+    <Content Include="app\img\popupArrowBot.png" />
+    <Content Include="app\img\popupArrowTop.png" />
     <Content Include="app\img\popupBack.png" />
     <Content Include="app\img\popupClose.png" />
     <Content Include="app\img\popupClose2.png" />

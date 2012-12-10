@@ -5,14 +5,15 @@
 * @locationId - The Location Id to be deleted
 ***************************************************************************************************************************************************/
 CREATE PROCEDURE dbo.ArchiveLocationBasedOnId
-		(@locationId UNIQUEIDENTIFIER, @date DATE)
+		(@locationId UNIQUEIDENTIFIER, @date DATE, @userId UNIQUEIDENTIFIER)
 
 	AS
 	BEGIN
   
 	UPDATE	dbo.Locations
 	SET		DateDeleted = @date,
-			LastModified = GETUTCDATE()
+			LastModified = GETUTCDATE(),
+			LastModifyingUserId = @userId
 	WHERE	Id = @locationId   
 
 	CREATE TABLE #RecurringService (Id UNIQUEIDENTIFIER)

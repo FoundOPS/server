@@ -1,6 +1,6 @@
 ﻿
 CREATE PROCEDURE [dbo].[PropagateNewServiceTemplateToClients]
-	(@serviceTemplateId uniqueidentifier)
+	(@serviceTemplateId UNIQUEIDENTIFIER, @userId UNIQUEIDENTIFIER)
 
 AS
 BEGIN
@@ -24,7 +24,8 @@ BEGIN
 			OwnerServiceTemplateId UNIQUEIDENTIFIER,
 			LevelInt INT,
 			Name NVARCHAR(max),
-			CreatedDate DATETIME
+			CreatedDate DATETIME,
+			LastUpdatedById UNIQUEIDENTIFIER
 		)
 
 		--Find all clients for the Service Provider
@@ -58,7 +59,8 @@ BEGIN
 					  OwnerServiceTemplateId ,
 					  LevelInt ,
 					  Name ,
-					  CreatedDate
+					  CreatedDate ,
+					  LastUpdatedById
 					)
 			VALUES  ( NEWID() , -- Id - uniqueidentifier
 					  @serviceProviderId , -- OwnerServiceProviderId - uniqueidentifier
@@ -66,7 +68,8 @@ BEGIN
 					  @ownerServiceTemplateId , -- OwnerServiceTemplateId - uniqueidentifier
 					  3 , -- LevelInt - int
 					  @serviceTemplateName , -- Name - nvarchar(max)
-					  GETUTCDATE()
+					  GETUTCDATE(),
+					  @userId
 					)
 
 					--Once the client has been used, remove it from the list
@@ -77,7 +80,7 @@ BEGIN
 		END
 
 		--Add all the newly created Service Template to the database
-		INSERT INTO dbo.ServiceTemplates ( Id , OwnerServiceProviderId , OwnerClientId , OwnerServiceTemplateId , LevelInt , Name , CreatedDate)
+		INSERT INTO dbo.ServiceTemplates ( Id , OwnerServiceProviderId , OwnerClientId , OwnerServiceTemplateId , LevelInt , Name , CreatedDate, LastModifyingUserId)
 		SELECT * FROM @newServiceTemplateTable
 	END 
 
@@ -95,11 +98,12 @@ BEGIN
 			ToolTip NVARCHAR(MAX),
 			ParentFieldId UNIQUEIDENTIFIER,
 			ServiceTemplateId UNIQUEIDENTIFIER,
-			CreatedDate DATETIME
+			CreatedDate DATETIME,
+			LastUpdatedById UNIQUEIDENTIFIER
 		) 
 
-		INSERT INTO @FieldsTable (Id, Name, [Required], ToolTip, ParentFieldId, ServiceTemplateId, CreatedDate)
-		SELECT Id, Name, [Required], ToolTip, ParentFieldId, ServiceTemplateId, CreatedDate FROM dbo.Fields t1
+		INSERT INTO @FieldsTable (Id, Name, [Required], ToolTip, ParentFieldId, ServiceTemplateId, CreatedDate, LastUpdatedById)
+		SELECT Id, Name, [Required], ToolTip, ParentFieldId, ServiceTemplateId, CreatedDate, LastModifyingUserId FROM dbo.Fields t1
 		WHERE t1.ServiceTemplateId = @ownerServiceTemplateId 
 
 		BEGIN -- declaring variables to be used to copy fields
@@ -123,7 +127,8 @@ BEGIN
 			OwnerServiceTemplateId UNIQUEIDENTIFIER,
 			LevelInt INT,
 			Name NVARCHAR(max),
-			CreatedDate DATETIME
+			CreatedDate DATETIME,
+			LastUpdatedById UNIQUEIDENTIFIER
 		)    
 		
 
@@ -137,8 +142,8 @@ BEGIN
 			DELETE FROM @CopyOfNewServiceTemplates
 
 			--Re-populate
-			INSERT INTO @CopyOfNewServiceTemplates (Id, OwnerServiceProviderId, OwnerClientId, OwnerServiceTemplateId, LevelInt, Name, CreatedDate)
-			SELECT Id, OwnerServiceProviderId, OwnerClientId, OwnerServiceTemplateId, LevelInt, Name, CreatedDate FROM @newServiceTemplateTable
+			INSERT INTO @CopyOfNewServiceTemplates (Id, OwnerServiceProviderId, OwnerClientId, OwnerServiceTemplateId, LevelInt, Name, CreatedDate, LastUpdatedById)
+			SELECT Id, OwnerServiceProviderId, OwnerClientId, OwnerServiceTemplateId, LevelInt, Name, CreatedDate, LastUpdatedById FROM @newServiceTemplateTable
 
 			BEGIN --Sets all variables to copy basic field data
 				SET @fieldName = (SELECT Name FROM @FieldsTable WHERE Id = @currentId)
@@ -162,7 +167,8 @@ BEGIN
 				          ToolTip ,
 				          ParentFieldId ,
 				          ServiceTemplateId,
-						  CreatedDate
+						  CreatedDate,
+						  LastModifyingUserId
 				        )
 				VALUES  ( @newFieldId , -- Id - uniqueidentifier
 				          @fieldName , -- Name - nvarchar(max)
@@ -170,7 +176,8 @@ BEGIN
 				          @fieldToolTip , -- ToolTip - nvarchar(max)
 				          @currentId , -- ParentFieldId - uniqueidentifier
 				          @currentServiceTemplateId , -- ServiceTemplateId - uniqueidentifier
-						  GETUTCDATE()
+						  GETUTCDATE(),
+						  @userId
 				        ) 
 				
 				BEGIN --Copy field to its appropriate inherited table			
