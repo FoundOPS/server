@@ -1553,85 +1553,6 @@ namespace FoundOps.Core.Models.CoreEntities
         /// <summary>
         /// No Metadata Documentation available.
         /// </summary>
-        /// <param name="serviceTemplateId">No Metadata Documentation available.</param>
-        /// <param name="fieldName">No Metadata Documentation available.</param>
-        public int TestFieldPropagationSuccess(Nullable<global::System.Guid> serviceTemplateId, global::System.String fieldName)
-        {
-            ObjectParameter serviceTemplateIdParameter;
-            if (serviceTemplateId.HasValue)
-            {
-                serviceTemplateIdParameter = new ObjectParameter("serviceTemplateId", serviceTemplateId);
-            }
-            else
-            {
-                serviceTemplateIdParameter = new ObjectParameter("serviceTemplateId", typeof(global::System.Guid));
-            }
-    
-            ObjectParameter fieldNameParameter;
-            if (fieldName != null)
-            {
-                fieldNameParameter = new ObjectParameter("fieldName", fieldName);
-            }
-            else
-            {
-                fieldNameParameter = new ObjectParameter("fieldName", typeof(global::System.String));
-            }
-    
-            return base.ExecuteFunction("TestFieldPropagationSuccess", serviceTemplateIdParameter, fieldNameParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        /// <param name="serviceTemplateId">No Metadata Documentation available.</param>
-        public int TestNewServiceTemplatePropagationSuccess(Nullable<global::System.Guid> serviceTemplateId)
-        {
-            ObjectParameter serviceTemplateIdParameter;
-            if (serviceTemplateId.HasValue)
-            {
-                serviceTemplateIdParameter = new ObjectParameter("serviceTemplateId", serviceTemplateId);
-            }
-            else
-            {
-                serviceTemplateIdParameter = new ObjectParameter("serviceTemplateId", typeof(global::System.Guid));
-            }
-    
-            return base.ExecuteFunction("TestNewServiceTemplatePropagationSuccess", serviceTemplateIdParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
-        /// <param name="serviceTemplateId">No Metadata Documentation available.</param>
-        /// <param name="oldName">No Metadata Documentation available.</param>
-        public int TestServiceTemplateNamePropagationSuccess(Nullable<global::System.Guid> serviceTemplateId, global::System.String oldName)
-        {
-            ObjectParameter serviceTemplateIdParameter;
-            if (serviceTemplateId.HasValue)
-            {
-                serviceTemplateIdParameter = new ObjectParameter("serviceTemplateId", serviceTemplateId);
-            }
-            else
-            {
-                serviceTemplateIdParameter = new ObjectParameter("serviceTemplateId", typeof(global::System.Guid));
-            }
-    
-            ObjectParameter oldNameParameter;
-            if (oldName != null)
-            {
-                oldNameParameter = new ObjectParameter("oldName", oldName);
-            }
-            else
-            {
-                oldNameParameter = new ObjectParameter("oldName", typeof(global::System.String));
-            }
-    
-            return base.ExecuteFunction("TestServiceTemplateNamePropagationSuccess", serviceTemplateIdParameter, oldNameParameter);
-        }
-    
-        /// <summary>
-        /// No Metadata Documentation available.
-        /// </summary>
         /// <param name="serviceProviderId">No Metadata Documentation available.</param>
         /// <param name="serviceDateUtc">No Metadata Documentation available.</param>
         public ObjectResult<ResourceWithLastPoint> GetResourcesWithLatestPoint(Nullable<global::System.Guid> serviceProviderId, Nullable<global::System.DateTime> serviceDateUtc)
@@ -8446,6 +8367,30 @@ namespace FoundOps.Core.Models.CoreEntities
         private Nullable<global::System.Guid> _LastModifyingUserId;
         partial void OnLastModifyingUserIdChanging(Nullable<global::System.Guid> value);
         partial void OnLastModifyingUserIdChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String ICalEvent
+        {
+            get
+            {
+                return _ICalEvent;
+            }
+            set
+            {
+                OnICalEventChanging(value);
+                ReportPropertyChanging("ICalEvent");
+                _ICalEvent = StructuralObject.SetValidValue(value, true, "ICalEvent");
+                ReportPropertyChanged("ICalEvent");
+                OnICalEventChanged();
+            }
+        }
+        private global::System.String _ICalEvent;
+        partial void OnICalEventChanging(global::System.String value);
+        partial void OnICalEventChanged();
 
         #endregion
 

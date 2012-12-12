@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, and Azure
 -- --------------------------------------------------
--- Date Created: 12/04/2012 18:50:49
+-- Date Created: 12/11/2012 15:36:38
 -- Generated from EDMX file: C:\FoundOps\GitHub\Source\Server\FoundOps.Core\Models\CoreEntities\CoreEntities.edmx
 -- --------------------------------------------------
 
@@ -577,7 +577,8 @@ CREATE TABLE [dbo].[Repeats] (
     [StartDate] datetime  NOT NULL,
     [CreatedDate] datetime  NOT NULL,
     [LastModified] datetime  NULL,
-    [LastModifyingUserId] uniqueidentifier  NULL
+    [LastModifyingUserId] uniqueidentifier  NULL,
+    [ICalEvent] nvarchar(max)  NULL
 );
 GO
 

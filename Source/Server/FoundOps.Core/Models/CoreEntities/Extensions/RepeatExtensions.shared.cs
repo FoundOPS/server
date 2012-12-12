@@ -243,8 +243,9 @@ namespace FoundOps.Core.Models.CoreEntities
 
                     availableFrequencyDetails.Add(MonthlyFrequencyDetail.OnDayInMonth);
 
-                    if (startDateTimeValue.IsLastOfMonth())
-                        availableFrequencyDetails.Add(MonthlyFrequencyDetail.LastOfMonth);
+                    //LastOfMonth does not exist in RFC 5545(iCal standard)
+                    //if (startDateTimeValue.IsLastOfMonth())
+                    //    availableFrequencyDetails.Add(MonthlyFrequencyDetail.LastOfMonth);
 
                     if (startDateTimeValue.IsFirstOfDayOfWeekInMonth())
                         availableFrequencyDetails.Add(MonthlyFrequencyDetail.FirstOfDayOfWeekInMonth);
@@ -517,9 +518,10 @@ namespace FoundOps.Core.Models.CoreEntities
                         case MonthlyFrequencyDetail.OnDayInMonth:
                             endDate = new DateTime(endMonth.Year, endMonth.Month, StartDate.Day).Date;
                             break;
-                        case MonthlyFrequencyDetail.LastOfMonth:
-                            endDate = endMonth.LastDayInMonth().Date;
-                            break;
+                        //LastOfMonth does not exist in RFC 5545(iCal standard)
+                        //case MonthlyFrequencyDetail.LastOfMonth:
+                        //    endDate = endMonth.LastDayInMonth().Date;
+                        //    break;
                         case MonthlyFrequencyDetail.FirstOfDayOfWeekInMonth:
                             endDate = endMonth.FirstDayOfWeekInMonth(StartDate.DayOfWeek).Date;
                             break;
@@ -603,19 +605,20 @@ namespace FoundOps.Core.Models.CoreEntities
                     }
                 }
 
-                if (FrequencyDetailAsMonthlyFrequencyDetail == MonthlyFrequencyDetail.LastOfMonth)
-                {
-                    possibleReturnedDateForCurrentMonth = newOnOrAfterDate.LastDayInMonth().Date;
-                    // checks to be sure the return date found above is on or after the current day being viewed
-                    if (possibleReturnedDateForCurrentMonth.Date >= onOrAfterDate.Date)
-                        returnedDate = possibleReturnedDateForCurrentMonth;
-                    else
-                    {
-                        // else adds the number of months for RepeatEvery and finds the correct return date
-                        newOnOrAfterDate = newOnOrAfterDate.AddMonths(RepeatEveryTimes);
-                        returnedDate = newOnOrAfterDate.LastDayInMonth().Date;
-                    }
-                }
+                //LastOfMonth does not exist in RFC 5545(iCal standard)
+                //if (FrequencyDetailAsMonthlyFrequencyDetail == MonthlyFrequencyDetail.LastOfMonth)
+                //{
+                //    possibleReturnedDateForCurrentMonth = newOnOrAfterDate.LastDayInMonth().Date;
+                //    // checks to be sure the return date found above is on or after the current day being viewed
+                //    if (possibleReturnedDateForCurrentMonth.Date >= onOrAfterDate.Date)
+                //        returnedDate = possibleReturnedDateForCurrentMonth;
+                //    else
+                //    {
+                //        // else adds the number of months for RepeatEvery and finds the correct return date
+                //        newOnOrAfterDate = newOnOrAfterDate.AddMonths(RepeatEveryTimes);
+                //        returnedDate = newOnOrAfterDate.LastDayInMonth().Date;
+                //    }
+                //}
 
                 if (FrequencyDetailAsMonthlyFrequencyDetail == MonthlyFrequencyDetail.FirstOfDayOfWeekInMonth)
                 {
@@ -794,7 +797,8 @@ namespace FoundOps.Core.Models.CoreEntities
         /// </summary>
 
         OnDayInMonth = 8, //Ex. The 3rd of the month. Cannot be greater than 28 days
-        LastOfMonth = 10, //Example Febuary 28th
+        //LastOfMonth does not exist in RFC 5545(iCal standard)
+        //LastOfMonth = 10, //Example Febuary 28th
         FirstOfDayOfWeekInMonth = 11, //Ex. First Monday
         SecondOfDayOfWeekInMonth = 12, //Ex. Second Monday
         ThirdOfDayOfWeekInMonth = 13, //Ex. Third Monday

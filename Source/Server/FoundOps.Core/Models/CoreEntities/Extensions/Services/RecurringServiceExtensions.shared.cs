@@ -41,7 +41,7 @@ namespace FoundOps.Core.Models.CoreEntities
             {
                 Id = this.Id,
                 StartDate = DateTime.UtcNow.Date,
-                Frequency = Frequency.Once,
+                Frequency = Frequency.Daily,
                 RepeatEveryTimes = 1,
                 CreatedDate = DateTime.UtcNow
             };

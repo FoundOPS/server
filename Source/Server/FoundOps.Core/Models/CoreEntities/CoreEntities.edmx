@@ -652,6 +652,7 @@
           <Property Name="CreatedDate" Type="datetime" Nullable="false" />
           <Property Name="LastModified" Type="datetime" />
           <Property Name="LastModifyingUserId" Type="uniqueidentifier" />
+          <Property Name="ICalEvent" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="RoleBlock">
           <Key>
@@ -1736,9 +1737,6 @@
           <Parameter Name="date" Type="date" Mode="In" />
           <Parameter Name="userId" Type="uniqueidentifier" Mode="In" />
         </Function>
-        <Function Name="CheckServiceTemplateForChildren" ReturnType="int" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="serviceTemplateId" Type="uniqueidentifier" Mode="In" />
-        </Function>
         <Function Name="DeleteBasicPartyBasedOnId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="providerId" Type="uniqueidentifier" Mode="In" />
         </Function>
@@ -1820,17 +1818,6 @@
           <Parameter Name="serviceProviderIdContext" Type="uniqueidentifier" Mode="In" />
           <Parameter Name="serviceDate" Type="date" Mode="In" />
           <Parameter Name="userId" Type="uniqueidentifier" Mode="In" />
-        </Function>
-        <Function Name="TestFieldPropagationSuccess" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="serviceTemplateId" Type="uniqueidentifier" Mode="In" />
-          <Parameter Name="fieldName" Type="nvarchar(max)" Mode="In" />
-        </Function>
-        <Function Name="TestNewServiceTemplatePropagationSuccess" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="serviceTemplateId" Type="uniqueidentifier" Mode="In" />
-        </Function>
-        <Function Name="TestServiceTemplateNamePropagationSuccess" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
-          <Parameter Name="serviceTemplateId" Type="uniqueidentifier" Mode="In" />
-          <Parameter Name="oldName" Type="nvarchar(max)" Mode="In" />
         </Function>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -2177,17 +2164,6 @@
             <Parameter Name="serviceDate" Mode="In" Type="DateTime" />
             <Parameter Name="userId" Mode="In" Type="Guid" />
           </FunctionImport>
-          <FunctionImport Name="TestFieldPropagationSuccess">
-            <Parameter Name="serviceTemplateId" Mode="In" Type="Guid" />
-            <Parameter Name="fieldName" Mode="In" Type="String" />
-          </FunctionImport>
-          <FunctionImport Name="TestNewServiceTemplatePropagationSuccess">
-            <Parameter Name="serviceTemplateId" Mode="In" Type="Guid" />
-          </FunctionImport>
-          <FunctionImport Name="TestServiceTemplateNamePropagationSuccess">
-            <Parameter Name="serviceTemplateId" Mode="In" Type="Guid" />
-            <Parameter Name="oldName" Mode="In" Type="String" />
-          </FunctionImport>
           <FunctionImport Name="GetResourcesWithLatestPoint" ReturnType="Collection(CoreEntities.ResourceWithLastPoint)">
             <Parameter Name="serviceProviderId" Mode="In" Type="Guid" />
             <Parameter Name="serviceDateUtc" Mode="In" Type="DateTime" />
@@ -2272,6 +2248,7 @@
           <Property Type="DateTime" Name="CreatedDate" Nullable="false" Precision="3" />
           <Property Type="DateTime" Name="LastModified" Nullable="true" Precision="3" />
           <Property Type="Guid" Name="LastModifyingUserId" Nullable="true" />
+          <Property Type="String" Name="ICalEvent" Nullable="true" MaxLength="Max" Unicode="true" FixedLength="false" />
         </EntityType>
         <EntityType Name="Location">
           <Key>
@@ -3760,6 +3737,7 @@
           <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
           <ScalarProperty Name="LastModified" ColumnName="LastModified" />
           <ScalarProperty Name="LastModifyingUserId" ColumnName="LastModifyingUserId" />
+          <ScalarProperty Name="ICalEvent" ColumnName="ICalEvent" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -4042,9 +4020,6 @@
           <FunctionImportMapping FunctionImportName="PropagateNewFields" FunctionName="CoreEntities.Store.PropagateNewFields" />
           <FunctionImportMapping FunctionImportName="PropagateNewServiceTemplateToClients" FunctionName="CoreEntities.Store.PropagateNewServiceTemplateToClients" />
           <FunctionImportMapping FunctionImportName="sp_GetUnroutedServicesForDate" FunctionName="CoreEntities.Store.sp_GetUnroutedServicesForDate" />
-          <FunctionImportMapping FunctionImportName="TestFieldPropagationSuccess" FunctionName="CoreEntities.Store.TestFieldPropagationSuccess" />
-          <FunctionImportMapping FunctionImportName="TestNewServiceTemplatePropagationSuccess" FunctionName="CoreEntities.Store.TestNewServiceTemplatePropagationSuccess" />
-          <FunctionImportMapping FunctionImportName="TestServiceTemplateNamePropagationSuccess" FunctionName="CoreEntities.Store.TestServiceTemplateNamePropagationSuccess" />
           <FunctionImportMapping FunctionImportName="GetResourcesWithLatestPoint" FunctionName="CoreEntities.Store.GetResourcesWithLatestPoint">
             <ResultMapping>
               <ComplexTypeMapping TypeName="CoreEntities.ResourceWithLastPoint">

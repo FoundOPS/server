@@ -1,4 +1,6 @@
-﻿using Dapper;
+﻿using DDay.iCal;
+using DDay.iCal.Serialization.iCalendar;
+using Dapper;
 using FoundOps.Api.Controllers.Mvc;
 using FoundOps.Api.Controllers.Rest;
 using FoundOps.Api.Models;
@@ -98,7 +100,7 @@ namespace FoundOps.Api.Tests.Controllers
             CoreEntitiesContainer = new CoreEntitiesContainer();
             CoreEntitiesContainer.ContextOptions.LazyLoadingEnabled = false;
             //Admin role on GotGrease?
-            _adminGotGreaseRoleId = CoreEntitiesContainer.Roles.First(r => r.OwnerBusinessAccountId == _gotGreaseId && r.RoleTypeInt == (int)RoleType.Administrator).Id;
+            //_adminGotGreaseRoleId = CoreEntitiesContainer.Roles.First(r => r.OwnerBusinessAccountId == _gotGreaseId && r.RoleTypeInt == (int)RoleType.Administrator).Id;
             //_adminGenericBiodieselRoleId = CoreEntitiesContainer.Roles.First(r => r.OwnerBusinessAccountId == _genericBiodiesel && r.RoleTypeInt == (int)RoleType.Administrator).Id;
         }
 
@@ -1000,5 +1002,122 @@ namespace FoundOps.Api.Tests.Controllers
         }
 
         #endregion
+
+        [TestMethod]
+        public void RepeatConversionTests()
+        {
+            var timeZone = new TimeZoneObservance(new Period(), new iCalTimeZoneInfo("US-Eastern"));
+
+            var iCal = new iCalendar{Method = "Publish", Version = "2.0"};
+            var eve = iCal.Create<Event>();
+            eve.Start = new iCalDateTime(DateTime.Now);
+            eve.End = new iCalDateTime(DateTime.Now.AddDays(21), "America/New_York");
+
+            var recurr = new RecurrencePattern(FrequencyType.Weekly, 1);
+            recurr.ByDay.Add(new WeekDay(DayOfWeek.Monday));
+            recurr.ByDay.Add(new WeekDay(DayOfWeek.Wednesday));
+            
+            var p = new PeriodList {new iCalDateTime(DateTime.UtcNow.Date), new iCalDateTime(DateTime.UtcNow.Date.AddDays(1))};
+
+            eve.ExceptionDates.Add(p);
+            eve.RecurrenceRules.Add(recurr);
+            var t = eve.GetOccurrences(new iCalDateTime(DateTime.UtcNow.Date.AddDays(-1)), new iCalDateTime(DateTime.UtcNow.Date.AddDays(14)));
+
+            var g = iCal.GetOccurrences(new iCalDateTime(DateTime.UtcNow.Date.AddDays(1)));
+
+            var serializer = new iCalendarSerializer(iCal);
+
+            var f = serializer.SerializeToString(iCal);
+            var e = serializer.SerializeToString(eve);
+            var repeats = CoreEntitiesContainer.Repeats.ToArray();
+
+            foreach (var repeat in repeats)
+                repeat.ICalEvent = ConvertRepeatToiCal(repeat);
+
+            CoreEntitiesContainer.SaveChanges();
+        }
+
+        public string ConvertRepeatToiCal(Repeat repeat)
+        {
+            var iCal = new iCalendar();
+            var eve = iCal.Create<Event>();
+
+            eve.Start = new iCalDateTime(repeat.StartDate);
+            eve.End = new iCalDateTime(repeat.StartDate.AddHours(1));
+            
+            var recurrence = new RecurrencePattern {Interval = repeat.RepeatEveryTimes};
+            if (repeat.EndAfterTimes != null)
+                recurrence.Count = (int)repeat.EndAfterTimes;
+            else if(repeat.EndDate != null)
+                recurrence.Until = (DateTime)repeat.EndDate;
+            
+            switch (repeat.Frequency)
+            {
+                case Frequency.Daily:
+                    {
+                        recurrence.Frequency = FrequencyType.Daily;
+                        eve.RecurrenceRules.Add(recurrence);
+                    }
+                    break;
+                case Frequency.Weekly:
+                    {
+                        recurrence.Frequency = FrequencyType.Weekly;
+
+                        var repeatDays = new List<WeekDay>();
+                        repeatDays.AddRange(repeat.FrequencyDetailAsWeeklyFrequencyDetail.Select(c => new WeekDay(c)));
+
+                        recurrence.ByDay.AddRange(repeatDays);
+
+                        eve.RecurrenceRules.Add(recurrence);
+                    }
+                    break;
+                case Frequency.Monthly:
+                    recurrence.Frequency = FrequencyType.Monthly;
+                    switch (repeat.FrequencyDetailAsMonthlyFrequencyDetail)
+                    {
+                        case MonthlyFrequencyDetail.OnDayInMonth:
+                            {
+                                recurrence.ByMonthDay.Add(repeat.StartDate.Day);
+                                eve.RecurrenceRules.Add(recurrence);
+                            }
+                            break;
+                        case MonthlyFrequencyDetail.FirstOfDayOfWeekInMonth:
+                            {
+                                recurrence.ByDay.Add(new WeekDay(repeat.StartDate.DayOfWeek, FrequencyOccurrence.First));
+                                eve.RecurrenceRules.Add(recurrence);
+                            }
+                            break;
+                        case MonthlyFrequencyDetail.SecondOfDayOfWeekInMonth:
+                            {
+                                recurrence.ByDay.Add(new WeekDay(repeat.StartDate.DayOfWeek, FrequencyOccurrence.Second));
+                                eve.RecurrenceRules.Add(recurrence);
+                            }
+                            break;
+                        case MonthlyFrequencyDetail.ThirdOfDayOfWeekInMonth:
+                            {
+                                recurrence.ByDay.Add(new WeekDay(repeat.StartDate.DayOfWeek, FrequencyOccurrence.Third));
+                                eve.RecurrenceRules.Add(recurrence);
+                            }
+                            break;
+                        case MonthlyFrequencyDetail.LastOfDayOfWeekInMonth:
+                            {
+                                recurrence.ByDay.Add(new WeekDay(repeat.StartDate.DayOfWeek, FrequencyOccurrence.Last));
+                                eve.RecurrenceRules.Add(recurrence);
+                            }
+                            break;
+                    }
+                    break;
+                case Frequency.Yearly:
+                    {
+                        recurrence.Frequency = FrequencyType.Yearly;
+                        eve.RecurrenceRules.Add(recurrence);
+                    }
+                    break;
+            }
+            
+            var serializer = new iCalendarSerializer(iCal);
+
+            return serializer.SerializeToString(eve);
+        }
     }
 }
