@@ -1,4 +1,5 @@
-﻿using DDay.iCal;
+﻿using System.IO;
+using DDay.iCal;
 using DDay.iCal.Serialization.iCalendar;
 using Dapper;
 using FoundOps.Api.Controllers.Mvc;
@@ -1016,6 +1017,7 @@ namespace FoundOps.Api.Tests.Controllers
             var recurr = new RecurrencePattern(FrequencyType.Weekly, 1);
             recurr.ByDay.Add(new WeekDay(DayOfWeek.Monday));
             recurr.ByDay.Add(new WeekDay(DayOfWeek.Wednesday));
+
             
             var p = new PeriodList {new iCalDateTime(DateTime.UtcNow.Date), new iCalDateTime(DateTime.UtcNow.Date.AddDays(1))};
 
@@ -1031,6 +1033,8 @@ namespace FoundOps.Api.Tests.Controllers
             var e = serializer.SerializeToString(eve);
             var repeats = CoreEntitiesContainer.Repeats.ToArray();
 
+            //var ev = serializer.Deserialize();
+            
             foreach (var repeat in repeats)
                 repeat.ICalEvent = ConvertRepeatToiCal(repeat);
 
