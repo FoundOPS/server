@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using FoundOps.Api.Tools;
 
 namespace FoundOps.Api.Models
 {
-    public class Service : ITrackable
+    public class Service : ITrackable, IImportable
     {
         public Guid Id { get; set; }
 
@@ -25,6 +26,8 @@ namespace FoundOps.Api.Models
 
         public Guid? RecurringServiceId { get; set; }
         public Guid ServiceProviderId { get; set; }
+        
+        public int? StatusInt { get; set; }
 
         public Service()
         {

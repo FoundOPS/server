@@ -778,6 +778,7 @@ namespace FoundOps.Core.Models.CoreEntities
 
     public enum Frequency
     {
+        Null = 0,
         Once = 1,
         Daily = 2,
         Weekly = 3,

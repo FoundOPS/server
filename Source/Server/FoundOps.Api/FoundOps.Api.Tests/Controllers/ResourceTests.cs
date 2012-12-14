@@ -25,6 +25,7 @@ using System.Web.Http.Hosting;
 using RulesEngine;
 using BusinessAccount = FoundOps.Core.Models.CoreEntities.BusinessAccount;
 using Client = FoundOps.Core.Models.CoreEntities.Client;
+using ContactInfo = FoundOps.Api.Models.ContactInfo;
 using Field = FoundOps.Core.Models.CoreEntities.Field;
 using Location = FoundOps.Core.Models.CoreEntities.Location;
 using RouteTask = FoundOps.Api.Models.RouteTask;
@@ -202,7 +203,7 @@ namespace FoundOps.Api.Tests.Controllers
             var getResponseFromSearch = SimpleGetTest<LocationsController, Models.Location>(lc => lc.Get(_adminGotGreaseRoleId, null, null, false, "12414 english garden, 20171"))
                 .FirstOrDefault();
 
-            Assert.AreEqual("20171", getResponseFromSearch.ZipCode);
+            Assert.AreEqual("20171", getResponseFromSearch.PostalCode);
             Assert.AreEqual("Herndon", getResponseFromSearch.AdminDistrictTwo);
             Assert.AreEqual("VA", getResponseFromSearch.AdminDistrictOne);
             Assert.IsTrue(getResponseFromSearch.Latitude.Contains("38.898136"));
@@ -218,7 +219,7 @@ namespace FoundOps.Api.Tests.Controllers
                 AddressLineTwo = "Room 2",
                 AdminDistrictTwo = "Northbrook",
                 AdminDistrictOne = "Illinois",
-                ZipCode = "60062",
+                PostalCode = "60062",
                 CountryCode = "US"
             };
 
@@ -230,7 +231,7 @@ namespace FoundOps.Api.Tests.Controllers
             newLocation.AddressLineTwo = "Suite 205";
             newLocation.AdminDistrictTwo = "West Lafayette";
             newLocation.AdminDistrictOne = "Indiana";
-            newLocation.ZipCode = "47906";
+            newLocation.PostalCode = "47906";
 
             controller.Put(_adminGotGreaseRoleId, newLocation);
         }
@@ -804,7 +805,7 @@ namespace FoundOps.Api.Tests.Controllers
                 //Then it will return all RouteTasks that are not in a route joined with their Locations, Location.Regions and Clients
                 //Dapper will then map the output table to RouteTasks, RouteTasks.Location, RouteTasks.Location.Region and RouteTasks.Client
                 //While that is being mapped we also attach the Client, Location and Region to the objectContext
-                var data = conn.Query<FoundOps.Core.Models.CoreEntities.RouteTask, Location, Region, Client, TaskStatus, FoundOps.Core.Models.CoreEntities.RouteTask>("sp_GetUnroutedServicesForDate", (routeTask, location, region, client, taskStatus) =>
+                var data = conn.Query<FoundOps.Core.Models.CoreEntities.RouteTask, Location, FoundOps.Core.Models.CoreEntities.Region, Client, TaskStatus, FoundOps.Core.Models.CoreEntities.RouteTask>("sp_GetUnroutedServicesForDate", (routeTask, location, region, client, taskStatus) =>
                 {
                     if (location != null)
                     {

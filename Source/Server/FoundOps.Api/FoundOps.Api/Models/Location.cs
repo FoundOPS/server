@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using FoundOps.Api.Tools;
 
 namespace FoundOps.Api.Models
 {
-    public class Location : ITrackable
+    public class Location : ITrackable, IImportable
     {
         /// <summary>
         /// The Id
@@ -52,7 +53,7 @@ namespace FoundOps.Api.Models
         /// <summary>
         /// The Zipcode of this location
         /// </summary>
-        public string ZipCode { get; set; }
+        public string PostalCode { get; set; }
 
         /// <summary>
         /// The Country code of this location
@@ -63,6 +64,12 @@ namespace FoundOps.Api.Models
         /// The list of ContactInfo associated with this Location 
         /// </summary>
         public List<ContactInfo> ContactInfoSet { get; set; }
+
+        public Region Region { get; set; }
+
+        public Guid? ClientId { get; set; }
+
+        public int? StatusInt { get; set; }
 
         public Location()
         {
@@ -80,7 +87,7 @@ namespace FoundOps.Api.Models
                 Name = location.Name,
                 AdminDistrictOne = location.AdminDistrictOne,
                 AdminDistrictTwo = location.AdminDistrictTwo,
-                PostalCode = location.ZipCode,
+                PostalCode = location.PostalCode,
                 CountryCode = location.CountryCode,
                 Latitude = Convert.ToDecimal(location.Latitude),
                 Longitude = Convert.ToDecimal(location.Longitude),
@@ -106,7 +113,8 @@ namespace FoundOps.Api.Models
                 AdminDistrictTwo = locationModel.AdminDistrictTwo,
                 AdminDistrictOne = locationModel.AdminDistrictOne,
                 CountryCode = locationModel.CountryCode,
-                ZipCode = locationModel.PostalCode
+                PostalCode = locationModel.PostalCode,
+                ClientId = locationModel.ClientId
             };
 
             location.SetLastModified(locationModel.LastModified, locationModel.LastModifyingUserId);
@@ -126,7 +134,7 @@ namespace FoundOps.Api.Models
                 AdminDistrictTwo = geocoderResult.City,
                 AdminDistrictOne = geocoderResult.State,
                 CountryCode = geocoderResult.CountryCode,
-                ZipCode = geocoderResult.ZipCode,
+                PostalCode = geocoderResult.ZipCode,
                 Latitude = Decimal.Round(Convert.ToDecimal(geocoderResult.Latitude), 8).ToString(),
                 Longitude = Decimal.Round(Convert.ToDecimal(geocoderResult.Longitude), 8).ToString()
             };

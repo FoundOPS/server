@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using FoundOps.Api.Tools;
 
 namespace FoundOps.Api.Models
 {
-    public class Client : ITrackable
+    public class Client : ITrackable, IImportable
     {
         /// <summary>
         /// The Id
@@ -24,6 +25,8 @@ namespace FoundOps.Api.Models
         /// </summary>
         public List<ContactInfo> ContactInfoSet { get; set; }
 
+        public int? StatusInt { get; set; }
+
         public Client()
         {
             ContactInfoSet = new List<ContactInfo>();
@@ -43,6 +46,16 @@ namespace FoundOps.Api.Models
 
             foreach (var contactInfo in clientModel.ContactInfoSet)
                 client.ContactInfoSet.Add(ContactInfo.Convert(contactInfo));
+
+            return client;
+        }
+
+        public static Core.Models.CoreEntities.Client ConvertBack(Client clientModel)
+        {
+            var client = new Core.Models.CoreEntities.Client { Id = clientModel.Id, Name = clientModel.Name };
+
+            foreach (var contactInfo in clientModel.ContactInfoSet)
+                client.ContactInfoSet.Add(ContactInfo.ConvertBack(contactInfo));
 
             return client;
         }

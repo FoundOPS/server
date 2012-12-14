@@ -2,7 +2,7 @@ using System;
 
 namespace FoundOps.Api.Models
 {
-    public class ContactInfo : ITrackable
+    public class ContactInfo : ITrackable, IImportable
     {
         public Guid Id { get; set; }
 
@@ -27,6 +27,8 @@ namespace FoundOps.Api.Models
 
         public Guid? LocationId { get; set; }
         public Guid? ClientId { get; set; }
+        
+        public int? StatusInt { get; set; }
 
         public ContactInfo()
         {

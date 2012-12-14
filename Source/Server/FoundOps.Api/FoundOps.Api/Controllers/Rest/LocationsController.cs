@@ -131,7 +131,7 @@ namespace FoundOps.Api.Controllers.Rest
             original.AddressLineTwo = location.AddressLineTwo;
             original.AdminDistrictOne = location.AdminDistrictOne;
             original.AdminDistrictTwo = location.AdminDistrictTwo;
-            original.PostalCode = location.ZipCode;
+            original.PostalCode = location.PostalCode;
             original.CountryCode = location.CountryCode;
 
             //TODO CR Make extension method on ITrackable to do this
