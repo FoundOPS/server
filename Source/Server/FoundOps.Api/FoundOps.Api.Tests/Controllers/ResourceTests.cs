@@ -22,10 +22,8 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Hosting;
-using RulesEngine;
 using BusinessAccount = FoundOps.Core.Models.CoreEntities.BusinessAccount;
 using Client = FoundOps.Core.Models.CoreEntities.Client;
-using ContactInfo = FoundOps.Api.Models.ContactInfo;
 using Field = FoundOps.Core.Models.CoreEntities.Field;
 using Location = FoundOps.Core.Models.CoreEntities.Location;
 using RouteTask = FoundOps.Api.Models.RouteTask;
@@ -43,7 +41,6 @@ namespace FoundOps.Api.Tests.Controllers
         protected readonly CoreEntitiesContainer CoreEntitiesContainer;
 
         private readonly Guid _adminGotGreaseRoleId;
-        private readonly Guid _adminGenericBiodieselRoleId;
         private readonly Guid _gotGreaseId = new Guid("8528E50D-E2B9-4779-9B29-759DBEA53B61");
         private readonly Guid _abCouriersId = new Guid("3281B373-101F-415A-B708-14B9BA95A618");
         private readonly Guid _genericOilId = new Guid("62047896-B2A1-49E4-BA10-72F0667B1DB0");
@@ -273,7 +270,7 @@ namespace FoundOps.Api.Tests.Controllers
 
             Assert.IsTrue(roles.Any(r => r.Value<string>("name") == "GotGrease?" && r.Value<string>("type") == "Administrator"
                                          && r["sections"].Count() == 9));
-            Assert.IsTrue(roles.Count() == 4);
+            Assert.IsTrue(roles.Count() == 5);
 
             //check sections
             var sections = result.GetValue("sections").ToArray();
@@ -375,7 +372,7 @@ namespace FoundOps.Api.Tests.Controllers
         [TestMethod]
         public void ServiceTemplatesTests()
         {
-            SimpleGetTest<ServiceTemplatesController, Models.ServiceTemplate>(st => st.Get(_adminGenericBiodieselRoleId));
+            SimpleGetTest<ServiceTemplatesController, Models.ServiceTemplate>(st => st.Get(_adminGotGreaseRoleId));
         }
 
         [TestMethod]
