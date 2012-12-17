@@ -154,7 +154,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 Name = "Routes",
                 IconUrl = "img/routes.png",
                 HoverIconUrl = "img/routesColor.png",
-                Url = "#view/routes.html"
+                Url = "#routes"
             };
 
             //RoutesBlock is hidden for now
@@ -298,7 +298,7 @@ namespace FoundOps.Core.Models.CoreEntities
                 Color = "green",
                 IconUrl = "img/services.png",
                 HoverIconUrl = "img/servicesColor.png",
-                Url = "#view/services.html"
+                Url = "#services"
             };
 
             VehiclesBlock = new Block

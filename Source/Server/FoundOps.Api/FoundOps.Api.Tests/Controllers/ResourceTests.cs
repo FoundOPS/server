@@ -289,7 +289,7 @@ namespace FoundOps.Api.Tests.Controllers
             Assert.IsTrue(sectionNames.Contains("Support"));
             Assert.IsTrue(sectionNames.Contains("Vehicles"));
 
-            Assert.AreEqual(result.GetValue("settingsUrl").Value<string>(), "#view/personalSettings.html");
+            Assert.AreEqual(result.GetValue("settingsUrl").Value<string>(), "#personalSettings");
             Assert.AreEqual(result.GetValue("userTimeZoneMinutes").Value<string>(), "-300");
 
             //now test simple response
