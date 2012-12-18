@@ -14,6 +14,9 @@ using FoundOps.Core.Models.CoreEntities.DesignData;
 using FoundOps.Core.Tools;
 using KellermanSoftware.CompareNetObjects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Driver;
+using MongoDB.Bson;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Data;
@@ -44,6 +47,7 @@ namespace FoundOps.Api.Tests.Controllers
     {
         protected readonly CoreEntitiesContainer CoreEntitiesContainer;
 
+        private MongoDatabase _database;
         private readonly Guid _adminGotGreaseRoleId;
         private readonly Guid _adminGenericBiodieselRoleId;
         private readonly Guid _gotGreaseId = new Guid("8528E50D-E2B9-4779-9B29-759DBEA53B61");
@@ -103,6 +107,10 @@ namespace FoundOps.Api.Tests.Controllers
             //Admin role on GotGrease?
             //_adminGotGreaseRoleId = CoreEntitiesContainer.Roles.First(r => r.OwnerBusinessAccountId == _gotGreaseId && r.RoleTypeInt == (int)RoleType.Administrator).Id;
             //_adminGenericBiodieselRoleId = CoreEntitiesContainer.Roles.First(r => r.OwnerBusinessAccountId == _genericBiodiesel && r.RoleTypeInt == (int)RoleType.Administrator).Id;
+
+            var client = new MongoClient("mongodb://localhost");
+            var server = client.GetServer();
+            _database = server.GetDatabase("test"); // WriteConcern defaulted to Acknowledged
         }
 
         private void DetachAllEntities()
@@ -111,7 +119,7 @@ namespace FoundOps.Api.Tests.Controllers
             var attached = CoreEntitiesContainer.ObjectStateManager.GetObjectStateEntries(EntityState.Added | EntityState.Deleted | EntityState.Modified | EntityState.Unchanged);
             foreach (var objectStateEntry in attached)
                 CoreEntitiesContainer.Detach(objectStateEntry.Entity);
-        } 
+        }
 
         [TestMethod]
         public void ClientsTests()
@@ -538,7 +546,7 @@ namespace FoundOps.Api.Tests.Controllers
 
             var e = EntityRules.SetupTimeZoneRules();
             var b = EntityRules.ValidateAndReturnErrors(e, t);
-           
+
         }
 
         #region SQL Tests
@@ -663,7 +671,7 @@ namespace FoundOps.Api.Tests.Controllers
                 }
                 catch (Exception)
                 {
-                    Assert.AreEqual(DateTime.UtcNow.Date.AddDays(28), lastDate);                    
+                    Assert.AreEqual(DateTime.UtcNow.Date.AddDays(28), lastDate);
                 }
 
                 //Testing Client context
@@ -1009,7 +1017,7 @@ namespace FoundOps.Api.Tests.Controllers
         {
             var timeZone = new TimeZoneObservance(new Period(), new iCalTimeZoneInfo("US-Eastern"));
 
-            var iCal = new iCalendar{Method = "Publish", Version = "2.0"};
+            var iCal = new iCalendar { Method = "Publish", Version = "2.0" };
             var eve = iCal.Create<Event>();
             eve.Start = new iCalDateTime(DateTime.Now);
             eve.End = new iCalDateTime(DateTime.Now.AddDays(21), "America/New_York");
@@ -1018,43 +1026,41 @@ namespace FoundOps.Api.Tests.Controllers
             recurr.ByDay.Add(new WeekDay(DayOfWeek.Monday));
             recurr.ByDay.Add(new WeekDay(DayOfWeek.Wednesday));
 
-            
-            var p = new PeriodList {new iCalDateTime(DateTime.UtcNow.Date), new iCalDateTime(DateTime.UtcNow.Date.AddDays(1))};
-
+            var p = new PeriodList { new iCalDateTime(DateTime.UtcNow.Date) };
             eve.ExceptionDates.Add(p);
+
             eve.RecurrenceRules.Add(recurr);
-            var t = eve.GetOccurrences(new iCalDateTime(DateTime.UtcNow.Date.AddDays(-1)), new iCalDateTime(DateTime.UtcNow.Date.AddDays(14)));
-
-            var g = iCal.GetOccurrences(new iCalDateTime(DateTime.UtcNow.Date.AddDays(1)));
-
             var serializer = new iCalendarSerializer(iCal);
-
             var f = serializer.SerializeToString(iCal);
             var e = serializer.SerializeToString(eve);
+
+
             var repeats = CoreEntitiesContainer.Repeats.ToArray();
+            var recurringServices = CoreEntitiesContainer.RecurringServices.ToArray();
 
-            //var ev = serializer.Deserialize();
-            
-            foreach (var repeat in repeats)
-                repeat.ICalEvent = ConvertRepeatToiCal(repeat);
+            var documents = (from repeat in repeats 
+                             let recurringService = recurringServices.FirstOrDefault(rs => rs.Id == repeat.Id) 
+                             select ConvertRepeatToiCal(repeat, recurringService)).ToList();
 
-            CoreEntitiesContainer.SaveChanges();
+
+            var schedules = _database.GetCollection("schedules");
+            schedules.InsertBatch(documents);    
         }
 
-        public string ConvertRepeatToiCal(Repeat repeat)
+        public BsonDocument ConvertRepeatToiCal(Repeat repeat, RecurringService recurringService)
         {
             var iCal = new iCalendar();
             var eve = iCal.Create<Event>();
 
             eve.Start = new iCalDateTime(repeat.StartDate);
             eve.End = new iCalDateTime(repeat.StartDate.AddHours(1));
-            
-            var recurrence = new RecurrencePattern {Interval = repeat.RepeatEveryTimes};
+
+            var recurrence = new RecurrencePattern { Interval = repeat.RepeatEveryTimes };
             if (repeat.EndAfterTimes != null)
                 recurrence.Count = (int)repeat.EndAfterTimes;
-            else if(repeat.EndDate != null)
+            else if (repeat.EndDate != null)
                 recurrence.Until = (DateTime)repeat.EndDate;
-            
+
             switch (repeat.Frequency)
             {
                 case Frequency.Daily:
@@ -1079,12 +1085,6 @@ namespace FoundOps.Api.Tests.Controllers
                     recurrence.Frequency = FrequencyType.Monthly;
                     switch (repeat.FrequencyDetailAsMonthlyFrequencyDetail)
                     {
-                        case MonthlyFrequencyDetail.OnDayInMonth:
-                            {
-                                recurrence.ByMonthDay.Add(repeat.StartDate.Day);
-                                eve.RecurrenceRules.Add(recurrence);
-                            }
-                            break;
                         case MonthlyFrequencyDetail.FirstOfDayOfWeekInMonth:
                             {
                                 recurrence.ByDay.Add(new WeekDay(repeat.StartDate.DayOfWeek, FrequencyOccurrence.First));
@@ -1109,6 +1109,12 @@ namespace FoundOps.Api.Tests.Controllers
                                 eve.RecurrenceRules.Add(recurrence);
                             }
                             break;
+                        default: //Also for MonthlyFrequencyDetail.OnDayInMonth
+                            {
+                                recurrence.ByMonthDay.Add(repeat.StartDate.Day);
+                                eve.RecurrenceRules.Add(recurrence);
+                            }
+                            break;
                     }
                     break;
                 case Frequency.Yearly:
@@ -1117,11 +1123,81 @@ namespace FoundOps.Api.Tests.Controllers
                         eve.RecurrenceRules.Add(recurrence);
                     }
                     break;
+                case Frequency.Once:
+                    {
+                        recurrence.Frequency = FrequencyType.None;
+                        eve.RecurrenceRules.Add(recurrence);
+                    }
+                    break;
             }
-            
-            var serializer = new iCalendarSerializer(iCal);
 
-            return serializer.SerializeToString(eve);
+            var recurrenceString = eve.RecurrenceRules.First().ToString();
+
+            //Convert the event to a BSON doc and save it in mongo
+            var schedule = new Schedule
+            {
+                StartDate = (iCalDateTime)eve.Start,
+                EndDate = (iCalDateTime)eve.DTEnd,
+                RecurRule = recurrenceString.Contains("FREQ=NONE") ? "" : recurrenceString
+            };
+
+            if (recurringService != null)
+            {
+                var excludedDates = new PeriodList();
+
+                foreach (var iCalDate in recurringService.ExcludedDates.Select(date => new iCalDateTime(date)))
+                    excludedDates.Add(iCalDate);
+
+                schedule.ExcludedDates = excludedDates.ToString();
+            }
+
+            var doc = new BsonDocument();
+            doc["DTSTART"] = schedule.Start;
+            doc["DTEND"] = schedule.End;
+            doc["RRULE"] = schedule.RecurRule;
+            doc["EXDATE"] = schedule.ExcludedDates ?? "";
+
+            return doc;
+        }
+    }
+
+    public class Schedule
+    {
+        [BsonId]
+        public ObjectId Id { get; set; }
+
+        [BsonElementAttribute("DTSTART")]
+        public string Start { get; set; }
+
+        [BsonElementAttribute("DTEND")]
+        public string End { get; set; }
+
+        [BsonElementAttribute("RRULE")]
+        public string RecurRule { get; set; }
+
+        [BsonElementAttribute("EXDATE")]
+        public string ExcludedDates { get; set; }
+
+        public iCalDateTime StartDate
+        {
+            get
+            {
+                return new iCalDateTime(Start);
+            }
+            set
+            {
+                var stringVal = value.ToString();
+                Start = String.Format("{0:yyyyMMdd}T{0:HHmmss}", DateTime.Parse(stringVal));
+            }
+        }
+
+        public iCalDateTime EndDate
+        {
+            get
+            {
+                return new iCalDateTime(End);
+            }
+            set { End = String.Format("{0:yyyyMMdd}T{0:HHmmss}", DateTime.Parse(value.ToString())); }
         }
     }
 }
