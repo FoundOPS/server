@@ -22,6 +22,8 @@ namespace FoundOps.Api.Models
         [ReadOnly(true)]
         public Client Client { get; set; }
 
+        public Repeat Repeat { get; set; }
+
         public List<Field> Fields { get; set; }
 
         public Guid? RecurringServiceId { get; set; }
@@ -50,16 +52,15 @@ namespace FoundOps.Api.Models
                 Name = serviceModel.ServiceTemplate.Name,
                 ServiceDate = serviceModel.ServiceDate,
                 ClientId = serviceModel.ClientId,
+                Client = serviceModel.Client != null ? Client.ConvertModel(serviceModel.Client) : null,
                 ServiceProviderId = serviceModel.ServiceProviderId,
                 RecurringServiceId = serviceModel.RecurringServiceId
             };
 
             service.SetLastModified(serviceModel.LastModified, serviceModel.LastModifyingUserId);
 
-            if(serviceModel.Client!=null)
-            {
-                service.Client = Client.ConvertModel(serviceModel.Client);
-            }
+            if (serviceModel.RecurringServiceId != null)
+                service.Repeat = Repeat.ConvertModel(serviceModel.RecurringServiceParent.Repeat);
 
             //Convert each field from the FoundOPS model to the API model
             //Add the newly converted field to the newly created service

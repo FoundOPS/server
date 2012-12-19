@@ -36,7 +36,7 @@ namespace FoundOps.Api.Controllers.Rest
 
             //try to find the existing service
             if (serviceId.HasValue)
-                service = CoreEntitiesContainer.Services.Include(s => s.Client).FirstOrDefault(s => s.Id == serviceId.Value);
+                service = CoreEntitiesContainer.Services.Include(s => s.Client).Include(s => s.RecurringServiceParent).Include(s => s.RecurringServiceParent.Repeat).FirstOrDefault(s => s.Id == serviceId.Value);
 
             if (service != null)
             {
@@ -50,8 +50,8 @@ namespace FoundOps.Api.Controllers.Rest
                 if (recurringServiceId.HasValue)
                 {
                     serviceTemplateIdToLoad = recurringServiceId.Value;
-                    recurringService = CoreEntitiesContainer.RecurringServices.Include(rs => rs.Client)
-                                                            .Include(rs => rs.ServiceTemplate)
+                    recurringService = CoreEntitiesContainer.RecurringServices
+                                                            .Include(rs => rs.Client).Include(rs => rs.ServiceTemplate).Include(rs => rs.Repeat)
                                                             .FirstOrDefault(rs => rs.Id == recurringServiceId.Value);
 
                     if (recurringService == null)
@@ -105,6 +105,7 @@ namespace FoundOps.Api.Controllers.Rest
                 {
                     service.RecurringServiceId = recurringService.Id;
                     service.Client = recurringService.Client;
+                    service.RecurringServiceParent.Repeat = recurringService.Repeat;
                 }
 
                 var template = serviceTemplate.MakeChild(ServiceTemplateLevel.ServiceDefined);
@@ -173,7 +174,7 @@ namespace FoundOps.Api.Controllers.Rest
                         var oldId = locationField.Id;
                         var newId = apiLocationField.LocationId;
                         //update the location field, any route tasks, and destinations to the new location
-                        if (oldId != newId)
+                        if (newId != null && oldId != newId)
                         {
                             locationField.LocationId = newId.Value;
 

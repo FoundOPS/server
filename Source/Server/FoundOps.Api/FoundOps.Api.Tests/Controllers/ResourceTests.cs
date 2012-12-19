@@ -303,7 +303,7 @@ namespace FoundOps.Api.Tests.Controllers
         [TestMethod]
         public void ServicesTests()
         {
-            var service = CoreEntitiesContainer.Services.Include(s => s.ServiceTemplate).Include(s => s.ServiceTemplate.Fields).First();
+            var service = CoreEntitiesContainer.Services.Include(s => s.ServiceTemplate).Include(s => s.ServiceTemplate.Fields).Include(s => s.RecurringServiceParent.Repeat).First(s => s.RecurringServiceId != null);
             var recurringService = CoreEntitiesContainer.RecurringServices.Include(rs => rs.Repeat).First();
             var serviceDate = recurringService.Repeat.StartDate;
             var serviceTemplate = CoreEntitiesContainer.ServiceTemplates.First(st => st.OwnerServiceProviderId != null);

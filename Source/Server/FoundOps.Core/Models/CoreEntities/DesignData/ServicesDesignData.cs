@@ -32,6 +32,7 @@ namespace FoundOps.Core.Models.CoreEntities.DesignData
                 ServiceDate = DateTime.UtcNow.AddDays(-1),
                 ServiceTemplate = _serviceTemplates.RandomItem().MakeChild(ServiceTemplateLevel.ServiceDefined),
                 Client = _client,
+                RecurringServiceId = new RecurringServicesDesignData(_client).DesignRecurringService.Id,
                 ServiceProvider = _serviceProvider,
                 CreatedDate = DateTime.UtcNow,
                 LastModified = DateTime.UtcNow
