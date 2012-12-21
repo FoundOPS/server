@@ -361,7 +361,7 @@ namespace FoundOps.Api.Controllers.Rest
 
                     //Check for invalid Int's
                     int? endAfterTimes = null;
-                    int? repeatEveryTimes = null;
+                    int repeatEveryTimes = 0;
                     int tempInt;
 
                     if (endAfterCol != -1 && !String.IsNullOrEmpty(row[endAfterCol]))
@@ -380,7 +380,7 @@ namespace FoundOps.Api.Controllers.Rest
                             repeatEveryTimes = tempInt;
                         else
                         {
-                            repeatEveryTimes = null;
+                            repeatEveryTimes = 0;
                             setError = true;
                         }
                     }
@@ -392,7 +392,7 @@ namespace FoundOps.Api.Controllers.Rest
                         StartDate = startDate,
                         EndDate = endDate,
                         EndAfterTimes = endAfterTimes,
-                        RepeatEveryTimes = repeatEveryTimes
+                        RepeatEveryTimes = (int) repeatEveryTimes
                     };
 
                     #region Frequency
@@ -421,7 +421,7 @@ namespace FoundOps.Api.Controllers.Rest
                             repeat.FrequencyInt = (int)Frequency.Yearly;
                             break;
                         default:
-                            repeat.FrequencyInt = null;
+                            repeat.FrequencyInt = 0;
                             break;
                     }
 

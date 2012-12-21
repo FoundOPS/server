@@ -7,14 +7,14 @@ using FoundOps.Core.Models.CoreEntities;
 
 namespace FoundOps.Api.Models
 {
-    public class Repeat : IImportable
+    public class Repeat : IImportable, ITrackable
     {
         public Guid Id { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public int? EndAfterTimes { get; set; }
-        public int? RepeatEveryTimes { get; set; }
-        public int? FrequencyInt { get; set; }
+        public int RepeatEveryTimes { get; set; }
+        public int FrequencyInt { get; set; }
         public int? FrequencyDetailInt { get; set; }
         public int? StatusInt { get; set; }
 
@@ -30,6 +30,8 @@ namespace FoundOps.Api.Models
                 FrequencyInt = repeatModel.FrequencyInt,
                 FrequencyDetailInt = repeatModel.FrequencyDetailInt
             };
+
+            repeat.SetLastModified(repeatModel.LastModified, repeatModel.LastModifyingUserId);
 
             return repeat;
         }
@@ -196,6 +198,15 @@ namespace FoundOps.Api.Models
                     FrequencyDetailInt = null;
                     break;
             }
+        }
+
+        public DateTime CreatedDate { get; private set; }
+        public DateTime? LastModified { get; private set; }
+        public Guid? LastModifyingUserId { get; private set; }
+        public void SetLastModified(DateTime? lastModified, Guid? userId)
+        {
+            LastModified = lastModified;
+            LastModifyingUserId = userId;
         }
     } 
 }

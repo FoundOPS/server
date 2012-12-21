@@ -225,9 +225,57 @@ namespace FoundOps.Api.Controllers.Rest
                     ServiceDate = service.ServiceDate.Date,
                     ServiceProviderId = service.ServiceProviderId,
                     ClientId = service.ClientId,
-                    RecurringServiceId = service.RecurringServiceId,
                     ServiceTemplate = new ServiceTemplate { Id = service.Id, Name = service.Name, ServiceTemplateLevel = ServiceTemplateLevel.ServiceDefined, OwnerServiceTemplateId = service.RecurringServiceId },
                 };
+
+                if (service.Repeat == null)
+                {
+                    generatedService.RecurringServiceId = null;
+                }
+                else
+                {
+                    var recurringService =
+                        CoreEntitiesContainer.RecurringServices.Include(rs => rs.Repeat)
+                                             .First(rs => rs.Id == service.RecurringServiceId);
+                    var repeat = recurringService.Repeat;
+
+                    var startDateChaged = repeat.StartDate != service.Repeat.StartDate;
+                    var endDateChanged = repeat.EndDate != service.Repeat.EndDate;
+                    var endAfterTimesChanged = repeat.EndAfterTimes != service.Repeat.EndAfterTimes;
+                    var repeatEveryTimesChanged = repeat.RepeatEveryTimes != service.Repeat.RepeatEveryTimes;
+                    var frequencyIntChanged = repeat.FrequencyInt != service.Repeat.FrequencyInt;
+                    var frequencyDetailIntChanged = repeat.FrequencyDetailInt != service.Repeat.FrequencyDetailInt;
+
+                    //Only the end date has changed
+                    if (endDateChanged && new[] { startDateChaged, endAfterTimesChanged, repeatEveryTimesChanged, frequencyIntChanged, frequencyDetailIntChanged }.All(change => !change))
+                        repeat.EndDate = service.Repeat.EndDate;
+                    //Something on the repeat has changed => end the old recurring service and start a new one
+                    else if (new[] { startDateChaged, endAfterTimesChanged, repeatEveryTimesChanged, frequencyIntChanged, frequencyDetailIntChanged }.All(change => change))
+                    {
+                        //End the old recurring service yesterday(inclusive)
+                        repeat.EndDate = CoreEntitiesContainer.CurrentUserAccount().Now().Date.AddDays(-1);
+
+                        //create and attach a new one
+                        var newRepeat = new Core.Models.CoreEntities.Repeat
+                        {
+                            StartDate = service.Repeat.StartDate,
+                            EndDate = service.Repeat.EndDate,
+                            EndAfterTimes = service.Repeat.EndAfterTimes,
+                            RepeatEveryTimes = service.Repeat.RepeatEveryTimes,
+                            FrequencyInt = service.Repeat.FrequencyInt,
+                            FrequencyDetailInt = service.Repeat.FrequencyDetailInt
+                        };
+
+                        var newRecurringService = new Core.Models.CoreEntities.RecurringService
+                        {
+                            ClientId = service.ClientId,
+                            Repeat = newRepeat
+                        };
+                    }
+                    //Nothing on the repeat has changed
+                    else
+                        generatedService.RecurringServiceId = service.RecurringServiceId;
+                }
 
                 //Add all fields from the generated Service to the Service Template
                 foreach (var field in service.Fields)
