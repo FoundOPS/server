@@ -28,7 +28,7 @@ namespace FoundOps.Api.Models
 
         public Guid? RecurringServiceId { get; set; }
         public Guid ServiceProviderId { get; set; }
-        
+
         public int? StatusInt { get; set; }
 
         public Service()
@@ -59,7 +59,7 @@ namespace FoundOps.Api.Models
 
             service.SetLastModified(serviceModel.LastModified, serviceModel.LastModifyingUserId);
 
-            if (serviceModel.RecurringServiceId != null)
+            if (serviceModel.RecurringServiceParent != null && serviceModel.RecurringServiceParent.Repeat != null)
                 service.Repeat = Repeat.ConvertModel(serviceModel.RecurringServiceParent.Repeat);
 
             //Convert each field from the FoundOPS model to the API model

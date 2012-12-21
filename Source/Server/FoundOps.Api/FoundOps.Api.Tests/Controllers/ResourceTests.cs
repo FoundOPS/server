@@ -303,13 +303,19 @@ namespace FoundOps.Api.Tests.Controllers
         [TestMethod]
         public void ServicesTests()
         {
-            var service = CoreEntitiesContainer.Services.Include(s => s.ServiceTemplate).Include(s => s.ServiceTemplate.Fields).Include(s => s.RecurringServiceParent.Repeat).First(s => s.RecurringServiceId != null);
+            var individualService = CoreEntitiesContainer.Services.Include(s => s.ServiceTemplate).Include(s => s.ServiceTemplate.Fields)
+                .First(s => s.RecurringServiceId == null);
+            
+            var serviceFromRecurringService = CoreEntitiesContainer.Services.Include(s => s.ServiceTemplate).Include(s => s.ServiceTemplate.Fields)
+                .First(s => s.RecurringServiceId != null);
+
             var recurringService = CoreEntitiesContainer.RecurringServices.Include(rs => rs.Repeat).First();
             var serviceDate = recurringService.Repeat.StartDate;
             var serviceTemplate = CoreEntitiesContainer.ServiceTemplates.First(st => st.OwnerServiceProviderId != null);
 
             //Tests getting a service from an Id
-            SimpleGetTest<ServicesController, Models.Service>(s => s.Get(service.Id, null, null, null));
+            SimpleGetTest<ServicesController, Models.Service>(s => s.Get(individualService.Id, null, null, null));
+            SimpleGetTest<ServicesController, Models.Service>(s => s.Get(serviceFromRecurringService.Id, null, null, null));
 
             //Tests getting a service from a recurring service and a date
             SimpleGetTest<ServicesController, Models.Service>(s => s.Get(null, serviceDate, recurringService.Id, null));
@@ -318,8 +324,9 @@ namespace FoundOps.Api.Tests.Controllers
             SimpleGetTest<ServicesController, Models.Service>(s => s.Get(null, serviceDate, null, serviceTemplate.Id));
 
             var controller = CreateRequest<ServicesController>(HttpMethod.Put);
+
             //fake generate a service by setting an Id and clearing the recurring service id
-            var modelService = Models.Service.ConvertModel(service);
+            var modelService = Models.Service.ConvertModel(serviceFromRecurringService);
             modelService.Id = Guid.NewGuid();
             foreach (var field in modelService.Fields)
                 field.Id = Guid.NewGuid();
@@ -335,7 +342,7 @@ namespace FoundOps.Api.Tests.Controllers
             //Tests updating an existing service
             controller = CreateRequest<ServicesController>(HttpMethod.Put);
 
-            modelService = Models.Service.ConvertModel(service);
+            modelService = Models.Service.ConvertModel(serviceFromRecurringService);
             modelService.Name = "I have changed";
 
             controller.Put(modelService);
