@@ -127,15 +127,21 @@ namespace FoundOps.Api.Controllers.Rest
         /// <param name="roleId">Current roleId </param>
         /// <param name="trackPoints">The list of TrackPoints being passed from an Employee's device</param>
         /// <returns>An Http response to the device signaling that the TrackPoint was successfully created</returns>
-        public void Post(Guid roleId, TrackPoint[] trackPoints)
+        public void Post(Guid roleId, TrackPoint trackPoint)
         {
-            if (!trackPoints.Any() || !trackPoints.First().RouteId.HasValue)
+            if (trackPoint == null || !trackPoint.RouteId.HasValue)
                 throw Request.BadRequest();
 
-            var routeId = trackPoints.First().RouteId.Value;
+            //remove inaccurate trackpoints
+            if (trackPoint.Accuracy > 50)
+                return;
+
+            var routeId = trackPoint.RouteId.Value;
 
             var currentUserAccount = CoreEntitiesContainer.CurrentUserAccount();
-            var currentBusinessAccount = CoreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator, RoleType.Regular, RoleType.Mobile }).FirstOrDefault();
+            var currentBusinessAccount =
+                CoreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator, RoleType.Regular, RoleType.Mobile })
+                                     .FirstOrDefault();
 
             //Return an Unauthorized Status Code if
             //a) there is no UserAccount
@@ -143,38 +149,35 @@ namespace FoundOps.Api.Controllers.Rest
             if (currentUserAccount == null || currentBusinessAccount == null)
                 throw Request.NotAuthorized();
 
-            var employee = CoreEntitiesContainer.Employees.FirstOrDefault(e => e.LinkedUserAccount.Id == currentUserAccount.Id
-                                                                                && e.EmployerId == currentBusinessAccount.Id);
+            var employee =
+                CoreEntitiesContainer.Employees.FirstOrDefault(e => e.LinkedUserAccount.Id == currentUserAccount.Id
+                                                                    && e.EmployerId == currentBusinessAccount.Id);
             if (employee == null)
                 throw Request.NotFound("Employee");
 
-            //order the new track points by their TimeStamps
-            //remove inaccurate trackpoints
-            var orderedModelTrackPoints = trackPoints.Where(tp => tp.Accuracy < 50).OrderBy(tp => tp.CollectedTimeStamp).ToArray();
-
-            var latestTrackPoint = orderedModelTrackPoints.LastOrDefault();
-
             //if there was a previous point today, check the latest point is not erroneous
-            if (employee.LastTimeStamp.HasValue && DateTime.UtcNow.Subtract(employee.LastTimeStamp.Value) < TimeSpan.FromDays(1))
+            if (employee.LastTimeStamp.HasValue &&
+                DateTime.UtcNow.Subtract(employee.LastTimeStamp.Value) < TimeSpan.FromDays(1))
             {
                 var previous = new GeoLocation(employee.LastLatitude.Value, employee.LastLongitude.Value);
-                latestTrackPoint = orderedModelTrackPoints.LastOrDefault(t => !Erroneous(t, previous, t.CollectedTimeStamp.Subtract(employee.LastTimeStamp.Value)));
+                if (Erroneous(trackPoint, previous, trackPoint.CollectedTimeStamp.Subtract(employee.LastTimeStamp.Value)))
+                    trackPoint = null;
 
                 //set the heading based on the previous point
-                if (latestTrackPoint != null)
-                    latestTrackPoint.Heading = (int)GeoLocationTools.Bearing(previous, latestTrackPoint);
+                if (trackPoint != null)
+                    trackPoint.Heading = (int)GeoLocationTools.Bearing(previous, trackPoint);
             }
 
-            if (latestTrackPoint != null)
+            if (trackPoint != null)
             {
                 //Save the latest (most current) TrackPoint to the database
-                employee.LastCompassDirection = latestTrackPoint.Heading;
-                employee.LastLatitude = (double?)latestTrackPoint.Latitude;
-                employee.LastLongitude = (double?)latestTrackPoint.Longitude;
-                employee.LastSource = latestTrackPoint.Source;
-                employee.LastSpeed = (double?)latestTrackPoint.Speed;
-                employee.LastTimeStamp = latestTrackPoint.CollectedTimeStamp;
-                employee.LastAccuracy = latestTrackPoint.Accuracy;
+                employee.LastCompassDirection = trackPoint.Heading;
+                employee.LastLatitude = (double?)trackPoint.Latitude;
+                employee.LastLongitude = (double?)trackPoint.Longitude;
+                employee.LastSource = trackPoint.Source;
+                employee.LastSpeed = (double?)trackPoint.Speed;
+                employee.LastTimeStamp = trackPoint.CollectedTimeStamp;
+                employee.LastAccuracy = trackPoint.Accuracy;
             }
 
             //Push TrackPoints to Azure as long as either
@@ -182,21 +185,18 @@ namespace FoundOps.Api.Controllers.Rest
             //the LastPushToAzureTimeStamp difference from the TrackPoint is > TimeBetweenPushesToAzure
             var lastPushToAzureTimeStamp = employee.LastPushToAzureTimeStamp;
 
-            //send the TrackPoints to azure, that are seperated by TimeBetweenPushesToAzure (in seconds)
-            foreach (var trackPoint in orderedModelTrackPoints)
-            {
-                if (lastPushToAzureTimeStamp.HasValue && (trackPoint.CollectedTimeStamp - lastPushToAzureTimeStamp) < TimeSpan.FromSeconds(UpdateConstants.SecondsBetweenHistoricalTrackPoints))
-                    continue;
+            //send the TrackPoint to azure, that are seperated by TimeBetweenPushesToAzure (in seconds)
 
+            if (lastPushToAzureTimeStamp.HasValue &&
+                (trackPoint.CollectedTimeStamp - lastPushToAzureTimeStamp) >=
+                TimeSpan.FromSeconds(UpdateConstants.SecondsBetweenHistoricalTrackPoints))
+            {
                 if (trackPoint.Id == Guid.Empty)
                     trackPoint.Id = Guid.NewGuid();
-
                 PushTrackPointToAzure(currentBusinessAccount, trackPoint, employee, routeId);
-
                 lastPushToAzureTimeStamp = trackPoint.CollectedTimeStamp;
+                employee.LastPushToAzureTimeStamp = lastPushToAzureTimeStamp;
             }
-
-            employee.LastPushToAzureTimeStamp = lastPushToAzureTimeStamp;
 
             //Save all the changes that have been made in the Database
             SaveWithRetry();

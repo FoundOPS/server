@@ -106,7 +106,7 @@ namespace FoundOps.Api.Tests.Controllers
             var attached = CoreEntitiesContainer.ObjectStateManager.GetObjectStateEntries(EntityState.Added | EntityState.Deleted | EntityState.Modified | EntityState.Unchanged);
             foreach (var objectStateEntry in attached)
                 CoreEntitiesContainer.Detach(objectStateEntry.Entity);
-        } 
+        }
 
         [TestMethod]
         public void ClientsTests()
@@ -305,7 +305,7 @@ namespace FoundOps.Api.Tests.Controllers
         {
             var individualService = CoreEntitiesContainer.Services.Include(s => s.ServiceTemplate).Include(s => s.ServiceTemplate.Fields)
                 .First(s => s.RecurringServiceId == null);
-            
+
             var serviceFromRecurringService = CoreEntitiesContainer.Services.Include(s => s.ServiceTemplate).Include(s => s.ServiceTemplate.Fields)
                 .First(s => s.RecurringServiceId != null);
 
@@ -485,7 +485,10 @@ namespace FoundOps.Api.Tests.Controllers
 
             var controller = CreateRequest<TrackPointsController>(HttpMethod.Post);
 
-            controller.Post(_adminGotGreaseRoleId, trackPoints.ToArray());
+            for (int i = 0; i < 5; i++)
+            {
+                controller.Post(_adminGotGreaseRoleId, trackPoints.ElementAt(i));
+            }
         }
 
         [TestMethod]
@@ -540,7 +543,7 @@ namespace FoundOps.Api.Tests.Controllers
 
             var e = EntityRules.SetupTimeZoneRules();
             var b = EntityRules.ValidateAndReturnErrors(e, t);
-           
+
         }
 
         #region SQL Tests
@@ -665,7 +668,7 @@ namespace FoundOps.Api.Tests.Controllers
                 }
                 catch (Exception)
                 {
-                    Assert.AreEqual(DateTime.UtcNow.Date.AddDays(28), lastDate);                    
+                    Assert.AreEqual(DateTime.UtcNow.Date.AddDays(28), lastDate);
                 }
 
                 //Testing Client context
