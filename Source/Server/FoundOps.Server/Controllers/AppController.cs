@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Web.Caching;
 using System.Web.Mvc;
 using FoundOps.Common.Tools;
 using FoundOps.Core.Models;
@@ -23,16 +27,30 @@ namespace FoundOps.Server.Controllers
         //#endif
         public ActionResult Index()
         {
-            var model = new Dictionary<string, object>
-                {
-                    {"BlobRoot", AzureServerHelpers.BlobStorageUrl + "app/"}
-                };
-
+            //load the index page from cache
+            //if it expired, refetch it from blob storage
+            var indexPage = HttpContext.Cache["IndexPage"] as string;
+            if (indexPage == null)
+            {
 #if DEBUG
-            //if full source
-            return View("IndexFullSource", model);
+                var request = (HttpWebRequest)WebRequest.Create(AppConstants.LocalApplicationServer);
+#else
+                var request = (HttpWebRequest)WebRequest.Create(AzureServerHelpers.BlobStorageUrl + "app/index.html");
 #endif
-            return View("IndexBuilt", model);
+
+                var response = (HttpWebResponse)request.GetResponse();
+                var stream = new StreamReader(response.GetResponseStream());
+
+                indexPage = stream.ReadToEnd();
+                response.Close();
+                stream.Close();
+
+                //cache the page for 6 hours
+                HttpContext.Cache.Add("IndexPage", indexPage, null, DateTime.UtcNow.AddHours(6), Cache.NoSlidingExpiration,
+                                      CacheItemPriority.Normal, null);
+            }
+
+            return Content(indexPage, "text/html");
         }
     }
 }
