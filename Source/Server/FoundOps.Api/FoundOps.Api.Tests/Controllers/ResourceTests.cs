@@ -329,7 +329,7 @@ namespace FoundOps.Api.Tests.Controllers
             var serviceTemplate = CoreEntitiesContainer.ServiceTemplates.First(st => st.OwnerServiceProviderId != null);
 
             //Tests getting a service from an Id
-            SimpleGetTest<ServicesController, Models.Service>(s => s.Get(individualService.Id, null, null, null));
+            var tests = SimpleGetTest<ServicesController, Models.Service>(s => s.Get(individualService.Id, null, null, null));
             SimpleGetTest<ServicesController, Models.Service>(s => s.Get(serviceFromRecurringService.Id, null, null, null));
 
             //Tests getting a service from a recurring service and a date

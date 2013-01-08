@@ -18,7 +18,7 @@ namespace FoundOps.Api.Controllers.Rest
     public class ServicesController : BaseApiController
     {
         /// <summary>
-        /// Gets the service and fields.
+        /// Gets the service, it's fields (and TODO associated Locations), and TODO repeat
         /// Need to specify one of the following
         /// a) the serviceId -> this will return the existing service and fields
         /// b) recurringServiceId -> this will generate a service based on the recurringServiceId on serviceDate, or the current user's date
@@ -120,7 +120,8 @@ namespace FoundOps.Api.Controllers.Rest
         }
 
         /// <summary>
-        /// Pushes changes made to a Service from the API model to the FoundOPS model
+        /// Updates a Service and Fields. Inserts a new service if it doesn't exist yet
+        /// Does not update Location or Repeat on the Service, must call those individually
         /// </summary>
         /// <param name="service">The API model of a Service</param>
         /// <param name="routeTaskId">Optional. If set update this route task to use this service. Only for generated services</param>

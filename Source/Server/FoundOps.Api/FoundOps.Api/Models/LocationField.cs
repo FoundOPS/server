@@ -4,6 +4,8 @@ namespace FoundOps.Api.Models
 {
     public class LocationField : Field
     {
+        public Location Location { get; set; }
+
         public Guid? LocationId { get; set; }
 
         public short LocationFieldTypeInt { get; set; }
@@ -16,17 +18,18 @@ namespace FoundOps.Api.Models
         public static LocationField ConvertModel(Core.Models.CoreEntities.LocationField fieldModel)
         {
             var field = new LocationField
-            {
-                Id = fieldModel.Id,
-                CreatedDate = fieldModel.CreatedDate,
-                Name = fieldModel.Name,
-                Required = fieldModel.Required,
-                ToolTip = fieldModel.Tooltip,
-                ParentFieldId = fieldModel.ParentFieldId,
-                ServiceTemplateId = fieldModel.ServiceTemplateId,
-                LocationId = fieldModel.LocationId,
-                LocationFieldTypeInt = fieldModel.LocationFieldTypeInt
-            };
+                {
+                    Id = fieldModel.Id,
+                    CreatedDate = fieldModel.CreatedDate,
+                    Name = fieldModel.Name,
+                    Required = fieldModel.Required,
+                    ToolTip = fieldModel.Tooltip,
+                    ParentFieldId = fieldModel.ParentFieldId,
+                    ServiceTemplateId = fieldModel.ServiceTemplateId,
+                    LocationId = fieldModel.LocationId,
+                    LocationFieldTypeInt = fieldModel.LocationFieldTypeInt,
+                    Location = Location.ConvertModel(fieldModel.Value)
+                };
 
             field.SetLastModified(fieldModel.LastModified, fieldModel.LastModifyingUserId);
 
