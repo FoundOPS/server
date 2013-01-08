@@ -842,7 +842,7 @@ namespace FoundOps.Core.Models.CoreEntities
         /// Initializes a new instance of the <see cref="RepeatEnumerator"/> class.
         /// </summary>
         /// <param name="repeat">The repeat to generate the enumerator from</param>
-        /// <param name="endDate">The date to start enumerating on</param>
+        /// <param name="startDate">The date to start enumerating on</param>
         /// <param name="endDate">The date to stop enumerating on</param>
         public RepeatEnumerator(Repeat repeat, DateTime startDate, DateTime? endDate)
             : this(repeat)
