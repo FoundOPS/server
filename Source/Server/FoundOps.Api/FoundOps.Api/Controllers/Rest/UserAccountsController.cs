@@ -323,12 +323,9 @@ namespace FoundOps.Api.Controllers.Rest
                 //do not link the employee
                 return;
 
-            //the id set when an employee is supposed to be created
-            var newEntityId = new Guid("10000000-0000-0000-0000-000000000000");
-
             Employee employee;
             //add a new employee
-            if (employeeId.Value == newEntityId)
+            if (employeeId.Value == EntityTools.NewEntityId)
             {
                 employee = new Employee
                 {

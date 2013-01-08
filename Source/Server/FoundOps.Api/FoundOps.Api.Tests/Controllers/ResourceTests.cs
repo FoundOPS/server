@@ -187,15 +187,30 @@ namespace FoundOps.Api.Tests.Controllers
             //Testing getting all locations for a client
             SimpleGetTest<LocationsController, Models.Location>(lc => lc.Get(_adminGotGreaseRoleId, null, clientId, false, null));
 
+            //Testing getting all locations for a client with a search string
+            var response = SimpleGetTest<LocationsController, Models.Location>(lc => lc.Get(_adminGotGreaseRoleId, null, clientId, false, "12414 english garden, 20171")).ToArray();
+
+            //Ensure that the searched location is last
+            var searchedLocation = response.Last();
+            Assert.AreEqual("20171", searchedLocation.PostalCode);
+            Assert.AreEqual("Herndon", searchedLocation.AdminDistrictTwo);
+            Assert.AreEqual("VA", searchedLocation.AdminDistrictOne);
+            Assert.IsTrue(searchedLocation.Latitude.Contains("38.898136"));
+            Assert.IsTrue(searchedLocation.Longitude.Contains("-77.379005"));
+
+            //Testing getting all locations for a client with none and a search string
+            response = SimpleGetTest<LocationsController, Models.Location>(lc => lc.Get(_adminGotGreaseRoleId, null, Guid.NewGuid(), false, "12414 english garden, 20171")).ToArray();
+
+            //Ensure that the searched location is last
+            searchedLocation = response.Last();
+            Assert.AreEqual("20171", searchedLocation.PostalCode);
+            Assert.AreEqual("Herndon", searchedLocation.AdminDistrictTwo);
+            Assert.AreEqual("VA", searchedLocation.AdminDistrictOne);
+            Assert.IsTrue(searchedLocation.Latitude.Contains("38.898136"));
+            Assert.IsTrue(searchedLocation.Longitude.Contains("-77.379005"));
+
             //Testing getting all depot locations for a business account
             SimpleGetTest<LocationsController, Models.Location>(lc => lc.Get(_adminGotGreaseRoleId, null, null, true, null));
-
-            //TODO uncomment when existing locations are included in search
-            //var searchText = convertedLocation.AddressLineOne + ' ' + convertedLocation.AdminDistrictTwo + ' ' + convertedLocation.AdminDistrictOne + ' ' + convertedLocation.CountryCode;
-            //var getResponseFromSearch = controller.GetAllLocations(_roleId, searchText).FirstOrDefault();
-            //if (!Tools.AreObjectsEqual(getResponseFromSearch, convertedLocation, new[] { "Id", "Name", "AddressLineTwo" }))
-            //    throw new Exception("Objects are not equal. Check output window for details");
-
 
             var getResponseFromSearch = SimpleGetTest<LocationsController, Models.Location>(lc => lc.Get(_adminGotGreaseRoleId, null, null, false, "12414 english garden, 20171"))
                 .FirstOrDefault();

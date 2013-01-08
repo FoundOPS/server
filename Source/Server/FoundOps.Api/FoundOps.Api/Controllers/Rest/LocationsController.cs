@@ -22,8 +22,8 @@ namespace FoundOps.Api.Controllers.Rest
         /// <param name="locationId">If set: get a specific location</param>
         /// <param name="clientId">Else if set: get all locations for a client</param>
         /// <param name="getDepots">Else if set: get all depot locations for a business account</param>
-        /// <param name="search">Else if set: attempt to geocode. Only returns high-confidence results</param>
-        /// <returns>List of locations</returns>
+        /// <param name="search">If set: attempt to geocode. Only returns high-confidence results</param>
+        /// <returns>List of locations from geocoded search and from existing locations</returns>
         public IQueryable<Location> Get(Guid roleId, Guid? locationId, Guid? clientId, bool? getDepots = false, string search = null)
         {
             //Check to be sure the user has access
@@ -33,8 +33,8 @@ namespace FoundOps.Api.Controllers.Rest
 
             Core.Models.CoreEntities.Location[] locations;
 
-            string sql;
-            Guid? lookupId;
+            string sql = string.Empty;
+            Guid? lookupId = null;
 
             if (locationId.HasValue)
             {
@@ -54,15 +54,22 @@ namespace FoundOps.Api.Controllers.Rest
                 sql = "SELECT * FROM Locations WHERE BusinessAccountIdIfDepot = @Id";
                 lookupId = currentBusinessAccount.Id;
             }
-            else if (!string.IsNullOrEmpty(search))
-            {
-                //attempt to geocode
-                var geocodeResult = BingLocationServices.TryGeocode(search);
-                return geocodeResult.Select(Location.ConvertGeocode).AsQueryable();
-            }
-            else
+            else if (string.IsNullOrEmpty(search))
             {
                 throw Request.BadRequest();
+            }
+
+            var geocodeResult = new GeocoderResult[] {};
+            if (!string.IsNullOrEmpty(search))
+            {
+                //attempt to geocode
+                geocodeResult = BingLocationServices.TryGeocode(search).ToArray();
+
+                if (!geocodeResult.Any())
+                    geocodeResult = BingLocationServices.TryGeocode(search).ToArray();
+
+                if (sql == string.Empty)
+                    return geocodeResult.Select(Location.ConvertGeocode).AsQueryable();
             }
 
             using (var conn = new SqlConnection(ServerConstants.SqlConnectionString))
@@ -74,7 +81,8 @@ namespace FoundOps.Api.Controllers.Rest
                 conn.Close();
             }
 
-            return locations.Select(Location.ConvertModel).AsQueryable();
+            return geocodeResult.Any() ? locations.Select(Location.ConvertModel).Concat(geocodeResult.Select(Location.ConvertGeocode)).AsQueryable() 
+                                        : locations.Select(Location.ConvertModel).AsQueryable();
         }
 
         /// <summary>
