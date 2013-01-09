@@ -13,6 +13,10 @@
 
         public static string ApplicationUrl;
 
+#if DEBUG
+        public static string LocalApplicationServer = "http://localhost:3501";
+#endif
+
         static AppConstants()
         {
 #if DEBUG
