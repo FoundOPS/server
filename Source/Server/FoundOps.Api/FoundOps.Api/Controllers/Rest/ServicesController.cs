@@ -18,7 +18,7 @@ namespace FoundOps.Api.Controllers.Rest
     public class ServicesController : BaseApiController
     {
         /// <summary>
-        /// Gets the service, it's fields (and TODO associated Locations), and TODO repeat
+        /// Gets the service, it's fields TODO repeat
         /// Need to specify one of the following
         /// a) the serviceId -> this will return the existing service and fields
         /// b) recurringServiceId -> this will generate a service based on the recurringServiceId on serviceDate, or the current user's date
@@ -168,33 +168,6 @@ namespace FoundOps.Api.Controllers.Rest
 
                     if (signatureField != null)
                         signatureField.Value = ((Models.SignatureField)field).Value;
-
-                    if (locationField != null)
-                    {
-                        var apiLocationField = (Models.LocationField)field;
-                        var oldId = locationField.Id;
-                        var newId = apiLocationField.LocationId;
-                        //update the location field, any route tasks, and destinations to the new location
-                        if (newId != null && oldId != newId)
-                        {
-                            locationField.LocationId = newId.Value;
-
-                            var routeTasks = CoreEntitiesContainer.RouteTasks.Where(rt => rt.ServiceId == service.Id).Include(rt => rt.RouteDestination).ToArray();
-                            //If route tasks exist, update their locations
-                            //If any of the route tasks have been put into routes, update the route destination's locations
-                            //Also, update the client Id on the route tasks/destinations - We can do this because if the client changed, there will definitely be a location change as well
-                            //Even if the client didn't change, the update will just reset to the same client
-                            foreach (var routeTask in routeTasks)
-                            {
-                                routeTask.LocationId = locationField.LocationId;
-                                routeTask.ClientId = service.ClientId;
-
-                                if (routeTask.RouteDestination == null) continue;
-                                routeTask.RouteDestination.LocationId = locationField.LocationId;
-                                routeTask.RouteDestination.ClientId = service.ClientId;
-                            }
-                        }
-                    }
 
                     //If the field is a OptionsField, update the Options
                     if (optionsField != null)

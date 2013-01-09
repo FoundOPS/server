@@ -79,6 +79,16 @@ namespace FoundOps.Api.Models
 
         public static Core.Models.CoreEntities.Location ConvertBack(Location location)
         {
+            Decimal? latitude;
+            Decimal? longitude;
+            Decimal tempLatLong = 0;
+
+            Decimal.TryParse(location.Latitude, out tempLatLong);
+            latitude = tempLatLong == 0 ? (decimal?) null : tempLatLong;
+
+            Decimal.TryParse(location.Longitude, out tempLatLong);
+            longitude = tempLatLong == 0 ? (decimal?) null : tempLatLong;
+
             var newLocation = new Core.Models.CoreEntities.Location
             {
                 Id = location.Id,
@@ -89,11 +99,12 @@ namespace FoundOps.Api.Models
                 AdminDistrictTwo = location.AdminDistrictTwo,
                 PostalCode = location.PostalCode,
                 CountryCode = location.CountryCode,
-                Latitude = Convert.ToDecimal(location.Latitude),
-                Longitude = Convert.ToDecimal(location.Longitude),
+                Latitude = latitude,
+                Longitude = longitude,
                 CreatedDate = location.CreatedDate,
                 LastModified = location.LastModified,
-                LastModifyingUserId = location.LastModifyingUserId
+                LastModifyingUserId = location.LastModifyingUserId,
+                ClientId = location.ClientId
             };
 
             return newLocation;
@@ -127,6 +138,14 @@ namespace FoundOps.Api.Models
 
         public static Location ConvertGeocode(FoundOps.Common.NET.GeocoderResult geocoderResult)
         {
+            Decimal tempLatLong = 0;
+
+            Decimal.TryParse(geocoderResult.Latitude, out tempLatLong);
+            var latitude = tempLatLong == 0 ? (decimal?)null : tempLatLong;
+
+            Decimal.TryParse(geocoderResult.Longitude, out tempLatLong);
+            var longitude = tempLatLong == 0 ? (decimal?)null : tempLatLong;
+
             var location = new Location
             {
                 AddressLineOne = geocoderResult.AddressLineOne,
@@ -135,8 +154,8 @@ namespace FoundOps.Api.Models
                 AdminDistrictOne = geocoderResult.State,
                 CountryCode = geocoderResult.CountryCode,
                 PostalCode = geocoderResult.ZipCode,
-                Latitude = Decimal.Round(Convert.ToDecimal(geocoderResult.Latitude), 8).ToString(),
-                Longitude = Decimal.Round(Convert.ToDecimal(geocoderResult.Longitude), 8).ToString()
+                Latitude = latitude != null ? Decimal.Round((decimal) latitude, 8).ToString() : String.Empty,
+                Longitude = longitude != null ? Decimal.Round((decimal) longitude, 8).ToString() : String.Empty
             };
 
             if (location.CountryCode == "United States")

@@ -324,7 +324,7 @@ namespace FoundOps.Server.Services.CoreDomainService
 
                 if (service != null)
                     service.ServiceDate = currentRouteTask.Date;
-
+                
                 var recurringService = this.ObjectContext.RecurringServices.FirstOrDefault(rs => rs.Id == original.RecurringServiceId) 
                                             ?? this.ObjectContext.RecurringServices.FirstOrDefault(rs => rs.Id == service.RecurringServiceId.Value);
 

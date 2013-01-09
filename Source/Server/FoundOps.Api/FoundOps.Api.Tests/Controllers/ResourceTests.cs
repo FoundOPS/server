@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using System.Diagnostics;
+using Dapper;
 using FoundOps.Api.Controllers.Mvc;
 using FoundOps.Api.Controllers.Rest;
 using FoundOps.Api.Models;
@@ -26,6 +27,7 @@ using BusinessAccount = FoundOps.Core.Models.CoreEntities.BusinessAccount;
 using Client = FoundOps.Core.Models.CoreEntities.Client;
 using Field = FoundOps.Core.Models.CoreEntities.Field;
 using Location = FoundOps.Core.Models.CoreEntities.Location;
+using LocationField = FoundOps.Core.Models.CoreEntities.LocationField;
 using RouteTask = FoundOps.Api.Models.RouteTask;
 using ServiceHoldersController = FoundOps.Api.Controllers.Rest.ServiceHoldersController;
 using ServiceTemplate = FoundOps.Core.Models.CoreEntities.ServiceTemplate;
@@ -246,6 +248,48 @@ namespace FoundOps.Api.Tests.Controllers
             newLocation.PostalCode = "47906";
 
             controller.Put(_adminGotGreaseRoleId, newLocation);
+        }
+
+        [TestMethod]
+        public void LocationsFieldTests()
+        {
+            var controller = CreateRequest<LocationFieldsController>(HttpMethod.Post);
+            var serviceId = CoreEntitiesContainer.RouteTasks.First(rt => rt.ServiceId != null && rt.RouteDestinationId != null).ServiceId;
+            var locationField = CoreEntitiesContainer.Fields.OfType<LocationField>().First(lf => lf.ServiceTemplateId == serviceId);
+            var client = CoreEntitiesContainer.Clients.First();
+
+            var newLocation = new Models.Location
+            {
+                Id = Guid.NewGuid(),
+                Name = "New Location",
+                AddressLineOne = "2827 Floral Drive",
+                AddressLineTwo = "Room 2",
+                AdminDistrictTwo = "Northbrook",
+                AdminDistrictOne = "Illinois",
+                PostalCode = "60062",
+                CountryCode = "US"
+            };
+
+            locationField.Value = Models.Location.ConvertBack(newLocation);
+            locationField.LocationId = newLocation.Id;
+
+            //Make sure that serviceId is not null
+            Debug.Assert(serviceId != null, "serviceId != null");
+            controller.Put(_adminGotGreaseRoleId, Models.LocationField.ConvertModel(locationField), (Guid) serviceId, client.Id);
+            DetachAllEntities();
+
+            //Check to be sure taht the Location and the LocationId has been updated on the LocationField
+            var updatedField = CoreEntitiesContainer.Fields.OfType<LocationField>().Where(lf => lf.Id == locationField.Id).Include(lf => lf.Value).First();
+            Assert.AreEqual(newLocation.Id, updatedField.LocationId);
+            Assert.AreEqual(newLocation.Id, updatedField.Value.Id);
+
+            //Check to be sure the LocationId has been updated on the RouteTasks and RouteDestinations
+            var routeTasks = CoreEntitiesContainer.RouteTasks.Where(rt => rt.ServiceId == serviceId).Include(rt => rt.RouteDestination);
+            Assert.IsFalse(routeTasks.Select(rt => rt.LocationId).Any(id => id.Value != newLocation.Id));
+            Assert.IsFalse(routeTasks.Select(rt => rt.RouteDestination).Select(rd => rd.LocationId).Any(id => id.Value != newLocation.Id));
+
+            var clientLocation = CoreEntitiesContainer.Locations.First(l => l.ClientId == client.Id);
+
         }
 
         [TestMethod]
