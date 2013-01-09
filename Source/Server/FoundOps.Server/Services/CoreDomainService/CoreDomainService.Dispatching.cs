@@ -324,8 +324,8 @@ namespace FoundOps.Server.Services.CoreDomainService
 
                 if (service != null)
                     service.ServiceDate = currentRouteTask.Date;
-                
-                var recurringService = this.ObjectContext.RecurringServices.FirstOrDefault(rs => rs.Id == original.RecurringServiceId) 
+
+                var recurringService = this.ObjectContext.RecurringServices.FirstOrDefault(rs => rs.Id == original.RecurringServiceId)
                                             ?? this.ObjectContext.RecurringServices.FirstOrDefault(rs => rs.Id == service.RecurringServiceId.Value);
 
                 if (recurringService != null)
@@ -335,6 +335,28 @@ namespace FoundOps.Server.Services.CoreDomainService
                     recurringService.ExcludedDates = excludedDates;
                     recurringService.LastModified = DateTime.UtcNow;
                     recurringService.LastModifyingUserId = CurrentUserAccount().Id;
+
+                    //If there wasnt previously a saved Service, make one. Otherwise, the service will get lost
+                    if (service == null)
+                    {
+                        //Generate new service
+                        var newService = new Service
+                        {
+                            ServiceDate = currentRouteTask.Date,
+                            ClientId = recurringService.ClientId,
+                            RecurringServiceId = recurringService.Id,
+                            ServiceProviderId = recurringService.Client.BusinessAccount.Id,
+                            ServiceTemplate = recurringService.ServiceTemplate.MakeChild(ServiceTemplateLevel.ServiceDefined),
+                            CreatedDate = DateTime.UtcNow,
+                            LastModified = DateTime.UtcNow,
+                            LastModifyingUserId = CurrentUserAccount().Id
+                        };
+
+                        //Add the RouteTask to the Service
+                        newService.RouteTasks.Add(currentRouteTask);
+
+                        ObjectContext.Services.AddObject(newService);
+                    }
                 }
 
                 //Set original date on the route task
