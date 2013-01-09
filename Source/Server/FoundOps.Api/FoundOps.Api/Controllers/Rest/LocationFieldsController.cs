@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
 using FoundOps.Api.Tools;
-using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
 using Location = FoundOps.Api.Models.Location;
 using LocationField = FoundOps.Api.Models.LocationField;
