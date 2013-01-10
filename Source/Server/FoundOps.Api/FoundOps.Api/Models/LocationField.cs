@@ -28,7 +28,7 @@ namespace FoundOps.Api.Models
                     ServiceTemplateId = fieldModel.ServiceTemplateId,
                     LocationId = fieldModel.LocationId,
                     LocationFieldTypeInt = fieldModel.LocationFieldTypeInt,
-                    Value = Location.ConvertModel(fieldModel.Value)
+                    Value = fieldModel.Value != null ? Location.ConvertModel(fieldModel.Value) : null
                 };
 
             field.SetLastModified(fieldModel.LastModified, fieldModel.LastModifyingUserId);
