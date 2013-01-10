@@ -11,10 +11,24 @@ namespace FoundOps.Core.Models.CoreEntities.Extensions.Services
         /// <returns>
         /// The destination location, or null if there is not one
         /// </returns>
-        public static Location GetDestination(this ServiceTemplate serviceTemplate)
+        public static LocationField GetDestinationField(this ServiceTemplate serviceTemplate)
         {
             //Find the destination field
             var destinationField = serviceTemplate.Fields.OfType<LocationField>().FirstOrDefault(lf => lf.LocationFieldType == LocationFieldType.Destination);
+            return destinationField;
+        }
+
+        /// <summary>
+        /// Gets the destination from the DestinationField
+        /// </summary>
+        /// <param name="serviceTemplate">The service template.</param>
+        /// <returns>
+        /// The destination location, or null if there is not one
+        /// </returns>
+        public static Location GetDestination(this ServiceTemplate serviceTemplate)
+        {
+            //Find the destination field
+            var destinationField = serviceTemplate.GetDestinationField();
 
             return destinationField == null ? null : destinationField.Value;
         }
@@ -33,7 +47,7 @@ namespace FoundOps.Core.Models.CoreEntities.Extensions.Services
                 return false;
 
             //Find the destination field
-            var destinationField = serviceTemplate.Fields.OfType<LocationField>().FirstOrDefault(lf => lf.LocationFieldType == LocationFieldType.Destination);
+            var destinationField = serviceTemplate.GetDestinationField();
 
             if (destinationField == null)
                 return false;

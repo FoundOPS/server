@@ -3,6 +3,7 @@ using System.Data.Entity;
 using System.Linq;
 using FoundOps.Api.Tools;
 using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Core.Models.CoreEntities.Extensions.Services;
 using FoundOps.Core.Tools;
 using Location = FoundOps.Api.Models.Location;
 using LocationField = FoundOps.Api.Models.LocationField;
@@ -33,6 +34,7 @@ namespace FoundOps.Api.Controllers.Rest
             var existingService = CoreEntitiesContainer.Services.FirstOrDefault(s => s.Id == serviceId);
 
             RouteTask[] routeTasks;
+            Core.Models.CoreEntities.LocationField destinationField = null;
 
             //Generate a Service since one does not yet exist
             if (existingService == null)
@@ -42,12 +44,14 @@ namespace FoundOps.Api.Controllers.Rest
 
                 //Include Client, Client.BusinessAccount and ServiceTemplate w/ fields
                 var recurringService = CoreEntitiesContainer.RecurringServices.Where(rs => rs.Id == recurringServiceId)
-                    .Include(rs => rs.Client).Include(rs => rs.Client.BusinessAccount).Include(rs => rs.ServiceTemplate).Include(rs=> rs.ServiceTemplate.Fields).FirstOrDefault();
+                    .Include(rs => rs.Client).Include(rs => rs.Client.BusinessAccount).FirstOrDefault();
 
                 if (recurringService == null)
                     throw Request.BadRequest("Service and RecurringService do not exist");
 
-                //If there wasnt previously a saved Service, make one. Otherwise, the service will get lost
+                HardCodedLoaders.LoadServiceTemplateWithDetails(CoreEntitiesContainer, recurringService.Id, null, null, null);
+
+                //Since there wasnt previously a saved Service make one. Otherwise the service will get lost
                 existingService = new Service
                 {
                     ServiceDate = occurDate,
@@ -60,10 +64,9 @@ namespace FoundOps.Api.Controllers.Rest
                     LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().Id
                 };
                 existingService.Id = existingService.ServiceTemplate.Id;
-                
-                //Added because we look it up later
-                SaveWithRetry();
 
+                destinationField = existingService.ServiceTemplate.GetDestinationField();
+                
                 //Load any RouteTasks on the occur date that belong to the RecurringService
                 routeTasks = CoreEntitiesContainer.RouteTasks.Where(rt => rt.RecurringServiceId == recurringServiceId && rt.Date == occurDate).ToArray();
 
@@ -74,10 +77,11 @@ namespace FoundOps.Api.Controllers.Rest
             else
                 routeTasks = CoreEntitiesContainer.RouteTasks.Where(rt => rt.ServiceId == serviceId).Include(rt => rt.RouteDestination).ToArray();                
 
-            //Find the existing LocationField (even if it was just created above)
-            var existingField = CoreEntitiesContainer.Fields.OfType<FoundOps.Core.Models.CoreEntities.LocationField>().FirstOrDefault(f => f.ServiceTemplateId == existingService.Id);
+            //Find the existing LocationField (unless it was just created/set above)
+            if (destinationField != null)
+                destinationField = CoreEntitiesContainer.Fields.OfType<FoundOps.Core.Models.CoreEntities.LocationField>().FirstOrDefault(f => f.ServiceTemplateId == existingService.Id);
 
-            if (existingField == null)
+            if (destinationField == null)
                 throw Request.BadRequest("Field Does Not Exist");
 
             var newLocation = Location.ConvertBack(locationField.Value);
@@ -88,8 +92,7 @@ namespace FoundOps.Api.Controllers.Rest
                 newLocation.ClientId = clientId;
 
             //Updating the Location Field
-            existingField.LocationId = newLocation.Id;
-            existingField.Value = newLocation;
+            destinationField.Value = newLocation;
 
             //If any route tasks exist, update their location and clientId
             //If any route tasks have been put into routes, update the route destination's location and ClientId
