@@ -31,6 +31,14 @@ namespace FoundOps.Api.Controllers.Rest
             if (businessAccount == null)
                 throw Request.NotAuthorized();
 
+            locationField.Value.SetLastModified(DateTime.UtcNow, CoreEntitiesContainer.CurrentUserAccount().Id);
+            //add or attach the location to the EntityContext
+            var newLocation = Location.ConvertBack(locationField.Value);
+            if (locationField.Value.IsNew)
+                CoreEntitiesContainer.Locations.AddObject(newLocation);
+            else
+                CoreEntitiesContainer.Locations.Attach(newLocation);
+
             var existingService = CoreEntitiesContainer.Services.FirstOrDefault(s => s.Id == serviceId);
 
             RouteTask[] routeTasks;
@@ -66,25 +74,25 @@ namespace FoundOps.Api.Controllers.Rest
                 existingService.Id = existingService.ServiceTemplate.Id;
 
                 destinationField = existingService.ServiceTemplate.GetDestinationField();
-                
+
                 //Load any RouteTasks on the occur date that belong to the RecurringService
                 routeTasks = CoreEntitiesContainer.RouteTasks.Where(rt => rt.RecurringServiceId == recurringServiceId && rt.Date == occurDate).ToArray();
 
                 //Add the RouteTasks to the Service
                 foreach (var routeTask in routeTasks)
-                    existingService.RouteTasks.Add(routeTask);                    
+                    existingService.RouteTasks.Add(routeTask);
             }
             else
-                routeTasks = CoreEntitiesContainer.RouteTasks.Where(rt => rt.ServiceId == serviceId).Include(rt => rt.RouteDestination).ToArray();                
+            {
+                routeTasks = CoreEntitiesContainer.RouteTasks.Where(rt => rt.ServiceId == serviceId).Include(rt => rt.RouteDestination).ToArray();
 
-            //Find the existing LocationField (unless it was just created/set above)
-            if (destinationField != null)
-                destinationField = CoreEntitiesContainer.Fields.OfType<FoundOps.Core.Models.CoreEntities.LocationField>().FirstOrDefault(f => f.ServiceTemplateId == existingService.Id);
+                var serviceTemplate = HardCodedLoaders.LoadServiceTemplateWithDetails(CoreEntitiesContainer, serviceId, null, null, null).First();
+                //Find the existing LocationField
+                destinationField = serviceTemplate.GetDestinationField();
+            }
 
             if (destinationField == null)
                 throw Request.BadRequest("Field Does Not Exist");
-
-            var newLocation = Location.ConvertBack(locationField.Value);
 
             //If the Location does not exist on the Client passed, add it
             var clientLocation = CoreEntitiesContainer.Locations.FirstOrDefault(l => l.ClientId == clientId && l.Id == locationField.Value.Id);

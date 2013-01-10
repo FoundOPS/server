@@ -71,6 +71,11 @@ namespace FoundOps.Api.Models
 
         public int? StatusInt { get; set; }
 
+        /// <summary>
+        /// Needed for the Geocoder
+        /// </summary>
+        public bool IsNew { get; set; }
+
         public Location()
         {
             ContactInfoSet = new List<ContactInfo>();
@@ -148,6 +153,7 @@ namespace FoundOps.Api.Models
 
             var location = new Location
             {
+                Id = Guid.NewGuid(),
                 AddressLineOne = geocoderResult.AddressLineOne,
                 AddressLineTwo = geocoderResult.AddressLineTwo,
                 AdminDistrictTwo = geocoderResult.City,
@@ -155,7 +161,8 @@ namespace FoundOps.Api.Models
                 CountryCode = geocoderResult.CountryCode,
                 PostalCode = geocoderResult.ZipCode,
                 Latitude = latitude != null ? Decimal.Round((decimal) latitude, 8).ToString() : String.Empty,
-                Longitude = longitude != null ? Decimal.Round((decimal) longitude, 8).ToString() : String.Empty
+                Longitude = longitude != null ? Decimal.Round((decimal) longitude, 8).ToString() : String.Empty,
+                IsNew = true
             };
 
             if (location.CountryCode == "United States")
