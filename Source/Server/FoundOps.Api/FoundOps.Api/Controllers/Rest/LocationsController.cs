@@ -81,8 +81,9 @@ namespace FoundOps.Api.Controllers.Rest
                 conn.Close();
             }
 
-            return geocodeResult.Any() ? locations.Select(Location.ConvertModel).Concat(geocodeResult.Select(Location.ConvertGeocode)).AsQueryable() 
+            var result = geocodeResult.Any() ? locations.Select(Location.ConvertModel).Concat(geocodeResult.Select(Location.ConvertGeocode)).AsQueryable() 
                                         : locations.Select(Location.ConvertModel).AsQueryable();
+            return result;
         }
 
         /// <summary>
