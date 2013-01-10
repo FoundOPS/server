@@ -4,7 +4,7 @@ namespace FoundOps.Api.Models
 {
     public class LocationField : Field
     {
-        public Location Location { get; set; }
+        public Location Value { get; set; }
 
         public Guid? LocationId { get; set; }
 
@@ -28,7 +28,7 @@ namespace FoundOps.Api.Models
                     ServiceTemplateId = fieldModel.ServiceTemplateId,
                     LocationId = fieldModel.LocationId,
                     LocationFieldTypeInt = fieldModel.LocationFieldTypeInt,
-                    Location = Location.ConvertModel(fieldModel.Value)
+                    Value = Location.ConvertModel(fieldModel.Value)
                 };
 
             field.SetLastModified(fieldModel.LastModified, fieldModel.LastModifyingUserId);

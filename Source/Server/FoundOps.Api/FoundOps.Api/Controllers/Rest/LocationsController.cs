@@ -113,40 +113,5 @@ namespace FoundOps.Api.Controllers.Rest
 
             SaveWithRetry();
         }
-
-        /// <summary>
-        /// Update a location
-        /// </summary>
-        /// <param name="roleId">The current roleId</param>
-        /// <param name="location">The updated location model to be saved</param>
-        /// <returns>Http response to signify whether or not the location was updated sucessfully</returns>
-        public void Put(Guid roleId, Location location)
-        {
-            //Check to be sure the user has access
-            var currentBusinessAccount = CoreEntitiesContainer.Owner(roleId).FirstOrDefault();
-            if (currentBusinessAccount == null)
-                throw Request.NotAuthorized();
-
-            //Find the original location to be updated
-            var original = CoreEntitiesContainer.Locations.FirstOrDefault(l => l.Id == location.Id);
-
-            //If no location exists, return Http response with an error
-            if (original == null)
-                throw Request.NotFound();
-
-            //Update all properties on the original location
-            original.AddressLineOne = location.AddressLineOne;
-            original.AddressLineTwo = location.AddressLineTwo;
-            original.AdminDistrictOne = location.AdminDistrictOne;
-            original.AdminDistrictTwo = location.AdminDistrictTwo;
-            original.PostalCode = location.PostalCode;
-            original.CountryCode = location.CountryCode;
-
-            //TODO CR Make extension method on ITrackable to do this
-            original.LastModified = DateTime.UtcNow;
-            original.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().Id;
-
-            SaveWithRetry();
-        }
     }
 }

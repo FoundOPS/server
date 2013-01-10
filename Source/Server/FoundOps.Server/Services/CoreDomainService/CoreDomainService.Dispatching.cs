@@ -351,6 +351,7 @@ namespace FoundOps.Server.Services.CoreDomainService
                             LastModified = DateTime.UtcNow,
                             LastModifyingUserId = CurrentUserAccount().Id
                         };
+                        newService.Id = newService.ServiceTemplate.Id;
 
                         //Add the RouteTask to the Service
                         newService.RouteTasks.Add(currentRouteTask);

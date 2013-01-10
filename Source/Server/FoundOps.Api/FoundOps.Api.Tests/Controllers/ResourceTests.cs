@@ -240,14 +240,6 @@ namespace FoundOps.Api.Tests.Controllers
             var controller = CreateRequest<LocationsController>(HttpMethod.Post);
 
             controller.Post(_adminGotGreaseRoleId, newLocation);
-
-            newLocation.AddressLineOne = "1305 Cumberland Ave";
-            newLocation.AddressLineTwo = "Suite 205";
-            newLocation.AdminDistrictTwo = "West Lafayette";
-            newLocation.AdminDistrictOne = "Indiana";
-            newLocation.PostalCode = "47906";
-
-            controller.Put(_adminGotGreaseRoleId, newLocation);
         }
 
         [TestMethod]
@@ -273,9 +265,7 @@ namespace FoundOps.Api.Tests.Controllers
             locationField.Value = Models.Location.ConvertBack(newLocation);
             locationField.LocationId = newLocation.Id;
 
-            //Make sure that serviceId is not null
-            Debug.Assert(serviceId != null, "serviceId != null");
-            controller.Put(_adminGotGreaseRoleId, Models.LocationField.ConvertModel(locationField), (Guid) serviceId, client.Id);
+            controller.Put(_adminGotGreaseRoleId, Models.LocationField.ConvertModel(locationField), serviceId, null, client.Id, DateTime.UtcNow.Date);
             DetachAllEntities();
 
             //Check to be sure taht the Location and the LocationId has been updated on the LocationField
@@ -288,8 +278,26 @@ namespace FoundOps.Api.Tests.Controllers
             Assert.IsFalse(routeTasks.Select(rt => rt.LocationId).Any(id => id.Value != newLocation.Id));
             Assert.IsFalse(routeTasks.Select(rt => rt.RouteDestination).Select(rd => rd.LocationId).Any(id => id.Value != newLocation.Id));
 
-            var clientLocation = CoreEntitiesContainer.Locations.First(l => l.ClientId == client.Id);
+            var recurringService = CoreEntitiesContainer.RecurringServices.First();
+            locationField = CoreEntitiesContainer.Fields.OfType<LocationField>().First(lf => lf.ServiceTemplateId == recurringService.Id);
+            newLocation.Id = Guid.NewGuid();
+            locationField.Value = Models.Location.ConvertBack(newLocation);
+            locationField.LocationId = newLocation.Id;
 
+            var date = DateTime.UtcNow.AddDays(23).Date;
+
+            var newService = CoreEntitiesContainer.Services.FirstOrDefault(s => s.RecurringServiceId == recurringService.Id && s.ServiceDate == date);
+            Assert.IsNull(newService);
+
+            controller.Put(_adminGotGreaseRoleId, Models.LocationField.ConvertModel(locationField), Guid.NewGuid(), recurringService.Id, client.Id, date);
+            DetachAllEntities();
+
+            newService = CoreEntitiesContainer.Services.FirstOrDefault(s => s.RecurringServiceId == recurringService.Id && s.ServiceDate == date);
+            Assert.IsNotNull(newService);
+
+            updatedField = CoreEntitiesContainer.Fields.OfType<LocationField>().Where(lf => lf.ServiceTemplateId == newService.Id).Include(f => f.Value).First();
+            Assert.AreEqual(newLocation.Id, updatedField.LocationId);
+            Assert.AreEqual(newLocation.Id, updatedField.Value.Id);
         }
 
         [TestMethod]

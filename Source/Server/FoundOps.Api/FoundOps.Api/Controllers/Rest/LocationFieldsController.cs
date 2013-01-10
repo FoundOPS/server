@@ -2,6 +2,7 @@
 using System.Data.Entity;
 using System.Linq;
 using FoundOps.Api.Tools;
+using FoundOps.Core.Models.CoreEntities;
 using FoundOps.Core.Tools;
 using Location = FoundOps.Api.Models.Location;
 using LocationField = FoundOps.Api.Models.LocationField;
@@ -19,31 +20,77 @@ namespace FoundOps.Api.Controllers.Rest
         /// <param name="roleId">The role</param>
         /// <param name="locationField">The LocationField being updated</param>
         /// <param name="serviceId">The service Id</param>
+        /// <param name="recurringServiceId">The RecurringService Id</param>
         /// <param name="clientId">The Id of the client that this location belongs to</param>
-        public void Put(Guid roleId, LocationField locationField, Guid serviceId, Guid clientId)
+        /// <param name="occurDate">The date the Service occurs</param>
+        public void Put(Guid roleId, LocationField locationField, Guid? serviceId, Guid? recurringServiceId, Guid clientId, DateTime occurDate)
         {
             //Makes sure the user is an Administrator or Regular
             var businessAccount = CoreEntitiesContainer.Owner(roleId).FirstOrDefault();
             if (businessAccount == null)
                 throw Request.NotAuthorized();
 
-            var existingField = CoreEntitiesContainer.Fields.OfType<FoundOps.Core.Models.CoreEntities.LocationField>().FirstOrDefault(f => f.Id == locationField.Id);
+            var existingService = CoreEntitiesContainer.Services.FirstOrDefault(s => s.Id == serviceId);
+
+            RouteTask[] routeTasks;
+
+            //Generate a Service since one does not yet exist
+            if (existingService == null)
+            {
+                if (recurringServiceId == null)
+                    throw Request.BadRequest("Service does not exist and no recurringServiceId was passed");
+
+                //Include Client, Client.BusinessAccount and ServiceTemplate w/ fields
+                var recurringService = CoreEntitiesContainer.RecurringServices.Where(rs => rs.Id == recurringServiceId)
+                    .Include(rs => rs.Client).Include(rs => rs.Client.BusinessAccount).Include(rs => rs.ServiceTemplate).Include(rs=> rs.ServiceTemplate.Fields).FirstOrDefault();
+
+                if (recurringService == null)
+                    throw Request.BadRequest("Service and RecurringService do not exist");
+
+                //If there wasnt previously a saved Service, make one. Otherwise, the service will get lost
+                existingService = new Service
+                {
+                    ServiceDate = occurDate,
+                    ClientId = recurringService.ClientId,
+                    RecurringServiceId = recurringService.Id,
+                    ServiceProviderId = recurringService.Client.BusinessAccount.Id,
+                    ServiceTemplate = recurringService.ServiceTemplate.MakeChild(ServiceTemplateLevel.ServiceDefined),
+                    CreatedDate = DateTime.UtcNow,
+                    LastModified = DateTime.UtcNow,
+                    LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().Id
+                };
+                existingService.Id = existingService.ServiceTemplate.Id;
+                
+                //Added because we look it up later
+                SaveWithRetry();
+
+                //Load any RouteTasks on the occur date that belong to the RecurringService
+                routeTasks = CoreEntitiesContainer.RouteTasks.Where(rt => rt.RecurringServiceId == recurringServiceId && rt.Date == occurDate).ToArray();
+
+                //Add the RouteTasks to the Service
+                foreach (var routeTask in routeTasks)
+                    existingService.RouteTasks.Add(routeTask);                    
+            }
+            else
+                routeTasks = CoreEntitiesContainer.RouteTasks.Where(rt => rt.ServiceId == serviceId).Include(rt => rt.RouteDestination).ToArray();                
+
+            //Find the existing LocationField (even if it was just created above)
+            var existingField = CoreEntitiesContainer.Fields.OfType<FoundOps.Core.Models.CoreEntities.LocationField>().FirstOrDefault(f => f.ServiceTemplateId == existingService.Id);
 
             if (existingField == null)
-                throw Request.BadRequest("Field Doesn't Exist");
+                throw Request.BadRequest("Field Does Not Exist");
 
-            var newLocation = Location.ConvertBack(locationField.Location); 
+            var newLocation = Location.ConvertBack(locationField.Value);
 
             //If the Location does not exist on the Client passed, add it
-            var clientLocation = CoreEntitiesContainer.Locations.FirstOrDefault(l => l.ClientId == clientId && l.Id == locationField.Location.Id);
+            var clientLocation = CoreEntitiesContainer.Locations.FirstOrDefault(l => l.ClientId == clientId && l.Id == locationField.Value.Id);
             if (clientLocation == null)
                 newLocation.ClientId = clientId;
-            
+
             //Updating the Location Field
             existingField.LocationId = newLocation.Id;
             existingField.Value = newLocation;
 
-            var routeTasks = CoreEntitiesContainer.RouteTasks.Where(rt => rt.ServiceId == serviceId).Include(rt => rt.RouteDestination).ToArray();
             //If any route tasks exist, update their location and clientId
             //If any route tasks have been put into routes, update the route destination's location and ClientId
             foreach (var routeTask in routeTasks)
