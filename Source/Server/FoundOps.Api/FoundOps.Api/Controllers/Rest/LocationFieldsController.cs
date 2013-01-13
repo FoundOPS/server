@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using FoundOps.Api.Tools;
@@ -37,7 +38,12 @@ namespace FoundOps.Api.Controllers.Rest
             if (locationField.Value.IsNew)
                 CoreEntitiesContainer.Locations.AddObject(newLocation);
             else
+            {
                 CoreEntitiesContainer.Locations.Attach(newLocation);
+                CoreEntitiesContainer.ObjectStateManager.ChangeObjectState(newLocation, EntityState.Modified);
+                newLocation.LastModified = DateTime.UtcNow;
+                newLocation.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().Id;
+            }
 
             var existingService = CoreEntitiesContainer.Services.FirstOrDefault(s => s.Id == serviceId);
 

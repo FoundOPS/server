@@ -28,7 +28,7 @@ namespace FoundOps.Api.Controllers.Rest
         /// <param name="single">Only return the types</param>
         /// <returns>A queryable of dictionaries that resemble record type javascript objects when serialized</returns>
         public IQueryable<Dictionary<string, Object>> Get(Guid roleId, string serviceType, Guid? clientContext, Guid? recurringServiceContext,
-            DateTime startDate, DateTime endDate, bool single = false)
+            DateTime? startDate, DateTime? endDate, bool single = false)
         {
             var currentBusinessAccount = CoreEntitiesContainer.Owner(roleId).FirstOrDefault();
             if (currentBusinessAccount == null)
@@ -64,6 +64,11 @@ namespace FoundOps.Api.Controllers.Rest
             if (single) //just return the types
             {
                 return new List<Dictionary<string, object>> { columnTypes }.AsQueryable();
+            }
+
+            if (!startDate.HasValue || !endDate.HasValue)
+            {
+                throw new Exception("Need a start date and end date, unless single is specified");
             }
 
             #region Load Service Templates and Fields
@@ -121,7 +126,7 @@ namespace FoundOps.Api.Controllers.Rest
                     ParameterName = "firstDate",
                     DbType = DbType.DateTime,
                     Direction = ParameterDirection.Input,
-                    Value = startDate
+                    Value = startDate.Value
                 };
 
                 loadServiceTemplate.Parameters.Add(parameter);
@@ -131,7 +136,7 @@ namespace FoundOps.Api.Controllers.Rest
                     ParameterName = "lastDate",
                     DbType = DbType.DateTime,
                     Direction = ParameterDirection.Input,
-                    Value = endDate
+                    Value = endDate.Value
                 };
 
                 loadServiceTemplate.Parameters.Add(parameter);
