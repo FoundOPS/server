@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using FoundOps.Api.Tools;
 
 namespace FoundOps.Api.Models
 {
@@ -23,6 +22,8 @@ namespace FoundOps.Api.Models
         public Client Client { get; set; }
 
         public Repeat Repeat { get; set; }
+
+        public Guid? ParentServiceTemplateId { get; set; }
 
         public List<Field> Fields { get; set; }
 
@@ -66,6 +67,8 @@ namespace FoundOps.Api.Models
             //Add the newly converted field to the newly created service
             foreach (var field in serviceModel.ServiceTemplate.Fields.OrderBy(f => f.Name))
                 service.Fields.Add(Field.ConvertModel(field));
+
+            service.ParentServiceTemplateId = serviceModel.ServiceTemplate.OwnerServiceTemplateId;
 
             return service;
         }

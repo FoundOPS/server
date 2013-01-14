@@ -187,11 +187,17 @@ namespace FoundOps.Api.Controllers.Rest
                 //TODO CR Make extension method on ITrackable to do this
                 existingService.LastModified = DateTime.UtcNow;
                 existingService.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().Id;
-
             }
             //the service was generated, insert a new Service and set the appropriate field values
             else
             {
+                if (!service.RecurringServiceId.HasValue && !service.ParentServiceTemplateId.HasValue)
+                    throw Request.BadRequest("Need to have a parent RecurringServiceId or a ParentServiceTemplateId specified");
+
+                var parentTemplateId = service.RecurringServiceId.HasValue
+                                     ? service.RecurringServiceId
+                                     : service.ParentServiceTemplateId.Value;
+
                 var generatedService = new Core.Models.CoreEntities.Service
                 {
                     Id = service.Id,
@@ -200,7 +206,13 @@ namespace FoundOps.Api.Controllers.Rest
                     ServiceProviderId = service.ServiceProviderId,
                     ClientId = service.ClientId,
                     RecurringServiceId = service.RecurringServiceId,
-                    ServiceTemplate = new ServiceTemplate { Id = service.Id, Name = service.Name, ServiceTemplateLevel = ServiceTemplateLevel.ServiceDefined, OwnerServiceTemplateId = service.RecurringServiceId },
+                    ServiceTemplate = new ServiceTemplate
+                    {
+                        Id = service.Id,
+                        Name = service.Name,
+                        ServiceTemplateLevel = ServiceTemplateLevel.ServiceDefined,
+                        OwnerServiceTemplateId = parentTemplateId
+                    },
                 };
 
                 //Add all fields from the generated Service to the Service Template
