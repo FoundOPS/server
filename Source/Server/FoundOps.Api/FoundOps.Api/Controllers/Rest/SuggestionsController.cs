@@ -1,4 +1,5 @@
-﻿using System.Dynamic;
+﻿using System.Data.Entity;
+using System.Dynamic;
 using System.Reactive;
 using System.Reactive.Concurrency;
 using System.Reactive.Subjects;
@@ -20,6 +21,7 @@ using ContactInfo = FoundOps.Api.Models.ContactInfo;
 using Location = FoundOps.Core.Models.CoreEntities.Location;
 using Region = FoundOps.Api.Models.Region;
 using Repeat = FoundOps.Api.Models.Repeat;
+using ServiceTemplate = FoundOps.Api.Models.ServiceTemplate;
 
 namespace FoundOps.Api.Controllers.Rest
 {
@@ -221,7 +223,7 @@ namespace FoundOps.Api.Controllers.Rest
                         Decimal convertedLatitude = 0;
                         Decimal convertedLongitude = 0;
                         Decimal tempdeciaml;
-                        
+
                         if (Decimal.TryParse(latitude, out tempdeciaml))
                             convertedLatitude = tempdeciaml;
                         else
@@ -253,17 +255,17 @@ namespace FoundOps.Api.Controllers.Rest
                                 importedLocation = ConvertLocationSetRegionAndStatus(matchedLocation.Value, regionName, ImportStatus.Linked);
                         }
                         else
-                            importedLocation.StatusInt = (int) ImportStatus.Error;
+                            importedLocation.StatusInt = (int)ImportStatus.Error;
                     }
 
                     //If no linked location is found, it means that the location is new
                     if (importedLocation.StatusInt != (int)ImportStatus.Linked)
                     {
-                        var status = (int) ImportStatus.New;
+                        var status = (int)ImportStatus.New;
 
-                        if (importedLocation.StatusInt == (int) ImportStatus.Error)
-                            status = (int) ImportStatus.Error;
-                        
+                        if (importedLocation.StatusInt == (int)ImportStatus.Error)
+                            status = (int)ImportStatus.Error;
+
                         importedLocation = new Api.Models.Location
                         {
                             Id = Guid.NewGuid(),
@@ -641,7 +643,7 @@ namespace FoundOps.Api.Controllers.Rest
 
                 //Repeat
                 if (row.Repeat != null)
-                    rowSuggestions.Repeats.Add(row.Repeat);
+                    rowSuggestions.Repeat = row.Repeat;
 
                 //Contact Info
                 if (row.ContactInfoSet.Count != 0)
@@ -672,6 +674,113 @@ namespace FoundOps.Api.Controllers.Rest
             suggestionsToReturn.ContactInfoSet.AddRange(distinctContactInfo);
 
             return suggestionsToReturn;
+        }
+
+        //TODO figure out what is returned? bool? bad rows? 5 Clients, 5 Locations, and 5 Schedules added? 
+        public void Post(Guid roleId, Suggestions suggestions, ServiceTemplate serviceTemplate)
+        {
+            var businessAccount = CoreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator }).FirstOrDefault();
+            if (businessAccount == null)
+                throw Request.BadRequest();
+
+            //Finds any object that has an error status on it
+            var errorsExist = suggestions.Clients.Select(c => c.StatusInt)
+                                    .Union(suggestions.Locations.Select(l => l.StatusInt))
+                                    .Union(suggestions.ContactInfoSet.Select(ci => ci.StatusInt))
+                                    .Union(suggestions.RowSuggestions.Select(rs => rs.Repeat.StatusInt))
+                                    .Any(status => status.HasValue && status.Value == (int)ImportStatus.Error);
+
+            if (errorsExist)
+                throw Request.BadRequest("Rows can not have errors if they are being submitted");
+
+            //load all of the BusinessAccount's Clients, Locations, Regions and ContactInfoSets
+            using (var conn = new SqlConnection(ServerConstants.SqlConnectionString))
+            {
+                conn.Open();
+
+                using (var data = conn.QueryMultiple(Sql, new { id = businessAccount.Id }))
+                {
+                    _locations = new ConcurrentDictionary<Guid, Location>(data.Read<Location>().ToDictionary(l => l.Id, l => l));
+
+                    _clients = new ConcurrentDictionary<Guid, Client>(data.Read<Client>().ToDictionary(l => l.Id, l => l));
+
+                    _regions = new ConcurrentDictionary<Guid, Core.Models.CoreEntities.Region>(data.Read<Core.Models.CoreEntities.Region>().ToDictionary(l => l.Id, l => l));
+
+                    _contactInfoSets = new ConcurrentDictionary<Guid, Core.Models.CoreEntities.ContactInfo>(data.Read<Core.Models.CoreEntities.ContactInfo>().ToDictionary(l => l.Id, l => l));
+                }
+
+                conn.Close();
+            }
+
+            var rows = suggestions.RowSuggestions.ToArray();
+
+            Parallel.For((long)0, rows.Count(), rowIndex =>
+            {
+                var row = rows[rowIndex];
+                var clientId = row.ClientSuggestions.FirstOrDefault();
+                var locationId = row.LocationSuggestions.FirstOrDefault();
+
+                if (clientId == Guid.Empty || locationId == Guid.Empty)
+                    throw Request.BadRequest("Every row needs a Client and a Location");
+
+                Models.Client client;
+                Models.Location location;
+                Models.Region region;
+
+                //If it is a new Client, create it
+                if (!_clients.Select(c => c.Key).Contains(clientId))
+                {
+                    client = suggestions.Clients.First(c => c.Id == clientId);
+
+                    //Add any ContactInfo to the client
+                    client.ContactInfoSet.AddRange(suggestions.ContactInfoSet.Where(ci => row.ContactInfoSuggestions.Contains(ci.Id)));
+
+                    _clients.GetOrAdd(clientId, Models.Client.ConvertBack(client));
+                }
+                else
+                    client = Models.Client.ConvertModel(_clients.Where(c => c.Key == clientId).Select(c => c.Value).First());
+
+                //If its a new Location, create it
+                if (!_locations.Select(l => l.Key).Contains(locationId))
+                {
+                    location = suggestions.Locations.First(l => l.Id == locationId)
+
+                    _locations.GetOrAdd(locationId, Models.Location.ConvertBack(location));
+                }
+                else
+                    location = Models.Location.ConvertModel(_locations.Where(l => l.Key == locationId).Select(l => l.Value).First());
+
+                //If the Location's Region is new, create it
+                if (!_regions.Select(r => r.Key).Contains(location.Region.Id))
+                {
+                    region = location.Region;
+                    _regions.GetOrAdd(region.Id, Models.Region.ConvertBack(region));
+                }
+                else
+                    region = Models.Region.ConvertModel(_regions.Where(r => r.Key == location.Region.Id).Select(r => r.Value).First());
+
+                //Set the Location's Client and Region
+                location.ClientId = client.Id;
+                location.Region = region;
+
+                var loadedServiceTemplate = HardCodedLoaders.LoadServiceTemplateWithDetails(CoreEntitiesContainer, serviceTemplate.Id, null, null, null).FirstOrDefault();
+
+                if (loadedServiceTemplate == null)
+                    throw Request.BadRequest("ServiceTemplate's Id is invalid");
+
+                var recurringServiceTemplate = loadedServiceTemplate.MakeChild(ServiceTemplateLevel.RecurringServiceDefined);
+                var recurringService = new Core.Models.CoreEntities.RecurringService
+                {
+                    Id = recurringServiceTemplate.Id,
+                    ClientId = client.Id,
+                    CreatedDate = DateTime.UtcNow,
+                    LastModified = DateTime.UtcNow,
+                    LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().Id,
+                    Repeat = Repeat.ConvertBack(row.Repeat)
+                };
+            });
+
+            SaveWithRetry();
         }
 
         #region Helpers
@@ -755,12 +864,12 @@ namespace FoundOps.Api.Controllers.Rest
                 var region = _regions.Select(r => r.Value).FirstOrDefault(r => r.Name == regionName);
 
                 if (region != null)
-                    return Region.Convert(region);
+                    return Region.ConvertModel(region);
             }
 
             return null;
         }
 
-        #endregion
+        #endregion // Helpers
     }
 }

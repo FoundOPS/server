@@ -34,6 +34,25 @@ namespace FoundOps.Api.Models
             return repeat;
         }
 
+        public static Core.Models.CoreEntities.Repeat ConvertBack(Repeat repeatModel)
+        {
+            var repeat = new Core.Models.CoreEntities.Repeat
+            {
+                Id = repeatModel.Id,
+                StartDate = repeatModel.StartDate,
+                EndDate = repeatModel.EndDate,
+                EndAfterTimes = repeatModel.EndAfterTimes,
+                FrequencyDetailInt = repeatModel.FrequencyDetailInt
+            };
+
+            if (repeatModel.RepeatEveryTimes != null)
+                repeat.RepeatEveryTimes = (int) repeatModel.RepeatEveryTimes;
+            if (repeatModel.FrequencyInt != null)
+                repeat.FrequencyInt = (int)repeatModel.FrequencyInt;
+
+            return repeat;
+        }
+
         public Frequency Frequency
         {
             get { return FrequencyInt != null ? (Frequency)FrequencyInt : Frequency.Null; }

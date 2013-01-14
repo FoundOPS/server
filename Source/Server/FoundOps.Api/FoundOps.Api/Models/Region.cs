@@ -8,7 +8,7 @@ namespace FoundOps.Api.Models
         public string Name { get; set; }
         public string Color { get; set; }
 
-        public static Region Convert(Core.Models.CoreEntities.Region regionModel)
+        public static Region ConvertModel(Core.Models.CoreEntities.Region regionModel)
         {
             var region = new Region
             {
@@ -18,6 +18,17 @@ namespace FoundOps.Api.Models
             };
 
             return region;
+        }
+
+        public static Core.Models.CoreEntities.Region ConvertBack(Region region)
+        {
+            var newRegion = new Core.Models.CoreEntities.Region
+            {
+                Id =  region.Id,
+                Name = region.Name,
+                Color = region.Color
+            };
+            return newRegion;
         }
     }
 }

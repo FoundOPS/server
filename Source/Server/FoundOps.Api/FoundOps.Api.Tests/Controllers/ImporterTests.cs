@@ -151,7 +151,7 @@ namespace FoundOps.Api.Tests.Controllers
             if (importRepeats)
             {
                 //Test Repeat output
-                var repeats = suggestions.RowSuggestions.SelectMany(rs => rs.Repeats);
+                var repeats = suggestions.RowSuggestions.Select(rs => rs.Repeat);
                 Assert.AreEqual(suggestions.RowSuggestions.Count(), repeats.Count());
             }
             if (importContactInfo)
