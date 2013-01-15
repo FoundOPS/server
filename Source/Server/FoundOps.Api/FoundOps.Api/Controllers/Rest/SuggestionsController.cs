@@ -743,7 +743,7 @@ namespace FoundOps.Api.Controllers.Rest
                 //If its a new Location, create it
                 if (!_locations.Select(l => l.Key).Contains(locationId))
                 {
-                    location = suggestions.Locations.First(l => l.Id == locationId)
+                    location = suggestions.Locations.First(l => l.Id == locationId);
 
                     _locations.GetOrAdd(locationId, Models.Location.ConvertBack(location));
                 }
