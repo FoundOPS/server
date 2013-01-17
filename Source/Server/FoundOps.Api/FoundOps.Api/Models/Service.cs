@@ -75,5 +75,22 @@ namespace FoundOps.Api.Models
             LastModified = lastModified;
             LastModifyingUserId = userId;
         }
+
+        public static Core.Models.CoreEntities.Service ConvertBack(Service serviceModel)
+        {
+            var service = new Core.Models.CoreEntities.Service
+            {
+                Id = serviceModel.Id,
+                ServiceDate = serviceModel.ServiceDate,
+                ClientId = serviceModel.ClientId,
+                ServiceProviderId = serviceModel.ServiceProviderId,
+                RecurringServiceId = serviceModel.RecurringServiceId,
+                CreatedDate = serviceModel.CreatedDate,
+                LastModified = serviceModel.LastModified,
+                LastModifyingUserId = serviceModel.LastModifyingUserId
+            };
+
+            return service;
+        }
     }
 }

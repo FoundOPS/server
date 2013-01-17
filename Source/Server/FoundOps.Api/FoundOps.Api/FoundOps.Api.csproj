@@ -270,6 +270,7 @@
     <Compile Include="Models\ColumnConfiguration.cs" />
     <Compile Include="Models\ContactInfo.cs" />
     <Compile Include="Models\Column.cs" />
+    <Compile Include="Models\ImportSubmissionResponse.cs" />
     <Compile Include="Models\ImportRow.cs" />
     <Compile Include="Models\ITrackable.cs" />
     <Compile Include="Models\Region.cs" />

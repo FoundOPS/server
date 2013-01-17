@@ -131,6 +131,9 @@ namespace FoundOps.Api.Controllers.Rest
             var endAfterCol = Array.IndexOf(headers, "End After Times");
             var frequencyDetailCol = Array.IndexOf(headers, "Frequency Detail");
 
+            //Service
+            var occurDateCol = Array.IndexOf(headers, "Occur Date");
+
             //Contact Info
             var phoneNumberValueCols = headers.Where(h => h.Contains("Phone Value")).ToArray();
             var phoneNumberLabelCols = headers.Where(h => h.Contains("Phone Label")).ToArray();
@@ -500,6 +503,30 @@ namespace FoundOps.Api.Controllers.Rest
 
                 #endregion
 
+                #region Service
+
+                if (occurDateCol != -1)
+                {
+                    DateTime tempDate;
+
+                    var service = new Models.Service
+                    {
+                        Id = Guid.NewGuid(),
+                        StatusInt = (int)ImportStatus.New
+                    };
+
+                    //If the date is valid, set it as the service date
+                    //Else, set an error on the Services
+                    if (DateTime.TryParse(row[startDateCol], out tempDate))
+                        service.ServiceDate = tempDate;
+                    else
+                        service.StatusInt = (int)ImportStatus.Error;
+
+                    importRow.Service = service;
+                }
+
+                #endregion
+
                 #region Contact Info
 
                 //Create label and value dictionaries for Phone Number contact information
@@ -641,6 +668,9 @@ namespace FoundOps.Api.Controllers.Rest
 
                 #endregion
 
+                //Service
+                if (row.Service != null)
+                    rowSuggestions.Service = row.Service;
                 //Repeat
                 if (row.Repeat != null)
                     rowSuggestions.Repeat = row.Repeat;
@@ -677,7 +707,7 @@ namespace FoundOps.Api.Controllers.Rest
         }
 
         //TODO figure out what is returned? bool? bad rows? 5 Clients, 5 Locations, and 5 Schedules added? 
-        public void Post(Guid roleId, Suggestions suggestions, ServiceTemplate serviceTemplate)
+        public bool Post(Guid roleId, Suggestions suggestions, ServiceTemplate serviceTemplate)
         {
             var businessAccount = CoreEntitiesContainer.Owner(roleId, new[] { RoleType.Administrator }).FirstOrDefault();
             if (businessAccount == null)
@@ -712,11 +742,15 @@ namespace FoundOps.Api.Controllers.Rest
                 conn.Close();
             }
 
+            //var response = new ImportSubmissionResponse();
+
+            var userId = CoreEntitiesContainer.CurrentUserAccount().Id;
+
             var rows = suggestions.RowSuggestions.ToArray();
 
             Parallel.For((long)0, rows.Count(), rowIndex =>
             {
-                var row = rows[rowIndex];
+                var row = rows.First();//[rowIndex];
                 var clientId = row.ClientSuggestions.FirstOrDefault();
                 var locationId = row.LocationSuggestions.FirstOrDefault();
 
@@ -725,7 +759,6 @@ namespace FoundOps.Api.Controllers.Rest
 
                 Models.Client client;
                 Models.Location location;
-                Models.Region region;
 
                 //If it is a new Client, create it
                 if (!_clients.Select(c => c.Key).Contains(clientId))
@@ -751,36 +784,93 @@ namespace FoundOps.Api.Controllers.Rest
                     location = Models.Location.ConvertModel(_locations.Where(l => l.Key == locationId).Select(l => l.Value).First());
 
                 //If the Location's Region is new, create it
-                if (!_regions.Select(r => r.Key).Contains(location.Region.Id))
+                if (location.Region != null)
                 {
-                    region = location.Region;
-                    _regions.GetOrAdd(region.Id, Models.Region.ConvertBack(region));
-                }
-                else
-                    region = Models.Region.ConvertModel(_regions.Where(r => r.Key == location.Region.Id).Select(r => r.Value).First());
+                    Models.Region region;
+                    if (location.Region != null && !_regions.Select(r => r.Key).Contains(location.Region.Id))
+                    {
+                        region = location.Region;
+                        _regions.GetOrAdd(region.Id, Models.Region.ConvertBack(region));
+                    }
+                    else
+                        region = Models.Region.ConvertModel(_regions.Where(r => r.Key == location.Region.Id).Select(r => r.Value).First());
 
-                //Set the Location's Client and Region
+                    //Set the Location's Region
+                    location.Region = region;
+
+                    CoreEntitiesContainer.Regions.AddObject(Models.Region.ConvertBack(region));
+                }
+
+                //Set the Location's Client
                 location.ClientId = client.Id;
-                location.Region = region;
+
+                if (String.IsNullOrEmpty(location.Name))
+                    location.Name = client.Name;
+
+                var convertedClient = Models.Client.ConvertBack(client);
+                var convertedLocation = Models.Location.ConvertBack(location);
+
+                convertedClient.BusinessAccountId = businessAccount.Id;
+                convertedClient.LastModified = convertedClient.CreatedDate;
+                convertedClient.LastModifyingUserId = userId;
+
+                convertedLocation.BusinessAccountId = businessAccount.Id;
+                convertedLocation.LastModified = convertedLocation.CreatedDate;
+                convertedLocation.LastModifyingUserId = userId;
+
+                //Attach the Client and the Location
+                CoreEntitiesContainer.Clients.AddObject(convertedClient);
+                CoreEntitiesContainer.Locations.AddObject(convertedLocation);
 
                 var loadedServiceTemplate = HardCodedLoaders.LoadServiceTemplateWithDetails(CoreEntitiesContainer, serviceTemplate.Id, null, null, null).FirstOrDefault();
 
                 if (loadedServiceTemplate == null)
                     throw Request.BadRequest("ServiceTemplate's Id is invalid");
 
-                var recurringServiceTemplate = loadedServiceTemplate.MakeChild(ServiceTemplateLevel.RecurringServiceDefined);
-                var recurringService = new Core.Models.CoreEntities.RecurringService
+                if (row.Service != null)
                 {
-                    Id = recurringServiceTemplate.Id,
-                    ClientId = client.Id,
-                    CreatedDate = DateTime.UtcNow,
-                    LastModified = DateTime.UtcNow,
-                    LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().Id,
-                    Repeat = Repeat.ConvertBack(row.Repeat)
-                };
+                    var newServiceTemplate = loadedServiceTemplate.MakeChild(ServiceTemplateLevel.ServiceDefined);
+                    newServiceTemplate.LastModified = newServiceTemplate.CreatedDate;
+                    newServiceTemplate.LastModifyingUserId = userId;
+
+                    FoundOps.Core.Models.CoreEntities.Service convertedService = Models.Service.ConvertBack(row.Service);
+                }
+
+                if (row.Repeat != null)
+                {
+                    var recurringServiceTemplate = loadedServiceTemplate.MakeChild(ServiceTemplateLevel.RecurringServiceDefined);
+                    recurringServiceTemplate.LastModified = recurringServiceTemplate.CreatedDate;
+                    recurringServiceTemplate.LastModifyingUserId = userId;
+
+                    var convertedRepeat = Repeat.ConvertBack(row.Repeat);
+                    convertedRepeat.Id = recurringServiceTemplate.Id;
+                    convertedRepeat.LastModified = convertedRepeat.CreatedDate;
+                    convertedRepeat.LastModifyingUserId = userId;
+
+                    var recurringService = new Core.Models.CoreEntities.RecurringService
+                    {
+                            Id = recurringServiceTemplate.Id,
+                            ClientId = client.Id,
+                            CreatedDate = DateTime.UtcNow,
+                            LastModified = DateTime.UtcNow,
+                            LastModifyingUserId = userId,
+                            Repeat = convertedRepeat
+                        };
+
+                    CoreEntitiesContainer.RecurringServices.AddObject(recurringService);
+                }
             });
 
-            SaveWithRetry();
+            try
+            {
+                SaveWithRetry();
+            }
+            catch (Exception)
+            {
+                throw Request.NotSaving();
+            }
+
+            return true;
         }
 
         #region Helpers

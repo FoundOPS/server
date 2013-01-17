@@ -5,6 +5,7 @@ using System.Linq;
 using FoundOps.Api.Controllers.Rest;
 using FoundOps.Api.Models;
 using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Core.Tools;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Client = FoundOps.Core.Models.CoreEntities.Client;
 using ContactInfo = FoundOps.Api.Models.ContactInfo;
@@ -44,7 +45,7 @@ namespace FoundOps.Api.Tests.Controllers
             TestValidateAndSuggest(importClients: true, newClient: true, importLocations: true, newLocation: false, importContactInfo: true, newContactInfo: false, importRepeats: true, testValidateInput: true, testSuggestEntites: false);
             TestValidateAndSuggest(importClients: true, newClient: false, importLocations: true, newLocation: true, importContactInfo: true, newContactInfo: true, importRepeats: true, testValidateInput: true, testSuggestEntites: false);
             TestValidateAndSuggest(importClients: true, newClient: false, importLocations: true, newLocation: true, importContactInfo: true, newContactInfo: false, importRepeats: true, testValidateInput: true, testSuggestEntites: false);
-            
+
             TestValidateAndSuggest(importClients: true, newClient: false, importLocations: true, newLocation: false, importContactInfo: false, newContactInfo: false, importRepeats: true, testValidateInput: true, testSuggestEntites: false);
 
             //Importing a Client and Location
@@ -114,6 +115,18 @@ namespace FoundOps.Api.Tests.Controllers
             #endregion
         }
 
+        [TestMethod]
+        public void SubmitTests()
+        {
+            var controller = new SuggestionsController();
+
+            var suggestionRequest = new SuggestionsRequest { Rows = SetupRows(true, true, true, true, true, true, true) };
+            var suggestions = controller.Put(_roleId, suggestionRequest);
+
+            var serviceTemplate = CoreEntitiesContainer.Owner(_roleId).SelectMany(ba => ba.ServiceTemplates).First(st => st.LevelInt == (int)ServiceTemplateLevel.ServiceProviderDefined);
+            var success = controller.Post(_roleId, suggestions, Models.ServiceTemplate.ConvertModel(serviceTemplate));
+        }
+
         #region Helpers
 
         private void TestValidateAndSuggest(bool importClients, bool newClient, bool importLocations, bool newLocation, bool importContactInfo, bool newContactInfo, bool importRepeats, bool testValidateInput, bool testSuggestEntites)
@@ -178,7 +191,7 @@ namespace FoundOps.Api.Tests.Controllers
         {
             var random = new Random();
             var rows = new List<ImportRow>();
-            
+
             var newRow = new ImportRow();
 
             if (importClients)
@@ -215,7 +228,16 @@ namespace FoundOps.Api.Tests.Controllers
             }
             if (importRepeats)
             {
-                var repeat = CoreEntitiesContainer.Repeats.Where(r => r.FrequencyInt == 3).ToArray().ElementAt(random.Next(144));
+                var repeat = new FoundOps.Core.Models.CoreEntities.Repeat
+                {
+                    Id = Guid.NewGuid(),
+                    RepeatEveryTimes = 2,
+                    FrequencyInt = 3,
+                    FrequencyDetailInt = 4,
+                    StartDate = DateTime.UtcNow.Date,
+                    CreatedDate = DateTime.UtcNow,
+                    LastModified = DateTime.UtcNow
+                };
 
                 newRow.Repeat = Api.Models.Repeat.ConvertModel(repeat);
             }
@@ -268,7 +290,7 @@ namespace FoundOps.Api.Tests.Controllers
                 var client = newClient
                     ? new Client { Name = "Test Client" }
                     : CoreEntitiesContainer.Clients.ToArray().ElementAt(random.Next(48));
-                
+
                 newRow.Add(client.Name);
             }
             if (importLocations)

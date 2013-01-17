@@ -10,6 +10,8 @@ namespace FoundOps.Api.Models
 
         public Repeat Repeat { get; set; }
 
+        public Service Service { get; set; }
+
         public List<ContactInfo> ContactInfoSet { get; set; }
 
         public ImportRow()
