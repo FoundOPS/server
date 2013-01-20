@@ -242,7 +242,6 @@
     <Compile Include="Controllers\Rest\ClientsController.cs" />
     <Compile Include="Controllers\Rest\ColumnConfigurationsController.cs" />
     <Compile Include="Controllers\Rest\ContactInfoController.cs" />
-    <Compile Include="Controllers\Rest\LocationFieldsController.cs" />
     <Compile Include="Controllers\Rest\PartyImageController.cs" />
     <Compile Include="Controllers\Rest\SuggestionsController.cs" />
     <Compile Include="Controllers\Rest\TimeZonesController.cs" />

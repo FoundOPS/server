@@ -1,5 +1,6 @@
 ﻿using FoundOps.Api.Tools;
 using FoundOps.Core.Models.CoreEntities;
+using FoundOps.Core.Models.CoreEntities.Extensions.Services;
 using FoundOps.Core.Tools;
 using System;
 using System.Collections.Generic;
@@ -134,6 +135,8 @@ namespace FoundOps.Api.Controllers.Rest
             if (service.ClientId == Guid.Empty)
                 throw Request.NotFound("Client");
 
+            var userId = CoreEntitiesContainer.CurrentUserAccount().Id;
+
             var existingService = CoreEntitiesContainer.Services.FirstOrDefault(s => s.Id == service.Id);
 
             //the service exists. load all field information and update field values
@@ -161,14 +164,28 @@ namespace FoundOps.Api.Controllers.Rest
                     var optionsField = existingField as OptionsField;
 
                     if (numericField != null)
-                        numericField.Value = ((Models.NumericField)field).Value;
+                    {
+                        numericField.Value = ((Models.NumericField) field).Value;
+
+                        numericField.LastModified = DateTime.UtcNow;
+                        numericField.LastModifyingUserId = userId;
+                    }
 
                     if (textBoxField != null)
-                        textBoxField.Value = ((Models.TextBoxField)field).Value;
+                    {
+                        textBoxField.Value = ((Models.TextBoxField) field).Value;
+
+                        textBoxField.LastModified = DateTime.UtcNow;
+                        textBoxField.LastModifyingUserId = userId;
+                    }
 
                     if (signatureField != null)
-                        signatureField.Value = ((Models.SignatureField)field).Value;
-
+                    {
+                        signatureField.Value = ((Models.SignatureField) field).Value;
+                        
+                        signatureField.LastModified = DateTime.UtcNow;
+                        signatureField.LastModifyingUserId = userId;
+                    }
                     //If the field is a OptionsField, update the Options
                     if (optionsField != null)
                     {
@@ -179,6 +196,37 @@ namespace FoundOps.Api.Controllers.Rest
                             if (modelOption != null)
                                 modelOption.IsChecked = apiOption.IsChecked;
                         }
+
+                        optionsField.LastModified = DateTime.UtcNow;
+                        optionsField.LastModifyingUserId = userId;
+                    }
+
+                    if (locationField != null)
+                    {
+                        //Find the existing LocationField
+                        var destinationField = serviceTemplate.GetDestinationField();
+
+                        destinationField.Value = null;
+                        destinationField.LocationId = ((Models.LocationField)field).LocationId;
+
+                        var routeTasks = CoreEntitiesContainer.RouteTasks.Where(rt => rt.ServiceId == existingService.Id).Include(rt => rt.RouteDestination).ToArray();                        
+
+                        //If any route tasks exist, update their location and clientId
+                        //If any route tasks have been put into routes, update the route destination's location and ClientId
+                        foreach (var routeTask in routeTasks)
+                        {
+                            //Update the RouteTask's LocationId and clientId
+                            destinationField.LocationId = locationField.LocationId;
+
+                            //If there is no RouteDestination for the RouteTask, move on to the next one
+                            if (routeTask.RouteDestination == null) continue;
+
+                            //Update the RouteDestination's LocationId and ClientId
+                            routeTask.RouteDestination.LocationId = locationField.LocationId;
+                        }
+
+                        locationField.LastModified = DateTime.UtcNow;
+                        locationField.LastModifyingUserId = userId;
                     }
                 }
 
@@ -231,7 +279,7 @@ namespace FoundOps.Api.Controllers.Rest
                     }
                 }
             }
-
+            
             //Save any changes that were made
             SaveWithRetry();
         }
