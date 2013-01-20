@@ -1,4 +1,5 @@
-﻿using Dapper;
+﻿using System.Data;
+using Dapper;
 using FoundOps.Api.Tools;
 using FoundOps.Common.NET;
 using FoundOps.Core.Models;
@@ -59,7 +60,7 @@ namespace FoundOps.Api.Controllers.Rest
                 throw Request.BadRequest();
             }
 
-            var geocodeResult = new GeocoderResult[] {};
+            var geocodeResult = new GeocoderResult[] { };
             if (!string.IsNullOrEmpty(search))
             {
                 //attempt to geocode
@@ -81,7 +82,7 @@ namespace FoundOps.Api.Controllers.Rest
                 conn.Close();
             }
 
-            var result = geocodeResult.Any() ? locations.Select(Location.ConvertModel).Concat(geocodeResult.Select(Location.ConvertGeocode)).AsQueryable() 
+            var result = geocodeResult.Any() ? locations.Select(Location.ConvertModel).Concat(geocodeResult.Select(Location.ConvertGeocode)).AsQueryable()
                                         : locations.Select(Location.ConvertModel).AsQueryable();
             return result;
         }
@@ -91,7 +92,6 @@ namespace FoundOps.Api.Controllers.Rest
         /// </summary>
         /// <param name="roleId">The current roleId</param>
         /// <param name="location">The location to be inserted</param>
-        /// <returns>Http response to signify whether or not the location was inserted sucessfully</returns>
         public void Post(Guid roleId, Location location)
         {
             //Check to be sure the user has access
@@ -111,6 +111,27 @@ namespace FoundOps.Api.Controllers.Rest
 
             //Insert the location
             CoreEntitiesContainer.Locations.AddObject(newLocation);
+
+            SaveWithRetry();
+        }
+
+        /// <summary>
+        /// Updates a location
+        /// </summary>
+        /// <param name="roleId">The current roleId</param>
+        /// <param name="location">The location to be inserted</param>
+        public void Put(Guid roleId, Location location)
+        {
+            var businessAccount = CoreEntitiesContainer.Owner(roleId).FirstOrDefault();
+            if (businessAccount == null)
+                throw Request.NotAuthorized();
+
+            var updatedLocation = Location.ConvertBack(location);
+
+            CoreEntitiesContainer.Locations.Attach(updatedLocation);
+            CoreEntitiesContainer.ObjectStateManager.ChangeObjectState(updatedLocation, EntityState.Modified);
+            updatedLocation.LastModified = DateTime.UtcNow;
+            updatedLocation.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().Id;
 
             SaveWithRetry();
         }

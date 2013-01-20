@@ -11,121 +11,124 @@ using LocationField = FoundOps.Api.Models.LocationField;
 
 namespace FoundOps.Api.Controllers.Rest
 {
-    public class LocationFieldsController : BaseApiController
-    {
-        /// <summary>
-        /// Updates an existing LocationField with a new Location
-        /// It will add the new Location to the Client passed if it does not already belong to it
-        /// It will update the Location's properties if it exists
-        /// It will also check for RouteTasks/RouteDestinations that belong to the Service and update their LocationId and ClientId
-        /// </summary>
-        /// <param name="roleId">The role</param>
-        /// <param name="locationField">The LocationField being updated</param>
-        /// <param name="serviceId">The service Id</param>
-        /// <param name="recurringServiceId">The RecurringService Id</param>
-        /// <param name="clientId">The Id of the client that this location belongs to</param>
-        /// <param name="occurDate">The date the Service occurs</param>
-        public void Put(Guid roleId, LocationField locationField, Guid? serviceId, Guid? recurringServiceId, Guid clientId, DateTime occurDate)
-        {
-            //Makes sure the user is an Administrator or Regular
-            var businessAccount = CoreEntitiesContainer.Owner(roleId).FirstOrDefault();
-            if (businessAccount == null)
-                throw Request.NotAuthorized();
+    //public class LocationFieldsController : BaseApiController
+    //{
+    //    //TODO convert to helper and use inside of services controller
+    //    /// <summary>
+    //    /// Updates an existing LocationField with a different Location
+    //    /// It will also check for RouteTasks/RouteDestinations that belong to the Service and update their LocationId and ClientId
+    //    /// </summary>
+    //    /// <param name="roleId">The role</param>
+    //    /// <param name="locationField">The LocationField being updated</param>
+    //    /// <param name="serviceId">The service Id</param>
+    //    /// <param name="recurringServiceId">The RecurringService Id</param>
+    //    /// <param name="clientId">The Id of the client that this location belongs to</param>
+    //    /// <param name="occurDate">The date the Service occurs</param>
+    //    public void Put(Guid roleId, LocationField locationField, Guid? serviceId, Guid? recurringServiceId, Guid clientId, DateTime occurDate)
+    //    {
+    //        //Makes sure the user is an Administrator or Regular
+    //        var businessAccount = CoreEntitiesContainer.Owner(roleId).FirstOrDefault();
+    //        if (businessAccount == null)
+    //            throw Request.NotAuthorized();
 
-            locationField.Value.SetLastModified(DateTime.UtcNow, CoreEntitiesContainer.CurrentUserAccount().Id);
-            //add or attach the location to the EntityContext
-            var newLocation = Location.ConvertBack(locationField.Value);
-            if (locationField.Value.IsNew)
-                CoreEntitiesContainer.Locations.AddObject(newLocation);
-            else
-            {
-                CoreEntitiesContainer.Locations.Attach(newLocation);
-                CoreEntitiesContainer.ObjectStateManager.ChangeObjectState(newLocation, EntityState.Modified);
-                newLocation.LastModified = DateTime.UtcNow;
-                newLocation.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().Id;
-            }
+    //        locationField.Value.SetLastModified(DateTime.UtcNow, CoreEntitiesContainer.CurrentUserAccount().Id);
 
-            var existingService = CoreEntitiesContainer.Services.FirstOrDefault(s => s.Id == serviceId);
+    //        //TODO remove
+    //        ////add or attach the location to the EntityContext
+    //        //var newLocation = Location.ConvertBack(locationField.Value);
+    //        //if (locationField.Value.IsNew)
+    //        //    CoreEntitiesContainer.Locations.AddObject(newLocation);
+    //        //else
+    //        //{
+    //        //    CoreEntitiesContainer.Locations.Attach(newLocation);
+    //        //    CoreEntitiesContainer.ObjectStateManager.ChangeObjectState(newLocation, EntityState.Modified);
+    //        //    newLocation.LastModified = DateTime.UtcNow;
+    //        //    newLocation.LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().Id;
+    //        //}
 
-            RouteTask[] routeTasks;
-            Core.Models.CoreEntities.LocationField destinationField = null;
+    //        var existingService = CoreEntitiesContainer.Services.FirstOrDefault(s => s.Id == serviceId);
 
-            //Generate a Service since one does not yet exist
-            if (existingService == null)
-            {
-                if (recurringServiceId == null)
-                    throw Request.BadRequest("Service does not exist and no recurringServiceId was passed");
+    //        RouteTask[] routeTasks;
+    //        Core.Models.CoreEntities.LocationField destinationField = null;
 
-                //Include Client, Client.BusinessAccount and ServiceTemplate w/ fields
-                var recurringService = CoreEntitiesContainer.RecurringServices.Where(rs => rs.Id == recurringServiceId)
-                    .Include(rs => rs.Client).Include(rs => rs.Client.BusinessAccount).FirstOrDefault();
+    //        //Generate a Service since one does not yet exist
+    //        if (existingService == null)
+    //        {
+    //            if (recurringServiceId == null)
+    //                throw Request.BadRequest("Service does not exist and no recurringServiceId was passed");
 
-                if (recurringService == null)
-                    throw Request.BadRequest("Service and RecurringService do not exist");
+    //            //Include Client, Client.BusinessAccount and ServiceTemplate w/ fields
+    //            var recurringService = CoreEntitiesContainer.RecurringServices.Where(rs => rs.Id == recurringServiceId)
+    //                .Include(rs => rs.Client).Include(rs => rs.Client.BusinessAccount).FirstOrDefault();
 
-                HardCodedLoaders.LoadServiceTemplateWithDetails(CoreEntitiesContainer, recurringService.Id, null, null, null);
+    //            if (recurringService == null)
+    //                throw Request.BadRequest("Service and RecurringService do not exist");
 
-                //Since there wasnt previously a saved Service make one. Otherwise the service will get lost
-                existingService = new Service
-                {
-                    ServiceDate = occurDate,
-                    ClientId = recurringService.ClientId,
-                    RecurringServiceId = recurringService.Id,
-                    ServiceProviderId = recurringService.Client.BusinessAccount.Id,
-                    ServiceTemplate = recurringService.ServiceTemplate.MakeChild(ServiceTemplateLevel.ServiceDefined),
-                    CreatedDate = DateTime.UtcNow,
-                    LastModified = DateTime.UtcNow,
-                    LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().Id
-                };
-                existingService.Id = existingService.ServiceTemplate.Id;
+    //            HardCodedLoaders.LoadServiceTemplateWithDetails(CoreEntitiesContainer, recurringService.Id, null, null, null);
 
-                destinationField = existingService.ServiceTemplate.GetDestinationField();
+    //            //Since there wasnt previously a saved Service make one. Otherwise the service will get lost
+    //            existingService = new Service
+    //            {
+    //                ServiceDate = occurDate,
+    //                ClientId = recurringService.ClientId,
+    //                RecurringServiceId = recurringService.Id,
+    //                ServiceProviderId = recurringService.Client.BusinessAccount.Id,
+    //                ServiceTemplate = recurringService.ServiceTemplate.MakeChild(ServiceTemplateLevel.ServiceDefined),
+    //                CreatedDate = DateTime.UtcNow,
+    //                LastModified = DateTime.UtcNow,
+    //                LastModifyingUserId = CoreEntitiesContainer.CurrentUserAccount().Id
+    //            };
+    //            existingService.Id = existingService.ServiceTemplate.Id;
 
-                //Load any RouteTasks on the occur date that belong to the RecurringService
-                routeTasks = CoreEntitiesContainer.RouteTasks.Where(rt => rt.RecurringServiceId == recurringServiceId && rt.Date == occurDate).ToArray();
+    //            destinationField = existingService.ServiceTemplate.GetDestinationField();
 
-                //Add the RouteTasks to the Service
-                foreach (var routeTask in routeTasks)
-                    existingService.RouteTasks.Add(routeTask);
-            }
-            else
-            {
-                routeTasks = CoreEntitiesContainer.RouteTasks.Where(rt => rt.ServiceId == serviceId).Include(rt => rt.RouteDestination).ToArray();
+    //            //Load any RouteTasks on the occur date that belong to the RecurringService
+    //            routeTasks = CoreEntitiesContainer.RouteTasks.Where(rt => rt.RecurringServiceId == recurringServiceId && rt.Date == occurDate).ToArray();
 
-                var serviceTemplate = HardCodedLoaders.LoadServiceTemplateWithDetails(CoreEntitiesContainer, serviceId, null, null, null).First();
-                //Find the existing LocationField
-                destinationField = serviceTemplate.GetDestinationField();
-            }
+    //            //Add the RouteTasks to the Service
+    //            foreach (var routeTask in routeTasks)
+    //                existingService.RouteTasks.Add(routeTask);
+    //        }
+    //        else
+    //        {
+    //            routeTasks = CoreEntitiesContainer.RouteTasks.Where(rt => rt.ServiceId == serviceId).Include(rt => rt.RouteDestination).ToArray();
 
-            if (destinationField == null)
-                throw Request.BadRequest("Field Does Not Exist");
+    //            var serviceTemplate = HardCodedLoaders.LoadServiceTemplateWithDetails(CoreEntitiesContainer, serviceId, null, null, null).First();
+    //            //Find the existing LocationField
+    //            destinationField = serviceTemplate.GetDestinationField();
+    //        }
 
-            //If the Location does not exist on the Client passed, add it
-            var clientLocation = CoreEntitiesContainer.Locations.FirstOrDefault(l => l.ClientId == clientId && l.Id == locationField.Value.Id);
-            if (clientLocation == null)
-                newLocation.ClientId = clientId;
+    //        if (destinationField == null)
+    //            throw Request.BadRequest("Field Does Not Exist");
 
-            //Updating the Location Field
-            destinationField.Value = newLocation;
+    //        //TODO move
+    //        ////If the Location does not exist on the Client passed, add it
+    //        //var clientLocation = CoreEntitiesContainer.Locations.FirstOrDefault(l => l.ClientId == clientId && l.Id == locationField.Value.Id);
+    //        //if (clientLocation == null)
+    //        //    newLocation.ClientId = clientId;
 
-            //If any route tasks exist, update their location and clientId
-            //If any route tasks have been put into routes, update the route destination's location and ClientId
-            foreach (var routeTask in routeTasks)
-            {
-                //Update the RouteTask's LocationId and clientId
-                routeTask.LocationId = newLocation.Id;
-                routeTask.ClientId = clientId;
+    //        //Updating the Location Field
+    //        destinationField.Value = null;
+    //        destinationField.LocationId = locationField.LocationId;
 
-                //If there is no RouteDestination for the RouteTask, move on to the next one
-                if (routeTask.RouteDestination == null) continue;
+    //        //If any route tasks exist, update their location and clientId
+    //        //If any route tasks have been put into routes, update the route destination's location and ClientId
+    //        foreach (var routeTask in routeTasks)
+    //        {
+    //            //Update the RouteTask's LocationId and clientId
+    //            destinationField.LocationId = locationField.LocationId;
+    //            routeTask.ClientId = clientId;
 
-                //Update the RouteDestination's LocationId and ClientId
-                routeTask.RouteDestination.LocationId = newLocation.Id;
-                routeTask.RouteDestination.ClientId = clientId;
-            }
+    //            //If there is no RouteDestination for the RouteTask, move on to the next one
+    //            if (routeTask.RouteDestination == null) continue;
 
-            //Save all changes
-            SaveWithRetry();
-        }
-    }
+    //            //Update the RouteDestination's LocationId and ClientId
+    //            routeTask.RouteDestination.LocationId = locationField.LocationId;
+    //            routeTask.RouteDestination.ClientId = clientId;
+    //        }
+
+    //        //Save all changes
+    //        SaveWithRetry();
+    //    }
+    //}
 }
