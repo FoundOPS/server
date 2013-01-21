@@ -27,30 +27,13 @@ namespace FoundOps.Server.Controllers
         //#endif
         public ActionResult Index()
         {
-            //load the index page from cache
-            //if it expired, refetch it from blob storage
-            var indexPage = HttpContext.Cache["IndexPage"] as string;
-            if (indexPage == null)
-            {
 #if DEBUG
-                var request = (HttpWebRequest)WebRequest.Create(AppConstants.LocalApplicationServer);
+            var redirectUrl = AppConstants.LocalApplicationServer;
 #else
-                var request = (HttpWebRequest)WebRequest.Create(AzureServerHelpers.BlobStorageUrl + "app/index.html");
+            var redirectUrl = AzureServerHelpers.BlobStorageUrl + "app/index.html";
 #endif
 
-                var response = (HttpWebResponse)request.GetResponse();
-                var stream = new StreamReader(response.GetResponseStream());
-
-                indexPage = stream.ReadToEnd();
-                response.Close();
-                stream.Close();
-
-                //cache the page for 6 hours
-                HttpContext.Cache.Add("IndexPage", indexPage, null, DateTime.UtcNow.AddHours(6), Cache.NoSlidingExpiration,
-                                      CacheItemPriority.Normal, null);
-            }
-
-            return Content(indexPage, "text/html");
+            return RedirectPermanent(redirectUrl);
         }
     }
 }
