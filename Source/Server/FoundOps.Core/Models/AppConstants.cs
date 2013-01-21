@@ -26,11 +26,11 @@
             RootApplicationUrl = "http://test.foundops.com";
             RootApiUrl = "http://testapi.foundops.com";
 #elif RELEASE
-            RootApplicationUrl = "http://app.foundops.com";
+            RootApplicationUrl = "http://bp.foundops.com";
             RootApiUrl = "http://api.foundops.com";
 #endif
 
-            ApplicationUrl = RootApplicationUrl + "/App/Index";
+            ApplicationUrl = RootApplicationUrl + "/app/index.html";
         }
     }
 }

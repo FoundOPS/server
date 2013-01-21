@@ -548,8 +548,8 @@ namespace FoundOps.SLClient.Navigator.Panes.Dispatcher
             if (RoutesVM.SelectedDate == new DateTime())
                 return;
 
-            //http://localhost:31820/App/Index#view/mapView.html?roleId=dca5d7c1-f62d-4dea-832c-b082a43877ce&date=9-16-2012
-            var mapUrl = AppConstants.ApplicationUrl + "#view/mapView.html?disableNavigator=true&" + String.Format("roleId={0}&date={1}", Manager.Context.RoleId, RoutesVM.SelectedDate.ToString("M-d-yyyy"));
+            //http://bp.foundops.com/app/index.html#mapView?disableNavigator=true&roleId=9c445a1a-8be1-4016-9d8d-64eba6b7a4e0&date=1-21-2013
+            var mapUrl = AppConstants.ApplicationUrl + "#mapView?disableNavigator=true&" + String.Format("roleId={0}&date={1}", Manager.Context.RoleId, RoutesVM.SelectedDate.ToString("M-d-yyyy"));
             map.SourceUrl = new Uri(mapUrl);
         }
 
