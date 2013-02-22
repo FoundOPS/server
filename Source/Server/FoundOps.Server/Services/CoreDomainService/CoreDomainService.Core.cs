@@ -22,11 +22,7 @@ namespace FoundOps.Server.Services.CoreDomainService
     /// Businesses, ContactInfo, Files,
     /// Parties, Repeats, Roles, User Accounts
     /// </summary>
-#if DEBUG
     [EnableClientAccess]
-#else
-    [EnableClientAccess(RequiresSecureEndpoint = true)]
-#endif
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple)]
     public partial class CoreDomainService : LinqToEntitiesDomainService<CoreEntitiesContainer>
     {
